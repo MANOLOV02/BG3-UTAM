@@ -61,6 +61,23 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Busca una cadena traducida similar a {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang11274{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+        '''{\colortbl ;\red0\green0\blue255;}
+        '''{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+        '''\pard\sa200\sl276\slmult1\qc\b\f0\fs28\lang10 BG3 UTAM (Ultimate Tool for Amateur Modders)\par
+        '''\b0\fs22 Author: ManoloV02\par
+        '''
+        '''\pard\sa200\sl276\slmult1\ul\b\fs2\par
+        '''\ulnone\b0\fs24 Nexus mods:  \par
+        '''Github: {{\field{\*\fldinst{HYPERLINK https://github.com/MANOLOV02/BG3-UTAM }}{\fldrslt{https://gi [resto de la cadena truncado]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property About() As String
+            Get
+                Return ResourceManager.GetString("About", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property document_preview_archive() As System.Drawing.Bitmap

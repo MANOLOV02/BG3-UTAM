@@ -4,7 +4,7 @@ Imports System.Xml
 Imports Accessibility
 Imports LSLib.LS
 
-Public Class Containers_Editor
+Public Class Containers_EditorOLD
     Sub New()
         MyBase.New
         ' Esta llamada es exigida por el diseñador.

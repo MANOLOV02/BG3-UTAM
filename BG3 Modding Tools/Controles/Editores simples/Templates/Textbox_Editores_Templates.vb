@@ -34,6 +34,14 @@ Public Class BG3Editor_Template_ColorPreset
     End Sub
 End Class
 
+Public Class BG3Editor_Template_ContainerContentFilterCondition
+    Inherits Editor_Template_GenericAttribute
+    Sub New()
+        MyBase.New("ContainerContentFilterCondition", LSLib.LS.AttributeType.LSString)
+        Label = "Filter condition"
+    End Sub
+End Class
+
 Public Class BG3Editor_Template_LocalizationBase
     Inherits Editor_Template_GenericTranslate
     Sub New(Key As String, Utam_Handle As String)

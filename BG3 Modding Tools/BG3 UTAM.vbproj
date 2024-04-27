@@ -73,6 +73,7 @@
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\UTEM Editores\Containers_EditorV2.vb" />
     <Compile Update="Formularios\UTEM Editores\Dyes_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Containers_Editor.vb" />
     <Compile Update="My Project\Application.Designer.vb">

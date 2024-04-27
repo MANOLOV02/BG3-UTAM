@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Containers_Editor
+Partial Class Containers_EditorOLD
     Inherits ExploraForm_code
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -632,7 +632,7 @@ Partial Class Containers_Editor
         ' 
         ' Containers_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1100, 484)
         Controls.Add(LabelInfoDescription)

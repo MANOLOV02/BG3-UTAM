@@ -408,7 +408,9 @@ Public Class UtamMod
         End If
 
         If CheckBoxAddtogame.Enabled = True AndAlso CheckBoxAddtogame.Checked Then
-            Dim unused = FuncionesHelpers.GameEngine.IncludeModInGame(CurrentMod.ModLsx)
+#Disable Warning BC42025 ' Acceso del miembro compartido, el miembro de constante, el miembro de enumeración o el tipo anidado a través de una instancia
+            FuncionesHelpers.GameEngine.IncludeModInGame(CurrentMod.ModLsx)
+#Enable Warning BC42025 ' Acceso del miembro compartido, el miembro de constante, el miembro de enumeración o el tipo anidado a través de una instancia
             IO.File.Copy(packfile, ModPackfile, True)
         End If
 

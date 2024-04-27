@@ -134,6 +134,7 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
     End Sub
     Overridable Sub Clear()
         TextBox1.Text = ""
+        CheckBox1.Checked = False
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         Habilita_deshabilita()

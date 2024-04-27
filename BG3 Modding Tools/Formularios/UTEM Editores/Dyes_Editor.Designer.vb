@@ -532,6 +532,7 @@ Partial Class Dyes_Editor
         ' 
         ' BG3Editor_Stat_Unique1
         ' 
+        BG3Editor_Stat_Unique1.EditIsConditional = False
         BG3Editor_Stat_Unique1.EditorType = BG3_Editor_Type.Combobox
         BG3Editor_Stat_Unique1.Label = "Unique"
         BG3Editor_Stat_Unique1.Location = New Point(241, 65)
@@ -607,7 +608,7 @@ Partial Class Dyes_Editor
         BG3Editor_Stat_Using1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stat_Using1.MinimumSize = New Size(0, 23)
         BG3Editor_Stat_Using1.Name = "BG3Editor_Stat_Using1"
-        BG3Editor_Stat_Using1.Size = New Size(376, 23)
+        BG3Editor_Stat_Using1.Size = New Size(392, 23)
         BG3Editor_Stat_Using1.SplitterDistance = 100
         BG3Editor_Stat_Using1.TabIndex = 3
         ' 
