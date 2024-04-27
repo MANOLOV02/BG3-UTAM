@@ -1,8 +1,11 @@
 ﻿Imports System.ComponentModel
 Imports System.Configuration
+Imports System.Drawing.Imaging
 Imports System.Reflection.Emit
 Imports BG3_Modding_Tools.Funciones
 Imports BG3_Modding_Tools.FuncionesHelpers
+Imports LSLib.Granny
+Imports Microsoft.VisualBasic.Devices
 Public Class Main
 
     Private ProcessForm As ProcesarPaks
@@ -93,7 +96,7 @@ Public Class Main
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-        GameEngine.Load_Settings
+        GameEngine.Load_Settings()
 
     End Sub
 
@@ -584,11 +587,29 @@ Public Class Main
     End Sub
 
     Private Sub Main_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        GameEngine.Save_Settings
+        GameEngine.Save_Settings()
     End Sub
 
     Private Sub AboutAndAcknoulegementsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutAndAcknoulegementsToolStripMenuItem.Click
         Dim xx As New AboutBox1
         xx.ShowDialog()
+    End Sub
+
+    Private Sub Main_DoubleClick(sender As Object, e As EventArgs) Handles MyBase.Click
+
+    End Sub
+
+    Private CaptureN As Integer = 0
+    Private Sub ObjectsStatusLabel_Click(sender As Object, e As EventArgs) Handles ObjectsStatusLabel.Click
+        If Control.ModifierKeys = Keys.Control Then
+            Try
+                Dim bmp As New Bitmap(Me.Width, Me.Height)
+                Me.DrawToBitmap(bmp, New Rectangle(0, 0, Me.Width, Me.Height))
+                bmp.Save("C:\Temp\BG3 Captures\Capture" + CaptureN.ToString("0000") + ".png", ImageFormat.Png)
+                CaptureN += 1
+            Catch ex As Exception
+            End Try
+        End If
+
     End Sub
 End Class
