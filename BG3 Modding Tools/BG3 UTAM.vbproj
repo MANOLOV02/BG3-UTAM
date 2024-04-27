@@ -1,0 +1,110 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>BG3_Modding_Tools</RootNamespace>
+    <StartupObject>BG3_Modding_Tools.My.MyApplication</StartupObject>
+    <UseWindowsForms>true</UseWindowsForms>
+    <MyType>WindowsForms</MyType>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <ApplicationIcon>identity.ico</ApplicationIcon>
+    <Description></Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="identity.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LSLib">
+      <HintPath>..\LSLIB\Release\Packed\LSLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Pfim">
+      <HintPath>..\Pfim\src\Pfim\bin\Release\netstandard2.0\Pfim.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controles\Editores simples\Stats\Textbox_Editores_Stats.vb" />
+    <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
+    <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controles\Explorers\BG3Explorer_Flags_and_Tags.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controles\Explorers\BG3Explorer_Icons.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Diseño del generico\Explorer_Form_Code.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Diseño del generico\Information_Form_Code.vb" />
+    <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\Exploradores de Objetos\Information_Form_VisualTemplates.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_Flags_and_Tags.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_VisualTemplates.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_Stats.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Flags_and_Tags.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
+    <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\UTEM Editores\Dyes_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Containers_Editor.vb" />
+    <Compile Update="My Project\Application.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Update="My Project\Resources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_Templates.vb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="My Project\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="My Project\DataSources\" />
+  </ItemGroup>
+
+</Project>

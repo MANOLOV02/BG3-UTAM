@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;EXPORT_GPPG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>EXPORT_GPPG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Editor Debug|AnyCPU'">
+    <OutputPath>bin\Editor Debug\</OutputPath>
+    <DefineConstants>TRACE;EXPORT_GPPG</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LSLibNative\LSLibNative.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OpenTK.Mathematics" Version="4.8.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="lz4net" Version="1.0.15.93" />
+    <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
+    <PackageReference Include="ZstdSharp.Port" Version="0.7.4" />
+  </ItemGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(SolutionDir)\LSLib\LS\Story\GoalParser\Goal.lex.cs" "$(SolutionDir)\LSLib\LS\Story\GoalParser\Goal.lex"
+"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(SolutionDir)\LSLib\LS\Story\GoalParser\Goal.yy.cs" "$(SolutionDir)\LSLib\LS\Story\GoalParser\Goal.yy"
+
+"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(SolutionDir)\LSLib\LS\Story\HeaderParser\StoryHeader.lex.cs" "$(SolutionDir)\LSLib\LS\Story\HeaderParser\StoryHeader.lex"
+"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(SolutionDir)\LSLib\LS\Story\HeaderParser\StoryHeader.yy.cs" "$(SolutionDir)\LSLib\LS\Story\HeaderParser\StoryHeader.yy"
+
+"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\Stat.lex.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\Stat.lex"
+"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\Stat.yy.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\Stat.yy"
+
+"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\StatProperty.lex.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\StatProperty.lex"
+"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\StatProperty.yy.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\StatProperty.yy"
+
+"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\StatLua.lex.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\StatLua.lex"
+"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(SolutionDir)\LSLib\LS\Stats\Parser\StatLua.yy.cs" "$(SolutionDir)\LSLib\LS\Stats\Parser\StatLua.yy"
+</PreBuildEvent>
+    <AssemblyTitle>LSLib</AssemblyTitle>
+    <Product>LSLib</Product>
+    <Copyright>Copyright © Norbyte 2012-2023</Copyright>
+    <AssemblyVersion>1.18.5.0</AssemblyVersion>
+    <FileVersion>1.18.5.0</FileVersion>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+</Project>
