@@ -361,7 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/DirextXTex/DirectXTex/Shaders/Compiled
+/DirextXTex
 /LSLIB
 /Pfim
 /Pfim-master/Pfim-master
