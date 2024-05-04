@@ -23,6 +23,8 @@ Imports System.Globalization
 Imports System.Runtime.CompilerServices
 Imports System.Configuration
 Imports System.Runtime
+Imports System.Net.Quic
+Imports System.Net
 
 
 
@@ -352,6 +354,7 @@ Public Class BG3_Custom_TreeNode_Linked_Class(Of T As BG3_Obj_Generic_Class)
     Public ReadOnly Objeto As BG3_Obj_Generic_Class
     Private PerpetualParent As BG3_Custom_TreeNode_Linked_Class(Of T)
     Private ReadOnly Sender As BG3_CustomFilter_Class(Of T)
+
     Private Sub Filter_Changed()
         If IsNothing(Me.Objeto) Then Exit Sub
         Sender.IncrementProcessed(1)
@@ -444,7 +447,17 @@ Public Class Main_GameEngine_Settings_Class
     Public Property GameExeFolder As String = "Search for the game bin folder"
     Public Property GameModFolder As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Larian Studios\Baldur's Gate 3\Mods")
     Public Property UTAMModFolder As String = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BG3 UTAM"), "Mods")
-    Public ReadOnly Property UTAMCacheFolder = Path.Combine(BG3_UTAM_Folder, "Cache")
+
+    Private _cacheFolder As String = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "BG3 UTAM"), "Cache")
+    Public Property UTAMCacheFolder As String
+        Get
+            Return _cacheFolder
+        End Get
+        Set(value As String)
+            _cacheFolder = value
+        End Set
+    End Property
+
     Public ReadOnly Property GameDataFolder As String
         Get
             Return IO.Path.Combine(Path.GetDirectoryName(Me.GameExeFolder), "data")
@@ -462,7 +475,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-
+    Public ReadOnly Property CacheVersion As Integer = 2
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -542,17 +555,17 @@ Public Class Main_GameEngine_Class
     Public Property Processed As Boolean = False
 
     Public ReadOnly Property Cache_String_List As New List(Of String) From {
-        IO.Path.Combine(Settings.UTAMCacheFolder, "GameObjects_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Localization_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Packs_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Stats_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "VisualBanks_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "IconAtlas_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Icons_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Assets_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "FlagandTags_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Modules_Cache.json"),
-        IO.Path.Combine(Settings.UTAMCacheFolder, "Ttables_Cache.json")
+        "GameObjects_Cache.json",
+        "Localization_Cache.json",
+        "Packs_Cache.json",
+        "Stats_Cache.json",
+        "VisualBanks_Cache.json",
+        "IconAtlas_Cache.json",
+        "Icons_Cache.json",
+        "Assets_Cache.json",
+        "FlagandTags_Cache.json",
+        "Modules_Cache.json",
+        "Ttables_Cache.json"
         }
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property Cache_Object_List As New List(Of Object) From {
@@ -746,6 +759,7 @@ Public Class BG3_Pak_SourceOfResource_Class
         End If
         Return Strm
     End Function
+
     Sub New()
 
     End Sub
@@ -763,8 +777,18 @@ Public Class BG3_Pak_SourceOfResource_Class
     Private Reso As Resource = Nothing
     Private LocaReso As LocaResource = Nothing
     Public Function ReadLocaResource() As LSLib.LS.LocaResource
+        Dim LocaFormat
+        Select Case Path.GetExtension(Me.Filename_Relative).ToLower
+            Case ".loca"
+                LocaFormat = LSLib.LS.LocaFormat.Loca
+            Case ".xml"
+                LocaFormat = LSLib.LS.LocaFormat.Xml
+            Case Else
+                Debugger.Break()
+                Throw New Exception
+        End Select
         Try
-            LocaReso = LocaUtils.Load(Me.CreateContentReader, LocaFormat.Loca)
+            LocaReso = LocaUtils.Load(Me.CreateContentReader, LocaFormat)
         Catch ex As Exception
             Debugger.Break()
             LocaReso = New LSLib.LS.LocaResource
@@ -774,11 +798,9 @@ Public Class BG3_Pak_SourceOfResource_Class
 
     Public Function ReadResource() As Resource
         Dim ResourceFormat
-        Select Case Path.GetExtension(Me.Filename_Relative)
+        Select Case Path.GetExtension(Me.Filename_Relative).ToLower
             Case ".lsf"
                 ResourceFormat = Enums.ResourceFormat.LSF
-            Case ".lsx"
-                ResourceFormat = Enums.ResourceFormat.LSX
             Case ".lsx"
                 ResourceFormat = Enums.ResourceFormat.LSX
             Case ".lsfx" '????
@@ -798,7 +820,6 @@ Public Class BG3_Pak_SourceOfResource_Class
             Reso = New LSLib.LS.Resource
         End Try
         Return Reso
-
     End Function
 
 
@@ -1051,10 +1072,19 @@ Public Class Utam_CurrentModClass
 
     <JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public Property ModLsx As New BG3_Mod_Module_Class
-    Public Property SaveZip As Boolean = True
-    Public Property SavePak As Boolean = True
-    Public Property AddToGame As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property SaveFolder As String = ""
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property BuildPak As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property BuildZip As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property BuildModFixer As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property AddToGame As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property ShinyhoboCompatible As Boolean = True
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property SaveUUID As String = ""
 
     Public ReadOnly Property Paths_Save As String
@@ -1406,53 +1436,42 @@ End Class
 <Serializable>
 Public Class BG3_Loca_Localization_List_Class
     Inherits SortedList(Of String, BG3_Loca_Localization_Class)
-    Public Overloads Sub Add(obj As KeyValuePair(Of String, BG3_Loca_Localization_Class))
-        Add(obj.Key, obj.Value)
-    End Sub
-    Public Overloads Sub Add(Value As BG3_Loca_Localization_Class)
-        MyBase.Add(Value.Keymap, Value)
-    End Sub
-
     Public Function Localize(Mapkey As String, Language As Bg3_Enum_Languages, Gender As Bg3_Enum_Genders, Genderto As Bg3_Enum_GendersTo) As String
         Dim obj As BG3_Loca_Localization_Class = Nothing
         If Mapkey = "" Then Return ""
         If IsNothing(Mapkey) Then Return Mapkey
         If Mapkey.StartsWith("h"c) = False OrElse Mapkey.Contains(";"c) = False Then Return Nothing
         If Mapkey.Split(";")(0).Length <> 37 Then Return Nothing
-        If TryGetValue(Mapkey, obj) = False Then Return Nothing
+        Dim version As Integer = Mapkey.Split(";")(1)
+        Dim key As String = Mapkey.Split(";")(0)
+        If TryGetValue(key, obj) = False Then Return Nothing
+        If obj.Count = 0 Then Return Nothing
+        If obj.ContainsKey(version) = False Then version = obj.OrderBy(Function(pf) Math.Abs(pf.Key - version)).Select(Function(pq) pq.Key).First
 
-
-        If obj.ContainsKey(Language) Then
-            If obj(Language).ContainsKey(Gender) Then
-                If obj(Language)(Gender).ContainsKey(Genderto) Then
-                    Return obj(Language)(Gender)(Genderto)
+        If obj(version).ContainsKey(Language) Then
+            If obj(version)(Language).ContainsKey(Gender) Then
+                If obj(version)(Language)(Gender).ContainsKey(Genderto) Then
+                    Return obj(version)(Language)(Gender)(Genderto)
                 Else
-                    If obj(Language)(Gender).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(Language)(Gender)(Bg3_Enum_GendersTo.M_to_M)
+                    If obj(version)(Language)(Gender).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(version)(Language)(Gender)(Bg3_Enum_GendersTo.M_to_M)
                 End If
             Else
-                If obj(Language)(Bg3_Enum_Genders.Male).ContainsKey(Genderto) Then Return obj(Language)(Bg3_Enum_Genders.Male)(Genderto)
-                If obj(Language)(Bg3_Enum_Genders.Male).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(Language)(Bg3_Enum_Genders.Male)(Bg3_Enum_GendersTo.M_to_M)
+                If obj(version)(Language)(Bg3_Enum_Genders.Male).ContainsKey(Genderto) Then Return obj(version)(Language)(Bg3_Enum_Genders.Male)(Genderto)
+                If obj(version)(Language)(Bg3_Enum_Genders.Male).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(version)(Language)(Bg3_Enum_Genders.Male)(Bg3_Enum_GendersTo.M_to_M)
             End If
         Else
-            If obj(Bg3_Enum_Languages.English).ContainsKey(Gender) Then
-                If obj(Bg3_Enum_Languages.English)(Gender).ContainsKey(Genderto) Then
-                    Return obj(Bg3_Enum_Languages.English)(Gender)(Genderto)
+            If obj(version)(Bg3_Enum_Languages.English).ContainsKey(Gender) Then
+                If obj(version)(Bg3_Enum_Languages.English)(Gender).ContainsKey(Genderto) Then
+                    Return obj(version)(Bg3_Enum_Languages.English)(Gender)(Genderto)
                 Else
-                    If obj(Bg3_Enum_Languages.English)(Gender).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(Bg3_Enum_Languages.English)(Gender)(Bg3_Enum_GendersTo.M_to_M)
+                    If obj(version)(Bg3_Enum_Languages.English)(Gender).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(version)(Bg3_Enum_Languages.English)(Gender)(Bg3_Enum_GendersTo.M_to_M)
                 End If
             Else
-                If obj(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male).ContainsKey(Genderto) Then Return obj(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male)(Genderto)
-                If obj(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male)(Bg3_Enum_GendersTo.M_to_M)
+                If obj(version)(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male).ContainsKey(Genderto) Then Return obj(version)(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male)(Genderto)
+                If obj(version)(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male).ContainsKey(Bg3_Enum_GendersTo.M_to_M) Then Return obj(version)(Bg3_Enum_Languages.English)(Bg3_Enum_Genders.Male)(Bg3_Enum_GendersTo.M_to_M)
             End If
         End If
 
-        '  try another version
-        Dim spl = Mapkey.Split(";")(0)
-        If Me.Keys.Where(Function(pq) pq.Split(";")(0) = spl).Any Then
-            Dim ojb = Keys.Where(Function(pq) pq.Split(";")(0) = spl).Last
-            Debugger.Break()
-            Return Localize(ojb, Language, Gender, Genderto)
-        End If
         Debugger.Break()
         Return Nothing
     End Function
@@ -1462,8 +1481,12 @@ Public Class BG3_Loca_Localization_List_Class
         If IsNothing(Mapkey) Then Return False
         If Mapkey.StartsWith("h"c) = False OrElse Mapkey.Contains(";"c) = False Then Return False
         If Mapkey.Split(";")(0).Length <> 37 Then Return False
-        If TryGetValue(Mapkey, obj) = False Then Return False
-        Return obj.ContainsKey(Language)
+        Dim version As Integer = Mapkey.Split(";")(1)
+        Dim key As String = Mapkey.Split(";")(0)
+        If TryGetValue(key, obj) = False Then Return False
+        If obj.Count = 0 Then Return Nothing
+        If obj.ContainsKey(version) = False Then version = obj.OrderBy(Function(pf) Math.Abs(pf.Key - version)).Select(Function(pq) pq.Key).First
+        Return obj(version).ContainsKey(Language)
     End Function
     Public Function Localize(Mapkey As String, Gender As Bg3_Enum_Genders, Genderto As Bg3_Enum_GendersTo) As String
         Return Localize(Mapkey, GameEngine.Settings.SelectedLocalization, Gender, Genderto)
@@ -1504,16 +1527,10 @@ End Class
 
 <Serializable>
 Public Class BG3_Loca_Localization_Class
-    Inherits SortedList(Of String, SortedList(Of String, SortedList(Of String, String)))
-
+    Inherits SortedList(Of Integer, SortedList(Of String, SortedList(Of String, SortedList(Of String, String))))
     Public Property Handle As String = ""
     Public Property Version As UShort = 0
 
-    Public ReadOnly Property Keymap As String
-        Get
-            Return Me.Handle + ";" + Version.ToString
-        End Get
-    End Property
 
     Sub New()
     End Sub
@@ -1525,9 +1542,18 @@ Public Class BG3_Loca_Localization_Class
             Me.Handle = Node.Key
             Me.Version = Node.Version
             Me.SourceOfResorce = Source
-            AddSpecific(Language, Gender, GendersTo, Node.Text, Source)
+            AddSpecific(Node.Version, Language, Gender, GendersTo, Node.Text, Source)
         End SyncLock
     End Sub
+    Public Sub New(Language As Bg3_Enum_Languages, Gender As Bg3_Enum_Genders, GendersTo As Bg3_Enum_GendersTo, ByRef Handle As String, Version As Integer, Text As String, ByRef Source As BG3_Pak_SourceOfResource_Class)
+        SyncLock Me
+            Me.Handle = Handle
+            Me.Version = Version
+            Me.SourceOfResorce = Source
+            AddSpecific(Version, Language, Gender, GendersTo, Text, Source)
+        End SyncLock
+    End Sub
+
 
     Public Sub New(Language As Bg3_Enum_Languages, Gender As Bg3_Enum_Genders, ByRef Node As LSLib.LS.LocalizedText, ByRef Source As BG3_Pak_SourceOfResource_Class)
         Me.New(Language, Gender, Bg3_Enum_GendersTo.M_to_M, Node, Source)
@@ -1538,19 +1564,23 @@ Public Class BG3_Loca_Localization_Class
     Public Sub New(ByRef Node As LSLib.LS.LocalizedText, ByRef Source As BG3_Pak_SourceOfResource_Class)
         Me.New(Bg3_Enum_Languages.English, Bg3_Enum_Genders.Male, Bg3_Enum_GendersTo.M_to_M, Node, Source)
     End Sub
-    Public Sub AddSpecific(Language As Bg3_Enum_Languages, Gender As Bg3_Enum_Genders, GendersTo As Bg3_Enum_GendersTo, ByRef Text As String, source As BG3_Pak_SourceOfResource_Class)
+    Public Sub AddSpecific(Version As Integer, Language As Bg3_Enum_Languages, Gender As Bg3_Enum_Genders, GendersTo As Bg3_Enum_GendersTo, ByRef Text As String, source As BG3_Pak_SourceOfResource_Class)
         SyncLock Me
             Me.SourceOfResorce = source
-            If Me.ContainsKey(Language) = False Then
-                Me.Add(Language, New SortedList(Of String, SortedList(Of String, String)))
+            If Me.ContainsKey(Version) = False Then
+                Me.Add(Version, New SortedList(Of String, SortedList(Of String, SortedList(Of String, String))))
             End If
-            If Me(Language).ContainsKey(Gender) = False Then
-                Me(Language).Add(Gender, New SortedList(Of String, String))
+            If Me(Version).ContainsKey(Language) = False Then
+                Me(Version).Add(Language, New SortedList(Of String, SortedList(Of String, String)))
             End If
-            If Me(Language)(Gender).ContainsKey(GendersTo) = False Then
-                Me(Language)(Gender).Add(GendersTo, Text)
+            If Me(Version)(Language).ContainsKey(Gender) = False Then
+                Me(Version)(Language).Add(Gender, New SortedList(Of String, String))
             End If
-            Me(Language)(Gender)(GendersTo) = Text
+            If Me(Version)(Language)(Gender).ContainsKey(GendersTo) = False Then
+                Me(Version)(Language)(Gender).Add(GendersTo, Text)
+            End If
+            Me(Version)(Language)(Gender)(GendersTo) = Text
+
         End SyncLock
     End Sub
 End Class
@@ -1626,7 +1656,27 @@ Public Class BG3_Obj_Template_Class
         End Get
     End Property
 
+    Public Overrides Sub Process_Parent_Change(NewParent As String)
+        If NewParent = Me.MapKey Then Exit Sub
+        FuncionesHelpers.GameEngine.ProcessedGameObjectList.RemoveHyerarchy(Me)
+        Cached_Attributes.Remove("ParentTemplateId")
+        Cached_Attributes.TryAdd("ParentTemplateId", NewParent)
+        FuncionesHelpers.GameEngine.ProcessedGameObjectList.AddHyerarchy(Me)
+    End Sub
+    Public Overrides Sub Cancel_Edit()
+        If Me.GetType = GetType(BG3_Obj_Template_Class) Then GameEngine.ProcessedGameObjectList.RemoveHyerarchy(Me)
+        MyBase.Cancel_Edit()
+        If Me.GetType = GetType(BG3_Obj_Template_Class) Then GameEngine.ProcessedGameObjectList.AddHyerarchy(Me)
+    End Sub
 
+    Public ReadOnly Property AssociatedStats_Obj As BG3_Obj_Stats_Class
+        Get
+            If IsNothing(Stats) OrElse Stats = "" Then Return Nothing
+            Dim obj As BG3_Obj_Stats_Class = Nothing
+            GameEngine.ProcessedStatList.TryGetValue(Stats, obj)
+            Return obj
+        End Get
+    End Property
     Public Overloads ReadOnly Property Parent As BG3_Obj_Template_Class
         Get
             If Me.GetParentId_Or_TemplateName_Empty = "" Then Return Nothing
@@ -1640,27 +1690,58 @@ Public Class BG3_Obj_Template_Class
         Return value
     End Function
 
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property Icon As String
         Get
             Return ReadAttribute_Or_Nothing("Icon")
         End Get
     End Property
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property TemplateName As String
         Get
             Return ReadAttribute_Or_Nothing("TemplateName")
         End Get
     End Property
-
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property VisualTemplate As String
         Get
             Return ReadAttribute_Or_Nothing("VisualTemplate")
         End Get
     End Property
-
-
+    Protected Overrides Sub Clear_Cached_Data()
+        _CacheTagsIds = Nothing
+        _cache_tags_txt = Nothing
+        MyBase.Clear_Cached_Data()
+    End Sub
     Public Overrides ReadOnly Property MapKey_Attribute As String = "MapKey"
 
-
+    Private _cache_tags_txt As String = Nothing
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    Public ReadOnly Property Get_Tags_TXT As String
+        Get
+            If Not IsNothing(_cache_tags_txt) Then Return _cache_tags_txt
+            Dim Builder As New StringBuilder
+            Dim tabs = 0
+            Dim current = Me
+            While Not IsNothing(current)
+                For Each tag In current.GetTags_Ids
+                    Dim taga As BG3_Obj_FlagsAndTags_Class = Nothing
+                    If GameEngine.ProcessedFlagsAndTags.TryGetValue(tag, taga) = False Then
+                        Builder.Append("".PadLeft(tabs, vbTab) + "Tagged" + ManoloSep + " " + "<Unknown>" + ManoloSep + ManoloSep + " (" + tag + ")" + vbCrLf)
+                    Else
+                        Builder.Append("".PadLeft(tabs, vbTab) + "Tagged" + ManoloSep + " '" + taga.Name + "'" + ManoloSep + ManoloSep + " (" + taga.DisplayName + ")" + vbCrLf)
+                    End If
+                Next
+                current = current.Parent
+                If Not IsNothing(current) Then
+                    tabs += 1
+                    Builder.Append("".PadLeft(tabs, vbTab) + "(inheriteds from " + ManoloSep + ManoloSep + " " + Chr(34) + current.Name + Chr(34) + ManoloSep + ")" + vbCrLf)
+                End If
+            End While
+            _cache_tags_txt = Builder.ToString
+            Return _cache_tags_txt
+        End Get
+    End Property
     Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
         If Level1 = -1 Then Return True
         Return Level1 = Type
@@ -1683,14 +1764,42 @@ Public Class BG3_Obj_Template_Class
         ReadAttribute_Or_Nothing("VisualTemplate")
     End Sub
 
+    Private _CacheTagsIds As List(Of String) = Nothing
 
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    Public ReadOnly Property GetTags_Ids As List(Of String)
+        Get
+            If IsNothing(_CacheTagsIds) Then
+
+                Dim value As List(Of LSLib.LS.Node) = Nothing
+                If NodeLSLIB.Children.TryGetValue("Tags", value) Then
+                    If value.Count = 0 Then
+                        _CacheTagsIds = New List(Of String)
+                    Else
+                        Dim value2 As List(Of LSLib.LS.Node) = Nothing
+                        If value.First.Children.TryGetValue("Tag", value2) Then
+                            _CacheTagsIds = value2.Select(Function(Pf) Pf.TryGetOrEmpty("Object").ToString).ToList
+                        Else
+                            _CacheTagsIds = New List(Of String)
+                        End If
+                    End If
+                Else
+                    _CacheTagsIds = New List(Of String)
+                End If
+            End If
+
+            Return _CacheTagsIds
+        End Get
+    End Property
+
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property Mapkey_WithoutOverride
         Get
             If Me.IsOverrided = False Then Return MapKey
             Return MapKey.Remove(MapKey.IndexOf("ov_"), 7)
         End Get
     End Property
-
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public Overrides ReadOnly Property GetParentId_Or_TemplateName_Empty As String
         Get
             If IsNothing(ParentTemplateId) = False Then Return ParentTemplateId
@@ -1698,7 +1807,7 @@ Public Class BG3_Obj_Template_Class
             Return ""
         End Get
     End Property
-
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property Is_Descendant(key As String)
         Get
             If IsNothing(key) OrElse key = "" Then Return False
@@ -1756,6 +1865,8 @@ Public Class BG3_Obj_Template_Class
             Return Me.Icon
         End Get
     End Property
+
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property GetVisualTemplate_Or_Inherited As String
         Get
             If IsNothing(Me.VisualTemplate) Then
@@ -2116,6 +2227,21 @@ Public Class BG3_Obj_Stats_Class
             Return obj
         End Get
     End Property
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    Public ReadOnly Property Is_Descendant(key As String)
+        Get
+            If IsNothing(key) OrElse key = "" Then Return False
+            If Me.Stat_Name = key Then Return True
+            If Not IsNothing(Me.Parent) Then Return Me.Parent.Is_Descendant(key)
+            Return False
+        End Get
+    End Property
+    Public Overrides Sub Process_Parent_Change(NewParent As String)
+        If NewParent = Me.MapKey Then Exit Sub
+        FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
+        [Using] = NewParent
+        FuncionesHelpers.GameEngine.ProcessedStatList.AddHyerarchy(Me)
+    End Sub
 
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public ReadOnly Property GetDisplayNameHandle_Or_Inherited As String
@@ -2191,11 +2317,15 @@ Public Class BG3_Obj_Stats_Class
         MyBase.Clear_Cached_Data()
     End Sub
     Public Overrides Sub Cancel_Edit()
+        GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
         Data.Clear()
         _Cache_Data.ToList.ForEach(Function(pf) Data.TryAdd(pf.Key, pf.Value))
-        Me.Using = _Cache_Using
-        Me.Stat_Name = _Cache_Stat_Name
-        Me.Type = _Cache_Type
+        If _Cache_Stat_Name <> "" Then
+            Me.Using = _Cache_Using
+            Me.Stat_Name = _Cache_Stat_Name
+            Me.Type = _Cache_Type
+        End If
+        GameEngine.ProcessedStatList.AddHyerarchy(Me)
         MyBase.Cancel_Edit()
     End Sub
     Public Overrides Sub Edit_start()
@@ -2405,7 +2535,7 @@ End Enum
 Public Enum BG3_Enum_UTAM_Type
     Containers
     Dyes
-    CampClothes
+    Armor
 End Enum
 
 <Serializable>
@@ -2608,13 +2738,65 @@ Public Class BG3_Obj_FlagsAndTags_Class
 
     Public Overrides ReadOnly Property Name As String
         Get
-            If IsOverrided Then Return "(Overrided " + OverrideNumber.ToString.PadLeft(4, "0") + ") " + ReadAttribute_Or_Nothing("Name")
-            Return ReadAttribute_Or_Nothing("Name")
+            Select Case Type
+                Case BG3_Enum_FlagsandTagsType.Flags
+                    If IsOverrided Then Return "(Overrided " + OverrideNumber.ToString.PadLeft(4, "0") + ") " + ReadAttribute_Or_Nothing("Name")
+                    Return ReadAttribute_Or_Nothing("Name")
+                Case BG3_Enum_FlagsandTagsType.Tags
+                    If IsOverrided Then Return "(Overrided " + OverrideNumber.ToString.PadLeft(4, "0") + ") " + ReadAttribute_Or_Nothing("Name")
+                    Return ReadAttribute_Or_Nothing("Name")
+
+                Case Else
+                    Debugger.Break()
+                    Return ""
+            End Select
         End Get
     End Property
+    Public ReadOnly Property Description As String
+        Get
+            Select Case Type
+                Case BG3_Enum_FlagsandTagsType.Flags
+                    Return ReadAttribute_Or_Nothing("Description")
+                Case BG3_Enum_FlagsandTagsType.Tags
+                    Return ReadAttribute_Or_Nothing("Description")
+
+                Case Else
+                    Debugger.Break()
+                    Return ""
+            End Select
+        End Get
+    End Property
+    Public ReadOnly Property DisplayDescription As String
+        Get
+            Select Case Type
+                Case BG3_Enum_FlagsandTagsType.Flags
+                    Return ReadAttribute_Or_Nothing("Description")
+                Case BG3_Enum_FlagsandTagsType.Tags
+                    If IsNothing(ReadAttribute_Or_Nothing("DisplayDescription")) Then Return Description
+                    Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("DisplayDescription"))
+                    If IsNothing(str) Or str = "" Then Return Description
+                    Return str
+                Case Else
+                    Debugger.Break()
+                    Return ""
+            End Select
+        End Get
+    End Property
+
     Public Overrides ReadOnly Property DisplayName As String
         Get
-            Return ReadAttribute_Or_Nothing("Description")
+            Select Case Type
+                Case BG3_Enum_FlagsandTagsType.Flags
+                    Return ReadAttribute_Or_Nothing("Description")
+                Case BG3_Enum_FlagsandTagsType.Tags
+                    If IsNothing(ReadAttribute_Or_Nothing("DisplayName")) Then Return Description
+                    Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("DisplayName"))
+                    If IsNothing(str) Or str = "" Then Return Description
+                    Return str
+                Case Else
+                    Debugger.Break()
+                    Return ""
+            End Select
         End Get
     End Property
     Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
@@ -2625,6 +2807,7 @@ Public Class BG3_Obj_FlagsAndTags_Class
         ReadAttribute_Or_Nothing("Name")
         ReadAttribute_Or_Nothing("Description")
         ReadAttribute_Or_Nothing("DisplayName")
+        ReadAttribute_Or_Nothing("DisplayDescription")
     End Sub
 
     Sub New(ByRef nod As LSLib.LS.Node, Source As BG3_Pak_SourceOfResource_Class)
@@ -2633,6 +2816,7 @@ Public Class BG3_Obj_FlagsAndTags_Class
         If IsNothing(MapKey) Then Debugger.Break()
     End Sub
     Sub New()
+
     End Sub
 
 End Class
@@ -2783,7 +2967,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                     ov.OverrideNumber = ovn
                     Elements.TryAdd(ov.MapKey, ov)
                     AddHyerarchy(ov)
-                    Return ov
+                    Return obj
                 Else
                     Elements(obj.MapKey) = ov
                     Return ov
@@ -2907,7 +3091,7 @@ Public MustInherit Class BG3_Obj_Generic_Class
     Public ReadOnly Property Utam_Group As String
         Get
             Dim valor = ReadAttribute_Or_Nothing("UTAM_Group")
-            If IsNothing(valor) OrElse valor = "" Then Return FuncionesHelpers.UTAM_Groups(0)
+            If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
             Return valor
         End Get
     End Property
@@ -2918,21 +3102,6 @@ Public MustInherit Class BG3_Obj_Generic_Class
             Dim resultado As BG3_Enum_UTAM_Type
             If [Enum].TryParse(Of BG3_Enum_UTAM_Type)(valor, resultado) = True Then Return resultado
             Return -1
-        End Get
-    End Property
-
-    Public ReadOnly Property Is_Utam_Container As Boolean
-        Get
-            Dim at As String = ReadAttribute_Or_Nothing("UTAM_Type")
-            If IsNothing(at) Then Return False
-            Return Lista_UtamTypes.IndexOf(at) = BG3_Enum_UTAM_Type.Containers
-        End Get
-    End Property
-    Public ReadOnly Property Is_Utam_Dye As Boolean
-        Get
-            Dim at As String = ReadAttribute_Or_Nothing("UTAM_Type")
-            If IsNothing(at) Then Return False
-            Return Lista_UtamTypes.IndexOf(at) = BG3_Enum_UTAM_Type.Dyes
         End Get
     End Property
 
@@ -3010,10 +3179,13 @@ Public MustInherit Class BG3_Obj_Generic_Class
         Me.Clear_Cached_Data()
         _Isediting = False
     End Sub
+
     Public Overridable Sub Cancel_Edit()
         Me.Clear_Cached_Data()
         _Isediting = False
     End Sub
+
+
     Protected Overridable Sub Clear_Cached_Data()
         _CacheXML = Nothing
         _CacheNode = Nothing
@@ -3021,6 +3193,13 @@ Public MustInherit Class BG3_Obj_Generic_Class
     End Sub
     Public Sub Clear_CacheNode_Only()
         _CacheNode = Nothing
+    End Sub
+    Public Overridable Sub Process_Parent_Change(NewParent As String)
+        Debugger.Break()
+        FuncionesHelpers.GameEngine.ProcessedGameObjectList.RemoveHyerarchy(Me)
+        Cached_Attributes.Remove("ParentTemplateId")
+        Cached_Attributes.TryAdd("ParentTemplateId", NewParent)
+        FuncionesHelpers.GameEngine.ProcessedGameObjectList.AddHyerarchy(Me)
     End Sub
     Public ReadOnly Property NodeXML As String
         Get

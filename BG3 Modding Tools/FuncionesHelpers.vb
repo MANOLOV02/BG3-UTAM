@@ -24,6 +24,5 @@ Class FuncionesHelpers
     Public Shared Small_No_Ok As New Bitmap(My.Resources.No_Ok.ToBitmap, 16, 16)
     Public Shared Small_Ok As New Bitmap(My.Resources.Ok.ToBitmap, 16, 16)
     Public Shared ItemRarity As New List(Of String) From {"Common", "Uncommon", "Rare", "VeryRare", "Legendary"}
-    Public Shared UTAM_Groups As New List(Of String) From {"(Default)"}
     Public Shared ColorMaterialsNames As New List(Of String) From {"Color_01", "Color_02", "Color_03", "Cloth_Primary", "Cloth_Secondary", "Cloth_Tertiary", "Leather_Primary", "Leather_Secondary", "Leather_Tertiary", "Metal_Primary", "Metal_Secondary", "Metal_Tertiary", "Custom_1", "Custom_2", "Accent_Color"}
 End Class

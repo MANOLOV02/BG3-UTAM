@@ -26,10 +26,6 @@ Partial Class UtamMod
         TabControl1 = New TabControl()
         LSXCode = New TabPage()
         XmLtoRichText1 = New BG3Visualizer_XML()
-        TabPageTemplates = New TabPage()
-        Template_Explorer_Control1 = New BG3Explorer_Templates()
-        TabPageStats = New TabPage()
-        Stat_Explorer_Control1 = New BG3Explorer_Stats()
         GroupBox3 = New GroupBox()
         ButtonCancel = New Button()
         ButtonSave = New Button()
@@ -56,14 +52,13 @@ Partial Class UtamMod
         Label7 = New Label()
         TextBoxUUID = New TextBox()
         GroupBox1 = New GroupBox()
+        CheckBoxModFixer = New CheckBox()
         CheckBoxmultitoolcomp = New CheckBox()
         CheckBoxBuildzip = New CheckBox()
         CheckBoxBuildpak = New CheckBox()
         CheckBoxAddtogame = New CheckBox()
         TabControl1.SuspendLayout()
         LSXCode.SuspendLayout()
-        TabPageTemplates.SuspendLayout()
-        TabPageStats.SuspendLayout()
         GroupBox3.SuspendLayout()
         GroupBox2.SuspendLayout()
         CType(NumericUpDown4, ComponentModel.ISupportInitialize).BeginInit()
@@ -78,8 +73,6 @@ Partial Class UtamMod
         TabControl1.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         TabControl1.Appearance = TabAppearance.FlatButtons
         TabControl1.Controls.Add(LSXCode)
-        TabControl1.Controls.Add(TabPageTemplates)
-        TabControl1.Controls.Add(TabPageStats)
         TabControl1.Location = New Point(410, 3)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
@@ -90,6 +83,7 @@ Partial Class UtamMod
         ' LSXCode
         ' 
         LSXCode.BackColor = Color.Transparent
+        LSXCode.BorderStyle = BorderStyle.FixedSingle
         LSXCode.Controls.Add(XmLtoRichText1)
         LSXCode.Location = New Point(4, 27)
         LSXCode.Name = "LSXCode"
@@ -99,6 +93,7 @@ Partial Class UtamMod
         ' 
         ' XmLtoRichText1
         ' 
+        XmLtoRichText1.BorderStyle = BorderStyle.None
         XmLtoRichText1.Dock = DockStyle.Fill
         XmLtoRichText1.IndentedText = True
         XmLtoRichText1.Location = New Point(0, 0)
@@ -107,56 +102,15 @@ Partial Class UtamMod
         XmLtoRichText1.NodesColor = Color.Black
         XmLtoRichText1.Overridedolor = Color.Gray
         XmLtoRichText1.ReadOnly = True
-        XmLtoRichText1.Size = New Size(523, 371)
+        XmLtoRichText1.Size = New Size(521, 369)
         XmLtoRichText1.TabIndex = 0
         XmLtoRichText1.Text = ""
         XmLtoRichText1.ValueColor = Color.Blue
         XmLtoRichText1.WordWrap = False
         ' 
-        ' TabPageTemplates
-        ' 
-        TabPageTemplates.BackColor = Color.Transparent
-        TabPageTemplates.Controls.Add(Template_Explorer_Control1)
-        TabPageTemplates.Location = New Point(4, 27)
-        TabPageTemplates.Name = "TabPageTemplates"
-        TabPageTemplates.Size = New Size(523, 371)
-        TabPageTemplates.TabIndex = 3
-        TabPageTemplates.Text = "Templates"
-        ' 
-        ' Template_Explorer_Control1
-        ' 
-        Template_Explorer_Control1.DetailsVisibles = True
-        Template_Explorer_Control1.Dock = DockStyle.Fill
-        Template_Explorer_Control1.Location = New Point(0, 0)
-        Template_Explorer_Control1.Name = "Template_Explorer_Control1"
-        Template_Explorer_Control1.ObjectList = Nothing
-        Template_Explorer_Control1.Size = New Size(523, 371)
-        Template_Explorer_Control1.SourceFilter = Nothing
-        Template_Explorer_Control1.TabIndex = 0
-        ' 
-        ' TabPageStats
-        ' 
-        TabPageStats.BackColor = Color.Transparent
-        TabPageStats.Controls.Add(Stat_Explorer_Control1)
-        TabPageStats.Location = New Point(4, 27)
-        TabPageStats.Name = "TabPageStats"
-        TabPageStats.Size = New Size(523, 371)
-        TabPageStats.TabIndex = 2
-        TabPageStats.Text = "Stats"
-        ' 
-        ' Stat_Explorer_Control1
-        ' 
-        Stat_Explorer_Control1.DetailsVisibles = True
-        Stat_Explorer_Control1.Dock = DockStyle.Fill
-        Stat_Explorer_Control1.Location = New Point(0, 0)
-        Stat_Explorer_Control1.Name = "Stat_Explorer_Control1"
-        Stat_Explorer_Control1.ObjectList = Nothing
-        Stat_Explorer_Control1.Size = New Size(523, 371)
-        Stat_Explorer_Control1.SourceFilter = Nothing
-        Stat_Explorer_Control1.TabIndex = 0
-        ' 
         ' GroupBox3
         ' 
+        GroupBox3.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
         GroupBox3.Controls.Add(ButtonCancel)
         GroupBox3.Controls.Add(ButtonSave)
         GroupBox3.Controls.Add(ButtonEdit)
@@ -400,6 +354,7 @@ Partial Class UtamMod
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(CheckBoxModFixer)
         GroupBox1.Controls.Add(CheckBoxmultitoolcomp)
         GroupBox1.Controls.Add(CheckBoxBuildzip)
         GroupBox1.Controls.Add(CheckBoxBuildpak)
@@ -412,12 +367,24 @@ Partial Class UtamMod
         GroupBox1.TabStop = False
         GroupBox1.Text = "Save settings"
         ' 
+        ' CheckBoxModFixer
+        ' 
+        CheckBoxModFixer.AutoSize = True
+        CheckBoxModFixer.Checked = True
+        CheckBoxModFixer.CheckState = CheckState.Checked
+        CheckBoxModFixer.Location = New Point(210, 47)
+        CheckBoxModFixer.Name = "CheckBoxModFixer"
+        CheckBoxModFixer.Size = New Size(119, 19)
+        CheckBoxModFixer.TabIndex = 29
+        CheckBoxModFixer.Text = "Include mod fixer"
+        CheckBoxModFixer.UseVisualStyleBackColor = True
+        ' 
         ' CheckBoxmultitoolcomp
         ' 
         CheckBoxmultitoolcomp.AutoSize = True
         CheckBoxmultitoolcomp.Checked = True
         CheckBoxmultitoolcomp.CheckState = CheckState.Checked
-        CheckBoxmultitoolcomp.Location = New Point(168, 48)
+        CheckBoxmultitoolcomp.Location = New Point(121, 22)
         CheckBoxmultitoolcomp.Name = "CheckBoxmultitoolcomp"
         CheckBoxmultitoolcomp.Size = New Size(208, 19)
         CheckBoxmultitoolcomp.TabIndex = 28
@@ -429,7 +396,7 @@ Partial Class UtamMod
         CheckBoxBuildzip.AutoSize = True
         CheckBoxBuildzip.Checked = True
         CheckBoxBuildzip.CheckState = CheckState.Checked
-        CheckBoxBuildzip.Location = New Point(168, 23)
+        CheckBoxBuildzip.Location = New Point(121, 47)
         CheckBoxBuildzip.Name = "CheckBoxBuildzip"
         CheckBoxBuildzip.Size = New Size(71, 19)
         CheckBoxBuildzip.TabIndex = 25
@@ -441,7 +408,7 @@ Partial Class UtamMod
         CheckBoxBuildpak.AutoSize = True
         CheckBoxBuildpak.Checked = True
         CheckBoxBuildpak.CheckState = CheckState.Checked
-        CheckBoxBuildpak.Location = New Point(6, 22)
+        CheckBoxBuildpak.Location = New Point(10, 47)
         CheckBoxBuildpak.Name = "CheckBoxBuildpak"
         CheckBoxBuildpak.Size = New Size(75, 19)
         CheckBoxBuildpak.TabIndex = 26
@@ -453,7 +420,7 @@ Partial Class UtamMod
         CheckBoxAddtogame.AutoSize = True
         CheckBoxAddtogame.Checked = True
         CheckBoxAddtogame.CheckState = CheckState.Checked
-        CheckBoxAddtogame.Location = New Point(6, 47)
+        CheckBoxAddtogame.Location = New Point(10, 22)
         CheckBoxAddtogame.Name = "CheckBoxAddtogame"
         CheckBoxAddtogame.Size = New Size(95, 19)
         CheckBoxAddtogame.TabIndex = 27
@@ -475,8 +442,6 @@ Partial Class UtamMod
         Text = "UTAM Mod (New)"
         TabControl1.ResumeLayout(False)
         LSXCode.ResumeLayout(False)
-        TabPageTemplates.ResumeLayout(False)
-        TabPageStats.ResumeLayout(False)
         GroupBox3.ResumeLayout(False)
         GroupBox2.ResumeLayout(False)
         GroupBox2.PerformLayout()
@@ -521,9 +486,6 @@ Partial Class UtamMod
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents GroupBox3 As GroupBox
-    Friend WithEvents TabPageStats As TabPage
-    Friend WithEvents TabPageTemplates As TabPage
-    Friend WithEvents Template_Explorer_Control1 As BG3Explorer_Templates
-    Friend WithEvents Stat_Explorer_Control1 As BG3Explorer_Stats
     Friend WithEvents CheckBoxmultitoolcomp As CheckBox
+    Friend WithEvents CheckBoxModFixer As CheckBox
 End Class

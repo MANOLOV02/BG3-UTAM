@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.IO.Compression
+Imports System.Resources
 Imports System.Text
 Imports System.Text.Json.Nodes
 Imports System.Text.Json.Serialization.Metadata
@@ -23,7 +24,7 @@ Public Class UtamMod
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
     End Sub
 
-    Public Sub New(ByRef MdiParent As Main, Optional LoadFile As String = "")
+    Public Sub New(ByRef MdiParent As Main, Optional Isnew As Boolean = False)
         MyBase.New(MdiParent)
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
@@ -34,8 +35,7 @@ Public Class UtamMod
         AddHandler MdiParent.BackGroundReport, AddressOf BackgroundWork_Report_SuB
         AddHandler MdiParent.BackGround_SingleTaskEnd, AddressOf BackGround_SingleTaskEnd_sub
         AddHandler MdiParent.BackGround_SingleTaskStart, AddressOf BackGround_SingleTaskStart_sub
-
-        If LoadFile = "" Then
+        If Isnew Then
             CurrentMod.Isnew = True
             CurrentMod.ModLsx = New BG3_Mod_Module_Class With {.Name = "Utam_Mod", .Folder = "Utam_Mod_Folder", .Description = "Utam_Mod_Description", .Author = "ManoloV02"}
             CurrentMod.ModLsx.SaveChanges()
@@ -43,42 +43,34 @@ Public Class UtamMod
             ButtonSave.Enabled = True
             ButtonCancel.Enabled = True
             TextBoxFolder.Enabled = True
-        Else
-            CurrentMod = System.Text.Json.JsonSerializer.Deserialize(IO.File.ReadAllText(LoadFile), CurrentMod.GetType, FuncionesHelpers.Jsonoptions)
-            Funciones.Lee_UtamMod(IO.Path.Combine(IO.Path.GetDirectoryName(LoadFile), CurrentMod.SaveFolder))
-            CurrentMod.ModLsx = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(pf) pf.UUID = CurrentMod.SaveUUID).Last
-            TextBoxFolder.Enabled = False
+            Me.Source = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
+            Habilita_Deshabilita_edicion(True)
         End If
-
-        Template_Explorer_Control1.ObjectList = FuncionesHelpers.GameEngine.ProcessedGameObjectList
-        Me.Source = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
-        Template_Explorer_Control1.SourceFilter = Source
-
-        Stat_Explorer_Control1.ObjectList = FuncionesHelpers.GameEngine.ProcessedStatList
-        Stat_Explorer_Control1.SourceFilter = Source
-
-        Habilita_Deshabilita_edicion(LoadFile = "")
     End Sub
 
-    Public Sub Habilita_Deshabilita_edicion(Edicion As Boolean)
+    Public Sub Load_finished(CurrentMod As Utam_CurrentModClass)
+        Me.CurrentMod = CurrentMod
+        Me.NumericUpDown1.Value = CurrentMod.Versionconverter.Major
+        Me.NumericUpDown2.Value = CurrentMod.Versionconverter.Minor
+        Me.NumericUpDown3.Value = CurrentMod.Versionconverter.Revision
+        Me.NumericUpDown4.Value = CurrentMod.Versionconverter.Build
+        CheckBoxBuildpak.Checked = CurrentMod.BuildPak
+        CheckBoxBuildzip.Checked = CurrentMod.BuildZip
+        CheckBoxModFixer.Checked = CurrentMod.BuildModFixer
+        CheckBoxmultitoolcomp.Checked = CurrentMod.ShinyhoboCompatible
+        CheckBoxAddtogame.Checked = CurrentMod.AddToGame
+        TextBoxFolder.Enabled = False
+        Me.Source = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
+        Habilita_Deshabilita_edicion(False)
+    End Sub
+
+    Public Sub Habilita_Deshabilita_edicion(Edicion As Boolean, Optional repintar As Boolean = True)
         ButtonEdit.Enabled = Not Edicion
         ButtonSave.Enabled = Edicion
         ButtonCancel.Enabled = Edicion
-        'TextBoxAuthor.Enabled = edicion
-        'TextBoxDescription.Enabled = edicion
-        'TextBoxFolder.Enabled = edicion
-        'TextBoxName.Enabled = edicion
-        'TextBoxUUID.Enabled = edicion
-        'NumericUpDown1.Enabled = edicion
-        'NumericUpDown2.Enabled = edicion
-        'NumericUpDown3.Enabled = edicion
-        'NumericUpDown4.Enabled = edicion
-        'CheckBox1.Enabled = Edicion
-        'CheckBox2.Enabled = Edicion
-        'CheckBox3.Enabled = Edicion
         GroupBox1.Enabled = Edicion
         GroupBox2.Enabled = Edicion
-        Repinta()
+        If repintar Then Repinta()
     End Sub
     Public Sub Repinta()
         Me.Text = "UTAM Mod - " + CurrentMod.ModLsx.Name
@@ -130,6 +122,7 @@ Public Class UtamMod
         End If
         Save_mod()
         Habilita_Deshabilita_edicion(False)
+        RaiseEvent Changed_status()
     End Sub
     Public Sub Save_mod()
         CurrentMod.ModLsx.SaveChanges()
@@ -137,6 +130,11 @@ Public Class UtamMod
         CurrentMod.SaveFolder = CurrentMod.ModLsx.Folder
         CurrentMod.SaveUUID = CurrentMod.ModLsx.UUID
         CurrentMod.Isnew = False
+        CurrentMod.BuildPak = CheckBoxBuildpak.Checked
+        CurrentMod.BuildZip = CheckBoxBuildzip.Checked
+        CurrentMod.BuildModFixer = CheckBoxModFixer.Checked
+        CurrentMod.ShinyhoboCompatible = CheckBoxmultitoolcomp.Checked
+        CurrentMod.AddToGame = CheckBoxAddtogame.Checked
         LSLib.LS.ResourceUtils.SaveResource(CurrentMod.ModLsx.MetaLSLIB, CurrentMod.MetaFilePath, Funciones.ConversionParams_LSLIB)
         Dim str = System.Text.Json.JsonSerializer.Serialize(CurrentMod, FuncionesHelpers.Jsonoptions)
         Using writer = New StreamWriter(Utam_CFG, False)
@@ -149,6 +147,40 @@ Public Class UtamMod
 
     Public Sub Save_Files()
         CurrentMod.Create_folders()
+
+        ' Is mod Fixer included
+        Dim modfixpath As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, IO.Path.Combine(CurrentMod.SaveFolder, "Mods\Gustav\Story\RawFiles\Goals"))
+        If CheckBoxModFixer.Checked = True Then
+            If IO.Directory.Exists(modfixpath) = False Then IO.Directory.CreateDirectory(modfixpath)
+            Dim ArchivoMF As New IO.StreamWriter(IO.Path.Combine(modfixpath, "ForceRecompile.txt"), False)
+            ArchivoMF.WriteLine("Version 1")
+            ArchivoMF.WriteLine("SubGoalCombiner SGC_AND")
+            ArchivoMF.WriteLine("INITSECTION")
+            ArchivoMF.WriteLine("KBSECTION")
+            ArchivoMF.WriteLine("")
+            ArchivoMF.WriteLine("IF")
+            ArchivoMF.WriteLine("NRD_KillStory(_)")
+            ArchivoMF.WriteLine("THEN")
+            ArchivoMF.WriteLine("NRD_BadCall(_NONEXISTENT, _REF);")
+            ArchivoMF.WriteLine("")
+            ArchivoMF.WriteLine("EXITSECTION")
+            ArchivoMF.WriteLine("ENDEXITSECTION")
+            ArchivoMF.Flush()
+            ArchivoMF.Close()
+        Else
+            If IO.File.Exists(IO.Path.Combine(modfixpath, "ForceRecompile.txt")) Then IO.File.Delete(IO.Path.Combine(modfixpath, "ForceRecompile.txt"))
+            Try
+                If IO.Directory.Exists(modfixpath) Then
+                    IO.Directory.Delete(modfixpath)
+                    IO.Directory.Delete(modfixpath.Replace("\Goals", ""))
+                    IO.Directory.Delete(modfixpath.Replace("\RawFiles\Goals", ""))
+                    IO.Directory.Delete(modfixpath.Replace("\Story\RawFiles\Goals", ""))
+                End If
+            Catch ex As Exception
+                Debugger.Break()
+            End Try
+
+        End If
 
         ' Genera treasure Table
         Dim ArchivoTT As New IO.StreamWriter(CurrentMod.TreasureTableFilePath, False)
@@ -243,8 +275,8 @@ Public Class UtamMod
 
         For Each Local In FuncionesHelpers.GameEngine.ProcessedLocalizationList.Values.Where(Function(pf) Not IsNothing(pf.SourceOfResorce) AndAlso pf.SourceOfResorce.Pak_Or_Folder = Source.Pak_Or_Folder)
             For x = 0 To langs.Length - 1
-                If FuncionesHelpers.GameEngine.ProcessedLocalizationList.Key_Has_Language(Local.Keymap, CType(x, Bg3_Enum_Languages)) Then
-                    Dim locali As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(Local.Keymap, CType(x, Bg3_Enum_Languages))
+                If FuncionesHelpers.GameEngine.ProcessedLocalizationList.Key_Has_Language(Local.Handle + ";" + Local.Version.ToString, CType(x, Bg3_Enum_Languages)) Then
+                    Dim locali As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(Local.Handle + ";" + Local.Version.ToString, CType(x, Bg3_Enum_Languages))
                     If Not IsNothing(locali) Then
                         Loca(x).Entries.Add(New LocalizedText() With {.Key = Local.Handle, .Text = locali, .Version = Local.Version})
                     End If
@@ -444,23 +476,13 @@ Public Class UtamMod
         Cancel_mod()
         If CurrentMod.Isnew = True Then Me.ButtonSave.Enabled = False : Me.Close()
         Habilita_Deshabilita_edicion(False)
-    End Sub
-    Private Sub UtamMod_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        Stat_Explorer_Control1.DetailsVisibles = False
-        Template_Explorer_Control1.DetailsVisibles = False
-    End Sub
-
-    Private Sub Template_Explorer_Control1_Load(sender As Object, e As EventArgs) Handles Template_Explorer_Control1.Load
-
+        RaiseEvent Changed_status()
     End Sub
 
     Private Sub ButtonEdit_Click(sender As Object, e As EventArgs) Handles ButtonEdit.Click
         Habilita_Deshabilita_edicion(True)
     End Sub
 
-    Private Sub UtamMod_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
 
     Private Sub UtamMod_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If ButtonSave.Enabled = True Then
@@ -468,4 +490,7 @@ Public Class UtamMod
             e.Cancel = True
         End If
     End Sub
+
+    Public Event Changed_status()
+
 End Class

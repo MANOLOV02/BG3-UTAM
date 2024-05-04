@@ -14,11 +14,14 @@ Imports System.Security.Cryptography.X509Certificates
 Imports System.DirectoryServices
 Imports System.Net.WebRequestMethods
 Imports LSLib.Granny
+Imports System.Runtime
 
 Module Extensions
-
-
-
+    <Extension>
+    Public Function CloneNode(resource As LSLib.LS.Node) As LSLib.LS.Node
+        If IsNothing(resource) Then Return Nothing
+        Return ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(resource.To_XML.To_UTAMXML)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
+    End Function
 
     <Extension>
     Public Function TryGetOrEmpty(str As String) As String
@@ -599,15 +602,14 @@ Public Class Funciones
         Dim loca = source.ReadLocaResource
         For Each Entry In loca.Entries
             SyncLock (GameEngine.ProcessedLocalizationList)
-                Dim objl As BG3_Loca_Localization_Class
-                If GameEngine.ProcessedLocalizationList.ContainsKey(Entry.Key + ";" + Entry.Version.ToString) Then
-                    objl = GameEngine.ProcessedLocalizationList(Entry.Key + ";" + Entry.Version.ToString)
-                    objl.AddSpecific(Language, Gender, Genderto, Entry.Text, source)
+                Dim objl As BG3_Loca_Localization_Class = Nothing
+                If GameEngine.ProcessedLocalizationList.TryGetValue(Entry.Key, objl) Then
+                    objl.AddSpecific(Entry.Version, Language, Gender, Genderto, Entry.Text, source)
                 Else
                     objl = New BG3_Loca_Localization_Class(Language, Gender, Genderto, Entry, source)
                 End If
-                If GameEngine.ProcessedLocalizationList.TryAdd(objl.Keymap, objl) = False Then
-                    GameEngine.ProcessedLocalizationList(objl.Keymap) = objl
+                If GameEngine.ProcessedLocalizationList.TryAdd(objl.Handle, objl) = False Then
+                    GameEngine.ProcessedLocalizationList(objl.Handle) = objl
                 End If
             End SyncLock
         Next
@@ -890,7 +892,7 @@ Public Class Funciones
 
     End Sub
 
-    Public Shared Sub Lee_Resource_From_Source(ByRef Source As BG3_Pak_SourceOfResource_Class)
+    Public Shared Sub Lee_Resource_From_Source(ByRef Source As BG3_Pak_SourceOfResource_Class, PreferLSX As Boolean)
         Select Case IO.Path.GetExtension(Source.Filename_Relative).ToLower
             Case ""
              ' Do nothing
@@ -913,20 +915,49 @@ Public Class Funciones
                 End If
             Case ".jpg", ".png"
             ' Do nothing
+            Case ".xml"
+                If Source.Filename_Relative.ToLower.EndsWith(".loca.xml") = False Then
+                    'Read_loca(Source)
+                Else
+                    If Source.PackageType <> BG3_Enum_Package_Type.BaseMod AndAlso Source.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+                        If PreferLSX = True OrElse IO.File.Exists(IO.Path.Combine(Source.Pak_Or_Folder, Source.Filename_Relative).ToLower.Replace(".loca.xml", ".loca")) = False Then
+                            Read_loca(Source)
+                        End If
+                    End If
+                End If
             Case ".loca"
-                Read_loca(Source)
+                If Source.PackageType = BG3_Enum_Package_Type.BaseMod Or Source.PackageType = BG3_Enum_Package_Type.BaseGame Then
+                    Read_loca(Source)
+                Else
+                    If PreferLSX = False OrElse IO.File.Exists(IO.Path.Combine(Source.Pak_Or_Folder, Source.Filename_Relative) + ".xml") = False Then
+                        Read_loca(Source)
+                    End If
+                End If
             Case ".lsbc", ".lsbs"
-            Case ".lsf", ".lsx"
-                If Source.Filename_Relative.EndsWith(".lsf.lsx", StringComparison.OrdinalIgnoreCase) = False Then
+
+            Case ".lsf"
+                If Source.PackageType = BG3_Enum_Package_Type.BaseMod Or Source.PackageType = BG3_Enum_Package_Type.BaseGame Then
                     Read_lsf(Source)
                 Else
-                    If Source.PackageType <> BG3_Enum_Package_Type.UTAM_Mod Then Debugger.Break()
+                    If PreferLSX = False OrElse IO.File.Exists(IO.Path.Combine(Source.Pak_Or_Folder, Source.Filename_Relative) + ".lsx") = False Then
+                        Read_lsf(Source)
+                    End If
+                End If
+            Case ".lsx"
+                If Source.Filename_Relative.ToLower.EndsWith(".lsf.lsx") = False Then
+                    Read_lsf(Source)
+                Else
+                    If Source.PackageType <> BG3_Enum_Package_Type.BaseMod AndAlso Source.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+                        If PreferLSX = True OrElse IO.File.Exists(IO.Path.Combine(Source.Pak_Or_Folder, Source.Filename_Relative).ToLower.Replace(".lsf.lsx", ".lsf")) = False Then
+                            Read_lsf(Source)
+                        End If
+                    End If
                 End If
             Case ".meta"
             Case ".lsfx"
             Case ".lsj"
             Case ".osi", ".otf", ".tmpl", ".ttf", ".wem"
-            Case ".xaml", ".xml"
+            Case ".xaml"
             Case ".lua"
             Case ".cfg", ".bak"
             Case ".ffxbones"
@@ -953,7 +984,7 @@ Public Class Funciones
                                      If Worker.CancellationPending = True Or result = False Then Exit Sub
                                      'If GameSettings.ProcessedGameObjectList.Count > 10 Then Exit Sub
                                      Try
-                                         Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(GameEngine.Settings.GameDataFolder, fil))
+                                         Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(GameEngine.Settings.GameDataFolder, fil), False)
                                      Catch ex As Exception
                                          Debugger.Break()
                                          result = False
@@ -979,9 +1010,14 @@ Public Class Funciones
         End If
         Return True
     End Function
-    Public Shared Function Lee_UtamMod(path As String) As Boolean
+    Public Shared Function Lee_UtamMod(path As String, Worker As Object, ReadFromLsx As Boolean) As Boolean
         Dim result As Boolean = True
         Dim filtro = IO.Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(Function(pf) pf.EndsWith(".pak") = False)
+        SyncLock Progreso
+            Progreso.ValueP2 = 0
+            Progreso.MaxP2 = filtro.Count
+            Worker.ReportProgress(1, Progreso)
+        End SyncLock
         GameEngine.ProcessedModuleList.ProcessMetas(path, BG3_Enum_Package_Type.UTAM_Mod)
         Clear_Current_Mod_Loaded(path)
 
@@ -989,11 +1025,16 @@ Public Class Funciones
         Parallel.ForEach(filtro, Sub(fil)
                                      If result = False Then Exit Sub
                                      Try
-                                         Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(path, fil, BG3_Enum_Package_Type.UTAM_Mod))
+                                         Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(path, fil, BG3_Enum_Package_Type.UTAM_Mod), ReadFromLsx)
                                      Catch ex As Exception
                                          Debugger.Break()
                                          result = False
                                      End Try
+
+                                     SyncLock (Progreso)
+                                         Progreso.ValueP2 += 1
+                                         Worker.ReportProgress(1, Progreso)
+                                     End SyncLock
                                  End Sub)
         Return result
     End Function
@@ -1022,7 +1063,7 @@ Public Class Funciones
                                                              If Worker.CancellationPending = True Or result = False Then Exit Sub
                                                              'If GameSettings.ProcessedGameObjectList.Count > 10 Then Exit Sub
                                                              Try
-                                                                 Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil))
+                                                                 Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil), False)
                                                              Catch ex As Exception
                                                                  Debugger.Break()
                                                                  result = False
@@ -1092,14 +1133,14 @@ Public Class Funciones
     Public Shared Function Clear_Cache(Worker As BackgroundWorker) As Boolean
         Worker.ReportProgress(-GameEngine.Cache_String_List.Count)
         Parallel.For(0, GameEngine.Cache_String_List.Count, Sub(x)
-                                                                  If Worker.CancellationPending = True Then Exit Sub
-                                                                  Try
-                                                                      If IO.File.Exists(GameEngine.Cache_String_List(x)) Then IO.File.Delete(GameEngine.Cache_String_List(x))
-                                                                  Catch ex As Exception
-                                                                      Worker.CancelAsync()
-                                                                  End Try
-                                                                  If Worker.IsBusy Then Worker.ReportProgress(1)
-                                                              End Sub)
+                                                                If Worker.CancellationPending = True Then Exit Sub
+                                                                Try
+                                                                    If IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x))) Then IO.File.Delete(GameEngine.Cache_String_List(x))
+                                                                Catch ex As Exception
+                                                                    Worker.CancelAsync()
+                                                                End Try
+                                                                If Worker.IsBusy Then Worker.ReportProgress(1)
+                                                            End Sub)
 
         If Worker.CancellationPending = True Then Return False
         Return True
@@ -1108,38 +1149,40 @@ Public Class Funciones
     Public Shared Function Load_Cache(Worker As BackgroundWorker) As Boolean
         Worker.ReportProgress(-GameEngine.Cache_String_List.Count)
         Parallel.For(0, GameEngine.Cache_String_List.Count, Sub(x)
-                                                                  Dim erro As Boolean
-                                                                  If Worker.CancellationPending = True Then Exit Sub
-                                                                  erro = DeserializeObject(GameEngine.Cache_String_List(x), GameEngine.Cache_Object_List(x))
-                                                                  If Worker.IsBusy Then Worker.ReportProgress(1)
-                                                                  If erro = False Then Worker.CancelAsync()
-                                                              End Sub)
+                                                                Dim erro As Boolean
+                                                                If Worker.CancellationPending = True Then Exit Sub
+                                                                erro = DeserializeObject(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x)), GameEngine.Cache_Object_List(x))
+                                                                If Worker.IsBusy Then Worker.ReportProgress(1)
+                                                                If erro = False Then Worker.CancelAsync()
+                                                            End Sub)
         If Worker.CancellationPending = True Then Return False
         Return True
     End Function
-
     Public Shared Function Save_Cache(Worker As BackgroundWorker) As Boolean
         Worker.ReportProgress(-GameEngine.Cache_String_List.Count)
         Parallel.For(0, GameEngine.Cache_String_List.Count, Sub(x)
-                                                                  Dim erro As Boolean
-                                                                  If Worker.CancellationPending = True Then Exit Sub
-                                                                  erro = SerializeObjetc(GameEngine.Cache_String_List(x), GameEngine.Cache_Object_List(x))
-                                                                  If Worker.IsBusy Then Worker.ReportProgress(1)
-                                                                  If erro = False Then Worker.CancelAsync()
-                                                              End Sub)
+                                                                Dim erro As Boolean
+                                                                If Worker.CancellationPending = True Then Exit Sub
+                                                                erro = SerializeObjetc(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x)), GameEngine.Cache_Object_List(x))
+                                                                If Worker.IsBusy Then Worker.ReportProgress(1)
+                                                                If erro = False Then Worker.CancelAsync()
+                                                            End Sub)
+        If IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json")) = False Then Return False
+        Dim verchek As String = 0
         If Worker.CancellationPending = True Then Return False
-        Return True
-    End Function
 
+        Return SerializeObjetc(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json"), GameEngine.CacheVersion.ToString)
+    End Function
     Public Shared Function Check_Cache(Worker As BackgroundWorker) As Boolean
         Worker.ReportProgress(-GameEngine.Cache_String_List.Count)
         Parallel.For(0, GameEngine.Cache_String_List.Count, Sub(x)
-                                                                  If Worker.CancellationPending = True Then Exit Sub
-                                                                  Dim erro As Boolean = IO.File.Exists(GameEngine.Cache_String_List(x))
-                                                                  If erro = False Then Worker.CancelAsync()
-                                                              End Sub)
+                                                                If Worker.CancellationPending = True Then Exit Sub
+                                                                Dim erro As Boolean = IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x)))
+                                                                If erro = False Then Worker.CancelAsync()
+                                                            End Sub)
         If Worker.CancellationPending = True Then Return False
-        Return True
+        Dim verchek As String = 0
+        Return DeserializeObject(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json"), verchek) AndAlso verchek = GameEngine.CacheVersion
     End Function
 
     Public Shared Sub ProcesaCacheBackground(Worker As Object, e As DoWorkEventArgs)

@@ -49,8 +49,16 @@ Partial Class Main
         NewToolStripMenuItem = New ToolStripMenuItem()
         LoadToolStripMenuItem = New ToolStripMenuItem()
         ToolsToolStripMenuItem1 = New ToolStripMenuItem()
+        ArmorsToolStripMenuItem = New ToolStripMenuItem()
         ContainersToolStripMenuItem = New ToolStripMenuItem()
         DyesToolStripMenuItem = New ToolStripMenuItem()
+        FoldersToolStripMenuItem = New ToolStripMenuItem()
+        UTAMModsToolStripMenuItem = New ToolStripMenuItem()
+        UTAMCacheToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator4 = New ToolStripSeparator()
+        BG3GameToolStripMenuItem = New ToolStripMenuItem()
+        BG3ModsToolStripMenuItem = New ToolStripMenuItem()
+        LaunchGameToolStripMenuItem = New ToolStripMenuItem()
         AboutAndAcknoulegementsToolStripMenuItem = New ToolStripMenuItem()
         StatusStrip1 = New StatusStrip()
         ObjectsStatusLabel = New ToolStripStatusLabel()
@@ -73,7 +81,7 @@ Partial Class Main
         ' 
         ' MenuStrip1
         ' 
-        MenuStrip1.Items.AddRange(New ToolStripItem() {ProcessAndNavigateObjectsToolStripMenuItem, ToolsToolStripMenuItem, ModdsToolStripMenuItem, ToolsToolStripMenuItem1, AboutAndAcknoulegementsToolStripMenuItem})
+        MenuStrip1.Items.AddRange(New ToolStripItem() {ProcessAndNavigateObjectsToolStripMenuItem, ToolsToolStripMenuItem, ModdsToolStripMenuItem, ToolsToolStripMenuItem1, FoldersToolStripMenuItem, LaunchGameToolStripMenuItem, AboutAndAcknoulegementsToolStripMenuItem})
         MenuStrip1.Location = New Point(0, 0)
         MenuStrip1.Name = "MenuStrip1"
         MenuStrip1.Size = New Size(1793, 24)
@@ -219,40 +227,90 @@ Partial Class Main
         ' NewToolStripMenuItem
         ' 
         NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        NewToolStripMenuItem.Size = New Size(126, 22)
-        NewToolStripMenuItem.Text = "New mod"
+        NewToolStripMenuItem.Size = New Size(180, 22)
+        NewToolStripMenuItem.Text = "New"
         ' 
         ' LoadToolStripMenuItem
         ' 
         LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-        LoadToolStripMenuItem.Size = New Size(126, 22)
+        LoadToolStripMenuItem.Size = New Size(180, 22)
         LoadToolStripMenuItem.Text = "Load"
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ContainersToolStripMenuItem, DyesToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, DyesToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
         ToolsToolStripMenuItem1.Size = New Size(46, 20)
         ToolsToolStripMenuItem1.Text = "Tools"
         ' 
+        ' ArmorsToolStripMenuItem
+        ' 
+        ArmorsToolStripMenuItem.Enabled = False
+        ArmorsToolStripMenuItem.Name = "ArmorsToolStripMenuItem"
+        ArmorsToolStripMenuItem.Size = New Size(180, 22)
+        ArmorsToolStripMenuItem.Text = "Armors"
+        ' 
         ' ContainersToolStripMenuItem
         ' 
         ContainersToolStripMenuItem.Name = "ContainersToolStripMenuItem"
-        ContainersToolStripMenuItem.Size = New Size(131, 22)
+        ContainersToolStripMenuItem.Size = New Size(180, 22)
         ContainersToolStripMenuItem.Text = "Containers"
         ' 
         ' DyesToolStripMenuItem
         ' 
         DyesToolStripMenuItem.Name = "DyesToolStripMenuItem"
-        DyesToolStripMenuItem.Size = New Size(131, 22)
+        DyesToolStripMenuItem.Size = New Size(180, 22)
         DyesToolStripMenuItem.Text = "Dyes"
+        ' 
+        ' FoldersToolStripMenuItem
+        ' 
+        FoldersToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {UTAMModsToolStripMenuItem, UTAMCacheToolStripMenuItem, ToolStripSeparator4, BG3GameToolStripMenuItem, BG3ModsToolStripMenuItem})
+        FoldersToolStripMenuItem.Name = "FoldersToolStripMenuItem"
+        FoldersToolStripMenuItem.Size = New Size(57, 20)
+        FoldersToolStripMenuItem.Text = "Folders"
+        ' 
+        ' UTAMModsToolStripMenuItem
+        ' 
+        UTAMModsToolStripMenuItem.Name = "UTAMModsToolStripMenuItem"
+        UTAMModsToolStripMenuItem.Size = New Size(140, 22)
+        UTAMModsToolStripMenuItem.Text = "UTAM mods"
+        ' 
+        ' UTAMCacheToolStripMenuItem
+        ' 
+        UTAMCacheToolStripMenuItem.Name = "UTAMCacheToolStripMenuItem"
+        UTAMCacheToolStripMenuItem.Size = New Size(140, 22)
+        UTAMCacheToolStripMenuItem.Text = "UTAM cache"
+        ' 
+        ' ToolStripSeparator4
+        ' 
+        ToolStripSeparator4.Name = "ToolStripSeparator4"
+        ToolStripSeparator4.Size = New Size(137, 6)
+        ' 
+        ' BG3GameToolStripMenuItem
+        ' 
+        BG3GameToolStripMenuItem.Name = "BG3GameToolStripMenuItem"
+        BG3GameToolStripMenuItem.Size = New Size(140, 22)
+        BG3GameToolStripMenuItem.Text = "Game bin"
+        ' 
+        ' BG3ModsToolStripMenuItem
+        ' 
+        BG3ModsToolStripMenuItem.Name = "BG3ModsToolStripMenuItem"
+        BG3ModsToolStripMenuItem.Size = New Size(140, 22)
+        BG3ModsToolStripMenuItem.Text = "Game mods"
+        ' 
+        ' LaunchGameToolStripMenuItem
+        ' 
+        LaunchGameToolStripMenuItem.Enabled = False
+        LaunchGameToolStripMenuItem.Name = "LaunchGameToolStripMenuItem"
+        LaunchGameToolStripMenuItem.Size = New Size(91, 20)
+        LaunchGameToolStripMenuItem.Text = "Launch game"
         ' 
         ' AboutAndAcknoulegementsToolStripMenuItem
         ' 
         AboutAndAcknoulegementsToolStripMenuItem.Name = "AboutAndAcknoulegementsToolStripMenuItem"
-        AboutAndAcknoulegementsToolStripMenuItem.Size = New Size(183, 20)
-        AboutAndAcknoulegementsToolStripMenuItem.Text = "About and Acknowledgements"
+        AboutAndAcknoulegementsToolStripMenuItem.Size = New Size(61, 20)
+        AboutAndAcknoulegementsToolStripMenuItem.Text = "About..."
         ' 
         ' StatusStrip1
         ' 
@@ -420,4 +478,12 @@ Partial Class Main
     Friend WithEvents ToolsToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents ContainersToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DyesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ArmorsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LaunchGameToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FoldersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UTAMModsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UTAMCacheToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BG3GameToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BG3ModsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
 End Class

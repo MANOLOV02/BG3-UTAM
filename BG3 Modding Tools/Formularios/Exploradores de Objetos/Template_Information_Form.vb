@@ -65,6 +65,9 @@ Public Class Template_Information_Form
 
             XmLtoRichText3.Process_Metas(obj)
 
+            XmLtoRichText5.Process_Tags(obj.Get_Tags_TXT)
+
+
             Dim visual As BG3_Obj_VisualBank_Class = Nothing
             If IsNothing(CType(obj, BG3_Obj_Template_Class).GetVisualTemplate_Or_Inherited) OrElse GameEngine.ProcessedVisualBanksList.TryGetValue(obj.GetVisualTemplate_Or_Inherited, visual) = False Then
                 XmLtoRichText4.Text = "No associated visual template"

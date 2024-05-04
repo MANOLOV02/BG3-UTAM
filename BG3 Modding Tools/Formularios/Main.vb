@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Configuration
 Imports System.Drawing.Imaging
+Imports System.Net.NetworkInformation
 Imports System.Reflection.Emit
 Imports BG3_Modding_Tools.Funciones
 Imports BG3_Modding_Tools.FuncionesHelpers
@@ -17,7 +18,7 @@ Public Class Main
     Private TtablesExplorerForms As New List(Of Explorer_Form_TreasureTables)
     Private ToolsOpened As New List(Of System.Windows.Forms.Form)
 
-    Private ActiveMod As UtamMod
+    Public ActiveMod As UtamMod
 
     Public WithEvents CacheWorker As New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
     Public WithEvents ProcessWorker As New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
@@ -225,20 +226,23 @@ Public Class Main
             ProcesserToolStripMenu.Enabled = False
             CancellButton.Visible = True
             ModdsToolStripMenuItem.Enabled = False
+            LaunchGameToolStripMenuItem.Enabled = False
         Else
             BackgroundWorkToolStripMenuItem.Enabled = GameEngine.CheckFolders
             LoadCacheToolStripMenuItem1.Enabled = CanLoadCache
             ProcesserToolStripMenu.Enabled = True
             ModdsToolStripMenuItem.Enabled = True
-
+            LaunchGameToolStripMenuItem.Enabled = GameEngine.Check_folders_GameExe
             If IsNothing(ActiveMod) Then
                 ToolsToolStripMenuItem1.Enabled = False
                 LoadToolStripMenuItem.Enabled = True
                 NewToolStripMenuItem.Enabled = True
+                ProcessAndNavigateObjectsToolStripMenuItem.Enabled = True
             Else
-                ToolsToolStripMenuItem1.Enabled = True
+                ToolsToolStripMenuItem1.Enabled = Not ActiveMod.CurrentMod.Isnew
                 LoadToolStripMenuItem.Enabled = False
                 NewToolStripMenuItem.Enabled = False
+                ProcessAndNavigateObjectsToolStripMenuItem.Enabled = False
             End If
 
             CancellButton.Visible = False
@@ -393,6 +397,7 @@ Public Class Main
                 For x = ToolsOpened.Count - 1 To 0 Step -1
                     If Not IsNothing(ToolsOpened(x)) Then ToolsOpened(x).Close()
                 Next
+                RemoveHandler ActiveMod.Changed_status, AddressOf ActiveMode_Changed
                 ActiveMod.Dispose()
                 ActiveMod = Nothing
             Case GetType(Explorer_Form_Templates)
@@ -425,7 +430,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -497,7 +502,7 @@ Public Class Main
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -550,33 +555,34 @@ Public Class Main
     End Sub
 
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
-        If IsNothing(ActiveMod) Then
-            Clear_Current_Mod_Loaded("")
-            ActiveMod = New UtamMod(Me)
-            ActiveMod.Show()
-            AddHandler ActiveMod.FormClosed, AddressOf ClosedChildForm
-        Else
-            ActiveMod.Activate()
-        End If
+        If IsNothing(ActiveMod) = False Then Throw New Exception
+        Clear_Current_Mod_Loaded("")
+        ActiveMod = New UtamMod(Me, True)
+        ActiveMod.Show()
+        AddHandler ActiveMod.FormClosed, AddressOf ClosedChildForm
+        AddHandler ActiveMod.Changed_status, AddressOf ActiveMode_Changed
+        Pinta_status()
+    End Sub
+    Private Sub LoadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadToolStripMenuItem.Click
+        Dim xx As New ModLoader(Me)
+        AddHandler xx.Mod_load, AddressOf ActiveMode_Load
+        xx.Show()
+    End Sub
+    Private Sub ActiveMode_Load(ByRef ModLoaded As UtamMod)
+        If IsNothing(ActiveMod) = False Then Throw New Exception
+        ActiveMod = ModLoaded
+        AddHandler ActiveMod.FormClosed, AddressOf ClosedChildForm
+        AddHandler ActiveMod.Changed_status, AddressOf ActiveMode_Changed
         Pinta_status()
     End Sub
 
-    Private Sub LoadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadToolStripMenuItem.Click
-        Dim xx As New OpenFileDialog With {.DefaultExt = ".utam", .InitialDirectory = GameEngine.Settings.UTAMModFolder, .Title = "Select an UTAM mod file", .Filter = "UTAM files (*.utam)|*.utam"}
-        If xx.ShowDialog = vbOK Then
-            If IsNothing(ActiveMod) Then
-                ActiveMod = New UtamMod(Me, xx.FileName)
-                ActiveMod.Show()
-                AddHandler ActiveMod.FormClosed, AddressOf ClosedChildForm
-            Else
-                ActiveMod.Activate()
-            End If
-            Pinta_status()
-        End If
+    Private Sub ActiveMode_Changed()
+        Pinta_status()
     End Sub
+
     Public Sub ChangedMod()
         If IsNothing(ActiveMod) Then Exit Sub
-        ActiveMod.Habilita_Deshabilita_edicion(True)
+        ActiveMod.Habilita_Deshabilita_edicion(True, False)
     End Sub
     Private Sub ContainersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ContainersToolStripMenuItem.Click
         GenerateChildForm(GetType(Containers_Editor), "")
@@ -595,10 +601,6 @@ Public Class Main
         xx.ShowDialog()
     End Sub
 
-    Private Sub Main_DoubleClick(sender As Object, e As EventArgs) Handles MyBase.Click
-
-    End Sub
-
     Private CaptureN As Integer = 0
     Private Sub ObjectsStatusLabel_Click(sender As Object, e As EventArgs) Handles ObjectsStatusLabel.Click
         If Control.ModifierKeys = Keys.Control Then
@@ -612,4 +614,53 @@ Public Class Main
         End If
 
     End Sub
+
+    Private Sub ArmorsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ArmorsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Armors_Editor), "")
+    End Sub
+
+    Private Sub LaunchGameToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LaunchGameToolStripMenuItem.Click
+        Try
+            Process.Start(IO.Path.Combine(GameEngine.Settings.GameExeFolder, "bg3.exe"), "--skip-launcher")
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub UTAMModsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UTAMModsToolStripMenuItem.Click
+        If IO.Directory.Exists(GameEngine.Settings.UTAMModFolder) Then
+            Try
+                System.Diagnostics.Process.Start("explorer.exe", GameEngine.Settings.UTAMModFolder)
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Sub UTAMCacheToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UTAMCacheToolStripMenuItem.Click
+        If IO.Directory.Exists(GameEngine.Settings.UTAMCacheFolder) Then
+            Try
+                System.Diagnostics.Process.Start("explorer.exe", GameEngine.Settings.UTAMCacheFolder)
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Sub BG3GameToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BG3GameToolStripMenuItem.Click
+        If IO.Directory.Exists(GameEngine.Settings.GameExeFolder) Then
+            Try
+                System.Diagnostics.Process.Start("explorer.exe", GameEngine.Settings.GameExeFolder)
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
+    Private Sub BG3ModsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BG3ModsToolStripMenuItem.Click
+        If IO.Directory.Exists(GameEngine.Settings.GameModFolder) Then
+            Try
+                System.Diagnostics.Process.Start("explorer.exe", GameEngine.Settings.GameModFolder)
+            Catch ex As Exception
+            End Try
+        End If
+    End Sub
+
 End Class

@@ -10,6 +10,7 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <ApplicationIcon>identity.ico</ApplicationIcon>
     <Description></Description>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -40,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controles\Editores simples\Stats\Textbox_Editores_Stats.vb" />
+    <Compile Update="Controles\Editores\Editores simples\Stats\Textbox_Editores_Stats.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
       <SubType>UserControl</SubType>
@@ -73,8 +74,14 @@
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\UTEM Editores\Armors_Editor.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Formularios\UTEM Editores\Containers_Editor.vb" />
-    <Compile Update="Formularios\UTEM Editores\Dyes_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Containers_Editor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\UTEM Editores\Generic_Editor.vb" />
     <Compile Update="My Project\Application.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

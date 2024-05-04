@@ -68,8 +68,7 @@ Namespace My.Resources
         '''\b0\fs22 Author: ManoloV02\par
         '''
         '''\pard\sa200\sl276\slmult1\ul\b\fs2\par
-        '''\ulnone\b0\fs24 Nexus mods:  \par
-        '''Github: {{\field{\*\fldinst{HYPERLINK https://github.com/MANOLOV02/BG3-UTAM }}{\fldrslt{https://gi [resto de la cadena truncado]&quot;;.
+        '''\ulnone\b0\fs24 Nexus mods: {{\field{\*\fldinst{HYPERLINK https://www.nexusmods.com/baldursgate3/mods/9035 }}{\fldrslt{https://www.ne [resto de la cadena truncado]&quot;;.
         '''</summary>
         Friend ReadOnly Property About() As String
             Get
@@ -83,6 +82,16 @@ Namespace My.Resources
         Friend ReadOnly Property document_preview_archive() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("document-preview-archive", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property drag_and_drop() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("drag-and-drop", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
