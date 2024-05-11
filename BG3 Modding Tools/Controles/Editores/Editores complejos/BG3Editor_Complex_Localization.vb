@@ -1,5 +1,7 @@
-﻿Imports System.Net
+﻿Imports System.DirectoryServices.ActiveDirectory
+Imports System.Net
 Imports System.Net.Mime.MediaTypeNames
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports LSLib.Granny
 Imports LSLib.LS.Story
 
@@ -7,7 +9,11 @@ Public Class BG3Editor_Complex_Localization
     Private ReadOnly dataset As New DataSet
     Private ReadOnly table As New Data.DataTable("Localizations")
     Private Controles_Linkeados() As BG3Editor_Template_LocalizationBase
-    Private ModSource As BG3_Pak_SourceOfResource_Class
+    Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
+        Get
+            Return CType(Me.ParentForm, Generic_Editor).ActiveModSource
+        End Get
+    End Property
 
     Sub New()
 
@@ -39,8 +45,7 @@ Public Class BG3Editor_Complex_Localization
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         Oculta_columnas()
     End Sub
-    Public Sub Link_Controls(Controles() As BG3Editor_Template_LocalizationBase, Modsource As BG3_Pak_SourceOfResource_Class)
-        Me.ModSource = Modsource
+    Public Sub Link_Controls(Controles() As BG3Editor_Template_LocalizationBase)
         Controles_Linkeados = Controles
         For Each cont In Controles
             AddHandler cont.Inside_Text_Changed, AddressOf Control_changed
@@ -53,9 +58,16 @@ Public Class BG3Editor_Complex_Localization
             If quien.CheckBox1.Checked = True Then
                 dr.Item("English") = quien.Text
             Else
-                dr.Item("English") = "Not defined"
+                Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(quien.Get_Last_Utam_Handle, Bg3_Enum_Languages.English)
+                If Not IsNothing(Loca) Then
+                    dr.Item("English") = Loca
+                Else
+                    dr.Item("English") = quien.Text
+                End If
+
             End If
         End If
+        RaiseEvent LocaTextChanged(Me)
     End Sub
 
     Public Sub Clear()
@@ -160,9 +172,11 @@ Public Class BG3Editor_Complex_Localization
 
     Private Sub DataGridView1_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellEndEdit
         RaiseEvent Cell_EndEdit(table.Rows(e.RowIndex)("Mapkey"), table.Rows(e.RowIndex)(e.ColumnIndex))
+        RaiseEvent LocaTextChanged(Me)
     End Sub
 
 
 
     Public Event Cell_EndEdit(Mapkey As String, Value As Object)
+    Public Event LocaTextChanged(sender As Object)
 End Class

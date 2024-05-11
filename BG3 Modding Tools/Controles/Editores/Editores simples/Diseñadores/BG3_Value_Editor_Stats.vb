@@ -1,12 +1,11 @@
 ﻿<ToolboxBitmap(GetType(System.Windows.Forms.TextBox))>
 Public MustInherit Class Editor_Stats_Generic
     Inherits BG3_Value_Editor_Generic
-
     Protected Key As String = "ToDefine"
     Public Overrides Function Create(Value As String, Que As BG3_Obj_Stats_Class) As Boolean
         Select Case Key
             Case "Name"
-                Que.Stat_Name = Value
+                Que.Name_Write = Value
                 Return False
             Case "Using"
                 Que.Using = Value
@@ -24,7 +23,7 @@ Public MustInherit Class Editor_Stats_Generic
     Public Shared Function Create_Generic(Key As String, Value As String, Que As BG3_Obj_Stats_Class) As Boolean
         Select Case Key
             Case "Name"
-                Que.Stat_Name = Value
+                Que.Name_Write = Value
                 Return False
             Case "Using"
                 Que.Using = Value
@@ -65,7 +64,7 @@ Public MustInherit Class TextBox_Editor_Stats_GenericAttribute
             Case "Type"
                 value = [Enum].GetName(Of BG3_Enum_StatType)(Que.Type)
             Case Else
-                Que.Data.TryGetValue(Key, value)
+                value = Que.Get_Data_Or_Inherited(Key)
         End Select
         Return Get_ValueString(value)
     End Function
@@ -101,9 +100,15 @@ Public MustInherit Class TextBox_Editor_Stats_GenericAttribute
             Case "Type"
                 value = [Enum].GetName(Of BG3_Enum_StatType)(Que.Type)
             Case Else
-                Que.Data.TryGetValue(Key, value)
+                If Que.Data.TryGetValue(Key, value) = False Then
+                    If Not IsNothing(Que.Parent) Then value = Conditional_changed_Empty(Que)
+                End If
         End Select
         Return Get_ValueString(value)
+    End Function
+    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_Stats_Class) As String
+        Dim value As String = Que.Parent.Get_Data_Or_Inherited(Key)
+        Return value
     End Function
     Public Overridable Function Get_ValueString(ByRef value As String) As Boolean
         If IsNothing(value) Then TextBox1.Text = "" : Return False
@@ -124,7 +129,7 @@ Public MustInherit Class TextBox_Editor_Stats_GenericAttribute
                 Dim value As String = Set_ValueString(Que)
                 Select Case Key
                     Case "Name"
-                        Que.Stat_Name = value
+                        Que.Name_Write = value
                     Case "Using"
                         Que.Using = value
                     Case "Type"
@@ -162,13 +167,15 @@ Public MustInherit Class Numeric_Editor_Stats_GenericAttribute
         NumericMaximum = 100
         NumericValue = 0
         NumericDecimalPlaces = 0
+        NumericIncrement = 1
         Me.EditorType = BG3_Editor_Type.NumericUpDown
     End Sub
-    Sub New(Key As String, Minimum As Decimal, Maximum As Decimal, DecimalPlaces As Integer)
+    Sub New(Key As String, Minimum As Decimal, Maximum As Decimal, DecimalPlaces As Integer, Increment As Decimal)
         Me.Key = Key
         Me.NumericMinimum = Minimum
         Me.NumericMaximum = Maximum
         Me.NumericDecimalPlaces = DecimalPlaces
+        Me.NumericIncrement = Increment
         Me.EditorType = BG3_Editor_Type.NumericUpDown
     End Sub
     Sub New()

@@ -1,9 +1,30 @@
-﻿Imports System.Drawing.Printing
-Imports LSLib.Granny
+﻿
+Imports LSLib.LS
 
+Public Class BG3Editor_Template_Undefined
+    Inherits Editor_Template_GenericAttribute
+    Public Shadows Property Key As String
+        Get
+            Return MyBase.Key
+        End Get
+        Set(value As String)
+            MyBase.Key = value
+        End Set
+    End Property
+    Public Shadows Property AttributeType As LSLib.LS.AttributeType
+        Get
+            Return MyBase.AttributeType
+        End Get
+        Set(value As AttributeType)
+            MyBase.AttributeType = value
+        End Set
+    End Property
 
-
-
+    Sub New()
+        MyBase.New("Undefined", AttributeType.FixedString)
+        Label = "Undefined"
+    End Sub
+End Class
 Public Class BG3Editor_Template_Mapkey
     Inherits Editor_Template_GenericAttribute
     Sub New()
@@ -34,17 +55,17 @@ Public Class BG3Editor_Template_ParentId
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.MapKey
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
         If IsNothing(Obj) Then Return False
-        If IsNothing(Obj.AssociatedTemplate_Obj) Then Return False
-        Return Drop_Verify_OBJ(Obj.AssociatedTemplate_Obj)
+        If IsNothing(Obj.AssociatedTemplate) Then Return False
+        Return Drop_Verify_OBJ(Obj.AssociatedTemplate)
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
         If IsNothing(Obj) Then Exit Sub
-        If IsNothing(Obj.AssociatedTemplate_Obj) Then Exit Sub
-        Drop_OBJ(Obj.AssociatedTemplate_Obj)
+        If IsNothing(Obj.AssociatedTemplate) Then Exit Sub
+        Drop_OBJ(Obj.AssociatedTemplate)
     End Sub
 End Class
 Public Class BG3Editor_Template_ColorPreset
@@ -100,23 +121,20 @@ Public Class BG3Editor_Template_VisualTemplate
         Label = "Visual template"
     End Sub
 
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
-        Return Parent.GetVisualTemplate_Or_Inherited()
-    End Function
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
-        If IsNothing(Obj.GetVisualTemplate_Or_Inherited) Then Return False
+        If IsNothing(Obj.ReadAttribute_Or_Inhterithed(Key)) Then Return False
         Return Me.AllowEdit
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.GetVisualTemplate_Or_Inherited
+        Me.TextBox1.Text = Obj.ReadAttribute_Or_Inhterithed(Key)
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
-        If IsNothing(Obj.AssociatedTemplate_Obj) Then Return False
-        Return Drop_Verify_OBJ(Obj.AssociatedTemplate_Obj)
+        If IsNothing(Obj.AssociatedTemplate) Then Return False
+        Return Drop_Verify_OBJ(Obj.AssociatedTemplate)
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
-        Drop_OBJ(Obj.AssociatedTemplate_Obj)
+        Drop_OBJ(Obj.AssociatedTemplate)
     End Sub
 
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
@@ -126,7 +144,7 @@ Public Class BG3Editor_Template_VisualTemplate
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.MapKey
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
     End Sub
 
 End Class
@@ -137,9 +155,7 @@ Public Class BG3Editor_Template_PhysicsTemplate
         Label = "Physics template"
     End Sub
 
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
-        Return Parent.ReadAttribute_Or_Inhterithed(Key)
-    End Function
+
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
         If IsNothing(Obj.ReadAttribute_Or_Inhterithed(Key)) Then Return False
         Return Me.AllowEdit
@@ -156,9 +172,6 @@ Public Class BG3Editor_Template_Icon
         MyBase.New("Icon", LSLib.LS.AttributeType.FixedString)
         Label = "Icon"
     End Sub
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
-        Return Parent.GetIcon_Or_Inherited()
-    End Function
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_IconUV_Class) As Boolean
         If IsNothing(Obj.MapKey) Then Return False
         Return Me.AllowEdit
@@ -168,19 +181,19 @@ Public Class BG3Editor_Template_Icon
         Me.TextBox1.Text = Obj.MapKey
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
-        If IsNothing(Obj.GetIcon_Or_Inherited) Then Return False
+        If IsNothing(Obj.Icon) Then Return False
         Return Me.AllowEdit
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.GetIcon_Or_Inherited
+        Me.TextBox1.Text = Obj.Icon
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
-        If IsNothing(Obj.AssociatedTemplate_Obj) Then Return False
-        Return Drop_Verify_OBJ(Obj.AssociatedTemplate_Obj)
+        If IsNothing(Obj.AssociatedTemplate) Then Return False
+        Return Drop_Verify_OBJ(Obj.AssociatedTemplate)
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
-        Drop_OBJ(Obj.AssociatedTemplate_Obj)
+        Drop_OBJ(Obj.AssociatedTemplate)
     End Sub
 End Class
 Public Class BG3Editor_Template_Stats
@@ -189,24 +202,21 @@ Public Class BG3Editor_Template_Stats
         MyBase.New("Stats", LSLib.LS.AttributeType.FixedString)
         Label = "Stats"
     End Sub
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
-        Return Parent.GetStats_Or_Inherited()
-    End Function
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
         If IsNothing(Obj.MapKey) Then Return False
         Return Me.AllowEdit
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.MapKey
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
-        If IsNothing(Obj.GetStats_Or_Inherited) Then Return False
+        If IsNothing(Obj.AssociatedStats) Then Return False
         Return Me.AllowEdit
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
-        Me.TextBox1.Text = Obj.GetStats_Or_Inherited
+        Me.TextBox1.Text = Obj.AssociatedStats.Mapkey_WithoutOverride
     End Sub
 
 End Class

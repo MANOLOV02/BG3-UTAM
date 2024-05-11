@@ -31,6 +31,8 @@ Partial Class Template_Information_Form
         XmLtoRichText2 = New BG3Visualizer_XML()
         Visualtemplate = New TabPage()
         XmLtoRichText4 = New BG3Visualizer_XML()
+        Tags = New TabPage()
+        XmLtoRichText5 = New BG3Visualizer_XML()
         Meta = New TabPage()
         XmLtoRichText3 = New BG3Visualizer_XML()
         PictureBoxIcon = New PictureBox()
@@ -42,12 +44,13 @@ Partial Class Template_Information_Form
         LabelInfoPack = New Label()
         GroupBox2 = New GroupBox()
         SplitContainer1 = New SplitContainer()
-        Tags = New TabPage()
-        XmLtoRichText5 = New BG3Visualizer_XML()
+        Attributes = New TabPage()
+        BG3Visualizer_xml1 = New BG3Visualizer_XML()
         TabControl1.SuspendLayout()
         Code.SuspendLayout()
         Stats.SuspendLayout()
         Visualtemplate.SuspendLayout()
+        Tags.SuspendLayout()
         Meta.SuspendLayout()
         CType(PictureBoxIcon, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -55,7 +58,7 @@ Partial Class Template_Information_Form
         SplitContainer1.Panel1.SuspendLayout()
         SplitContainer1.Panel2.SuspendLayout()
         SplitContainer1.SuspendLayout()
-        Tags.SuspendLayout()
+        Attributes.SuspendLayout()
         SuspendLayout()
         ' 
         ' TabControl1
@@ -63,8 +66,9 @@ Partial Class Template_Information_Form
         TabControl1.Appearance = TabAppearance.FlatButtons
         TabControl1.Controls.Add(Code)
         TabControl1.Controls.Add(Stats)
-        TabControl1.Controls.Add(Visualtemplate)
+        TabControl1.Controls.Add(Attributes)
         TabControl1.Controls.Add(Tags)
+        TabControl1.Controls.Add(Visualtemplate)
         TabControl1.Controls.Add(Meta)
         TabControl1.Dock = DockStyle.Fill
         TabControl1.Location = New Point(0, 91)
@@ -134,7 +138,6 @@ Partial Class Template_Information_Form
         Visualtemplate.Size = New Size(543, 162)
         Visualtemplate.TabIndex = 3
         Visualtemplate.Text = "Visual template"
-        Visualtemplate.UseVisualStyleBackColor = True
         ' 
         ' XmLtoRichText4
         ' 
@@ -151,6 +154,31 @@ Partial Class Template_Information_Form
         XmLtoRichText4.Text = ""
         XmLtoRichText4.ValueColor = Color.Blue
         XmLtoRichText4.WordWrap = False
+        ' 
+        ' Tags
+        ' 
+        Tags.Controls.Add(XmLtoRichText5)
+        Tags.Location = New Point(4, 27)
+        Tags.Name = "Tags"
+        Tags.Size = New Size(543, 162)
+        Tags.TabIndex = 4
+        Tags.Text = "Tags"
+        ' 
+        ' XmLtoRichText5
+        ' 
+        XmLtoRichText5.Dock = DockStyle.Fill
+        XmLtoRichText5.IndentedText = True
+        XmLtoRichText5.Location = New Point(0, 0)
+        XmLtoRichText5.Name = "XmLtoRichText5"
+        XmLtoRichText5.NamesColor = Color.Brown
+        XmLtoRichText5.NodesColor = Color.Black
+        XmLtoRichText5.Overridedolor = Color.Gray
+        XmLtoRichText5.ReadOnly = True
+        XmLtoRichText5.Size = New Size(543, 162)
+        XmLtoRichText5.TabIndex = 1
+        XmLtoRichText5.Text = ""
+        XmLtoRichText5.ValueColor = Color.Blue
+        XmLtoRichText5.WordWrap = False
         ' 
         ' Meta
         ' 
@@ -227,7 +255,7 @@ Partial Class Template_Information_Form
         LabelInfoStats.AutoEllipsis = True
         LabelInfoStats.Location = New Point(5, 48)
         LabelInfoStats.Name = "LabelInfoStats"
-        LabelInfoStats.Size = New Size(244, 23)
+        LabelInfoStats.Size = New Size(247, 23)
         LabelInfoStats.TabIndex = 23
         LabelInfoStats.Text = "Stats"
         LabelInfoStats.TextAlign = ContentAlignment.MiddleLeft
@@ -238,7 +266,7 @@ Partial Class Template_Information_Form
         LabelInfoModule.AutoEllipsis = True
         LabelInfoModule.Location = New Point(5, 27)
         LabelInfoModule.Name = "LabelInfoModule"
-        LabelInfoModule.Size = New Size(241, 23)
+        LabelInfoModule.Size = New Size(244, 23)
         LabelInfoModule.TabIndex = 22
         LabelInfoModule.Text = "Module"
         LabelInfoModule.TextAlign = ContentAlignment.MiddleLeft
@@ -249,7 +277,7 @@ Partial Class Template_Information_Form
         LabelInfoPack.AutoEllipsis = True
         LabelInfoPack.Location = New Point(5, 4)
         LabelInfoPack.Name = "LabelInfoPack"
-        LabelInfoPack.Size = New Size(241, 23)
+        LabelInfoPack.Size = New Size(244, 23)
         LabelInfoPack.TabIndex = 21
         LabelInfoPack.Text = "Pack"
         LabelInfoPack.TextAlign = ContentAlignment.MiddleLeft
@@ -287,31 +315,30 @@ Partial Class Template_Information_Form
         SplitContainer1.SplitterWidth = 1
         SplitContainer1.TabIndex = 24
         ' 
-        ' Tags
+        ' Attributes
         ' 
-        Tags.Controls.Add(XmLtoRichText5)
-        Tags.Location = New Point(4, 27)
-        Tags.Name = "Tags"
-        Tags.Size = New Size(543, 162)
-        Tags.TabIndex = 4
-        Tags.Text = "Tags"
-        Tags.UseVisualStyleBackColor = True
+        Attributes.Controls.Add(BG3Visualizer_xml1)
+        Attributes.Location = New Point(4, 27)
+        Attributes.Name = "Attributes"
+        Attributes.Size = New Size(543, 162)
+        Attributes.TabIndex = 5
+        Attributes.Text = "Attributes"
         ' 
-        ' XmLtoRichText5
+        ' BG3Visualizer_xml1
         ' 
-        XmLtoRichText5.Dock = DockStyle.Fill
-        XmLtoRichText5.IndentedText = True
-        XmLtoRichText5.Location = New Point(0, 0)
-        XmLtoRichText5.Name = "XmLtoRichText5"
-        XmLtoRichText5.NamesColor = Color.Brown
-        XmLtoRichText5.NodesColor = Color.Black
-        XmLtoRichText5.Overridedolor = Color.Gray
-        XmLtoRichText5.ReadOnly = True
-        XmLtoRichText5.Size = New Size(543, 162)
-        XmLtoRichText5.TabIndex = 1
-        XmLtoRichText5.Text = ""
-        XmLtoRichText5.ValueColor = Color.Blue
-        XmLtoRichText5.WordWrap = False
+        BG3Visualizer_xml1.Dock = DockStyle.Fill
+        BG3Visualizer_xml1.IndentedText = True
+        BG3Visualizer_xml1.Location = New Point(0, 0)
+        BG3Visualizer_xml1.Name = "BG3Visualizer_xml1"
+        BG3Visualizer_xml1.NamesColor = Color.Brown
+        BG3Visualizer_xml1.NodesColor = Color.Black
+        BG3Visualizer_xml1.Overridedolor = Color.Gray
+        BG3Visualizer_xml1.ReadOnly = True
+        BG3Visualizer_xml1.Size = New Size(543, 162)
+        BG3Visualizer_xml1.TabIndex = 2
+        BG3Visualizer_xml1.Text = ""
+        BG3Visualizer_xml1.ValueColor = Color.Blue
+        BG3Visualizer_xml1.WordWrap = False
         ' 
         ' Template_Information_Form
         ' 
@@ -326,6 +353,7 @@ Partial Class Template_Information_Form
         Code.ResumeLayout(False)
         Stats.ResumeLayout(False)
         Visualtemplate.ResumeLayout(False)
+        Tags.ResumeLayout(False)
         Meta.ResumeLayout(False)
         CType(PictureBoxIcon, ComponentModel.ISupportInitialize).EndInit()
         GroupBox2.ResumeLayout(False)
@@ -333,7 +361,7 @@ Partial Class Template_Information_Form
         SplitContainer1.Panel2.ResumeLayout(False)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
         SplitContainer1.ResumeLayout(False)
-        Tags.ResumeLayout(False)
+        Attributes.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
     Friend WithEvents TabControl1 As TabControl
@@ -356,5 +384,7 @@ Partial Class Template_Information_Form
     Friend WithEvents XmLtoRichText4 As BG3Visualizer_XML
     Friend WithEvents Tags As TabPage
     Friend WithEvents XmLtoRichText5 As BG3Visualizer_XML
+    Friend WithEvents Attributes As TabPage
+    Friend WithEvents BG3Visualizer_xml1 As BG3Visualizer_XML
 
 End Class

@@ -11,6 +11,14 @@
     <ApplicationIcon>identity.ico</ApplicationIcon>
     <Description></Description>
     <NeutralLanguage>en</NeutralLanguage>
+	<Company>José Ricardo Varela</Company>
+	<Authors>ManoloV02</Authors>
+	<Product>BG3 UTAM (Ultimate Tool for Amateur Modders)</Product>
+	<Description />
+	<Copyright>Copyright © 2024</Copyright>
+	<Title>BG3 UTAM</Title>
+	<Version>3.0.0</Version>
+  
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -41,6 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controles\Editores\Editores complejos\BG3Editor_Complex_Advanced_Attributes.vb" />
     <Compile Update="Controles\Editores\Editores simples\Stats\Textbox_Editores_Stats.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
@@ -93,6 +102,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Explorer_Form_Templates.vb" />
+    <Compile Update="My Project\Settings.Designer.vb">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -107,6 +121,11 @@
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Update="My Project\Settings.settings">
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
 

@@ -15,12 +15,12 @@ Public Class BG3Editor_Template_Container_TT
             invlist = lisi.First
         Else
             invlist = New LSLib.LS.Node With {.Name = "InventoryList"}
-            Que.Children.Add("children", New List(Of Node) From {invlist})
+            Que.Children.Add("InventoryList", New List(Of Node) From {invlist})
         End If
         If invlist.Children.TryGetValue("InventoryItem", lisi) = False Then
             invit = New LSLib.LS.Node With {.Name = "InventoryItem"}
             invit.Attributes.Add("Object", (New LSLib.LS.NodeAttribute(AttributeType.FixedString) With {.Value = value}))
-            invlist.Children.Add("children", New List(Of Node) From {invit})
+            invlist.Children.Add("InventoryItem", New List(Of Node) From {invit})
         End If
 
         'Dim invit As New LSLib.LS.Node With {.Name = "InventoryItem"}
@@ -32,8 +32,8 @@ Public Class BG3Editor_Template_Container_TT
     End Function
     Public Overrides Function Replace_Attribute(ByRef Que As LSLib.LS.Node, value As String) As Boolean
         Dim lisi As List(Of LSLib.LS.Node) = Nothing
-        Dim invlist As LSLib.LS.Node = Nothing
-        Dim invit As LSLib.LS.Node = Nothing
+        Dim invlist As LSLib.LS.Node
+        Dim invit As LSLib.LS.Node
         If Que.Children.TryGetValue("InventoryList", lisi) = True Then
             invlist = lisi.First
         Else

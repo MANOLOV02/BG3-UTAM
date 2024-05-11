@@ -6,6 +6,7 @@
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
 
     End Sub
 End Class

@@ -8,14 +8,9 @@ Public Class Template_Information_Form
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-    End Sub
-    Sub New(ByRef MdiParent As Main, ByRef UtamModForm As BG3Explorer_Templates)
-        MyBase.New(MdiParent, UtamModForm)
-        ' Esta llamada es exigida por el diseñador.
-        InitializeComponent()
-        ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
-    End Sub
+        Me.DoubleBuffered = True
 
+    End Sub
     Public Overrides Sub Explorer_Hide_Unhide(Show As Boolean)
         Me.Visible = Show
         If Me.Visible Then Pone_info(LastObject)
@@ -46,36 +41,38 @@ Public Class Template_Information_Form
         Else
             LabelInfoName.Text = "Name: " + obj.Name.TryGetOrEmpty
             LabelInfoDisplayName.Text = "Display Name: " + obj.DisplayName.TryGetOrEmpty
-            LabelInfoIcon.Text = "Icon: " + obj.GetIcon_Or_Inherited.TryGetOrEmpty
+            LabelInfoIcon.Text = "Icon: " + obj.Icon.TryGetOrEmpty
             LabelInfoModule.Text = "Module: " + obj.SourceOfResorce.ModFolder.TryGetOrEmpty
             If obj.SourceOfResorce.PackageType = BG3_Enum_Package_Type.Loose_Files Then
                 LabelInfoPack.Text = "Pack: " + "Loose files"
             Else
                 LabelInfoPack.Text = "Pack: " + obj.SourceOfResorce.Pak_Or_Folder.TryGetOrEmpty
             End If
-            LabelInfoStats.Text = "Stats: " + obj.GetStats_Or_Inherited.TryGetOrEmpty
-            XmLtoRichText1.Process_Gameobject(obj)
-            Dim stat As BG3_Obj_Stats_Class = Nothing
 
-            If IsNothing(obj.GetStats_Or_Inherited) OrElse GameEngine.ProcessedStatList.TryGetValue(obj.GetStats_Or_Inherited, stat) = False Then
+            XmLtoRichText1.Process_Gameobject(obj)
+
+            If IsNothing(obj.AssociatedStats) Then
+                LabelInfoStats.Text = "Stats: None"
                 XmLtoRichText2.Text = "No associated stats"
             Else
-                XmLtoRichText2.Process_Stat(stat, GameEngine.ProcessedStatList)
+                LabelInfoStats.Text = "Stats: " + obj.AssociatedStats.Name.TryGetOrEmpty
+                XmLtoRichText2.Process_Stat(obj.AssociatedStats, GameEngine.ProcessedStatList)
             End If
 
             XmLtoRichText3.Process_Metas(obj)
 
             XmLtoRichText5.Process_Tags(obj.Get_Tags_TXT)
+            BG3Visualizer_xml1.Process_Attributes(obj.Get_Attributes_TXT)
 
 
             Dim visual As BG3_Obj_VisualBank_Class = Nothing
-            If IsNothing(CType(obj, BG3_Obj_Template_Class).GetVisualTemplate_Or_Inherited) OrElse GameEngine.ProcessedVisualBanksList.TryGetValue(obj.GetVisualTemplate_Or_Inherited, visual) = False Then
+            If IsNothing(CType(obj, BG3_Obj_Template_Class).ReadAttribute_Or_Inhterithed("VisualTemplate")) OrElse GameEngine.ProcessedVisualBanksList.TryGetValue(obj.ReadAttribute_Or_Inhterithed("VisualTemplate"), visual) = False Then
                 XmLtoRichText4.Text = "No associated visual template"
             Else
                 XmLtoRichText4.Process_XML(visual.NodeXML)
             End If
 
-            If IsNothing(obj.GetIcon_Or_Inherited) = False OrElse obj.GetIcon_Or_Inherited <> "" Then
+            If IsNothing(obj.Icon) = False OrElse obj.Icon <> "" Then
                 Pinta_Icon(obj)
             Else
                 PictureBoxIcon.Image = Nothing
@@ -87,8 +84,8 @@ Public Class Template_Information_Form
     Private Sub Pinta_Icon(obj As BG3_Obj_Template_Class)
         PictureBoxIcon.Image = Nothing
 
-        If GameEngine.ProcessedIcons.Containskey(obj.GetIcon_Or_Inherited) = True Then
-            PictureBoxIcon.Image = GameEngine.ProcessedIcons(obj.GetIcon_Or_Inherited).Get_Icon_FromAtlass_or_File
+        If GameEngine.ProcessedIcons.Containskey(obj.Icon) = True Then
+            PictureBoxIcon.Image = GameEngine.ProcessedIcons(obj.Icon).Get_Icon_FromAtlass_or_File
         End If
     End Sub
 

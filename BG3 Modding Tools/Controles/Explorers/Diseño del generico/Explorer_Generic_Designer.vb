@@ -4,6 +4,8 @@ Partial Public MustInherit Class Explorer_Generic_Designer
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Flickering.EnableDoubleBuffering(TreeView1)
+        Me.DoubleBuffered = True
     End Sub
     Private Sub TreeView1_NodeMouseClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseClick
         Try

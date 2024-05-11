@@ -17,6 +17,7 @@ Public Class Main
     Private VisualExplorerForms As New List(Of Explorer_Form_VisualTemplates)
     Private TtablesExplorerForms As New List(Of Explorer_Form_TreasureTables)
     Private ToolsOpened As New List(Of System.Windows.Forms.Form)
+    Private LoaderOpened As ModLoader
 
     Public ActiveMod As UtamMod
 
@@ -88,17 +89,18 @@ Public Class Main
             AddHandler obj.Click, AddressOf LocaChange
             LocalizationButton.DropDownItems.Add(obj)
         Next
-
+        'Dim st As New StikyNote
+        'st.MdiParent = Me
+        'st.Location = New Point(30, 245)
+        'st.Show()
     End Sub
 
     Sub New()
-
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
-
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         GameEngine.Load_Settings()
-
+        Me.DoubleBuffered = True
     End Sub
 
     Private Sub Reporte_progreso(sender As Object, e As ProgressChangedEventArgs)
@@ -345,6 +347,7 @@ Public Class Main
         GameEngine.Processed = False
         BackgroundWorkToolStripMenuItem.Enabled = False
         ProcesserToolStripMenu.Enabled = False
+        ModdsToolStripMenuItem.Enabled = False
         ToolStripProgressBar.Value = 0
         ToolStripProgressBar.Maximum = 100
         Clear_Loaded()
@@ -556,7 +559,7 @@ Public Class Main
 
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
         If IsNothing(ActiveMod) = False Then Throw New Exception
-        Clear_Current_Mod_Loaded("")
+        Clear_Current_Mod_Loaded()
         ActiveMod = New UtamMod(Me, True)
         ActiveMod.Show()
         AddHandler ActiveMod.FormClosed, AddressOf ClosedChildForm
@@ -564,9 +567,11 @@ Public Class Main
         Pinta_status()
     End Sub
     Private Sub LoadToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LoadToolStripMenuItem.Click
-        Dim xx As New ModLoader(Me)
-        AddHandler xx.Mod_load, AddressOf ActiveMode_Load
-        xx.Show()
+        If IsNothing(LoaderOpened) OrElse LoaderOpened.IsDisposed Then
+            LoaderOpened = New ModLoader(Me)
+            AddHandler LoaderOpened.Mod_load, AddressOf ActiveMode_Load
+        End If
+        LoaderOpened.Show()
     End Sub
     Private Sub ActiveMode_Load(ByRef ModLoaded As UtamMod)
         If IsNothing(ActiveMod) = False Then Throw New Exception
@@ -593,6 +598,8 @@ Public Class Main
     End Sub
 
     Private Sub Main_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        CacheWorker.CancelAsync()
+        ProcessWorker.CancelAsync()
         GameEngine.Save_Settings()
     End Sub
 
@@ -663,4 +670,7 @@ Public Class Main
         End If
     End Sub
 
+    Private Sub OpenDetailsWindowsAlsoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenDetailsWindowsAlsoToolStripMenuItem.Click
+        OpenDetailsWindowsAlsoToolStripMenuItem.Checked = Not OpenDetailsWindowsAlsoToolStripMenuItem.Checked
+    End Sub
 End Class

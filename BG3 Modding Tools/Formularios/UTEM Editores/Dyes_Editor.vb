@@ -22,14 +22,17 @@ Public Class Dyes_Editor
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         Initialize(MdiParent, Source)
-        TabControl1.TabPages.Remove(TabPage4)
-        TabControl1.TabPages.Insert(1, TabPage4)
+        Me.DoubleBuffered = True
+        TabControl1.TabPages.Remove(TabPageDyes)
+        TabControl1.TabPages.Insert(1, TabPageDyes)
     End Sub
     Protected Overrides Sub Initialize_Specifics()
         AddHanlders_Dyes()
+        HandledAttributes.Add("ColorPreset")
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
         BG3Editor_Complex_Dyecolor1.Enabled = Edicion
+        GroupBoxColors.Enabled = Edicion
     End Sub
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As Node)
         BG3Editor_Template_ColorPreset1.Create_Attribute(nuevonod, Color_template_guid)
@@ -42,15 +45,15 @@ Public Class Dyes_Editor
         Select Case tipo
             Case BG3Cloner.Clonetype.None
                 BG3Editor_Template_ColorPreset1.Replace_Attribute(Clone_Nuevonod, Color_template_guid)
-                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ModSource)
+                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ActiveModSource)
                 SelectedCombo = BG3Editor_Complex_Dyecolor1.ComboItem_Parent
-                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Child
+                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Parent.Itemresult
                 SelectedColor = BG3Editor_Complex_Dyecolor1.Color_Preset
             Case BG3Cloner.Clonetype.Clone, BG3Cloner.Clonetype.Inherit
                 BG3Editor_Template_ColorPreset1.Replace_Attribute(Clone_Nuevonod, Color_template_guid)
-                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ModSource)
+                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ActiveModSource)
                 SelectedCombo = BG3Editor_Complex_Dyecolor1.ComboItem_Parent
-                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Child
+                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Parent.Itemresult
                 SelectedColor = BG3Editor_Complex_Dyecolor1.Color_Preset
                 BG3Editor_Complex_Dyecolor1.Drop_OBJ(obj)
                 BG3Editor_Complex_Dyecolor1.Write(SelectedColor)
@@ -58,10 +61,10 @@ Public Class Dyes_Editor
                 If obj.NodeLSLIB.Attributes.ContainsKey("ColorPreset") Then Color_template_guid = obj.NodeLSLIB.TryGetOrEmpty("ColorPreset")
                 BG3Editor_Complex_Dyecolor1.Drop_OBJ(obj)
                 BG3Editor_Complex_Dyecolor1.CopyColors()
-                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ModSource)
+                BG3Editor_Complex_Dyecolor1.Create(Template_guid, Clone_Stat_Name, Color_template_guid, ActiveModSource)
                 BG3Editor_Complex_Dyecolor1.PasteColors()
                 SelectedCombo = BG3Editor_Complex_Dyecolor1.ComboItem_Parent
-                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Child
+                SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Parent.Itemresult
                 SelectedColor = BG3Editor_Complex_Dyecolor1.Color_Preset
                 BG3Editor_Complex_Dyecolor1.Write(SelectedColor)
             Case Else
@@ -73,10 +76,10 @@ Public Class Dyes_Editor
         If Not IsNothing(SelectedTmp) Then
             Dim Color_template_guid As String = SelectedTmp.ReadAttribute_Or_Nothing("ColorPreset")
             If IsNothing(Color_template_guid) Then Color_template_guid = Funciones.NewGUID(False)
-            BG3Editor_Complex_Dyecolor1.Change_selected(SelectedTmp.MapKey, SelectedStat.Name, Color_template_guid, ModSource)
+            BG3Editor_Complex_Dyecolor1.Change_selected(SelectedTmp.MapKey, SelectedStat.Name, Color_template_guid, ActiveModSource)
             SelectedColor = BG3Editor_Complex_Dyecolor1.Color_Preset
             SelectedCombo = BG3Editor_Complex_Dyecolor1.ComboItem_Parent
-            SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Child
+            SelectedComboResult = BG3Editor_Complex_Dyecolor1.ComboItem_Parent.Itemresult
         Else
             SelectedColor = Nothing
             SelectedCombo = Nothing
@@ -121,8 +124,8 @@ Public Class Dyes_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Dye specific|Dye Remover", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"DyeRemover"}},
-            New ToolStripMenuItem("Dye specific|Unlimited dye", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Unlimiteddye"}}
+            New ToolStripMenuItem("Dye specific|Dye Remover|False|Custom", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"DyeRemover"}},
+            New ToolStripMenuItem("Dye specific|Unlimited dye|False|Custom", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Unlimiteddye"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub

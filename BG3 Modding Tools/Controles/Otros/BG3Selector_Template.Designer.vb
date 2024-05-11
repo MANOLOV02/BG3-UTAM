@@ -24,18 +24,32 @@ Partial Class BG3Selector_Template
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
         SplitContainer1 = New SplitContainer()
+        SplitContainer2 = New SplitContainer()
         TreeView1 = New TreeView()
         ContextMenuStrip1 = New ContextMenuStrip(components)
-        ToolStripGroupMenu = New ToolStripMenuItem()
         ToolStripGroupMenuChangeName = New ToolStripMenuItem()
         ToolStripGroupMenuAdd = New ToolStripMenuItem()
         ToolStripGroupRemove = New ToolStripMenuItem()
+        MergeWithToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripMenuItemSplitBy = New ToolStripMenuItem()
+        CloneToolStripMenuItem = New ToolStripMenuItem()
+        ByInheritingToolStripMenuItem = New ToolStripMenuItem()
+        ByCloningToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator3 = New ToolStripSeparator()
         MoveToToolStripMoveTo = New ToolStripMenuItem()
         MoveToToolStripTransfer = New ToolStripMenuItem()
         PropertiesToolStripMenuItem = New ToolStripMenuItem()
         TagsToolStripMenuItem = New ToolStripMenuItem()
         TreasureTablesToolStripMenuItem = New ToolStripMenuItem()
         LocalizationToolStripMenuItem = New ToolStripMenuItem()
+        AllToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator1 = New ToolStripSeparator()
+        OnlyDisplayNameToolStripMenuItem = New ToolStripMenuItem()
+        OnlyDescriptionToolStripMenuItem = New ToolStripMenuItem()
+        OnlyTechnicalDescriptionToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator2 = New ToolStripSeparator()
+        GenerateNewHandlesToolStripMenuItem = New ToolStripMenuItem()
+        BG3Cloner1 = New BG3Cloner()
         TableLayoutPanel1 = New TableLayoutPanel()
         ButtonCancel = New Button()
         ButtonSave = New Button()
@@ -46,6 +60,10 @@ Partial Class BG3Selector_Template
         SplitContainer1.Panel1.SuspendLayout()
         SplitContainer1.Panel2.SuspendLayout()
         SplitContainer1.SuspendLayout()
+        CType(SplitContainer2, ComponentModel.ISupportInitialize).BeginInit()
+        SplitContainer2.Panel1.SuspendLayout()
+        SplitContainer2.Panel2.SuspendLayout()
+        SplitContainer2.SuspendLayout()
         ContextMenuStrip1.SuspendLayout()
         TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
@@ -61,14 +79,36 @@ Partial Class BG3Selector_Template
         ' 
         ' SplitContainer1.Panel1
         ' 
-        SplitContainer1.Panel1.Controls.Add(TreeView1)
+        SplitContainer1.Panel1.Controls.Add(SplitContainer2)
         ' 
         ' SplitContainer1.Panel2
         ' 
         SplitContainer1.Panel2.Controls.Add(TableLayoutPanel1)
         SplitContainer1.Size = New Size(269, 483)
-        SplitContainer1.SplitterDistance = 386
+        SplitContainer1.SplitterDistance = 388
         SplitContainer1.TabIndex = 0
+        ' 
+        ' SplitContainer2
+        ' 
+        SplitContainer2.Dock = DockStyle.Fill
+        SplitContainer2.FixedPanel = FixedPanel.Panel2
+        SplitContainer2.IsSplitterFixed = True
+        SplitContainer2.Location = New Point(0, 0)
+        SplitContainer2.Name = "SplitContainer2"
+        SplitContainer2.Orientation = Orientation.Horizontal
+        ' 
+        ' SplitContainer2.Panel1
+        ' 
+        SplitContainer2.Panel1.Controls.Add(TreeView1)
+        ' 
+        ' SplitContainer2.Panel2
+        ' 
+        SplitContainer2.Panel2.Controls.Add(BG3Cloner1)
+        SplitContainer2.Panel2MinSize = 110
+        SplitContainer2.Size = New Size(269, 388)
+        SplitContainer2.SplitterDistance = 276
+        SplitContainer2.SplitterWidth = 2
+        SplitContainer2.TabIndex = 1
         ' 
         ' TreeView1
         ' 
@@ -78,51 +118,80 @@ Partial Class BG3Selector_Template
         TreeView1.HideSelection = False
         TreeView1.Location = New Point(0, 0)
         TreeView1.Name = "TreeView1"
-        TreeView1.Size = New Size(269, 386)
+        TreeView1.Size = New Size(269, 276)
         TreeView1.TabIndex = 0
         ' 
         ' ContextMenuStrip1
         ' 
-        ContextMenuStrip1.Items.AddRange(New ToolStripItem() {ToolStripGroupMenu, MoveToToolStripMoveTo, MoveToToolStripTransfer})
+        ContextMenuStrip1.Items.AddRange(New ToolStripItem() {ToolStripGroupMenuChangeName, ToolStripGroupMenuAdd, ToolStripGroupRemove, MergeWithToolStripMenuItem, ToolStripMenuItemSplitBy, CloneToolStripMenuItem, ToolStripSeparator3, MoveToToolStripMoveTo, MoveToToolStripTransfer})
         ContextMenuStrip1.Name = "ContextMenuStrip1"
-        ContextMenuStrip1.Size = New Size(182, 70)
-        ' 
-        ' ToolStripGroupMenu
-        ' 
-        ToolStripGroupMenu.DropDownItems.AddRange(New ToolStripItem() {ToolStripGroupMenuChangeName, ToolStripGroupMenuAdd, ToolStripGroupRemove})
-        ToolStripGroupMenu.Name = "ToolStripGroupMenu"
-        ToolStripGroupMenu.Size = New Size(181, 22)
-        ToolStripGroupMenu.Text = "Group management"
+        ContextMenuStrip1.Size = New Size(173, 186)
         ' 
         ' ToolStripGroupMenuChangeName
         ' 
         ToolStripGroupMenuChangeName.Name = "ToolStripGroupMenuChangeName"
-        ToolStripGroupMenuChangeName.Size = New Size(180, 22)
+        ToolStripGroupMenuChangeName.Size = New Size(172, 22)
         ToolStripGroupMenuChangeName.Text = "Change name"
         ' 
         ' ToolStripGroupMenuAdd
         ' 
         ToolStripGroupMenuAdd.Name = "ToolStripGroupMenuAdd"
-        ToolStripGroupMenuAdd.Size = New Size(180, 22)
-        ToolStripGroupMenuAdd.Text = "Add"
+        ToolStripGroupMenuAdd.Size = New Size(172, 22)
+        ToolStripGroupMenuAdd.Text = "Add group"
         ' 
         ' ToolStripGroupRemove
         ' 
         ToolStripGroupRemove.Name = "ToolStripGroupRemove"
-        ToolStripGroupRemove.Size = New Size(180, 22)
+        ToolStripGroupRemove.Size = New Size(172, 22)
         ToolStripGroupRemove.Text = "Remove"
+        ' 
+        ' MergeWithToolStripMenuItem
+        ' 
+        MergeWithToolStripMenuItem.Name = "MergeWithToolStripMenuItem"
+        MergeWithToolStripMenuItem.Size = New Size(172, 22)
+        MergeWithToolStripMenuItem.Text = "Merge with"
+        ' 
+        ' ToolStripMenuItemSplitBy
+        ' 
+        ToolStripMenuItemSplitBy.Name = "ToolStripMenuItemSplitBy"
+        ToolStripMenuItemSplitBy.Size = New Size(172, 22)
+        ToolStripMenuItemSplitBy.Text = "Split by"
+        ' 
+        ' CloneToolStripMenuItem
+        ' 
+        CloneToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ByInheritingToolStripMenuItem, ByCloningToolStripMenuItem})
+        CloneToolStripMenuItem.Name = "CloneToolStripMenuItem"
+        CloneToolStripMenuItem.Size = New Size(172, 22)
+        CloneToolStripMenuItem.Text = "Clone"
+        ' 
+        ' ByInheritingToolStripMenuItem
+        ' 
+        ByInheritingToolStripMenuItem.Name = "ByInheritingToolStripMenuItem"
+        ByInheritingToolStripMenuItem.Size = New Size(141, 22)
+        ByInheritingToolStripMenuItem.Text = "By inheriting"
+        ' 
+        ' ByCloningToolStripMenuItem
+        ' 
+        ByCloningToolStripMenuItem.Name = "ByCloningToolStripMenuItem"
+        ByCloningToolStripMenuItem.Size = New Size(141, 22)
+        ByCloningToolStripMenuItem.Text = "By cloning"
+        ' 
+        ' ToolStripSeparator3
+        ' 
+        ToolStripSeparator3.Name = "ToolStripSeparator3"
+        ToolStripSeparator3.Size = New Size(169, 6)
         ' 
         ' MoveToToolStripMoveTo
         ' 
         MoveToToolStripMoveTo.Name = "MoveToToolStripMoveTo"
-        MoveToToolStripMoveTo.Size = New Size(181, 22)
+        MoveToToolStripMoveTo.Size = New Size(172, 22)
         MoveToToolStripMoveTo.Text = "Move to"
         ' 
         ' MoveToToolStripTransfer
         ' 
         MoveToToolStripTransfer.DropDownItems.AddRange(New ToolStripItem() {PropertiesToolStripMenuItem, TagsToolStripMenuItem, TreasureTablesToolStripMenuItem, LocalizationToolStripMenuItem})
         MoveToToolStripTransfer.Name = "MoveToToolStripTransfer"
-        MoveToToolStripTransfer.Size = New Size(181, 22)
+        MoveToToolStripTransfer.Size = New Size(172, 22)
         MoveToToolStripTransfer.Text = "Transfer to siblings"
         ' 
         ' PropertiesToolStripMenuItem
@@ -145,9 +214,60 @@ Partial Class BG3Selector_Template
         ' 
         ' LocalizationToolStripMenuItem
         ' 
+        LocalizationToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AllToolStripMenuItem, ToolStripSeparator1, OnlyDisplayNameToolStripMenuItem, OnlyDescriptionToolStripMenuItem, OnlyTechnicalDescriptionToolStripMenuItem, ToolStripSeparator2, GenerateNewHandlesToolStripMenuItem})
         LocalizationToolStripMenuItem.Name = "LocalizationToolStripMenuItem"
         LocalizationToolStripMenuItem.Size = New Size(181, 22)
         LocalizationToolStripMenuItem.Text = "Localization handles"
+        ' 
+        ' AllToolStripMenuItem
+        ' 
+        AllToolStripMenuItem.Name = "AllToolStripMenuItem"
+        AllToolStripMenuItem.Size = New Size(213, 22)
+        AllToolStripMenuItem.Text = "All"
+        ' 
+        ' ToolStripSeparator1
+        ' 
+        ToolStripSeparator1.Name = "ToolStripSeparator1"
+        ToolStripSeparator1.Size = New Size(210, 6)
+        ' 
+        ' OnlyDisplayNameToolStripMenuItem
+        ' 
+        OnlyDisplayNameToolStripMenuItem.Name = "OnlyDisplayNameToolStripMenuItem"
+        OnlyDisplayNameToolStripMenuItem.Size = New Size(213, 22)
+        OnlyDisplayNameToolStripMenuItem.Text = "Only Display Name"
+        ' 
+        ' OnlyDescriptionToolStripMenuItem
+        ' 
+        OnlyDescriptionToolStripMenuItem.Name = "OnlyDescriptionToolStripMenuItem"
+        OnlyDescriptionToolStripMenuItem.Size = New Size(213, 22)
+        OnlyDescriptionToolStripMenuItem.Text = "Only Description"
+        ' 
+        ' OnlyTechnicalDescriptionToolStripMenuItem
+        ' 
+        OnlyTechnicalDescriptionToolStripMenuItem.Name = "OnlyTechnicalDescriptionToolStripMenuItem"
+        OnlyTechnicalDescriptionToolStripMenuItem.Size = New Size(213, 22)
+        OnlyTechnicalDescriptionToolStripMenuItem.Text = "Only Technical description"
+        ' 
+        ' ToolStripSeparator2
+        ' 
+        ToolStripSeparator2.Name = "ToolStripSeparator2"
+        ToolStripSeparator2.Size = New Size(210, 6)
+        ' 
+        ' GenerateNewHandlesToolStripMenuItem
+        ' 
+        GenerateNewHandlesToolStripMenuItem.Name = "GenerateNewHandlesToolStripMenuItem"
+        GenerateNewHandlesToolStripMenuItem.Size = New Size(213, 22)
+        GenerateNewHandlesToolStripMenuItem.Text = "Generate new handles"
+        ' 
+        ' BG3Cloner1
+        ' 
+        BG3Cloner1.Dock = DockStyle.Fill
+        BG3Cloner1.Location = New Point(0, 0)
+        BG3Cloner1.Name = "BG3Cloner1"
+        BG3Cloner1.Size = New Size(269, 110)
+        BG3Cloner1.Stat_MustDescend_From = Nothing
+        BG3Cloner1.TabIndex = 0
+        BG3Cloner1.Template_MustDescend_From = Nothing
         ' 
         ' TableLayoutPanel1
         ' 
@@ -167,16 +287,16 @@ Partial Class BG3Selector_Template
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 25F))
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 50F))
-        TableLayoutPanel1.Size = New Size(269, 93)
+        TableLayoutPanel1.Size = New Size(269, 91)
         TableLayoutPanel1.TabIndex = 1
         ' 
         ' ButtonCancel
         ' 
         ButtonCancel.Dock = DockStyle.Fill
         ButtonCancel.Enabled = False
-        ButtonCancel.Location = New Point(138, 64)
+        ButtonCancel.Location = New Point(138, 63)
         ButtonCancel.Name = "ButtonCancel"
-        ButtonCancel.Size = New Size(126, 24)
+        ButtonCancel.Size = New Size(126, 23)
         ButtonCancel.TabIndex = 0
         ButtonCancel.Text = "Cancel"
         ButtonCancel.UseVisualStyleBackColor = True
@@ -185,9 +305,9 @@ Partial Class BG3Selector_Template
         ' 
         ButtonSave.Dock = DockStyle.Fill
         ButtonSave.Enabled = False
-        ButtonSave.Location = New Point(5, 64)
+        ButtonSave.Location = New Point(5, 63)
         ButtonSave.Name = "ButtonSave"
-        ButtonSave.Size = New Size(125, 24)
+        ButtonSave.Size = New Size(125, 23)
         ButtonSave.TabIndex = 4
         ButtonSave.Text = "Save"
         ButtonSave.UseVisualStyleBackColor = True
@@ -197,7 +317,7 @@ Partial Class BG3Selector_Template
         ButtonNew.Dock = DockStyle.Fill
         ButtonNew.Location = New Point(5, 32)
         ButtonNew.Name = "ButtonNew"
-        ButtonNew.Size = New Size(125, 24)
+        ButtonNew.Size = New Size(125, 23)
         ButtonNew.TabIndex = 1
         ButtonNew.Text = "Add New"
         ButtonNew.UseVisualStyleBackColor = True
@@ -225,7 +345,7 @@ Partial Class BG3Selector_Template
         ButtonEdit.Enabled = False
         ButtonEdit.Location = New Point(138, 32)
         ButtonEdit.Name = "ButtonEdit"
-        ButtonEdit.Size = New Size(126, 24)
+        ButtonEdit.Size = New Size(126, 23)
         ButtonEdit.TabIndex = 2
         ButtonEdit.Text = "Edit"
         ButtonEdit.UseVisualStyleBackColor = True
@@ -241,6 +361,10 @@ Partial Class BG3Selector_Template
         SplitContainer1.Panel2.ResumeLayout(False)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
         SplitContainer1.ResumeLayout(False)
+        SplitContainer2.Panel1.ResumeLayout(False)
+        SplitContainer2.Panel2.ResumeLayout(False)
+        CType(SplitContainer2, ComponentModel.ISupportInitialize).EndInit()
+        SplitContainer2.ResumeLayout(False)
         ContextMenuStrip1.ResumeLayout(False)
         TableLayoutPanel1.ResumeLayout(False)
         ResumeLayout(False)
@@ -255,15 +379,29 @@ Partial Class BG3Selector_Template
     Friend WithEvents ButtonNew As Button
     Friend WithEvents ButtonEdit As Button
     Friend WithEvents ContextMenuStrip1 As ContextMenuStrip
-    Friend WithEvents ToolStripGroupMenu As ToolStripMenuItem
-    Friend WithEvents ToolStripGroupMenuChangeName As ToolStripMenuItem
-    Friend WithEvents ToolStripGroupMenuAdd As ToolStripMenuItem
-    Friend WithEvents ToolStripGroupRemove As ToolStripMenuItem
     Friend WithEvents MoveToToolStripTransfer As ToolStripMenuItem
     Friend WithEvents PropertiesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TagsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TreasureTablesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents MoveToToolStripMoveTo As ToolStripMenuItem
     Friend WithEvents LocalizationToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AllToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents OnlyDisplayNameToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OnlyDescriptionToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OnlyTechnicalDescriptionToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BG3Cloner1 As BG3Cloner
+    Friend WithEvents SplitContainer2 As SplitContainer
+    Friend WithEvents MergeWithToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents GenerateNewHandlesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripGroupMenuChangeName As ToolStripMenuItem
+    Friend WithEvents ToolStripGroupMenuAdd As ToolStripMenuItem
+    Friend WithEvents ToolStripGroupRemove As ToolStripMenuItem
+    Friend WithEvents CloneToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ByInheritingToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ByCloningToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents ToolStripMenuItemSplitBy As ToolStripMenuItem
 
 End Class

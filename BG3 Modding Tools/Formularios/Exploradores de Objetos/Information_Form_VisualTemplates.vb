@@ -8,6 +8,8 @@ Public Class Information_Form_VisualTemplates
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
+
     End Sub
     Public Overrides Sub Explorer_Hide_Unhide(Show As Boolean)
         Me.Visible = Show

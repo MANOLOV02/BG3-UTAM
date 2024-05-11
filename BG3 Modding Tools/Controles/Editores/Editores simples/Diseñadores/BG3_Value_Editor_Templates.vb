@@ -1,5 +1,7 @@
 ﻿Imports System.Net
 Imports LSLib.LS
+Imports LSLib.LS.Stats.Lua
+Imports LSLib.LS.Story
 
 <ToolboxBitmap(GetType(System.Windows.Forms.TextBox))>
 Public MustInherit Class Editor_Generic_GenericAttribute
@@ -15,7 +17,7 @@ Public MustInherit Class Editor_Generic_GenericAttribute
     Public Shared Function Create_Attribute_Generic(ByRef Que As LSLib.LS.Node, Key As String, ValueString As String, attributeType As LSLib.LS.AttributeType) As Boolean
         Return Que.Attributes.TryAdd(Key, Conver_String_to_Node_Generic(ValueString, attributeType))
     End Function
-    Public  Overridable Function Replace_Attribute(ByRef Que As LSLib.LS.Node, ValueString As String) As Boolean
+    Public Overridable Function Replace_Attribute(ByRef Que As LSLib.LS.Node, ValueString As String) As Boolean
         If Que.Attributes.TryAdd(Key, Conver_String_to_Node(ValueString)) = False Then
             Que.Attributes(Key) = Conver_String_to_Node(ValueString)
         End If
@@ -30,57 +32,23 @@ Public MustInherit Class Editor_Generic_GenericAttribute
     Public Overridable Function Conver_String_to_Node(valueString As String) As LSLib.LS.NodeAttribute
         Return Conver_String_to_Node_Generic(valueString, Me.AttributeType)
     End Function
-    Public Shared Function Conver_String_to_Node_Generic(valueString As String, attributeType As LSLib.LS.AttributeType) As LSLib.LS.NodeAttribute
-        Select Case attributeType
-            Case AttributeType.Bool
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CBool(valueString)}
-            Case AttributeType.String, AttributeType.LSString, AttributeType.WString, AttributeType.FixedString, AttributeType.LSWString
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = valueString}
-            Case AttributeType.TranslatedString
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = New LSLib.LS.TranslatedString With {.Version = valueString.Split(";")(1), .Handle = valueString.Split(";")(0)}}
-            Case AttributeType.TranslatedFSString
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = New LSLib.LS.TranslatedFSString With {.Version = valueString.Split(";")(1), .Handle = valueString.Split(";")(0)}}
-            Case AttributeType.Byte
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CByte(valueString)}
-            Case AttributeType.Double
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CDbl(valueString)}
-            Case AttributeType.Float
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CSng(valueString)}
-            Case AttributeType.Int
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CInt(valueString)}
-            Case AttributeType.Int64
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CLng(valueString)}
-            Case AttributeType.Int8
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = CInt(valueString)}
-            Case AttributeType.IVec2
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CInt(vec(0)), CInt(vec(1))}}
-            Case AttributeType.IVec3
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CInt(vec(0)), CInt(vec(1)), CInt(vec(2))}}
-            Case AttributeType.IVec4
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CInt(vec(0)), CInt(vec(1)), CInt(vec(2)), CInt(vec(3))}}
-            Case AttributeType.Vec2
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CSng(vec(0)), CSng(vec(1))}}
-            Case AttributeType.Vec3
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CSng(vec(0)), CSng(vec(1)), CSng(vec(2))}}
-            Case AttributeType.Vec4
-                Dim vec() As String = valueString.Split(" ")
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = {CSng(vec(0)), CSng(vec(1)), CSng(vec(2)), CSng(vec(3))}}
-            Case AttributeType.UUID
-                Dim UnSwap As New LSLib.LS.NodeAttribute(attributeType)
-                UnSwap.FromString(valueString, Guid_to_String_Unreversed)
-                Return UnSwap
-            Case Else
-                Debugger.Break()
-                Return Nothing
-        End Select
+    Public Shared Function Conver_Attribute_to_String(Attr As LSLib.LS.NodeAttribute) As String
+        Return Attr.AsString(Funciones.Guid_to_string)
     End Function
 
-    Private Shared ReadOnly Guid_to_String_Unreversed = New NodeSerializationSettings With {.DefaultByteSwapGuids = True, .ByteSwapGuids = True}
+    Public Shared Function Conver_String_to_Node_Generic(valueString As String, attributeType As LSLib.LS.AttributeType) As LSLib.LS.NodeAttribute
+        Select Case attributeType
+            Case AttributeType.TranslatedString, AttributeType.TranslatedFSString
+                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = New LSLib.LS.TranslatedString With {.Version = valueString.Split(";")(1), .Handle = valueString.Split(";")(0)}}
+            Case Else
+                Dim value = New LSLib.LS.NodeAttribute(attributeType)
+                value.FromString(valueString, Funciones.Guid_to_string)
+                Return value
+        End Select
+
+    End Function
+
+    'Private Shared ReadOnly Guid_to_String_Unreversed = New NodeSerializationSettings With {.DefaultByteSwapGuids = True, .ByteSwapGuids = True}
 
 End Class
 
@@ -118,7 +86,9 @@ Public MustInherit Class Editor_Template_GenericAttribute
     End Function
 
     Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
-        Return "ToDefine"
+        Dim str = Parent.ReadAttribute_Or_Inhterithed(Key)
+        If IsNothing(str) Then Return ""
+        Return str
     End Function
     Public Overrides Function Conditional_Changed(Que As BG3_Obj_Template_Class) As Boolean
         If Me.EditIsConditional = True AndAlso CheckBox1.Checked = False Then
@@ -132,15 +102,23 @@ Public MustInherit Class Editor_Template_GenericAttribute
         End If
         Dim value As LSLib.LS.NodeAttribute = Nothing
         Que.NodeLSLIB.Attributes.TryGetValue(Key, value)
+        If IsNothing(value) AndAlso Not IsNothing(Que.Parent) Then value = Conditional_changed_Empty(Que)
         Return Get_ValueString(value)
     End Function
+    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_Template_Class) As LSLib.LS.NodeAttribute
+        Dim value As LSLib.LS.NodeAttribute = Nothing
+        Dim current = Que
+        While Not IsNothing(current.Parent)
+            current.Parent.NodeLSLIB.Attributes.TryGetValue(Key, value)
+            If Not IsNothing(value) Then Exit While
+            current = current.Parent
+        End While
+        Return value
+    End Function
+
     Public Overridable Function Get_ValueString(ByRef value As LSLib.LS.NodeAttribute) As Boolean
         If IsNothing(value) Then TextBox1.Text = "" : Return False
-        If value.Type = AttributeType.UUID Then
-            TextBox1.Text = value.AsString(Funciones.Guid_to_string)
-        Else
-            TextBox1.Text = value.Value.ToString()
-        End If
+        TextBox1.Text = value.AsString(Funciones.Guid_to_string)
         Return True
     End Function
     Public Overridable Function Set_ValueString(Que As BG3_Obj_Template_Class) As String
@@ -198,6 +176,17 @@ Public MustInherit Class Editor_Template_GenericTranslate
         TextBox1.Text = "Not defined"
         Return False
     End Function
+    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_Template_Class) As LSLib.LS.NodeAttribute
+        Dim value As LSLib.LS.NodeAttribute = Nothing
+        Que.NodeLSLIB.Attributes.TryGetValue(UTAM_Handle, value)
+        Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(value.Value.ToString, Bg3_Enum_Languages.English)
+        If IsNothing(Loca) Then
+            Dim handle As String = Que.Parent.ReadAttribute_Or_Inhterithed(Key)
+            If Not IsNothing(handle) Then value = New LSLib.LS.NodeAttribute(AttributeType.TranslatedString) With {.Value = handle}
+        End If
+        Return value
+    End Function
+
     Public Function GetPropertyName() As String
         Return Key
     End Function
@@ -248,6 +237,32 @@ Public MustInherit Class Combobox_Editor_Generic_GenericAttribute
         Me.Key = Key
         Me.AttributeType = AttributeType
         Me.EditorType = BG3_Editor_Type.Combobox
+    End Sub
+    Sub New()
+    End Sub
+End Class
+
+<ToolboxBitmap(GetType(System.Windows.Forms.NumericUpDown))>
+Public MustInherit Class Numeric_Editor_Template_GenericAttribute
+    Inherits Editor_Template_GenericAttribute
+    Sub New(Key As String, AttributeType As LSLib.LS.AttributeType)
+        Me.Key = Key
+        Me.AttributeType = AttributeType
+        NumericMinimum = 0
+        NumericMaximum = 100
+        NumericValue = 0
+        NumericDecimalPlaces = 0
+        NumericIncrement = 1
+        Me.EditorType = BG3_Editor_Type.NumericUpDown
+    End Sub
+    Sub New(Key As String, Minimum As Decimal, Maximum As Decimal, DecimalPlaces As Integer, Increment As Integer, AttributeType As LSLib.LS.AttributeType)
+        Me.Key = Key
+        Me.AttributeType = AttributeType
+        Me.NumericMinimum = Minimum
+        Me.NumericMaximum = Maximum
+        Me.NumericDecimalPlaces = DecimalPlaces
+        Me.NumericIncrement = Increment
+        Me.EditorType = BG3_Editor_Type.NumericUpDown
     End Sub
     Sub New()
     End Sub

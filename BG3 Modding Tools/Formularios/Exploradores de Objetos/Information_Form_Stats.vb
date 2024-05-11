@@ -8,6 +8,8 @@ Public Class Information_Form_Stats
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
+
     End Sub
     Sub New(MdiParent As Main, UtamMod As BG3Explorer_Stats)
         MyBase.New(MdiParent, UtamMod)

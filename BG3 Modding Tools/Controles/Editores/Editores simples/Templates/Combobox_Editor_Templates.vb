@@ -26,10 +26,6 @@ Public Class BG3Editor_Template_UtamGroup
     Sub New()
         MyBase.New("UTAM_Group", LSLib.LS.AttributeType.FixedString)
         Label = "Group"
-        ComboItems = {"(Default)"}.ToList
-        Me.ComboBox1.DropDownStyle = ComboBoxStyle.DropDown
-        Me.ComboBox1.AutoCompleteMode = AutoCompleteMode.Suggest
-        Me.ComboBox1.AutoCompleteSource = AutoCompleteSource.ListItems
         Reload_Combo()
     End Sub
     Public Sub Update_Groups(ByRef Groups As List(Of String))

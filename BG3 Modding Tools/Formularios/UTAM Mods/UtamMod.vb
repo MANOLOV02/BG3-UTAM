@@ -184,9 +184,9 @@ Public Class UtamMod
 
         ' Genera treasure Table
         Dim ArchivoTT As New IO.StreamWriter(CurrentMod.TreasureTableFilePath, False)
-        For Each tt In FuncionesHelpers.GameEngine.ProcessedTTables.Elements.Values.Where(Function(pf) pf.Subtables.Where(Function(pq) pq.Source.Pak_Or_Folder = Source.Pak_Or_Folder).Any)
-            ArchivoTT.WriteLine("new treasuretable " + Chr(34) + tt.Name + Chr(34) + "")
-            ArchivoTT.WriteLine("CanMerge 1")
+        For Each tt In FuncionesHelpers.GameEngine.UtamTreasures
+            ArchivoTT.WriteLine("new treasuretable " + Chr(34) + tt.Mapkey_WithoutOverride + Chr(34) + "")
+            If tt.CanMerge = True Then ArchivoTT.WriteLine("CanMerge 1")
             For Each subt In tt.Subtables.Where(Function(pf) pf.Source.Pak_Or_Folder = Source.Pak_Or_Folder)
                 ArchivoTT.WriteLine("new subtable " + Chr(34) + subt.Definition + Chr(34) + "")
                 If subt.MinLevel <> "" Then ArchivoTT.WriteLine("StartLevel " + Chr(34) + subt.MinLevel + Chr(34) + "")
@@ -202,7 +202,7 @@ Public Class UtamMod
 
         ' Genera Stats File
         Dim ArchivoST As New IO.StreamWriter(CurrentMod.StatsObjectsFilePath, False)
-        For Each stat In FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Values.Where(Function(pf) pf.SourceOfResorce.Pak_Or_Folder = Source.Pak_Or_Folder And pf.Type <> BG3_Enum_StatType.ItemCombination)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination)
             ArchivoST.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
             ArchivoST.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
             If stat.Using <> "" Then ArchivoST.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
@@ -216,51 +216,50 @@ Public Class UtamMod
 
         'Genera ItemCombination
         Dim ArchivoIC As New IO.StreamWriter(CurrentMod.StatsCombinationsFilePath, False)
-        For Each stat In FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Values.Where(Function(pf) pf.SourceOfResorce.Pak_Or_Folder = Source.Pak_Or_Folder AndAlso pf.Type = BG3_Enum_StatType.ItemCombination AndAlso pf.Using <> "")
-            Dim current As BG3_Obj_Stats_Class = Nothing
-            If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(stat.Using, current) Then
-                ArchivoIC.WriteLine("new ItemCombination " + Chr(34) + current.Name + Chr(34) + "")
-                Dim x As Integer = 1
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type = BG3_Enum_StatType.ItemCombination)
+            Dim current As BG3_Obj_Stats_Class = stat
+            ArchivoIC.WriteLine("new ItemCombination " + Chr(34) + current.Name + Chr(34) + "")
+            Dim x As Integer = 1
                 While current.Data.ContainsKey("Object " + x.ToString) = True
-                    If current.Data.ContainsKey("Type " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "Type " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Type " + x.ToString) + Chr(34))
-                    End If
-                    If current.Data.ContainsKey("Object " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "Object " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Object " + x.ToString) + Chr(34))
-                    End If
-                    If current.Data.ContainsKey("Combine " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "Combine " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Combine " + x.ToString) + Chr(34))
-                    End If
-                    If current.Data.ContainsKey("Transform " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "Transform " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Transform " + x.ToString) + Chr(34))
-                    End If
-                    x += 1
-                End While
-                For Each dat In current.Data.Keys.Where(Function(pf) pf.StartsWith("Type ") = False And pf.StartsWith("Object ") = False And pf.StartsWith("Combine ") = False And pf.StartsWith("Transform ") = False)
-                    ArchivoIC.WriteLine("data " + Chr(34) + dat + Chr(34) + " " + Chr(34) + current.Data(dat) + Chr(34))
-                Next
-                ArchivoIC.WriteLine("")
-                current = stat
+                If current.Data.ContainsKey("Type " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "Type " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Type " + x.ToString) + Chr(34))
+                End If
+                If current.Data.ContainsKey("Object " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "Object " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Object " + x.ToString) + Chr(34))
+                End If
+                If current.Data.ContainsKey("Combine " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "Combine " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Combine " + x.ToString) + Chr(34))
+                End If
+                If current.Data.ContainsKey("Transform " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "Transform " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Transform " + x.ToString) + Chr(34))
+                End If
+                x += 1
+            End While
+            For Each dat In current.Data.Keys.Where(Function(pf) pf.StartsWith("Type ") = False And pf.StartsWith("Object ") = False And pf.StartsWith("Combine ") = False And pf.StartsWith("Transform ") = False)
+                ArchivoIC.WriteLine("data " + Chr(34) + dat + Chr(34) + " " + Chr(34) + current.Data(dat) + Chr(34))
+            Next
 
-                ArchivoIC.WriteLine("new ItemCombinationResult" + " " + Chr(34) + current.Name + Chr(34))
+            ArchivoIC.WriteLine("")
 
-                x = 1
-                While current.Data.ContainsKey("Result " + x.ToString) = True Or current.Data.ContainsKey("ResultAmount " + x.ToString) = True
-                    If current.Data.ContainsKey("ResultAmount " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "ResultAmount " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("ResultAmount " + x.ToString) + Chr(34))
-                    End If
-                    If current.Data.ContainsKey("Result " + x.ToString) Then
-                        ArchivoIC.WriteLine("data " + Chr(34) + "Result " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Result " + x.ToString) + Chr(34))
-                    End If
-                    x += 1
-                End While
-                For Each dat In current.Data.Keys.Where(Function(pf) pf.StartsWith("ResultAmount ") = False And pf.StartsWith("Result ") = False)
-                    ArchivoIC.WriteLine("data " + Chr(34) + dat + Chr(34) + " " + Chr(34) + current.Data(dat) + Chr(34))
-                Next
+            current = stat.Itemresult
 
-                ArchivoIC.WriteLine("")
-            End If
+            ArchivoIC.WriteLine("new ItemCombinationResult" + " " + Chr(34) + current.Name + Chr(34))
 
+            x = 1
+            While current.Data.ContainsKey("Result " + x.ToString) = True Or current.Data.ContainsKey("ResultAmount " + x.ToString) = True
+                If current.Data.ContainsKey("ResultAmount " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "ResultAmount " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("ResultAmount " + x.ToString) + Chr(34))
+                End If
+                If current.Data.ContainsKey("Result " + x.ToString) Then
+                    ArchivoIC.WriteLine("data " + Chr(34) + "Result " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Result " + x.ToString) + Chr(34))
+                End If
+                x += 1
+            End While
+            For Each dat In current.Data.Keys.Where(Function(pf) pf.StartsWith("ResultAmount ") = False And pf.StartsWith("Result ") = False)
+                ArchivoIC.WriteLine("data " + Chr(34) + dat + Chr(34) + " " + Chr(34) + current.Data(dat) + Chr(34))
+            Next
+
+            ArchivoIC.WriteLine("")
 
         Next
         ArchivoIC.Flush()
@@ -383,9 +382,6 @@ Public Class UtamMod
             If IO.File.Exists(CurrentMod.VisualBanksFilePath + ".lsx") Then IO.File.Delete(CurrentMod.VisualBanksFilePath + ".lsx")
         End If
         LSLib.LS.ResourceUtils.SaveResource(RootV, CurrentMod.VisualBanksFilePath, Funciones.ConversionParams_LSLIB)
-
-
-
 
 
         ' Genera RootTemplate

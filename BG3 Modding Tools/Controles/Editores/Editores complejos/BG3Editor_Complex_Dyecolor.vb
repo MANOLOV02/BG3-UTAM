@@ -16,7 +16,6 @@ Public Class BG3Editor_Complex_Dyecolor
     Public NodeToSave As LSLib.LS.Node
     Private ReadOnly ColorsCopy As New List(Of Color)
     Public ComboItem_Parent As BG3_Obj_Stats_Class
-    Public ComboItem_Child As BG3_Obj_Stats_Class
     Public Color_Preset As BG3_Obj_VisualBank_Class
 
     Sub New()
@@ -136,18 +135,16 @@ Public Class BG3Editor_Complex_Dyecolor
         If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue("IC:" + Stat_Name, ComboItem_Parent) = False Then
             Create_Combo_Temp(Stat_Name, Color_template_guid, modsource)
         End If
-
-        If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue("IC:" + Stat_Name + "_1", ComboItem_Child) = False Then
-            Create_Combo_Temp(Stat_Name, Color_template_guid, modsource)
+        If IsNothing(ComboItem_Parent.Itemresult) Then
+            ComboItem_Parent.Itemresult = New BG3_Obj_Stats_Class(modsource, Stat_Name + "_1") With {.Type = BG3_Enum_StatType.ItemCombination, .[Using] = ComboItem_Parent.Name}
+            Editor_Stats_Generic.Create_Generic("ResultAmount 1", "1", ComboItem_Parent.Itemresult)
         End If
-
         Return True
     End Function
 
 
     Private Function Create_Combo_Temp(Stat_Name As String, Color_template_guid As String, modsource As BG3_Pak_SourceOfResource_Class) As Boolean
         Dim par As New BG3_Obj_Stats_Class(modsource, Stat_Name) With {.Type = BG3_Enum_StatType.ItemCombination}
-        par = FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(par)
         Editor_Stats_Generic.Create_Generic("Type 1", "Object", par)
         Editor_Stats_Generic.Create_Generic("Object 1", Stat_Name, par)
         Editor_Stats_Generic.Create_Generic("Transform 1", "Consume", par)
@@ -155,11 +152,10 @@ Public Class BG3Editor_Complex_Dyecolor
         Editor_Stats_Generic.Create_Generic("Object 2", "DyableArmor", par)
         Editor_Stats_Generic.Create_Generic("Transform 2", "Dye", par)
         Editor_Stats_Generic.Create_Generic("DyeColorPresetResource", Color_template_guid, par)
-        Dim child As New BG3_Obj_Stats_Class(modsource, Stat_Name + "_1") With {.Type = BG3_Enum_StatType.ItemCombination, .[Using] = par.MapKey}
-        child = FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(child)
-        Editor_Stats_Generic.Create_Generic("ResultAmount 1", "1", child)
+        par.Itemresult = New BG3_Obj_Stats_Class(modsource, Stat_Name + "_1") With {.Type = BG3_Enum_StatType.ItemCombination, .[Using] = par.Name}
+        Editor_Stats_Generic.Create_Generic("ResultAmount 1", "1", par.Itemresult)
+        par = FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(par)
         ComboItem_Parent = par
-        ComboItem_Child = par
         Return True
     End Function
     Private Function Create_Color_Temp(Color_template_guid As String, Template_guid As String, modsource As BG3_Pak_SourceOfResource_Class) As Boolean
@@ -370,7 +366,7 @@ Public Class BG3Editor_Complex_Dyecolor
         End If
 
         ' Voy al item combination
-        Dim Stat As String = Obj.GetStats_Or_Inherited()
+        Dim Stat As String = Obj.AssociatedStats.Name
         If IsNothing(Stat) Then Exit Sub
         Dim StatObj As BG3_Obj_Stats_Class = Nothing
         If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue("IC:" + Stat, StatObj) = True Then
@@ -541,7 +537,7 @@ Public Class BG3Editor_Complex_Dyecolor
         End If
         If e.Data.GetDataPresent(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class))) Then
             Dim obj2 As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class) = e.Data.GetData(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class)))
-            Dim obj = CType(obj2.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate_Obj
+            Dim obj = CType(obj2.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate
             If obj.Is_Descendant("1a750a66-e5c2-40be-9f62-0a4bf3ddb403") Then
                 Clear_colors()
                 Drop_OBJ(obj)
@@ -575,10 +571,10 @@ Public Class BG3Editor_Complex_Dyecolor
         End If
         If e.Data.GetDataPresent(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class))) Then
             Dim obj As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class) = e.Data.GetData(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class)))
-            If Not IsNothing(obj.Objeto) AndAlso Not IsNothing(CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate_Obj) Then
+            If Not IsNothing(obj.Objeto) AndAlso Not IsNothing(CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate) Then
                 Dim escorrecto As Boolean = False
-                If CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate_Obj.Is_Descendant("1a750a66-e5c2-40be-9f62-0a4bf3ddb403") Then escorrecto = True ' DYE
-                If CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate_Obj.Is_Descendant("a09273ba-6549-4cf9-ba47-615a962baf9f") Then escorrecto = True ' Base Armor
+                If CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate.Is_Descendant("1a750a66-e5c2-40be-9f62-0a4bf3ddb403") Then escorrecto = True ' DYE
+                If CType(obj.Objeto, BG3_Obj_Stats_Class).AssociatedTemplate.Is_Descendant("a09273ba-6549-4cf9-ba47-615a962baf9f") Then escorrecto = True ' Base Armor
                 If escorrecto Then
                     e.Effect = DragDropEffects.Copy
                     Exit Sub

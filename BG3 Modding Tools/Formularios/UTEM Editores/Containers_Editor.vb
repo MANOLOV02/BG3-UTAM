@@ -17,9 +17,13 @@ Public Class Containers_Editor
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         Initialize(MdiParent, Source)
+        Me.DoubleBuffered = True
+
     End Sub
     Protected Overrides Sub Initialize_Specifics()
         ' Nothing
+        HandledAttributes.Add("ContainerContentFilterCondition")
+        HandledAttributes.Add("ContainerAutoAddOnPickup")
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
         GroupBox5.Enabled = Edicion
@@ -85,8 +89,8 @@ Public Class Containers_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Container specific|Filter condition", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Filtercondition"}},
-            New ToolStripMenuItem("Container specific|Auto pickup", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Autopickup"}}
+            New ToolStripMenuItem("Container specific|Filter condition|False|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ContainerContentFilterCondition"}},
+            New ToolStripMenuItem("Container specific|Auto pickup|True|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ContainerAutoAddOnPickup"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -101,10 +105,10 @@ Public Class Containers_Editor
             If obj IsNot Template Then
                 For Each stat In statsList
                     Select Case stat
-                        Case "Filtercondition"
+                        Case "ContainerContentFilterCondition"
                             BG3Editor_Template_ContainerContentFilterCondition1.Read(Template)
                             BG3Editor_Template_ContainerContentFilterCondition1.Write(obj)
-                        Case "Autopickup"
+                        Case "ContainerAutoAddOnPickup"
                             BG3Editor_Template_ContainerAutoAddOnPickup1.Read(Template)
                             BG3Editor_Template_ContainerAutoAddOnPickup1.Write(obj)
                     End Select
@@ -116,9 +120,12 @@ Public Class Containers_Editor
     ' Subs Especificos Containers
 
     Public Sub SaveTT()
-        Dim TT As New BG3_Obj_TreasureTable_Class(ModSource, "UTAM_Container_Treasure_" + SelectedTmp.MapKey) With {.CanMerge = True}
-        TT.Subtables.Add(New BG3_Obj_TreasureTable_Subtable_Class(ModSource, "1,1"))
-        TT = FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(TT)
+        Dim ttname As String = "UTAM_Container_Treasure_" + SelectedTmp.MapKey
+        If FuncionesHelpers.GameEngine.UtamTreasures.Where(Function(pf) pf.Mapkey_WithoutOverride = ttname).Any = False Then
+            Dim TT As New BG3_Obj_TreasureTable_Class(ActiveModSource, ttname) With {.CanMerge = False}
+            TT.Subtables.Add(New BG3_Obj_TreasureTable_Subtable_Class(ActiveModSource, "1,1"))
+            FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(TT)
+        End If
     End Sub
     Private Sub LabelDropTag_DragEnter(sender As Object, e As DragEventArgs) Handles LabelDropTag.DragEnter, BG3Editor_Template_ContainerContentFilterCondition1.DragEnter
         If e.Data.GetDataPresent(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_FlagsAndTags_Class))) Then

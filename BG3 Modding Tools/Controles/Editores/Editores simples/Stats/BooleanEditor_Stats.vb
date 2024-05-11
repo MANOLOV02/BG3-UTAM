@@ -20,6 +20,7 @@ Public Class BG3Editor_Stat_Unique
     Sub New()
         MyBase.New("Unique")
         Label = "Unique"
+        Me.TextBox1.Text = "0"
     End Sub
     Protected Overrides Function Text_to_Combo(Value As String) As String
         If Value = "1" Then Return "True"
@@ -30,13 +31,29 @@ Public Class BG3Editor_Stat_Unique
         Return "0"
     End Function
 End Class
+Public Class BG3Editor_Stats_ValueRounding
+    Inherits Boolean_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ValueRounding")
+        Label = "Value rounding"
+        Me.TextBox1.Text = "0"
+    End Sub
+    Protected Overrides Function Text_to_Combo(Value As String) As String
+        If Value = "1" Then Return "True"
+        Return "False"
+    End Function
+    Protected Overrides Function Combo_To_Text(Value As String) As String
+        If Value = "True" Then Return "1"
+        Return "0"
+    End Function
+End Class
+
 Public Class BG3Editor_Stat_Special_UnlimitedDye
     Inherits Boolean_Editor_Stats_GenericAttribute
     Sub New()
         MyBase.New("Transform 1")
         Label = "Unlimited"
         Me.EditIsConditional = False
-        Me.ShowConditional = False
     End Sub
     Protected Overrides Function Text_to_Combo(Value As String) As String
         If Value = "None" Then Return "True"
@@ -54,7 +71,6 @@ Public Class BG3Editor_Stat_Special_RemoverDye
         MyBase.New("DyeColorPresetResource")
         Label = "Remover"
         Me.EditIsConditional = False
-        Me.ShowConditional = False
     End Sub
     Public Overrides Function Read(Que As BG3_Obj_Stats_Class) As Boolean
         If Que.Data.ContainsKey(Key) Then TextBox1.Text = "False" Else TextBox1.Text = "True"

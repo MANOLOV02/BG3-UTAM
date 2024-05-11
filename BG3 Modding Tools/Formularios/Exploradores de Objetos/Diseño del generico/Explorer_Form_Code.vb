@@ -18,6 +18,7 @@ Public Class ExploraForm_code
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
 
     End Sub
     Public Sub New(ByRef MdiParent As Main)

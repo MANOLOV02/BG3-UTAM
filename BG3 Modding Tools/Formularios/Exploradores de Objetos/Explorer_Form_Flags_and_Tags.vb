@@ -18,6 +18,7 @@ Public Class Explorer_Form_Flags_and_Tags
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
 
     End Sub
     Public Event TreeNodeSelected(sender As Object, e As TreeViewEventArgs)
@@ -25,7 +26,12 @@ Public Class Explorer_Form_Flags_and_Tags
 
     Private Sub Template_Explorer_Form_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         Dim visual As New Information_Form_Flags_and_Tags(MdiParent, Me) With {.StartPosition = FormStartPosition.Manual, .Location = New Point(Left + Width, Top), .Height = Height}
-        visual.Show()
+        If CType(Me.MdiParent, Main).OpenDetailsWindowsAlsoToolStripMenuItem.Checked Then
+            Hide_Unhide(True)
+        Else
+            ObjectsTree.DetailsVisibles = False
+            Hide_Unhide(False)
+        End If
     End Sub
 
     Public Overrides Sub BackgroundWork_Finished_Sub()

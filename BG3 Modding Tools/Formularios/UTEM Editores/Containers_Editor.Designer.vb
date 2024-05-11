@@ -41,41 +41,37 @@ Partial Class Containers_Editor
         GroupBox7.SuspendLayout()
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
-        GroupBox1.SuspendLayout()
-        GroupBox2.SuspendLayout()
-        GroupBox4.SuspendLayout()
+        GroupBoxBasicTemplates.SuspendLayout()
+        GroupBoxVisuals.SuspendLayout()
+        GroupBoxBasicStats.SuspendLayout()
         TabControl1.SuspendLayout()
         GroupBox5.SuspendLayout()
         SuspendLayout()
         ' 
         ' BG3Selector_Template1
         ' 
+        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Templato to add from it.  It must descend from containers bases."
         BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Containers
+        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Container"}
+        BG3Selector_Template1.Template_MustDescend_From = New String() {"49aba79d-0be8-42f0-9302-3761b3527fa4"}
         ' 
         ' GroupBox9
         ' 
         GroupBox9.Controls.Add(GroupBox5)
-        GroupBox9.Controls.SetChildIndex(GroupBox4, 0)
-        GroupBox9.Controls.SetChildIndex(GroupBox2, 0)
-        GroupBox9.Controls.SetChildIndex(GroupBox1, 0)
-        GroupBox9.Controls.SetChildIndex(BG3Cloner1, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxBasicStats, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxVisuals, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxBasicTemplates, 0)
         GroupBox9.Controls.SetChildIndex(GroupBox5, 0)
         ' 
-        ' BG3Cloner1
+        ' GroupBoxBasicTemplates
         ' 
-        BG3Cloner1.Label = "Drop a container stat or dye template to add new from it. They must be containers descendants"
-        BG3Cloner1.Stat_MustDescend_From = New String() {"_Container"}
-        BG3Cloner1.Template_MustDescend_From = New String() {"49aba79d-0be8-42f0-9302-3761b3527fa4"}
-        ' 
-        ' GroupBox1
-        ' 
-        GroupBox1.Controls.Add(BG3Editor_Template_Container_tt1)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Parent1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Mapkey1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Type1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Name1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_StoryItem1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Container_tt1, 0)
+        GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Container_tt1)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Parent1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Mapkey1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Type1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Name1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_StoryItem1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Container_tt1, 0)
         ' 
         ' BG3Editor_Template_Name1
         ' 
@@ -124,12 +120,12 @@ Partial Class Containers_Editor
         BG3Editor_Template_Container_tt1.AllowEdit = False
         BG3Editor_Template_Container_tt1.EditIsConditional = False
         BG3Editor_Template_Container_tt1.Label = "Treasure table"
-        BG3Editor_Template_Container_tt1.Location = New Point(6, 111)
+        BG3Editor_Template_Container_tt1.Location = New Point(3, 111)
         BG3Editor_Template_Container_tt1.Margin = New Padding(0)
         BG3Editor_Template_Container_tt1.MaximumSize = New Size(3000, 23)
         BG3Editor_Template_Container_tt1.MinimumSize = New Size(100, 23)
         BG3Editor_Template_Container_tt1.Name = "BG3Editor_Template_Container_tt1"
-        BG3Editor_Template_Container_tt1.Size = New Size(392, 23)
+        BG3Editor_Template_Container_tt1.Size = New Size(395, 23)
         BG3Editor_Template_Container_tt1.SplitterDistance = 100
         BG3Editor_Template_Container_tt1.TabIndex = 6
         ' 
@@ -145,7 +141,7 @@ Partial Class Containers_Editor
         GroupBox5.Enabled = False
         GroupBox5.Location = New Point(416, 10)
         GroupBox5.Name = "GroupBox5"
-        GroupBox5.Size = New Size(394, 145)
+        GroupBox5.Size = New Size(385, 145)
         GroupBox5.TabIndex = 5
         GroupBox5.TabStop = False
         GroupBox5.Text = "Auto sorting"
@@ -153,7 +149,7 @@ Partial Class Containers_Editor
         ' RadioButtonOrNot
         ' 
         RadioButtonOrNot.AutoSize = True
-        RadioButtonOrNot.Location = New Point(327, 74)
+        RadioButtonOrNot.Location = New Point(318, 74)
         RadioButtonOrNot.Name = "RadioButtonOrNot"
         RadioButtonOrNot.Size = New Size(59, 19)
         RadioButtonOrNot.TabIndex = 6
@@ -163,7 +159,7 @@ Partial Class Containers_Editor
         ' RadioButtonAndNot
         ' 
         RadioButtonAndNot.AutoSize = True
-        RadioButtonAndNot.Location = New Point(109, 74)
+        RadioButtonAndNot.Location = New Point(106, 74)
         RadioButtonAndNot.Name = "RadioButtonAndNot"
         RadioButtonAndNot.Size = New Size(68, 19)
         RadioButtonAndNot.TabIndex = 5
@@ -173,7 +169,7 @@ Partial Class Containers_Editor
         ' RadioButtonOr
         ' 
         RadioButtonOr.AutoSize = True
-        RadioButtonOr.Location = New Point(233, 74)
+        RadioButtonOr.Location = New Point(227, 74)
         RadioButtonOr.Name = "RadioButtonOr"
         RadioButtonOr.Size = New Size(38, 19)
         RadioButtonOr.TabIndex = 4
@@ -199,7 +195,7 @@ Partial Class Containers_Editor
         LabelDropTag.BorderStyle = BorderStyle.FixedSingle
         LabelDropTag.Location = New Point(6, 96)
         LabelDropTag.Name = "LabelDropTag"
-        LabelDropTag.Size = New Size(382, 35)
+        LabelDropTag.Size = New Size(375, 35)
         LabelDropTag.TabIndex = 2
         LabelDropTag.Text = "Drop a tag to build condition"
         LabelDropTag.TextAlign = ContentAlignment.MiddleCenter
@@ -213,7 +209,7 @@ Partial Class Containers_Editor
         BG3Editor_Template_ContainerContentFilterCondition1.MaximumSize = New Size(3000, 23)
         BG3Editor_Template_ContainerContentFilterCondition1.MinimumSize = New Size(100, 23)
         BG3Editor_Template_ContainerContentFilterCondition1.Name = "BG3Editor_Template_ContainerContentFilterCondition1"
-        BG3Editor_Template_ContainerContentFilterCondition1.Size = New Size(385, 23)
+        BG3Editor_Template_ContainerContentFilterCondition1.Size = New Size(375, 23)
         BG3Editor_Template_ContainerContentFilterCondition1.SplitterDistance = 100
         BG3Editor_Template_ContainerContentFilterCondition1.TabIndex = 1
         ' 
@@ -231,13 +227,13 @@ Partial Class Containers_Editor
         BG3Editor_Template_ContainerAutoAddOnPickup1.SplitterDistance = 100
         BG3Editor_Template_ContainerAutoAddOnPickup1.TabIndex = 0
         ' 
-        ' Container_Edior_Inherited
+        ' Containers_Editor
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1097, 601)
-        Name = "Container_Edior_Inherited"
-        Text = "Dyes editor"
+        ClientSize = New Size(1169, 596)
+        Name = "Containers_Editor"
+        Text = "Containers editor"
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         GroupBox3.ResumeLayout(False)
         TabPage3.ResumeLayout(False)
@@ -248,9 +244,9 @@ Partial Class Containers_Editor
         GroupBox7.ResumeLayout(False)
         TabPage1.ResumeLayout(False)
         GroupBox9.ResumeLayout(False)
-        GroupBox1.ResumeLayout(False)
-        GroupBox2.ResumeLayout(False)
-        GroupBox4.ResumeLayout(False)
+        GroupBoxBasicTemplates.ResumeLayout(False)
+        GroupBoxVisuals.ResumeLayout(False)
+        GroupBoxBasicStats.ResumeLayout(False)
         TabControl1.ResumeLayout(False)
         GroupBox5.ResumeLayout(False)
         GroupBox5.PerformLayout()

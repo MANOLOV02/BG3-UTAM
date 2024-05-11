@@ -45,6 +45,8 @@ Partial Class Main
         ObjectInformationToolStripMenuItem = New ToolStripMenuItem()
         FlagsExplorerToolStripMenuItem = New ToolStripMenuItem()
         VisualBankExplorerToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator5 = New ToolStripSeparator()
+        OpenDetailsWindowsAlsoToolStripMenuItem = New ToolStripMenuItem()
         ModdsToolStripMenuItem = New ToolStripMenuItem()
         NewToolStripMenuItem = New ToolStripMenuItem()
         LoadToolStripMenuItem = New ToolStripMenuItem()
@@ -151,7 +153,7 @@ Partial Class Main
         ' 
         ' ToolsToolStripMenuItem
         ' 
-        ToolsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ObjectsExplorerToolStripMenuItem, StatsExplorerToolStripMenuItem, TrasureTablesExplorerToolStripMenuItem, ObjectInformationToolStripMenuItem, FlagsExplorerToolStripMenuItem, VisualBankExplorerToolStripMenuItem})
+        ToolsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ObjectsExplorerToolStripMenuItem, StatsExplorerToolStripMenuItem, TrasureTablesExplorerToolStripMenuItem, ObjectInformationToolStripMenuItem, FlagsExplorerToolStripMenuItem, VisualBankExplorerToolStripMenuItem, ToolStripSeparator5, OpenDetailsWindowsAlsoToolStripMenuItem})
         ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         ToolsToolStripMenuItem.Size = New Size(112, 20)
         ToolsToolStripMenuItem.Text = "Objects exploring"
@@ -160,7 +162,7 @@ Partial Class Main
         ' 
         ObjectsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AllTemplatesToolStripMenuItem, ToolStripSeparator3, ItemTemplatesToolStripMenuItem, CharacterTemplatesToolStripMenuItem})
         ObjectsExplorerToolStripMenuItem.Name = "ObjectsExplorerToolStripMenuItem"
-        ObjectsExplorerToolStripMenuItem.Size = New Size(197, 22)
+        ObjectsExplorerToolStripMenuItem.Size = New Size(216, 22)
         ObjectsExplorerToolStripMenuItem.Text = "Templates explorer"
         ' 
         ' AllTemplatesToolStripMenuItem
@@ -189,32 +191,45 @@ Partial Class Main
         ' StatsExplorerToolStripMenuItem
         ' 
         StatsExplorerToolStripMenuItem.Name = "StatsExplorerToolStripMenuItem"
-        StatsExplorerToolStripMenuItem.Size = New Size(197, 22)
+        StatsExplorerToolStripMenuItem.Size = New Size(216, 22)
         StatsExplorerToolStripMenuItem.Text = "Stats explorer"
         ' 
         ' TrasureTablesExplorerToolStripMenuItem
         ' 
         TrasureTablesExplorerToolStripMenuItem.Name = "TrasureTablesExplorerToolStripMenuItem"
-        TrasureTablesExplorerToolStripMenuItem.Size = New Size(197, 22)
+        TrasureTablesExplorerToolStripMenuItem.Size = New Size(216, 22)
         TrasureTablesExplorerToolStripMenuItem.Text = "Treasure tables explorer"
         ' 
         ' ObjectInformationToolStripMenuItem
         ' 
         ObjectInformationToolStripMenuItem.Name = "ObjectInformationToolStripMenuItem"
-        ObjectInformationToolStripMenuItem.Size = New Size(197, 22)
+        ObjectInformationToolStripMenuItem.Size = New Size(216, 22)
         ObjectInformationToolStripMenuItem.Text = "Icon explorer"
         ' 
         ' FlagsExplorerToolStripMenuItem
         ' 
         FlagsExplorerToolStripMenuItem.Name = "FlagsExplorerToolStripMenuItem"
-        FlagsExplorerToolStripMenuItem.Size = New Size(197, 22)
+        FlagsExplorerToolStripMenuItem.Size = New Size(216, 22)
         FlagsExplorerToolStripMenuItem.Text = "Flags && tags explorer"
         ' 
         ' VisualBankExplorerToolStripMenuItem
         ' 
         VisualBankExplorerToolStripMenuItem.Name = "VisualBankExplorerToolStripMenuItem"
-        VisualBankExplorerToolStripMenuItem.Size = New Size(197, 22)
+        VisualBankExplorerToolStripMenuItem.Size = New Size(216, 22)
         VisualBankExplorerToolStripMenuItem.Text = "Visual bank explorer"
+        ' 
+        ' ToolStripSeparator5
+        ' 
+        ToolStripSeparator5.Name = "ToolStripSeparator5"
+        ToolStripSeparator5.Size = New Size(213, 6)
+        ' 
+        ' OpenDetailsWindowsAlsoToolStripMenuItem
+        ' 
+        OpenDetailsWindowsAlsoToolStripMenuItem.Checked = True
+        OpenDetailsWindowsAlsoToolStripMenuItem.CheckState = CheckState.Checked
+        OpenDetailsWindowsAlsoToolStripMenuItem.Name = "OpenDetailsWindowsAlsoToolStripMenuItem"
+        OpenDetailsWindowsAlsoToolStripMenuItem.Size = New Size(216, 22)
+        OpenDetailsWindowsAlsoToolStripMenuItem.Text = "Open with details windows"
         ' 
         ' ModdsToolStripMenuItem
         ' 
@@ -227,13 +242,13 @@ Partial Class Main
         ' NewToolStripMenuItem
         ' 
         NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        NewToolStripMenuItem.Size = New Size(180, 22)
+        NewToolStripMenuItem.Size = New Size(100, 22)
         NewToolStripMenuItem.Text = "New"
         ' 
         ' LoadToolStripMenuItem
         ' 
         LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-        LoadToolStripMenuItem.Size = New Size(180, 22)
+        LoadToolStripMenuItem.Size = New Size(100, 22)
         LoadToolStripMenuItem.Text = "Load"
         ' 
         ' ToolsToolStripMenuItem1
@@ -246,21 +261,20 @@ Partial Class Main
         ' 
         ' ArmorsToolStripMenuItem
         ' 
-        ArmorsToolStripMenuItem.Enabled = False
         ArmorsToolStripMenuItem.Name = "ArmorsToolStripMenuItem"
-        ArmorsToolStripMenuItem.Size = New Size(180, 22)
+        ArmorsToolStripMenuItem.Size = New Size(131, 22)
         ArmorsToolStripMenuItem.Text = "Armors"
         ' 
         ' ContainersToolStripMenuItem
         ' 
         ContainersToolStripMenuItem.Name = "ContainersToolStripMenuItem"
-        ContainersToolStripMenuItem.Size = New Size(180, 22)
+        ContainersToolStripMenuItem.Size = New Size(131, 22)
         ContainersToolStripMenuItem.Text = "Containers"
         ' 
         ' DyesToolStripMenuItem
         ' 
         DyesToolStripMenuItem.Name = "DyesToolStripMenuItem"
-        DyesToolStripMenuItem.Size = New Size(180, 22)
+        DyesToolStripMenuItem.Size = New Size(131, 22)
         DyesToolStripMenuItem.Text = "Dyes"
         ' 
         ' FoldersToolStripMenuItem
@@ -486,4 +500,6 @@ Partial Class Main
     Friend WithEvents BG3GameToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BG3ModsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
+    Friend WithEvents OpenDetailsWindowsAlsoToolStripMenuItem As ToolStripMenuItem
 End Class

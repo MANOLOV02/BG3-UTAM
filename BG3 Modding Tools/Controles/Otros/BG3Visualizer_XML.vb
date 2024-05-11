@@ -32,6 +32,7 @@ Public Class BG3Visualizer_XML
         Me.ReadOnly = True
         Me.WordWrap = False
         Me.ContextMenuStrip = XMLRichContext
+        Flickering.EnableDoubleBuffering(Me)
     End Sub
     Public Sub Process_Gameobject(ByRef obj As BG3_Obj_Template_Class)
         Me._text = "Error getting object information"
@@ -105,6 +106,13 @@ Public Class BG3Visualizer_XML
     End Sub
     Public Sub Process_Tags(Str As String)
         Me._text = "Error getting " + Funciones.ManoloSep + " tags"
+        If IsNothing(Str) = False Then
+            _text = Str
+        End If
+        Processs_Text()
+    End Sub
+    Public Sub Process_Attributes(Str As String)
+        Me._text = "Error getting " + Funciones.ManoloSep + " attributes"
         If IsNothing(Str) = False Then
             _text = Str
         End If
@@ -254,7 +262,7 @@ Public Class BG3Visualizer_XML
                 For x = 0 To parts.Length - 1
                     Select Case x
                         Case 0
-                            If parts(x).Contains("(Overrided) data") Then
+                            If parts(x).Contains("(Overrided) data") Or parts(x).Contains("(Overrided) Attribu") Then
                                 overrided = True
                                 parts(x) = parts(x).Replace("(Overrided) ", "")
                             End If

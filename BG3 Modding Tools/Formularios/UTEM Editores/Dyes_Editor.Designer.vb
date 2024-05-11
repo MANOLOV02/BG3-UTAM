@@ -25,7 +25,7 @@ Partial Class Dyes_Editor
         BG3Editor_Template_ColorPreset1 = New BG3Editor_Template_ColorPreset()
         BG3Editor_Stat_Special_RemoverDye1 = New BG3Editor_Stat_Special_RemoverDye()
         BG3Editor_Stat_Special_UnlimitedDye1 = New BG3Editor_Stat_Special_UnlimitedDye()
-        GroupBox5 = New GroupBox()
+        GroupBoxColors = New GroupBox()
         BG3Editor_Template_DyeColorView15 = New BG3Editor_Template_DyeColorView()
         BG3Editor_Template_DyeColorView14 = New BG3Editor_Template_DyeColorView()
         BG3Editor_Template_DyeColorView13 = New BG3Editor_Template_DyeColorView()
@@ -41,7 +41,7 @@ Partial Class Dyes_Editor
         BG3Editor_Template_DyeColorView3 = New BG3Editor_Template_DyeColorView()
         BG3Editor_Template_DyeColorView2 = New BG3Editor_Template_DyeColorView()
         BG3Editor_Template_DyeColorView1 = New BG3Editor_Template_DyeColorView()
-        TabPage4 = New TabPage()
+        TabPageDyes = New TabPage()
         GroupBox6 = New GroupBox()
         BG3Editor_Complex_Dyecolor1 = New BG3Editor_Complex_Dyecolor()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
@@ -54,43 +54,39 @@ Partial Class Dyes_Editor
         GroupBox7.SuspendLayout()
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
-        GroupBox1.SuspendLayout()
-        GroupBox2.SuspendLayout()
-        GroupBox4.SuspendLayout()
+        GroupBoxBasicTemplates.SuspendLayout()
+        GroupBoxVisuals.SuspendLayout()
+        GroupBoxBasicStats.SuspendLayout()
         TabControl1.SuspendLayout()
-        GroupBox5.SuspendLayout()
-        TabPage4.SuspendLayout()
+        GroupBoxColors.SuspendLayout()
+        TabPageDyes.SuspendLayout()
         GroupBox6.SuspendLayout()
         SuspendLayout()
         ' 
         ' BG3Selector_Template1
         ' 
+        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Templato to add from it.  It must descend from dyes bases."
         BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Containers
+        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Dyes"}
+        BG3Selector_Template1.Template_MustDescend_From = New String() {"1a750a66-e5c2-40be-9f62-0a4bf3ddb403"}
         ' 
         ' GroupBox9
         ' 
-        GroupBox9.Controls.Add(GroupBox5)
-        GroupBox9.Controls.SetChildIndex(GroupBox4, 0)
-        GroupBox9.Controls.SetChildIndex(GroupBox2, 0)
-        GroupBox9.Controls.SetChildIndex(GroupBox1, 0)
-        GroupBox9.Controls.SetChildIndex(BG3Cloner1, 0)
-        GroupBox9.Controls.SetChildIndex(GroupBox5, 0)
+        GroupBox9.Controls.Add(GroupBoxColors)
+        GroupBox9.Controls.SetChildIndex(GroupBoxBasicStats, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxVisuals, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxBasicTemplates, 0)
+        GroupBox9.Controls.SetChildIndex(GroupBoxColors, 0)
         ' 
-        ' BG3Cloner1
+        ' GroupBoxBasicTemplates
         ' 
-        BG3Cloner1.Label = "Drop a dye stat or dye template to add new from it. They must be dyes descendants"
-        BG3Cloner1.Stat_MustDescend_From = {"_Dyes"}
-        BG3Cloner1.Template_MustDescend_From = {"1a750a66-e5c2-40be-9f62-0a4bf3ddb403"}
-        ' 
-        ' GroupBox1
-        ' 
-        GroupBox1.Controls.Add(BG3Editor_Template_ColorPreset1)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Parent1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Mapkey1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Type1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_Name1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_StoryItem1, 0)
-        GroupBox1.Controls.SetChildIndex(BG3Editor_Template_ColorPreset1, 0)
+        GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_ColorPreset1)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Parent1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Mapkey1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Type1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_Name1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_StoryItem1, 0)
+        GroupBoxBasicTemplates.Controls.SetChildIndex(BG3Editor_Template_ColorPreset1, 0)
         ' 
         ' BG3Editor_Template_Name1
         ' 
@@ -103,7 +99,7 @@ Partial Class Dyes_Editor
         ' BG3Editor_Template_Parent1
         ' 
         BG3Editor_Template_Parent1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Template_Parent1.MustDescendFrom = {"1a750a66-e5c2-40be-9f62-0a4bf3ddb403"}
+        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"1a750a66-e5c2-40be-9f62-0a4bf3ddb403"}
         ' 
         ' BG3Editor_Template_TechnicalDescription1
         ' 
@@ -125,20 +121,6 @@ Partial Class Dyes_Editor
         ' 
         BG3Editor_Template_VisualTemplate1.EditorType = BG3_Editor_Type.Textbox
         ' 
-        ' GroupBox4
-        ' 
-        GroupBox4.Controls.Add(BG3Editor_Stat_Special_RemoverDye1)
-        GroupBox4.Controls.Add(BG3Editor_Stat_Special_UnlimitedDye1)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Using1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Weight1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Type1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Rarity1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_ValueOverride1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Unique1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Special_UnlimitedDye1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Template_Stats1, 0)
-        GroupBox4.Controls.SetChildIndex(BG3Editor_Stat_Special_RemoverDye1, 0)
-        ' 
         ' BG3Editor_Template_Stats1
         ' 
         BG3Editor_Template_Stats1.EditorType = BG3_Editor_Type.Textbox
@@ -146,15 +128,15 @@ Partial Class Dyes_Editor
         ' BG3Editor_Stat_Using1
         ' 
         BG3Editor_Stat_Using1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Stat_Using1.MustDescendFrom = {"_Dyes"}
+        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Dyes"}
         ' 
         ' TabControl1
         ' 
-        TabControl1.Controls.Add(TabPage4)
+        TabControl1.Controls.Add(TabPageDyes)
         TabControl1.Controls.SetChildIndex(TabPage3, 0)
         TabControl1.Controls.SetChildIndex(TabPage5, 0)
         TabControl1.Controls.SetChildIndex(TabPage2, 0)
-        TabControl1.Controls.SetChildIndex(TabPage4, 0)
+        TabControl1.Controls.SetChildIndex(TabPageDyes, 0)
         TabControl1.Controls.SetChildIndex(TabPage1, 0)
         ' 
         ' BG3Editor_Template_ColorPreset1
@@ -162,12 +144,12 @@ Partial Class Dyes_Editor
         BG3Editor_Template_ColorPreset1.AllowEdit = False
         BG3Editor_Template_ColorPreset1.EditIsConditional = False
         BG3Editor_Template_ColorPreset1.Label = "Color preset"
-        BG3Editor_Template_ColorPreset1.Location = New Point(6, 111)
+        BG3Editor_Template_ColorPreset1.Location = New Point(3, 111)
         BG3Editor_Template_ColorPreset1.Margin = New Padding(0)
         BG3Editor_Template_ColorPreset1.MaximumSize = New Size(2000, 23)
         BG3Editor_Template_ColorPreset1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_ColorPreset1.Name = "BG3Editor_Template_ColorPreset1"
-        BG3Editor_Template_ColorPreset1.Size = New Size(392, 23)
+        BG3Editor_Template_ColorPreset1.Size = New Size(395, 23)
         BG3Editor_Template_ColorPreset1.SplitterDistance = 100
         BG3Editor_Template_ColorPreset1.TabIndex = 36
         ' 
@@ -176,54 +158,56 @@ Partial Class Dyes_Editor
         BG3Editor_Stat_Special_RemoverDye1.EditIsConditional = False
         BG3Editor_Stat_Special_RemoverDye1.EditorType = BG3_Editor_Type.Combobox
         BG3Editor_Stat_Special_RemoverDye1.Label = "Remover"
-        BG3Editor_Stat_Special_RemoverDye1.Location = New Point(241, 134)
+        BG3Editor_Stat_Special_RemoverDye1.Location = New Point(196, 220)
         BG3Editor_Stat_Special_RemoverDye1.Margin = New Padding(0)
         BG3Editor_Stat_Special_RemoverDye1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stat_Special_RemoverDye1.MinimumSize = New Size(0, 23)
         BG3Editor_Stat_Special_RemoverDye1.Name = "BG3Editor_Stat_Special_RemoverDye1"
         BG3Editor_Stat_Special_RemoverDye1.ShowConditional = False
-        BG3Editor_Stat_Special_RemoverDye1.Size = New Size(157, 23)
-        BG3Editor_Stat_Special_RemoverDye1.SplitterDistance = 80
+        BG3Editor_Stat_Special_RemoverDye1.Size = New Size(173, 23)
+        BG3Editor_Stat_Special_RemoverDye1.SplitterDistance = 100
         BG3Editor_Stat_Special_RemoverDye1.TabIndex = 12
         ' 
         ' BG3Editor_Stat_Special_UnlimitedDye1
         ' 
         BG3Editor_Stat_Special_UnlimitedDye1.EditIsConditional = False
         BG3Editor_Stat_Special_UnlimitedDye1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stat_Special_UnlimitedDye1.Label = "Unlimited"
-        BG3Editor_Stat_Special_UnlimitedDye1.Location = New Point(241, 111)
+        BG3Editor_Stat_Special_UnlimitedDye1.Label = "Unlimited dye"
+        BG3Editor_Stat_Special_UnlimitedDye1.Location = New Point(196, 197)
         BG3Editor_Stat_Special_UnlimitedDye1.Margin = New Padding(0)
         BG3Editor_Stat_Special_UnlimitedDye1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stat_Special_UnlimitedDye1.MinimumSize = New Size(0, 23)
         BG3Editor_Stat_Special_UnlimitedDye1.Name = "BG3Editor_Stat_Special_UnlimitedDye1"
         BG3Editor_Stat_Special_UnlimitedDye1.ShowConditional = False
-        BG3Editor_Stat_Special_UnlimitedDye1.Size = New Size(157, 23)
-        BG3Editor_Stat_Special_UnlimitedDye1.SplitterDistance = 80
+        BG3Editor_Stat_Special_UnlimitedDye1.Size = New Size(173, 23)
+        BG3Editor_Stat_Special_UnlimitedDye1.SplitterDistance = 100
         BG3Editor_Stat_Special_UnlimitedDye1.TabIndex = 11
         ' 
-        ' GroupBox5
+        ' GroupBoxColors
         ' 
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView15)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView14)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView13)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView12)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView11)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView10)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView9)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView8)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView7)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView6)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView5)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView4)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView3)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView2)
-        GroupBox5.Controls.Add(BG3Editor_Template_DyeColorView1)
-        GroupBox5.Location = New Point(425, 10)
-        GroupBox5.Name = "GroupBox5"
-        GroupBox5.Size = New Size(385, 256)
-        GroupBox5.TabIndex = 9
-        GroupBox5.TabStop = False
-        GroupBox5.Text = "Colors"
+        GroupBoxColors.Controls.Add(BG3Editor_Stat_Special_RemoverDye1)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView15)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView14)
+        GroupBoxColors.Controls.Add(BG3Editor_Stat_Special_UnlimitedDye1)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView13)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView12)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView11)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView10)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView9)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView8)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView7)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView6)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView5)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView4)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView3)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView2)
+        GroupBoxColors.Controls.Add(BG3Editor_Template_DyeColorView1)
+        GroupBoxColors.Location = New Point(416, 10)
+        GroupBoxColors.Name = "GroupBoxColors"
+        GroupBoxColors.Size = New Size(385, 256)
+        GroupBoxColors.TabIndex = 9
+        GroupBoxColors.TabStop = False
+        GroupBoxColors.Text = "Colors"
         ' 
         ' BG3Editor_Template_DyeColorView15
         ' 
@@ -375,14 +359,14 @@ Partial Class Dyes_Editor
         BG3Editor_Template_DyeColorView1.Size = New Size(173, 23)
         BG3Editor_Template_DyeColorView1.TabIndex = 48
         ' 
-        ' TabPage4
+        ' TabPageDyes
         ' 
-        TabPage4.Controls.Add(GroupBox6)
-        TabPage4.Location = New Point(4, 27)
-        TabPage4.Name = "TabPage4"
-        TabPage4.Size = New Size(816, 473)
-        TabPage4.TabIndex = 5
-        TabPage4.Text = "Colors definitions"
+        TabPageDyes.Controls.Add(GroupBox6)
+        TabPageDyes.Location = New Point(4, 27)
+        TabPageDyes.Name = "TabPageDyes"
+        TabPageDyes.Size = New Size(807, 472)
+        TabPageDyes.TabIndex = 5
+        TabPageDyes.Text = "Colors definitions"
         ' 
         ' GroupBox6
         ' 
@@ -390,7 +374,7 @@ Partial Class Dyes_Editor
         GroupBox6.Dock = DockStyle.Fill
         GroupBox6.Location = New Point(0, 0)
         GroupBox6.Name = "GroupBox6"
-        GroupBox6.Size = New Size(816, 473)
+        GroupBox6.Size = New Size(807, 472)
         GroupBox6.TabIndex = 2
         GroupBox6.TabStop = False
         ' 
@@ -400,14 +384,14 @@ Partial Class Dyes_Editor
         BG3Editor_Complex_Dyecolor1.Enabled = False
         BG3Editor_Complex_Dyecolor1.Location = New Point(3, 19)
         BG3Editor_Complex_Dyecolor1.Name = "BG3Editor_Complex_Dyecolor1"
-        BG3Editor_Complex_Dyecolor1.Size = New Size(810, 451)
+        BG3Editor_Complex_Dyecolor1.Size = New Size(801, 450)
         BG3Editor_Complex_Dyecolor1.TabIndex = 0
         ' 
         ' Dyes_Editor
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1097, 601)
+        ClientSize = New Size(1169, 596)
         Name = "Dyes_Editor"
         Text = "Dyes editor"
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
@@ -420,18 +404,18 @@ Partial Class Dyes_Editor
         GroupBox7.ResumeLayout(False)
         TabPage1.ResumeLayout(False)
         GroupBox9.ResumeLayout(False)
-        GroupBox1.ResumeLayout(False)
-        GroupBox2.ResumeLayout(False)
-        GroupBox4.ResumeLayout(False)
+        GroupBoxBasicTemplates.ResumeLayout(False)
+        GroupBoxVisuals.ResumeLayout(False)
+        GroupBoxBasicStats.ResumeLayout(False)
         TabControl1.ResumeLayout(False)
-        GroupBox5.ResumeLayout(False)
-        TabPage4.ResumeLayout(False)
+        GroupBoxColors.ResumeLayout(False)
+        TabPageDyes.ResumeLayout(False)
         GroupBox6.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
 
     Friend WithEvents BG3Editor_Template_ColorPreset1 As BG3Editor_Template_ColorPreset
-    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents GroupBoxColors As GroupBox
     Friend WithEvents BG3Editor_Template_DyeColorView15 As BG3Editor_Template_DyeColorView
     Friend WithEvents BG3Editor_Template_DyeColorView14 As BG3Editor_Template_DyeColorView
     Friend WithEvents BG3Editor_Template_DyeColorView13 As BG3Editor_Template_DyeColorView
@@ -449,7 +433,7 @@ Partial Class Dyes_Editor
     Friend WithEvents BG3Editor_Template_DyeColorView1 As BG3Editor_Template_DyeColorView
     Friend WithEvents BG3Editor_Stat_Special_RemoverDye1 As BG3Editor_Stat_Special_RemoverDye
     Friend WithEvents BG3Editor_Stat_Special_UnlimitedDye1 As BG3Editor_Stat_Special_UnlimitedDye
-    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents TabPageDyes As TabPage
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents BG3Editor_Complex_Dyecolor1 As BG3Editor_Complex_Dyecolor
 End Class

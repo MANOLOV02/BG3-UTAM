@@ -13,7 +13,7 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
 
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
-        SplitContainer3.Panel2Collapsed = Not _DropIcon
+        TableLayoutPanel1.ColumnStyles(1).Width = 0
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
     End Sub
@@ -40,7 +40,12 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         End Get
         Set(value As Boolean)
             _DropIcon = value
-            SplitContainer3.Panel2Collapsed = Not _DropIcon
+            If value = True Then
+                TableLayoutPanel1.ColumnStyles(1).Width = 20
+            Else
+                TableLayoutPanel1.ColumnStyles(1).Width = 0
+            End If
+
         End Set
     End Property
 
@@ -79,31 +84,53 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
             Habilita_deshabilita()
         End Set
     End Property
+
+
+    Private _showlabel As Boolean = True
     <DefaultValue(True)>
     Public Property ShowLabel As Boolean
         Get
-            Return Not SplitContainer1.Panel1Collapsed
+            Return _showlabel
         End Get
         Set(value As Boolean)
-            SplitContainer1.Panel1Collapsed = Not value
+            _showlabel = value
+            If value = True Then
+                TableLayoutPanel1.ColumnStyles(0).Width = SplitterDistance
+            Else
+                TableLayoutPanel1.ColumnStyles(0).Width = 0
+            End If
         End Set
     End Property
+
+    Private _showConditioanl As Boolean = True
     <DefaultValue(True)>
     Public Property ShowConditional As Boolean
         Get
-            Return Not SplitContainer2.Panel1Collapsed
+            Return _showConditioanl
         End Get
         Set(value As Boolean)
-            SplitContainer2.Panel1Collapsed = Not value
+            _showConditioanl = value
+            If value = True Then
+                TableLayoutPanel1.ColumnStyles(2).Width = 20
+            Else
+                TableLayoutPanel1.ColumnStyles(2).Width = 0
+            End If
         End Set
     End Property
+
+    Private _SplitterDistance As Integer = 120
     <DefaultValue(120)>
     Public Property SplitterDistance As Integer
         Get
-            Return SplitContainer1.SplitterDistance
+            Return _SplitterDistance
         End Get
         Set(value As Integer)
-            SplitContainer1.SplitterDistance = value
+            _SplitterDistance = value
+            If _showlabel = True Then
+                TableLayoutPanel1.ColumnStyles(0).Width = SplitterDistance
+            Else
+                TableLayoutPanel1.ColumnStyles(0).Width = 0
+            End If
         End Set
     End Property
 
@@ -156,8 +183,8 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         NumericUpDown1.ReadOnly = TextBox1.ReadOnly
     End Sub
     Overridable Sub Clear()
-        TextBox1.Text = ""
         If Me.EditIsConditional = True Then CheckBox1.Checked = True
+        TextBox1.Text = ""
     End Sub
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
         Habilita_deshabilita()
@@ -770,55 +797,98 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         Debugger.Break()
         Return False
     End Function
+
     Public Overridable Function Conditional_changed(Que As BG3_Obj_Assets_Class) As Boolean
         Debugger.Break()
         Return False
+    End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_Assets_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
     End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         Debugger.Break()
         Return False
     End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_FlagsAndTags_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
+    End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_Generic_Class) As Boolean
         Debugger.Break()
         Return False
+    End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_Generic_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
     End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_IconAtlass_Class) As Boolean
         Debugger.Break()
         Return False
     End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_IconAtlass_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
+    End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_Stats_Class) As Boolean
         Debugger.Break()
         Return False
+    End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_Stats_Class) As String
+        Debugger.Break()
+        Return Nothing
     End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_Template_Class) As Boolean
         Debugger.Break()
         Return False
     End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_Template_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
+    End Function
+
     Public Overridable Function Conditional_changed(Que As BG3_Obj_TreasureTable_Class) As Boolean
         Debugger.Break()
         Return False
+    End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_TreasureTable_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
     End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_TreasureTable_Subtable_Class) As Boolean
         Debugger.Break()
         Return False
     End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_TreasureTable_Subtable_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
+    End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_TreasureTable_TableItem_Class) As Boolean
         Debugger.Break()
         Return False
+    End Function
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_TreasureTable_TableItem_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
     End Function
     Public Overridable Function Conditional_changed(Que As BG3_Obj_VisualBank_Class) As Boolean
         Debugger.Break()
         Return False
     End Function
-
+    Public Overridable Function Conditional_changed_Empty(Que As BG3_Obj_VisualBank_Class) As LSLib.LS.NodeAttribute
+        Debugger.Break()
+        Return Nothing
+    End Function
     Public Overridable Function Conditional_GetParent_Value(Que As BG3_Obj_IconUV_Class) As String
         Debugger.Break()
         Return ""
     End Function
+
     Public Overridable Function Conditional_GetParent_Value(Que As BG3_Obj_Assets_Class) As String
         Debugger.Break()
         Return ""
     End Function
+
     Public Overridable Function Conditional_GetParent_Value(Que As BG3_Obj_FlagsAndTags_Class) As String
         Debugger.Break()
         Return ""
@@ -827,6 +897,7 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         Debugger.Break()
         Return ""
     End Function
+
     Public Overridable Function Conditional_GetParent_Value(Que As BG3_Obj_IconAtlass_Class) As String
         Debugger.Break()
         Return ""
@@ -930,6 +1001,18 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
             NumericUpDown1.DecimalPlaces = value
         End Set
     End Property
+
+    <Browsable(False)>
+    <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
+    Public Property NumericIncrement As Decimal
+        Get
+            Return NumericUpDown1.Increment
+        End Get
+        Set(value As Decimal)
+            NumericUpDown1.Increment = value
+        End Set
+    End Property
+
     <Browsable(False)>
     <DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)>
     Public Property NumericValue As Decimal

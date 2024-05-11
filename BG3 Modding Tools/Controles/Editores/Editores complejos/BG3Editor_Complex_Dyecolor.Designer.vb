@@ -103,9 +103,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         DarkerR = New CheckBox()
         DarkerG = New CheckBox()
         DarkerB = New CheckBox()
+        TableLayoutPanel3 = New TableLayoutPanel()
+        Button29 = New Button()
         Label16 = New Label()
         Button30 = New Button()
-        Button29 = New Button()
         ColorDialog1 = New ColorDialog()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
         SplitContainer1.Panel1.SuspendLayout()
@@ -128,6 +129,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         CType(PictureBox6, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox9, ComponentModel.ISupportInitialize).BeginInit()
         TableLayoutPanel2.SuspendLayout()
+        TableLayoutPanel3.SuspendLayout()
         SuspendLayout()
         ' 
         ' SplitContainer1
@@ -143,10 +145,8 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' 
         ' SplitContainer1.Panel2
         ' 
-        SplitContainer1.Panel2.Controls.Add(Label16)
-        SplitContainer1.Panel2.Controls.Add(Button30)
-        SplitContainer1.Panel2.Controls.Add(Button29)
-        SplitContainer1.Size = New Size(1102, 466)
+        SplitContainer1.Panel2.Controls.Add(TableLayoutPanel3)
+        SplitContainer1.Size = New Size(1141, 466)
         SplitContainer1.SplitterDistance = 595
         SplitContainer1.TabIndex = 0
         ' 
@@ -224,9 +224,9 @@ Partial Class BG3Editor_Complex_Dyecolor
         TableLayoutPanel1.Controls.Add(PictureBox5, 1, 5)
         TableLayoutPanel1.Controls.Add(PictureBox10, 1, 10)
         TableLayoutPanel1.Controls.Add(TextBox6, 2, 6)
-        TableLayoutPanel1.Controls.Add(PictureBox8, 1, 6)
+        TableLayoutPanel1.Controls.Add(PictureBox8, 1, 8)
         TableLayoutPanel1.Controls.Add(PictureBox7, 1, 7)
-        TableLayoutPanel1.Controls.Add(PictureBox6, 1, 8)
+        TableLayoutPanel1.Controls.Add(PictureBox6, 1, 6)
         TableLayoutPanel1.Controls.Add(TextBox5, 2, 5)
         TableLayoutPanel1.Controls.Add(PictureBox9, 1, 9)
         TableLayoutPanel1.Controls.Add(TextBox2, 2, 2)
@@ -966,7 +966,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' 
         PictureBox8.BorderStyle = BorderStyle.FixedSingle
         PictureBox8.Dock = DockStyle.Fill
-        PictureBox8.Location = New Point(123, 176)
+        PictureBox8.Location = New Point(123, 234)
         PictureBox8.Name = "PictureBox8"
         PictureBox8.Size = New Size(65, 23)
         PictureBox8.TabIndex = 136
@@ -986,7 +986,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' 
         PictureBox6.BorderStyle = BorderStyle.FixedSingle
         PictureBox6.Dock = DockStyle.Fill
-        PictureBox6.Location = New Point(123, 234)
+        PictureBox6.Location = New Point(123, 176)
         PictureBox6.Name = "PictureBox6"
         PictureBox6.Size = New Size(65, 23)
         PictureBox6.TabIndex = 126
@@ -1116,38 +1116,57 @@ Partial Class BG3Editor_Complex_Dyecolor
         DarkerB.TextAlign = ContentAlignment.MiddleCenter
         DarkerB.UseVisualStyleBackColor = True
         ' 
+        ' TableLayoutPanel3
+        ' 
+        TableLayoutPanel3.ColumnCount = 1
+        TableLayoutPanel3.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel3.Controls.Add(Button29, 0, 0)
+        TableLayoutPanel3.Controls.Add(Label16, 0, 3)
+        TableLayoutPanel3.Controls.Add(Button30, 0, 1)
+        TableLayoutPanel3.Dock = DockStyle.Fill
+        TableLayoutPanel3.Location = New Point(0, 0)
+        TableLayoutPanel3.Name = "TableLayoutPanel3"
+        TableLayoutPanel3.RowCount = 5
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Absolute, 32F))
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Absolute, 32F))
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
+        TableLayoutPanel3.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        TableLayoutPanel3.Size = New Size(542, 466)
+        TableLayoutPanel3.TabIndex = 3
+        ' 
+        ' Button29
+        ' 
+        Button29.Dock = DockStyle.Fill
+        Button29.Location = New Point(3, 3)
+        Button29.Name = "Button29"
+        Button29.Size = New Size(536, 26)
+        Button29.TabIndex = 0
+        Button29.Text = "Copy colors"
+        Button29.UseVisualStyleBackColor = True
+        ' 
         ' Label16
         ' 
         Label16.AllowDrop = True
-        Label16.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         Label16.BackColor = SystemColors.Window
         Label16.BorderStyle = BorderStyle.FixedSingle
-        Label16.Location = New Point(17, 88)
+        Label16.Dock = DockStyle.Fill
+        Label16.Location = New Point(3, 84)
         Label16.Name = "Label16"
-        Label16.Size = New Size(464, 169)
+        Label16.Size = New Size(536, 362)
         Label16.TabIndex = 2
         Label16.Text = "Drop a dye, an armor or a material preset to inherit colors"
         Label16.TextAlign = ContentAlignment.MiddleCenter
         ' 
         ' Button30
         ' 
-        Button30.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button30.Location = New Point(3, 39)
+        Button30.Dock = DockStyle.Fill
+        Button30.Location = New Point(3, 35)
         Button30.Name = "Button30"
-        Button30.Size = New Size(497, 30)
+        Button30.Size = New Size(536, 26)
         Button30.TabIndex = 1
         Button30.Text = "Paste colors"
         Button30.UseVisualStyleBackColor = True
-        ' 
-        ' Button29
-        ' 
-        Button29.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-        Button29.Location = New Point(3, 3)
-        Button29.Name = "Button29"
-        Button29.Size = New Size(497, 30)
-        Button29.TabIndex = 0
-        Button29.Text = "Copy colors"
-        Button29.UseVisualStyleBackColor = True
         ' 
         ' BG3Editor_Complex_Dyecolor
         ' 
@@ -1155,7 +1174,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         AutoScaleMode = AutoScaleMode.Font
         Controls.Add(SplitContainer1)
         Name = "BG3Editor_Complex_Dyecolor"
-        Size = New Size(1102, 466)
+        Size = New Size(1141, 466)
         SplitContainer1.Panel1.ResumeLayout(False)
         SplitContainer1.Panel2.ResumeLayout(False)
         CType(SplitContainer1, ComponentModel.ISupportInitialize).EndInit()
@@ -1179,6 +1198,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         CType(PictureBox9, ComponentModel.ISupportInitialize).EndInit()
         TableLayoutPanel2.ResumeLayout(False)
         TableLayoutPanel2.PerformLayout()
+        TableLayoutPanel3.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
 
@@ -1267,5 +1287,6 @@ Partial Class BG3Editor_Complex_Dyecolor
     Friend WithEvents ColorDialog1 As ColorDialog
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
+    Friend WithEvents TableLayoutPanel3 As TableLayoutPanel
 
 End Class

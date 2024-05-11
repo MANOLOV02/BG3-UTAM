@@ -84,10 +84,17 @@ Public Class ModLoader
             Case sender Is LoadWorker
                 If e.Cancelled = False Then
                     Dim ModLoaded = New UtamMod(Me.MdiParent, CurrentMod.Isnew)
+                    If CurrentMod.Isnew Then Funciones.Clear_Current_Mod_Loaded()
                     If CurrentMod.Isnew = False Then ModLoaded.Load_finished(CurrentMod)
                     ModLoaded.Show()
                     RaiseEvent Mod_load(ModLoaded)
                     Me.Close()
+                    Else
+                        Me.GroupBox2.Enabled = True
+                    Me.ListBox1.Enabled = True
+                    Me.Button1.Enabled = True
+                    Me.Button2.Enabled = True
+                    Me.Button3.Enabled = True
                 End If
         End Select
     End Sub
@@ -105,6 +112,12 @@ Public Class ModLoader
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Me.GroupBox2.Enabled = False
+        Me.ListBox1.Enabled = False
+        Me.Button1.Enabled = False
+        Me.Button2.Enabled = False
+        Me.Button3.Enabled = False
+
         If ListBox1.SelectedIndex = -1 Then Exit Sub
         If CheckBox1.Checked Then
             CType(Me.MdiParent, Main).LoadCache()

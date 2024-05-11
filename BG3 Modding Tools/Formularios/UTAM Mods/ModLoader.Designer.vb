@@ -222,7 +222,6 @@ Partial Class ModLoader
         ' 
         ' RadioButton2
         ' 
-        RadioButton2.AutoSize = True
         RadioButton2.Location = New Point(188, 47)
         RadioButton2.Name = "RadioButton2"
         RadioButton2.Size = New Size(207, 19)
@@ -232,7 +231,6 @@ Partial Class ModLoader
         ' 
         ' RadioButton1
         ' 
-        RadioButton1.AutoSize = True
         RadioButton1.Checked = True
         RadioButton1.Location = New Point(6, 47)
         RadioButton1.Name = "RadioButton1"
@@ -244,7 +242,7 @@ Partial Class ModLoader
         ' 
         ' CheckBox1
         ' 
-        CheckBox1.AutoSize = True
+        CheckBox1.AutoEllipsis = True
         CheckBox1.Location = New Point(6, 22)
         CheckBox1.Name = "CheckBox1"
         CheckBox1.Size = New Size(183, 19)
@@ -289,7 +287,6 @@ Partial Class ModLoader
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
         GroupBox2.ResumeLayout(False)
-        GroupBox2.PerformLayout()
         ResumeLayout(False)
     End Sub
 

@@ -15,6 +15,7 @@ Imports System.DirectoryServices
 Imports System.Net.WebRequestMethods
 Imports LSLib.Granny
 Imports System.Runtime
+Imports System.Net.NetworkInformation
 
 Module Extensions
     <Extension>
@@ -63,15 +64,7 @@ Module Extensions
         If Quien.Attributes.ContainsKey(str) = False Then
             Return Nothing
         End If
-        If Quien.Attributes(str).Type = AttributeType.TranslatedString Then
-            If CType(Quien.Attributes(str).Value, TranslatedString).Handle = "" Then Return ""
-            If CType(Quien.Attributes(str).Value, TranslatedString).Handle.StartsWith("h"c) = False Then Return ""
-            Return CType(Quien.Attributes(str).Value, TranslatedString).Handle + ";" + CType(Quien.Attributes(str).Value, TranslatedString).Version.ToString
-        End If
-        If Quien.Attributes(str).Type = AttributeType.UUID Then
-            Return Quien.Attributes(str).AsString(Funciones.Guid_to_string)
-        End If
-        Return Quien.Attributes(str).Value
+        Return Editor_Generic_GenericAttribute.Conver_Attribute_to_String(Quien.Attributes(str))
     End Function
 
     <Extension>
@@ -328,8 +321,7 @@ Public Class Funciones
                 Case "MaterialPreset"
                     'Dim result = GameSettings.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(reg.Value, source, BG3_Enum_VisualBank_Type.MaterialPreset))
                 Case "Resource"
-                Case "Tags", "Flags"
-                    GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(reg.Value, source))
+
                 Case "Templates"
                     For Each Nod In reg.Value.Children
                         Select Case Nod.Key
@@ -349,6 +341,28 @@ Public Class Funciones
                     Next
                 Case "TextureAtlasInfo"
                     ' Overrided with IconUVList
+                Case "Tags"
+                    GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(reg.Value, source, BG3_Enum_FlagsandTagsType.Tags))
+                Case "Flags"
+                    GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(reg.Value, source, BG3_Enum_FlagsandTagsType.Flags))
+                Case "GoldValues"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.GoldValues))
+                        Next
+                    Next
+                Case "LevelMapValues"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.LevelMapValues))
+                        Next
+                    Next
+                Case "ExperienceRewards"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.ExperienceRewards))
+                        Next
+                    Next
                 Case "root"
                 Case "AnimationBank"
                 Case "AnimationBlueprintBank"
@@ -421,8 +435,7 @@ Public Class Funciones
                 Case "GfxDeviceData"
                 Case "Origins"
                 Case "TadpolePowersTree"
-                Case "LevelMapValues"
-                Case "ExperienceRewards"
+
                 Case "MetaData"
                 Case "Layers"
                 Case "EquipmentRaces"
@@ -518,7 +531,9 @@ Public Class Funciones
                 Case "RulesetModifierOptions"
                 Case "RulesetValues"
                 Case "DisturbanceProperties"
-                Case "GoldValues"
+
+
+
                 Case "CharacterCreationEquipmentIcons"
                 Case "CharacterCreationSharedVisuals"
                 Case "WorldMapMetaData"
@@ -627,33 +642,34 @@ Public Class Funciones
                     Dim name As String = ""
                     Dim stobj As BG3_Obj_Stats_Class = Nothing
                     Dim lines As String()
+                    Dim ICRWorking As Boolean = False
                     While line IsNot Nothing
                         If line <> "" Then
                             lines = line.Split(" " + Chr(34)).Select(Function(pq) Fix_Split(pq)).ToArray
                             Try
                                 Select Case lines(0)
                                     Case "new entry"
+                                        If Not IsNothing(stobj) And ICRWorking = False Then GameEngine.ProcessedStatList.Manage_Overrides(stobj) : stobj = Nothing
                                         name = lines(1)
                                         stobj = New BG3_Obj_Stats_Class(Source, name)
-                                        stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        'stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        ICRWorking = False
                                     Case "new ItemCombination"
+                                        If Not IsNothing(stobj) And ICRWorking = False Then GameEngine.ProcessedStatList.Manage_Overrides(stobj) : stobj = Nothing
                                         name = lines(1)
                                         stobj = New BG3_Obj_Stats_Class(Source, name) With {.Type = BG3_Enum_StatType.ItemCombination}
-                                        stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        'stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        ICRWorking = False
                                     Case "new ItemCombinationResult"
                                         name = lines(1)
-                                        stobj = New BG3_Obj_Stats_Class(Source, name) With {.Type = BG3_Enum_StatType.ItemCombination, .[Using] = stobj.MapKey}
-                                        stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        Dim key = stobj.MapKey
+                                        Dim child = New BG3_Obj_Stats_Class(Source, name) With {.Type = BG3_Enum_StatType.ItemCombination, .[Using] = key}
+                                        stobj.Itemresult = child
+                                        GameEngine.ProcessedStatList.Manage_Overrides(stobj)
+                                        stobj = child
+                                        ICRWorking = True
                                     Case "using"
-                                        If lines(1) <> stobj.MapKey Then
-                                            If stobj.Using <> "" And stobj.Using <> lines(1) Then
-                                                GameEngine.ProcessedStatList.RemoveHyerarchy(stobj)
-                                            End If
-                                            If stobj.Using <> lines(1) Then
-                                                stobj.Using = lines(1)
-                                                GameEngine.ProcessedStatList.AddHyerarchy(stobj)
-                                            End If
-                                        End If
+                                        stobj.Using = lines(1)
                                     Case "type"
                                         stobj.Type = [Enum].GetNames(GetType(BG3_Enum_StatType)).ToList.IndexOf(lines(1))
                                         If stobj.Type = -1 Then Debugger.Break()
@@ -669,7 +685,9 @@ Public Class Funciones
                             End Try
                         End If
                         line = fileStream.ReadLine
+
                     End While
+                    If Not IsNothing(stobj) And ICRWorking = False Then GameEngine.ProcessedStatList.Manage_Overrides(stobj) : stobj = Nothing
                     fileStream.Close()
                     fileStream.Dispose()
                 End Using
@@ -691,8 +709,8 @@ Public Class Funciones
                         Select Case True
                             Case line.StartsWith("new treasuretable", StringComparison.OrdinalIgnoreCase)
                                 name = lines(1)
+                                If Not IsNothing(stobj) Then GameEngine.ProcessedTTables.Manage_Overrides(stobj) : stobj = Nothing
                                 stobj = New BG3_Obj_TreasureTable_Class(Source, name)
-                                stobj = GameEngine.ProcessedTTables.Manage_Overrides(stobj)
                                 stsub = Nothing
                             Case line.StartsWith("CanMerge 1", StringComparison.OrdinalIgnoreCase)
                                 stobj.CanMerge = True
@@ -717,10 +735,57 @@ Public Class Funciones
                 End If
                 line = fileStream.ReadLine
             End While
+            If Not IsNothing(stobj) Then GameEngine.ProcessedTTables.Manage_Overrides(stobj) : stobj = Nothing
             fileStream.Close()
             fileStream.Dispose()
         End Using
 
+        Source.ReleaseMem()
+    End Sub
+
+    Private Shared ReadOnly ValueLists As New SortedList(Of String, List(Of String))
+    Public Shared Sub Read_Txt_List(ByRef Source As BG3_Pak_SourceOfResource_Class)
+        Dim ShortName = IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative)
+        Using fileStream = New StreamReader(Source.CreateContentReader)
+            Dim line As String = fileStream.ReadLine
+            Dim name As String = ""
+            Dim stobj As BG3_Obj_TreasureTable_Class = Nothing
+            Dim stsub As BG3_Obj_TreasureTable_Subtable_Class = Nothing
+            While line IsNot Nothing
+                If line <> "" Then
+                    Dim lines As String()
+                    lines = line.Split(" " + Chr(34)).Select(Function(pq) Fix_Split(pq)).ToArray
+                    Try
+                        Select Case True
+                            Case line.StartsWith("valuelist", StringComparison.OrdinalIgnoreCase)
+                                name = lines(1)
+                                ValueLists.TryAdd(lines(1), New List(Of String))
+                            Case line.StartsWith("value", StringComparison.OrdinalIgnoreCase)
+                                ValueLists(name).Add(lines(1))
+                            Case Else
+                                Debugger.Break()
+                        End Select
+                    Catch ex As Exception
+                        Debugger.Break()
+                    End Try
+                End If
+                line = fileStream.ReadLine
+            End While
+            If Not IsNothing(stobj) Then GameEngine.ProcessedTTables.Manage_Overrides(stobj) : stobj = Nothing
+            fileStream.Close()
+            fileStream.Dispose()
+        End Using
+        Dim str = ""
+
+        For Each lis In ValueLists
+            str += "Public Shared " + lis.Key + " As New List(Of String) From {"
+            For Each it In lis.Value
+                str += Chr(34) + it + Chr(34) + ","
+            Next
+            str = str.Remove(str.Length - 1)
+            str += "}" + vbCrLf
+        Next
+        Debugger.Break()
         Source.ReleaseMem()
     End Sub
     Public Shared Sub Read_Txt(ByRef Source As BG3_Pak_SourceOfResource_Class)
@@ -735,6 +800,8 @@ Public Class Funciones
                         Read_Txt_Stats(Source)
                     Case "TreasureTable"
                         Read_Txt_Treasure(Source)
+                    Case "ValueLists"
+                        'read_txt_List(Source)
                     Case "ReConHistory"
                     Case "credits"
                     Case "pakgenerator"
@@ -744,7 +811,6 @@ Public Class Funciones
                     Case "SpellSet"
                     Case "ObjectCategoriesItemComboPreviewData"
                     Case "ItemTypes"
-                    Case "ValueLists"
                     Case "Modifiers"
                     Case "combos"
                     Case "healer_melee"
@@ -998,16 +1064,12 @@ Public Class Funciones
         Return result
     End Function
 
-    Public Shared Function Clear_Current_Mod_Loaded(path As String) As Boolean
+    Public Shared Function Clear_Current_Mod_Loaded() As Boolean
         GameEngine.UtamTemplates.Clear()
         GameEngine.UtamVisuals.Clear()
-        If path <> "" Then
-            For Each Tabl In GameEngine.ProcessedTTables.Elements.Values.Where(Function(pf) pf.Subtables.Where(Function(pq) pq.Source.Pak_Or_Folder = path).Any)
-                For Each subt In Tabl.Subtables.Where(Function(pq) pq.Source.Pak_Or_Folder = path).ToList
-                    Tabl.Subtables.Remove(subt)
-                Next
-            Next
-        End If
+        GameEngine.Utamstats.Clear()
+        GameEngine.UtamTreasures.Clear()
+        GameEngine.Utamflagsandtags.Clear()
         Return True
     End Function
     Public Shared Function Lee_UtamMod(path As String, Worker As Object, ReadFromLsx As Boolean) As Boolean
@@ -1019,7 +1081,7 @@ Public Class Funciones
             Worker.ReportProgress(1, Progreso)
         End SyncLock
         GameEngine.ProcessedModuleList.ProcessMetas(path, BG3_Enum_Package_Type.UTAM_Mod)
-        Clear_Current_Mod_Loaded(path)
+        Clear_Current_Mod_Loaded()
 
 
         Parallel.ForEach(filtro, Sub(fil)
@@ -1048,7 +1110,7 @@ Public Class Funciones
         End SyncLock
         Dim result As Boolean = True
         Try
-            For Each pack In GameEngine.ProcessedPackList.OrderBy(Function(pf) pf.SortIndex)
+            For Each pack In GameEngine.ProcessedPackList.OrderBy(Function(pf) pf.SortIndex).ThenBy(Function(pf) pf.PackFileName)
                 If Worker.CancellationPending = True Or result = False Then Return False
 
                 If Not IsNothing(pack.Package) Then
@@ -1167,8 +1229,7 @@ Public Class Funciones
                                                                 If Worker.IsBusy Then Worker.ReportProgress(1)
                                                                 If erro = False Then Worker.CancelAsync()
                                                             End Sub)
-        If IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json")) = False Then Return False
-        Dim verchek As String = 0
+
         If Worker.CancellationPending = True Then Return False
 
         Return SerializeObjetc(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json"), GameEngine.CacheVersion.ToString)
