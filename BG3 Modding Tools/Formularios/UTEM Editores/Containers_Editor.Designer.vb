@@ -50,8 +50,8 @@ Partial Class Containers_Editor
         ' 
         ' BG3Selector_Template1
         ' 
-        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Templato to add from it.  It must descend from containers bases."
-        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Containers
+        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it.  It must descend from containers bases."
+        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Container
         BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Container"}
         BG3Selector_Template1.Template_MustDescend_From = New String() {"49aba79d-0be8-42f0-9302-3761b3527fa4"}
         ' 

@@ -55,7 +55,7 @@ Partial Class ModLoader
         ListBox1.ItemHeight = 15
         ListBox1.Location = New Point(12, 7)
         ListBox1.Name = "ListBox1"
-        ListBox1.Size = New Size(211, 349)
+        ListBox1.Size = New Size(360, 349)
         ListBox1.Sorted = True
         ListBox1.TabIndex = 0
         ' 
@@ -73,7 +73,7 @@ Partial Class ModLoader
         GroupBox1.Controls.Add(Label5)
         GroupBox1.Controls.Add(Label7)
         GroupBox1.Controls.Add(TextBoxUUID)
-        GroupBox1.Location = New Point(229, 12)
+        GroupBox1.Location = New Point(378, 12)
         GroupBox1.Name = "GroupBox1"
         GroupBox1.Size = New Size(408, 210)
         GroupBox1.TabIndex = 1
@@ -185,7 +185,7 @@ Partial Class ModLoader
         ' Button1
         ' 
         Button1.Enabled = False
-        Button1.Location = New Point(368, 325)
+        Button1.Location = New Point(517, 325)
         Button1.Name = "Button1"
         Button1.Size = New Size(128, 23)
         Button1.TabIndex = 2
@@ -213,7 +213,7 @@ Partial Class ModLoader
         GroupBox2.Controls.Add(RadioButton1)
         GroupBox2.Controls.Add(ProgressBarCache)
         GroupBox2.Controls.Add(CheckBox1)
-        GroupBox2.Location = New Point(229, 228)
+        GroupBox2.Location = New Point(378, 228)
         GroupBox2.Name = "GroupBox2"
         GroupBox2.Size = New Size(407, 91)
         GroupBox2.TabIndex = 19
@@ -253,7 +253,7 @@ Partial Class ModLoader
         ' Button2
         ' 
         Button2.Enabled = False
-        Button2.Location = New Point(507, 325)
+        Button2.Location = New Point(656, 325)
         Button2.Name = "Button2"
         Button2.Size = New Size(128, 23)
         Button2.TabIndex = 20
@@ -262,7 +262,7 @@ Partial Class ModLoader
         ' 
         ' Button3
         ' 
-        Button3.Location = New Point(229, 325)
+        Button3.Location = New Point(378, 325)
         Button3.Name = "Button3"
         Button3.Size = New Size(128, 23)
         Button3.TabIndex = 21
@@ -273,7 +273,7 @@ Partial Class ModLoader
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(649, 360)
+        ClientSize = New Size(792, 360)
         Controls.Add(Button3)
         Controls.Add(Button2)
         Controls.Add(GroupBox2)

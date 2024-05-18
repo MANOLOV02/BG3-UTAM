@@ -179,7 +179,6 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         If Me.EditIsConditional = True And Me.AllowEdit = True AndAlso CheckBox1.Checked = False Then TextBox1.ReadOnly = True
         If Me.EditIsConditional = True And Me.AllowEdit = True AndAlso CheckBox1.Checked = True Then TextBox1.ReadOnly = Me.ReadOnly
         ComboBox1.Enabled = Not TextBox1.ReadOnly
-        If ComboBox1.Enabled = False Then ComboBox1.SelectionLength = 0
         NumericUpDown1.ReadOnly = TextBox1.ReadOnly
     End Sub
     Overridable Sub Clear()
@@ -938,13 +937,13 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         Update_NumericUpDown()
         RaiseEvent Inside_Text_Changed(Me)
     End Sub
-    Protected Sub Reload_Combo()
+    Public Sub Reload_Combo()
         ComboBox1.Items.Clear()
         ComboBox1.Items.AddRange(ComboItems.ToArray)
         If ComboBox1.SelectedIndex = -1 AndAlso ComboBox1.Items.Count > 0 Then ComboBox1.SelectedIndex = 0
     End Sub
 
-    Protected ComboItems As New List(Of String)
+    Public ComboItems As New List(Of String)
     Private Sub Update_ComboIndex()
         If Me.EditorType <> BG3_Editor_Type.Combobox Then Exit Sub
         If Me.ComboBox1.DropDownStyle <> ComboBoxStyle.DropDownList Then

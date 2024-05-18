@@ -20,4 +20,15 @@ Partial Public MustInherit Class Explorer_Generic_Designer
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub TreeView1_NodeMouseDoubleClick(sender As Object, e As TreeNodeMouseClickEventArgs) Handles TreeView1.NodeMouseDoubleClick
+        Try
+            TreeView1.SelectedNode = e.Node
+            RaiseEvent Node_DobbleClick(e.Node)
+        Catch ex As Exception
+        End Try
+
+    End Sub
+
+    Public Event Node_DobbleClick(Node As TreeNode)
 End Class

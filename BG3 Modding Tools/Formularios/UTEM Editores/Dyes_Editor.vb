@@ -104,7 +104,12 @@ Public Class Dyes_Editor
         SelectedCombo.Cancel_Edit()
         SelectedComboResult.Cancel_Edit()
     End Sub
-
+    Protected Overrides Sub Process_Delete_Specifics()
+        FuncionesHelpers.GameEngine.Utamstats.Remove(SelectedCombo)
+        FuncionesHelpers.GameEngine.ProcessedStatList.Remove(SelectedCombo)
+        FuncionesHelpers.GameEngine.UtamVisuals.Remove(SelectedColor)
+        FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Remove(SelectedColor)
+    End Sub
     Protected Overrides Sub Process_Edit_Specifics()
         SelectedColor.Edit_start()
         SelectedCombo.Edit_start()
@@ -124,8 +129,8 @@ Public Class Dyes_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Dye specific|Dye Remover|False|Custom", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"DyeRemover"}},
-            New ToolStripMenuItem("Dye specific|Unlimited dye|False|Custom", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Unlimiteddye"}}
+            New ToolStripMenuItem("Dye specific|Dye Remover|False|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"DyeRemover"}},
+            New ToolStripMenuItem("Dye specific|Unlimited dye|False|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Unlimiteddye"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub

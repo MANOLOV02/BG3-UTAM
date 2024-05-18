@@ -82,7 +82,9 @@ Public Class Armors_Editor
     Protected Overrides Sub Process_Cancel_Specifics()
 
     End Sub
+    Protected Overrides Sub Process_Delete_Specifics()
 
+    End Sub
     Protected Overrides Sub Process_Edit_Specifics()
 
     End Sub
@@ -102,11 +104,11 @@ Public Class Armors_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Armor specific|Slot|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Slot"}},
-            New ToolStripMenuItem("Armor specific|Type|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ArmorType"}},
-              New ToolStripMenuItem("Armor specific|Ability|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Armor Class Ability"}},
-                New ToolStripMenuItem("Armor specific|Proficiency|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Proficiency Group"}},
-                  New ToolStripMenuItem("Armor specific|Armor Class|False|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ArmorClass"}}
+            New ToolStripMenuItem("Armor specific|Slot|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Slot"}},
+            New ToolStripMenuItem("Armor specific|Type|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ArmorType"}},
+              New ToolStripMenuItem("Armor specific|Ability|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Armor Class Ability"}},
+                New ToolStripMenuItem("Armor specific|Proficiency|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Proficiency Group"}},
+                  New ToolStripMenuItem("Armor specific|Armor Class|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ArmorClass"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub

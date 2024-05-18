@@ -363,6 +363,24 @@ Public Class Funciones
                             Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.ExperienceRewards))
                         Next
                     Next
+                Case "EquipmentTypes"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.EquipmentTypes))
+                        Next
+                    Next
+                Case "EquipmentRaces"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.EquipmentRaces))
+                        Next
+                    Next
+                Case "EquipmentSlots"
+                    For Each Nod In reg.Value.Children("EquipmentSlots").First.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.EquipmentSlots))
+                        Next
+                    Next
                 Case "root"
                 Case "AnimationBank"
                 Case "AnimationBlueprintBank"
@@ -438,13 +456,12 @@ Public Class Funciones
 
                 Case "MetaData"
                 Case "Layers"
-                Case "EquipmentRaces"
-                Case "EquipmentSlots"
+
                 Case "DialogVariables"
                 Case "Gods"
                 Case "Voices"
                 Case "ConditionErrors"
-                Case "EquipmentTypes"
+
                 Case "PassiveLists"
                 Case "AbilityLists"
                 Case "SpellLists"

@@ -49,9 +49,10 @@ Public Class BG3Editor_Template_ParentId
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
         If IsNothing(Obj) Then Return False
-        If MustDescendFrom.Length > 0 AndAlso MustDescendFrom.Where(Function(pf) Obj.Is_Descendant(pf) = True).Any = False Then Return False
+        If Me.AllowEdit = False Then Return False
+        If Obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" Then Return False
         If Not IsNothing(Last_read) AndAlso Obj.Is_Descendant(CType(Last_read, BG3_Obj_Template_Class).MapKey) Then Return False
-        Return Me.AllowEdit
+        Return BG3Cloner.CheckDescendant_Generic(Obj, MustDescendFrom)
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
@@ -75,7 +76,39 @@ Public Class BG3Editor_Template_ColorPreset
         Label = "Color preset"
     End Sub
 End Class
+Public Class BG3Editor_Template_EquipmentTypeID
+    Inherits Editor_Template_GenericAttribute
+    Sub New()
+        MyBase.New("EquipmentTypeID", LSLib.LS.AttributeType.UUID)
+        Label = "Equipment type"
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_FlagsAndTags_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        If Obj.Type <> BG3_Enum_FlagsandTagsType.EquipmentTypes Then Return False
+        Return True
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_FlagsAndTags_Class)
+        If IsNothing(Obj) Then Exit Sub
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
+        If IsNothing(Obj.ReadAttribute_Or_Inhterithed(Key)) Then Return False
+        Return Me.AllowEdit
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.ReadAttribute_Or_Inhterithed(Key)
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
+        If IsNothing(Obj.AssociatedTemplate) Then Return False
+        Return Drop_Verify_OBJ(Obj.AssociatedTemplate)
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
+        Drop_OBJ(Obj.AssociatedTemplate)
+    End Sub
 
+End Class
 Public Class BG3Editor_Template_ContainerContentFilterCondition
     Inherits Editor_Template_GenericAttribute
     Sub New()

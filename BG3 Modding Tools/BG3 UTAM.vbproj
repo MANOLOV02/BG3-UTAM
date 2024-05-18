@@ -61,6 +61,8 @@
     <Compile Update="Controles\Explorers\BG3Explorer_Icons.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controles\Selector\Designer\BG3Selector_Generic_Code.vb" />
+    <Compile Update="Controles\Selector\Designer\BG3Selector_Generic_Designer.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Diseño del generico\Explorer_Form_Code.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +85,7 @@
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\UTEM Editores\Weapons_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Armors_Editor.vb">
       <SubType>Form</SubType>
     </Compile>

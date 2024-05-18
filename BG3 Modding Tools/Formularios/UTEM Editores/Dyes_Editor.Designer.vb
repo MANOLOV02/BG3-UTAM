@@ -65,8 +65,8 @@ Partial Class Dyes_Editor
         ' 
         ' BG3Selector_Template1
         ' 
-        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Templato to add from it.  It must descend from dyes bases."
-        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Containers
+        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it.  It must descend from dyes bases."
+        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Dyes
         BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Dyes"}
         BG3Selector_Template1.Template_MustDescend_From = New String() {"1a750a66-e5c2-40be-9f62-0a4bf3ddb403"}
         ' 

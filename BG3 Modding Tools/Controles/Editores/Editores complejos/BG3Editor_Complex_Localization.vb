@@ -49,6 +49,7 @@ Public Class BG3Editor_Complex_Localization
         Controles_Linkeados = Controles
         For Each cont In Controles
             AddHandler cont.Inside_Text_Changed, AddressOf Control_changed
+            AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
         Next
     End Sub
 

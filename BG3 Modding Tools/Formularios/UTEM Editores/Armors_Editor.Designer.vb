@@ -24,13 +24,13 @@ Partial Class Armors_Editor
     Private Sub InitializeComponent()
         BG3Editor_Stat_Slots_Armor1 = New BG3Editor_Stats_Slots_Armor()
         GroupBox5 = New GroupBox()
+        BG3Editor_Stats_ProficiencyGroup1 = New BG3Editor_Stats_ProficiencyGroup()
+        BG3Editor_Stats_ArmorClass1 = New BG3Editor_Stats_ArmorClass()
+        BG3Editor_Stats_ArmorClassAbility1 = New BG3Editor_Stats_ArmorClassAbility()
         BG3Editor_Stats_StatusOnEquip1 = New BG3Editor_Stats_StatusOnEquip()
         BG3Editor_Stats_ArmorType1 = New BG3Editor_Stats_ArmorType()
         BG3Editor_Stats_Boosts1 = New BG3Editor_Stats_Boosts()
         BG3Editor_Stats_PassivesOnEquip1 = New BG3Editor_Stats_PassivesOnEquip()
-        BG3Editor_Stats_ArmorClassAbility1 = New BG3Editor_Stats_ArmorClassAbility()
-        BG3Editor_Stats_ArmorClass1 = New BG3Editor_Stats_ArmorClass()
-        BG3Editor_Stats_ProficiencyGroup1 = New BG3Editor_Stats_ProficiencyGroup()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -50,10 +50,10 @@ Partial Class Armors_Editor
         ' 
         ' BG3Selector_Template1
         ' 
-        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Templato to add from it.  It must descend from armor bases."
-        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Containers
+        BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it.  It must descend from armor bases."
+        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Armor
         BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Body"}
-        BG3Selector_Template1.Template_MustDescend_From = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f"}
+        BG3Selector_Template1.Template_MustDescend_From = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6"}
         ' 
         ' GroupBox9
         ' 
@@ -84,7 +84,7 @@ Partial Class Armors_Editor
         ' BG3Editor_Template_Parent1
         ' 
         BG3Editor_Template_Parent1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f"}
+        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6"}
         ' 
         ' BG3Editor_Template_TechnicalDescription1
         ' 
@@ -145,6 +145,45 @@ Partial Class Armors_Editor
         GroupBox5.TabStop = False
         GroupBox5.Text = "Armor specifics"
         ' 
+        ' BG3Editor_Stats_ProficiencyGroup1
+        ' 
+        BG3Editor_Stats_ProficiencyGroup1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ProficiencyGroup1.Label = "Proficiency"
+        BG3Editor_Stats_ProficiencyGroup1.Location = New Point(3, 134)
+        BG3Editor_Stats_ProficiencyGroup1.Margin = New Padding(0)
+        BG3Editor_Stats_ProficiencyGroup1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ProficiencyGroup1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ProficiencyGroup1.Name = "BG3Editor_Stats_ProficiencyGroup1"
+        BG3Editor_Stats_ProficiencyGroup1.Size = New Size(378, 23)
+        BG3Editor_Stats_ProficiencyGroup1.SplitterDistance = 100
+        BG3Editor_Stats_ProficiencyGroup1.TabIndex = 6
+        ' 
+        ' BG3Editor_Stats_ArmorClass1
+        ' 
+        BG3Editor_Stats_ArmorClass1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_ArmorClass1.Label = "ArmorClass"
+        BG3Editor_Stats_ArmorClass1.Location = New Point(3, 157)
+        BG3Editor_Stats_ArmorClass1.Margin = New Padding(0)
+        BG3Editor_Stats_ArmorClass1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ArmorClass1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ArmorClass1.Name = "BG3Editor_Stats_ArmorClass1"
+        BG3Editor_Stats_ArmorClass1.Size = New Size(260, 23)
+        BG3Editor_Stats_ArmorClass1.SplitterDistance = 100
+        BG3Editor_Stats_ArmorClass1.TabIndex = 5
+        ' 
+        ' BG3Editor_Stats_ArmorClassAbility1
+        ' 
+        BG3Editor_Stats_ArmorClassAbility1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ArmorClassAbility1.Label = "Armor Ability"
+        BG3Editor_Stats_ArmorClassAbility1.Location = New Point(3, 111)
+        BG3Editor_Stats_ArmorClassAbility1.Margin = New Padding(0)
+        BG3Editor_Stats_ArmorClassAbility1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ArmorClassAbility1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ArmorClassAbility1.Name = "BG3Editor_Stats_ArmorClassAbility1"
+        BG3Editor_Stats_ArmorClassAbility1.Size = New Size(375, 23)
+        BG3Editor_Stats_ArmorClassAbility1.SplitterDistance = 100
+        BG3Editor_Stats_ArmorClassAbility1.TabIndex = 4
+        ' 
         ' BG3Editor_Stats_StatusOnEquip1
         ' 
         BG3Editor_Stats_StatusOnEquip1.Label = "Status on equip"
@@ -193,45 +232,6 @@ Partial Class Armors_Editor
         BG3Editor_Stats_PassivesOnEquip1.Size = New Size(378, 23)
         BG3Editor_Stats_PassivesOnEquip1.SplitterDistance = 100
         BG3Editor_Stats_PassivesOnEquip1.TabIndex = 0
-        ' 
-        ' BG3Editor_Stats_ArmorClassAbility1
-        ' 
-        BG3Editor_Stats_ArmorClassAbility1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_ArmorClassAbility1.Label = "Armor Ability"
-        BG3Editor_Stats_ArmorClassAbility1.Location = New Point(3, 111)
-        BG3Editor_Stats_ArmorClassAbility1.Margin = New Padding(0)
-        BG3Editor_Stats_ArmorClassAbility1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ArmorClassAbility1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ArmorClassAbility1.Name = "BG3Editor_Stats_ArmorClassAbility1"
-        BG3Editor_Stats_ArmorClassAbility1.Size = New Size(375, 23)
-        BG3Editor_Stats_ArmorClassAbility1.SplitterDistance = 100
-        BG3Editor_Stats_ArmorClassAbility1.TabIndex = 4
-        ' 
-        ' BG3Editor_Stats_ArmorClass1
-        ' 
-        BG3Editor_Stats_ArmorClass1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_ArmorClass1.Label = "ArmorClass"
-        BG3Editor_Stats_ArmorClass1.Location = New Point(3, 157)
-        BG3Editor_Stats_ArmorClass1.Margin = New Padding(0)
-        BG3Editor_Stats_ArmorClass1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ArmorClass1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ArmorClass1.Name = "BG3Editor_Stats_ArmorClass1"
-        BG3Editor_Stats_ArmorClass1.Size = New Size(260, 23)
-        BG3Editor_Stats_ArmorClass1.SplitterDistance = 100
-        BG3Editor_Stats_ArmorClass1.TabIndex = 5
-        ' 
-        ' BG3Editor_Stats_ProficiencyGroup1
-        ' 
-        BG3Editor_Stats_ProficiencyGroup1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_ProficiencyGroup1.Label = "Proficiency"
-        BG3Editor_Stats_ProficiencyGroup1.Location = New Point(3, 134)
-        BG3Editor_Stats_ProficiencyGroup1.Margin = New Padding(0)
-        BG3Editor_Stats_ProficiencyGroup1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ProficiencyGroup1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ProficiencyGroup1.Name = "BG3Editor_Stats_ProficiencyGroup1"
-        BG3Editor_Stats_ProficiencyGroup1.Size = New Size(378, 23)
-        BG3Editor_Stats_ProficiencyGroup1.SplitterDistance = 100
-        BG3Editor_Stats_ProficiencyGroup1.TabIndex = 6
         ' 
         ' Armors_Editor
         ' 

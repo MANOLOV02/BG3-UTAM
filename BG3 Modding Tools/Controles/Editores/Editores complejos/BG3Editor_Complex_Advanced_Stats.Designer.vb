@@ -28,6 +28,7 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         ColumnHeader2 = New ColumnHeader()
         ColumnHeader3 = New ColumnHeader()
         TableLayoutPanel1 = New TableLayoutPanel()
+        ButtonOk = New Button()
         TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -41,13 +42,14 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         BG3Editor_Stats_Undefined1.MaximumSize = New Size(3000, 23)
         BG3Editor_Stats_Undefined1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_Undefined1.Name = "BG3Editor_Stats_Undefined1"
-        BG3Editor_Stats_Undefined1.Size = New Size(418, 23)
+        BG3Editor_Stats_Undefined1.Size = New Size(378, 23)
         BG3Editor_Stats_Undefined1.SplitterDistance = 160
         BG3Editor_Stats_Undefined1.TabIndex = 1
         ' 
         ' ListView1
         ' 
         ListView1.Columns.AddRange(New ColumnHeader() {ColumnHeader1, ColumnHeader2, ColumnHeader3})
+        TableLayoutPanel1.SetColumnSpan(ListView1, 2)
         ListView1.Dock = DockStyle.Fill
         ListView1.FullRowSelect = True
         ListView1.Location = New Point(3, 3)
@@ -75,10 +77,12 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         ' 
         ' TableLayoutPanel1
         ' 
-        TableLayoutPanel1.ColumnCount = 1
+        TableLayoutPanel1.ColumnCount = 2
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 40F))
         TableLayoutPanel1.Controls.Add(BG3Editor_Stats_Undefined1, 0, 1)
         TableLayoutPanel1.Controls.Add(ListView1, 0, 0)
+        TableLayoutPanel1.Controls.Add(ButtonOk, 1, 1)
         TableLayoutPanel1.Dock = DockStyle.Fill
         TableLayoutPanel1.Location = New Point(0, 0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -87,6 +91,17 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 24F))
         TableLayoutPanel1.Size = New Size(424, 434)
         TableLayoutPanel1.TabIndex = 3
+        ' 
+        ' ButtonOk
+        ' 
+        ButtonOk.Dock = DockStyle.Fill
+        ButtonOk.Location = New Point(384, 410)
+        ButtonOk.Margin = New Padding(0)
+        ButtonOk.Name = "ButtonOk"
+        ButtonOk.Size = New Size(40, 24)
+        ButtonOk.TabIndex = 3
+        ButtonOk.Text = "Ok"
+        ButtonOk.UseVisualStyleBackColor = True
         ' 
         ' BG3Editor_Complex_Advanced_Stats
         ' 
@@ -104,5 +119,6 @@ Partial Class BG3Editor_Complex_Advanced_Stats
     Friend WithEvents ColumnHeader2 As ColumnHeader
     Friend WithEvents ColumnHeader3 As ColumnHeader
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents ButtonOk As Button
 
 End Class

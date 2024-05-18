@@ -32,7 +32,14 @@
         pict3.BringToFront()
     End Sub
 
-
+    Public Event TreeNodeSelected(sender As Object, e As TreeViewEventArgs)
+    Public Event TreeNodeDoubleClicked(Node As TreeNode)
+    Private Sub ObjectsTree_NodeSelected(sender As Object, e As TreeViewEventArgs) Handles ObjectsTree.NodeSelected
+        RaiseEvent TreeNodeSelected(sender, e)
+    End Sub
+    Private Sub ObjectsTree_NodeDoubleClicked(e As TreeNode) Handles ObjectsTree.Node_DobbleClick
+        RaiseEvent TreeNodeDoubleClicked(e)
+    End Sub
 
     Public Overrides Sub BackgroundWork_Finished_Sub()
         MyBase.BackgroundWork_Finished_Sub()

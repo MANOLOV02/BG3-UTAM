@@ -5,7 +5,7 @@ Imports LSLib.LS.Story
 Public Class Containers_Editor
 
     Protected Overrides ReadOnly Property Prefix As String = "UTAM_Container_"
-    Protected Overrides ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Containers
+    Protected Overrides ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Container
     Protected Overrides ReadOnly Property DefaulStatUsing As String = "OBJ_Bag"
     Protected Overrides ReadOnly Property DefaulParent As String = "3e6aac21-333b-4812-a554-376c2d157ba9"
     Protected Overrides ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Object
@@ -74,7 +74,9 @@ Public Class Containers_Editor
     Protected Overrides Sub Process_Cancel_Specifics()
 
     End Sub
-
+    Protected Overrides Sub Process_Delete_Specifics()
+        RemoveTT()
+    End Sub
     Protected Overrides Sub Process_Edit_Specifics()
 
     End Sub
@@ -89,8 +91,8 @@ Public Class Containers_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Container specific|Filter condition|False|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ContainerContentFilterCondition"}},
-            New ToolStripMenuItem("Container specific|Auto pickup|True|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ContainerAutoAddOnPickup"}}
+            New ToolStripMenuItem("Container specific|Filter condition|False|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ContainerContentFilterCondition"}},
+            New ToolStripMenuItem("Container specific|Auto pickup|True|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ContainerAutoAddOnPickup"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -127,6 +129,15 @@ Public Class Containers_Editor
             FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(TT)
         End If
     End Sub
+    Public Sub RemoveTT()
+        Dim ttname As String = "UTAM_Container_Treasure_" + SelectedTmp.MapKey
+        Dim TT As BG3_Obj_TreasureTable_Class = Nothing
+        If FuncionesHelpers.GameEngine.ProcessedTTables.TryGetValue(ttname, tt) Then
+            FuncionesHelpers.GameEngine.UtamTreasures.Remove(TT)
+            FuncionesHelpers.GameEngine.ProcessedTTables.Remove(TT)
+        End If
+    End Sub
+
     Private Sub LabelDropTag_DragEnter(sender As Object, e As DragEventArgs) Handles LabelDropTag.DragEnter, BG3Editor_Template_ContainerContentFilterCondition1.DragEnter
         If e.Data.GetDataPresent(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_FlagsAndTags_Class))) Then
             Dim obj As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_FlagsAndTags_Class) = e.Data.GetData(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_FlagsAndTags_Class)))

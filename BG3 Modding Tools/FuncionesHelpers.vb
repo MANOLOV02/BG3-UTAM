@@ -26,7 +26,9 @@ Class FuncionesHelpers
     Public Shared Slots_Armor As New List(Of String) From {"Breast", "Amulet", "VanityBody", "Boots", "VanityBoots", "Gloves", "Cloak", "Helmet", "Ring", "Shield (Melee Offhand Weapon)", "Underwear"} ' Shield is forced in the control
     Public Shared Slots_Weapons As New List(Of String) From {"Melee Main Weapon", "Melee Offhand Weapon", "Ranged Main Weapon", "Ranged Offhand Weapon"}
     Public Shared Slots_Others As New List(Of String) From {"Wings", "Horns", "Overhead", "MusicalInstrument"}
-    Public Shared ProficiencyGroup_Armor As New List(Of String) From {"", "LightArmor", "MediumArmor", "HeavyArmor", "MusicalInstrument"}
+    Public Shared ProficiencyGroup_Armor As New List(Of String) From {"None", "LightArmor", "MediumArmor", "HeavyArmor", "MusicalInstrument"}
+    Public Shared ProficiencyGroup_Weapons As New List(Of String) From {"None", "Battleaxes", "Clubs", "Daggers", "Darts", "Flails", "Glaives", "Greataxes", "Greatclubs", "Greatswords", "Halberds", "HandCrossbows", "Handaxes", "HeavyCrossbows", "Javelins", "LightCrossbows", "LightHammers", "Longbows", "Longswords", "Maces", "MartialWeapons", "Mauls", "Morningstars", "Pikes", "Quarterstaffs", "Rapiers", "Scimitars", "Shields", "Shortbows", "Shortswords", "Sickles", "SimpleWeapons", "Slings", "Spears", "Tridents", "Warhammers", "Warpicks"}
+    Public Shared ProficiencyGroup_Others As New List(Of String) From {"None", "MusicalInstrument"}
 
     Public Shared ColorMaterialsNames As New List(Of String) From {"Color_01", "Color_02", "Color_03", "Cloth_Primary", "Cloth_Secondary", "Cloth_Tertiary", "Leather_Primary", "Leather_Secondary", "Leather_Tertiary", "Metal_Primary", "Metal_Secondary", "Metal_Tertiary", "Custom_1", "Custom_2", "Accent_Color"}
 

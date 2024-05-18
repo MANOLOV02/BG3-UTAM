@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Diagnostics.Eventing.Reader
+Imports LSLib.Granny
 
 Public Class BG3Cloner
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
@@ -13,6 +14,7 @@ Public Class BG3Cloner
         InitializeComponent()
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
 
     End Sub
     <DefaultValue("Drop an object to clone")>
@@ -390,7 +392,7 @@ Public Class BG3Cloner
 
     Public Event Clone_Started()
     Public Event Clone_Finished()
-    Public Event Clone_Template(Objeto As BG3_Obj_Template_Class, Tipo As Clonetype)
+    Public Event Clone_Template(Objeto As BG3_Obj_Template_Class, Tipo As Clonetype, Stat As BG3_Obj_Stats_Class)
     Public Event Clone_Stat(Objeto As BG3_Obj_Stats_Class, Tipo As Clonetype)
     Public Enum Clonetype
         Inherit
@@ -400,16 +402,20 @@ Public Class BG3Cloner
     End Enum
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Stats_Class) As Boolean
         If IsNothing(Stat_MustDescend_From) Then Return False
-        If Not IsNothing(obj) Then
-            If Stat_MustDescend_From.Length = 0 OrElse Stat_MustDescend_From.Where(Function(pf) obj.Is_Descendant(pf) = True).Any Then Return True
-        End If
+        If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Stat_MustDescend_From)
         Return False
     End Function
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Template_Class) As Boolean
         If IsNothing(Template_MustDescend_From) Then Return False
-        If Not IsNothing(obj) Then
-            If Template_MustDescend_From.Length = 0 OrElse Template_MustDescend_From.Where(Function(pf) obj.Is_Descendant(pf) = True).Any Then Return True
-        End If
+        If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" Then Return False
+        If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Template_MustDescend_From)
+        Return False
+    End Function
+
+    Public Shared Function CheckDescendant_Generic(obj As Object, lista As String())
+        If lista.Length = 0 Then Return True
+        If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
+        If lista.Where(Function(pf) (pf.StartsWith("Not") = False AndAlso obj.Is_Descendant(pf) = True)).Any Then Return True
         Return False
     End Function
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
@@ -429,7 +435,7 @@ Public Class BG3Cloner
         If Copychilds = True Then Recursive_Drop_OBJ(obj, tipo)
         For Each obj2 In Child_Stat
             RaiseEvent Clone_Stat(obj2, tipo)
-            If Not IsNothing(obj2.AssociatedTemplate) Then RaiseEvent Clone_Template(obj2.AssociatedTemplate, tipo)
+            If Not IsNothing(obj2.AssociatedTemplate) Then RaiseEvent Clone_Template(obj2.AssociatedTemplate, tipo, obj2)
         Next
         RaiseEvent Clone_Finished()
     End Sub
@@ -451,8 +457,8 @@ Public Class BG3Cloner
         End If
         If Copychilds = True Then Recursive_Drop_OBJ(obj, tipo)
         For Each obj2 In Child_Temp
-            RaiseEvent Clone_Template(obj2, tipo)
-            If Not IsNothing(obj2.AssociatedStats) Then RaiseEvent Clone_Stat(obj2.AssociatedStats, tipo)
+            RaiseEvent Clone_Template(obj2, tipo, obj2.ClonableStats)
+            If Not IsNothing(obj2.ClonableStats) Then RaiseEvent Clone_Stat(obj2.ClonableStats, tipo)
         Next
         RaiseEvent Clone_Finished()
     End Sub
@@ -467,10 +473,12 @@ Public Class BG3Cloner
                 If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(x, obj2) Then
                     If obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.UTAM_Mod OrElse obj2.SourceOfResorce.Pak_Or_Folder <> ModSource.Pak_Or_Folder Then
                         If obj2.IsOverrided = False Then
-                            Child_Stat.Add(obj2)
-                            Recursive_Drop_OBJ(obj2, tipo)
+                            If CheckDescendant_Generic(obj2, Stat_MustDescend_From) Then
+                                Child_Stat.Add(obj2)
+                            End If
                         End If
                     End If
+                    Recursive_Drop_OBJ(obj2, tipo)
                 End If
             Next
         End If
@@ -483,15 +491,26 @@ Public Class BG3Cloner
                 If FuncionesHelpers.GameEngine.ProcessedGameObjectList.TryGetValue(x, obj2) Then
                     If obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.UTAM_Mod OrElse obj2.SourceOfResorce.Pak_Or_Folder <> ModSource.Pak_Or_Folder Then
                         If obj2.IsOverrided = False Then
-                            Child_Temp.Add(obj2)
-                            Recursive_Drop_OBJ(obj2, tipo)
+                            If CheckDescendant_Generic(obj2, Template_MustDescend_From) Then
+                                If (obj2.Name.StartsWith("BASE_") = False AndAlso obj2.Name.StartsWith("CINE_") = False AndAlso obj2.Name.StartsWith("TimelineTemplate_") = False) OrElse obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+                                    If obj2.ReadAttribute_Or_Empty("ParentTemplateId") <> "" Then
+                                        Child_Temp.Add(obj2)
+                                    End If
+                                End If
+                            End If
                         End If
                     End If
+                    Recursive_Drop_OBJ(obj2, tipo)
                 End If
             Next
         End If
     End Sub
 
+    'Private Function has_equipment(obj As BG3_Obj_Template_Class) As Boolean
+    '    If obj.NodeLSLIB.Children.ContainsKey("Equipment") Then Return True
+    '    If obj.ReadAttribute_Or_Empty("Stats") <> obj.ReadAttribute_Or_Inhterithed_Or_Empty("Stats") Then Return True
+    '    Return False
+    'End Function
 
 
 
@@ -550,4 +569,8 @@ Public Class BG3Cloner
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
         Return False
     End Function
+
+    Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
+
+    End Sub
 End Class

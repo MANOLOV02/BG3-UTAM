@@ -77,6 +77,7 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
+        WeaponsToolStripMenuItem = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -242,18 +243,18 @@ Partial Class Main
         ' NewToolStripMenuItem
         ' 
         NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        NewToolStripMenuItem.Size = New Size(100, 22)
+        NewToolStripMenuItem.Size = New Size(180, 22)
         NewToolStripMenuItem.Text = "New"
         ' 
         ' LoadToolStripMenuItem
         ' 
         LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-        LoadToolStripMenuItem.Size = New Size(100, 22)
+        LoadToolStripMenuItem.Size = New Size(180, 22)
         LoadToolStripMenuItem.Text = "Load"
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, DyesToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
         ToolsToolStripMenuItem1.Size = New Size(46, 20)
@@ -262,19 +263,19 @@ Partial Class Main
         ' ArmorsToolStripMenuItem
         ' 
         ArmorsToolStripMenuItem.Name = "ArmorsToolStripMenuItem"
-        ArmorsToolStripMenuItem.Size = New Size(131, 22)
+        ArmorsToolStripMenuItem.Size = New Size(180, 22)
         ArmorsToolStripMenuItem.Text = "Armors"
         ' 
         ' ContainersToolStripMenuItem
         ' 
         ContainersToolStripMenuItem.Name = "ContainersToolStripMenuItem"
-        ContainersToolStripMenuItem.Size = New Size(131, 22)
+        ContainersToolStripMenuItem.Size = New Size(180, 22)
         ContainersToolStripMenuItem.Text = "Containers"
         ' 
         ' DyesToolStripMenuItem
         ' 
         DyesToolStripMenuItem.Name = "DyesToolStripMenuItem"
-        DyesToolStripMenuItem.Size = New Size(131, 22)
+        DyesToolStripMenuItem.Size = New Size(180, 22)
         DyesToolStripMenuItem.Text = "Dyes"
         ' 
         ' FoldersToolStripMenuItem
@@ -426,6 +427,12 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
+        ' WeaponsToolStripMenuItem
+        ' 
+        WeaponsToolStripMenuItem.Name = "WeaponsToolStripMenuItem"
+        WeaponsToolStripMenuItem.Size = New Size(180, 22)
+        WeaponsToolStripMenuItem.Text = "Weapons"
+        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -502,4 +509,5 @@ Partial Class Main
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
     Friend WithEvents OpenDetailsWindowsAlsoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents WeaponsToolStripMenuItem As ToolStripMenuItem
 End Class

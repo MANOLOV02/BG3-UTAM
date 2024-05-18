@@ -433,7 +433,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -443,6 +443,16 @@ Public Class Main
         End Select
         Pinta_status()
     End Sub
+
+    Private Sub Explorer_node_Selected(sender As Object, e As TreeViewEventArgs)
+        RaiseEvent Explorer_Form_node_Selected(sender, e)
+    End Sub
+    Private Sub Explorer_node_Double_Clicked(nod As TreeNode)
+        RaiseEvent Explorer_Form_node_Double_Clicked(nod)
+    End Sub
+    Public Event Explorer_Form_node_Selected(sender As Object, e As TreeViewEventArgs)
+    Public Event Explorer_Form_node_Double_Clicked(nod As TreeNode)
+
     Private Function GenerateChildForm(T As Type, Title As String, Optional L1 As Integer = 0, Optional l2 As Integer = 0) As Object
         Select Case T
             Case GetType(Explorer_Form_Templates)
@@ -455,6 +465,8 @@ Public Class Main
                     If l2 <> 0 Then form.ObjectsTree.ComboBoxParent.Enabled = False
                 End If
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.Name_and_DisplayName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedGameObjectList
@@ -465,6 +477,8 @@ Public Class Main
                 Dim form = New Explorer_Form_Icons(Me) With {.Text = Title + " (# " + (IconExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 IconExplorerForms.Add(form)
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.OnlyName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedIcons
@@ -473,6 +487,8 @@ Public Class Main
                 Dim form = New Explorer_Form_Stats(Me) With {.Text = Title + " (# " + (StatsExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 StatsExplorerForms.Add(form)
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.Name_and_DisplayName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedStatList
@@ -482,6 +498,8 @@ Public Class Main
                 Dim form = New Explorer_Form_Flags_and_Tags(Me) With {.Text = Title + " (# " + (FlagsAndTagsExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 FlagsAndTagsExplorerForms.Add(form)
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.Name_and_DisplayName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedFlagsAndTags
@@ -491,6 +509,8 @@ Public Class Main
                 Dim form = New Explorer_Form_VisualTemplates(Me) With {.Text = Title + " (# " + (VisualExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 VisualExplorerForms.Add(form)
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.OnlyName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedVisualBanksList
@@ -499,19 +519,21 @@ Public Class Main
             Case GetType(Explorer_Form_TreasureTables)
                 Dim form = New Explorer_Form_TreasureTables(Me) With {.Text = Title + " (# " + (VisualExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 TtablesExplorerForms.Add(form)
+                AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
+                AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.OnlyName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
                     form.Activate()
                 Else
-                    form = Activator.CreateInstance(T, {Me, ActiveMod.Source})
+                    form = Activator.CreateInstance(T, {Me, ActiveMod.CurrentMod.ModLsx.SourceOfResource})
                     ToolsOpened.Add(form)
                     AddHandler form.FormClosed, AddressOf ClosedChildForm
                     form.Show()
@@ -672,5 +694,9 @@ Public Class Main
 
     Private Sub OpenDetailsWindowsAlsoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenDetailsWindowsAlsoToolStripMenuItem.Click
         OpenDetailsWindowsAlsoToolStripMenuItem.Checked = Not OpenDetailsWindowsAlsoToolStripMenuItem.Checked
+    End Sub
+
+    Private Sub WeaponsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Weapons_Editor), "")
     End Sub
 End Class

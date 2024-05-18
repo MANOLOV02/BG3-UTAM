@@ -50,11 +50,25 @@ End Class
 Public Class BG3Editor_Stats_ArmorClass
     Inherits Numeric_Editor_Stats_GenericAttribute
     Sub New()
-        MyBase.New("ArmorClass", 10, 100, 0, 1)
+        MyBase.New("ArmorClass", 1, 500, 0, 1)
         Label = "ArmorClass"
     End Sub
 End Class
+Public Class BG3Editor_Stats_DamageRange
+    Inherits Numeric_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("Damage Range", 1, 5000, 0, 50)
+        Label = "Damage range"
+    End Sub
+End Class
 
+Public Class BG3Editor_Stats_WeaponRange
+    Inherits Numeric_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("WeaponRange", 1, 5000, 0, 50)
+        Label = "Weapon range"
+    End Sub
+End Class
 
 
 

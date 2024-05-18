@@ -10,7 +10,7 @@ Imports LSLib.Granny.Model
 Imports LSLib.LS
 Imports LSLib.LS.Story
 
-Public Class Generic_Editor
+Public MustInherit Class Generic_Editor
     Sub New()
         MyBase.New
         ' Esta llamada es exigida por el diseñador.
@@ -27,7 +27,7 @@ Public Class Generic_Editor
     Protected Overridable Property SelectedStat As BG3_Obj_Stats_Class
 
     Protected Overridable ReadOnly Property Prefix As String = "UTAM_XXXX_"
-    Protected Overridable ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Containers
+    Protected Overridable ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Container
     Protected Overridable ReadOnly Property DefaulStatUsing As String = ""
     Protected Overridable ReadOnly Property DefaulParent As String = ""
     Protected Overridable ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Object
@@ -44,8 +44,33 @@ Public Class Generic_Editor
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Current = Cursors.WaitCursor
         BG3Selector_Template1.Selection = UtamType
-        BG3Selector_Template1.Load_Templates()
+        BG3Selector_Template1.Load_Templates(FuncionesHelpers.GameEngine.UtamTemplates)
         Cursor.Current = Cursors.Default
+    End Sub
+    Private Sub Explore_Node_DoubleClicked(nod As Object)
+        If BG3Selector_Template1.IsEditing OrElse BG3Selector_Template1.Isclonning_or_transfering Then Exit Sub
+        Select Case nod.GetType
+            Case GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class))
+                If Not IsNothing(CType(nod, BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)).Objeto) Then
+                    Dim obj = CType(CType(nod, BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)).Objeto, BG3_Obj_Template_Class)
+                    Dim find = BG3Selector_Template1.TreeView1.Nodes.Find(obj.MapKey, True)
+                    If find.Length > 0 Then
+                        BG3Selector_Template1.TreeView1.SelectedNode = find.First
+                    End If
+                End If
+            Case GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class))
+                If Not IsNothing(CType(nod, BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class)).Objeto) Then
+                    Dim obj = CType(CType(nod, BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class)).Objeto, BG3_Obj_Stats_Class)
+                    If Not IsNothing(obj.AssociatedTemplate) Then
+                        Dim find = BG3Selector_Template1.TreeView1.Nodes.Find(obj.AssociatedTemplate.MapKey, True)
+                        If find.Length > 0 Then
+                            BG3Selector_Template1.TreeView1.SelectedNode = find.First
+                        End If
+                    End If
+                End If
+            Case Else
+
+        End Select
     End Sub
     Protected Sub Initialize(ByRef MdiParent As Main, Source As BG3_Pak_SourceOfResource_Class)
         Me.DoubleBuffered = True
@@ -57,6 +82,7 @@ Public Class Generic_Editor
         AddHandler MdiParent.BackGroundReport, AddressOf BackgroundWork_Report_SuB
         AddHandler MdiParent.BackGround_SingleTaskEnd, AddressOf BackGround_SingleTaskEnd_sub
         AddHandler MdiParent.BackGround_SingleTaskStart, AddressOf BackGround_SingleTaskStart_sub
+        AddHandler MdiParent.Explorer_Form_node_Double_Clicked, AddressOf Explore_Node_DoubleClicked
         ActiveModSource = New BG3_Pak_SourceOfResource_Class(Source.Pak_Or_Folder, MdiParent.ActiveMod.CurrentMod.RootTemplateFilePath, BG3_Enum_Package_Type.UTAM_Mod)
         Create_Stat_Transfers()
         Habilita_Edicion_Botones(False)
@@ -101,7 +127,6 @@ Public Class Generic_Editor
         HandledAttributes.Add("_OriginalFileVersion_")
         HandledAttributes.Add("maxStackAmount")
 
-
         Initialize_Specifics()
     End Sub
 
@@ -124,7 +149,7 @@ Public Class Generic_Editor
         GroupBox10.Enabled = Edicion
         GroupBoxInventory.Enabled = Edicion
         BG3Editor_Complex_Advanced_Stats1.ReadOnly = Edicion
-        BG3Editor_Complex_Advanced_Attributes1.ReadOnly = Edicion
+        BG3Editor_Complex_Advanced_Attributes1.ReadOnly = Not Edicion
         BG3Selector_Template1.BG3Cloner1.Enabled = Not Edicion
         BG3Editor_Complex_Localization1.DataGridView1.Enabled = Edicion
         BG3Editor_Complex_WorldInjection1.Enabled = Edicion
@@ -212,16 +237,17 @@ Public Class Generic_Editor
 
     End Sub
 
+
     Protected Clone_Stat_Name As String
     Protected Clone_Stat_Using As String
     Protected Clone_Nuevonod As LSLib.LS.Node
-    Private Sub Capture_Clone(obj As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype) Handles BG3Selector_Template1.Clone_Template
+    Private Sub Capture_Clone(obj As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype, stat As BG3_Obj_Stats_Class) Handles BG3Selector_Template1.Clone_Template
         Clone_Nuevonod = New LSLib.LS.Node
         Template_guid = Funciones.NewGUID(False)
         Clone_Stat_Name = Stat_Default_Name
         Clone_Stat_Using = DefaulStatUsing
         BG3Selector_Template1.Habilita_Edicion_Botones(True)
-
+        Dim tempstat As BG3_Obj_Stats_Class = stat
         ' template Clone
         Select Case tipo
             Case BG3Cloner.Clonetype.None
@@ -231,7 +257,7 @@ Public Class Generic_Editor
                 Create_Initial(Clone_Nuevonod)
                 BG3Editor_Template_Parent1.Replace_Attribute(Clone_Nuevonod, obj.MapKey)
                 BG3Editor_Template_Name1.Replace_Attribute(Clone_Nuevonod, obj.Name + "_Inherited")
-                If Not IsNothing(obj.AssociatedStats) Then Clone_Stat_Using = obj.AssociatedStats.Name
+                If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Name
                 Capture_Clone_specific(obj, tipo)
             Case BG3Cloner.Clonetype.Clone
                 Clone_Nuevonod = obj.NodeLSLIB.CloneNode
@@ -242,7 +268,7 @@ Public Class Generic_Editor
                 Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_Group", BG3Selector_Template1.Current_Group, AttributeType.FixedString)
                 BG3Editor_Template_Mapkey1.Replace_Attribute(Clone_Nuevonod, Template_guid)
                 BG3Editor_Template_Name1.Replace_Attribute(Clone_Nuevonod, obj.Name + "_Cloned")
-                If Not IsNothing(obj.AssociatedStats) Then Clone_Stat_Using = obj.AssociatedStats.Using
+                If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
                 BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
                 Capture_Clone_specific(obj, tipo)
             Case BG3Cloner.Clonetype.Override
@@ -258,9 +284,9 @@ Public Class Generic_Editor
                 If obj.NodeLSLIB.TryGetOrEmpty("DisplayName") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h1", obj.NodeLSLIB.TryGetOrEmpty("DisplayName"), AttributeType.TranslatedString)
                 If obj.NodeLSLIB.TryGetOrEmpty("Description") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h2", obj.NodeLSLIB.TryGetOrEmpty("Description"), AttributeType.TranslatedString)
                 If obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h3", obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription"), AttributeType.TranslatedString)
-                If IsNothing(obj.AssociatedStats) Then BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
-                If Not IsNothing(obj.AssociatedStats) Then Clone_Stat_Name = obj.AssociatedStats.Name
-                If Not IsNothing(obj.AssociatedStats) Then Clone_Stat_Using = obj.AssociatedStats.Using
+                If IsNothing(tempstat) Then BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                If Not IsNothing(tempstat) Then Clone_Stat_Name = tempstat.Name
+                If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
                 BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
                 Capture_Clone_specific(obj, tipo)
             Case Else
@@ -276,8 +302,8 @@ Public Class Generic_Editor
                 Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
             Case BG3Cloner.Clonetype.Clone, BG3Cloner.Clonetype.Override
                 Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
-                If Not IsNothing(obj.AssociatedStats) Then
-                    For Each dat In obj.AssociatedStats.Data
+                If Not IsNothing(tempstat) Then
+                    For Each dat In tempstat.Data
                         SelectedStat.Data.TryAdd(dat.Key, dat.Value)
                     Next
                 End If
@@ -313,6 +339,7 @@ Public Class Generic_Editor
             FuncionesHelpers.GameEngine.ProcessedLocalizationList(UtamHandle.Split(";")(0)) = Newloca
         End If
         Dim versiontoread As Integer = OldMapkey.Split(";")(1)
+        If oldloca.ContainsKey(versiontoread) = False Then versiontoread = oldloca.OrderBy(Function(pf) Math.Abs(pf.Key - versiontoread)).Select(Function(pq) pq.Key).First
         Dim newversion As Integer = UtamHandle.Split(";")(1)
         For Each lan In oldloca(versiontoread).Keys.ToList
             For Each gen In oldloca(versiontoread)(lan).Keys.ToList
@@ -323,7 +350,7 @@ Public Class Generic_Editor
         Next
     End Sub
     Private Sub Capture_AddNew(Group As String) Handles BG3Selector_Template1.Add_New_Click
-        Capture_Clone(Nothing, BG3Cloner.Clonetype.None)
+        Capture_Clone(Nothing, BG3Cloner.Clonetype.None, Nothing)
         BG3Selector_Template1.Habilita_Edicion_Botones(True)
         Habilita_Edicion_Botones(True)
     End Sub
@@ -336,6 +363,34 @@ Public Class Generic_Editor
     End Sub
     Private Sub Capture_Save() Handles BG3Selector_Template1.Save_Click
         Process_Save_Edits()
+    End Sub
+    Private Sub Capture_Delete() Handles BG3Selector_Template1.Delete_Click
+        Process_delete()
+    End Sub
+    Protected Overridable Sub Process_Delete_Specifics()
+        Debug.Print(Me.Text)
+        Debugger.Break()
+    End Sub
+
+    Private Sub Process_delete()
+        If MsgBox("Deleting records is a known recipe for bricking savegames!. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Exit Sub
+        BG3Editor_Complex_WorldInjection1.Borra_All()
+        BG3Editor_Complex_WorldInjection1.Write_Data(SelectedStat)
+        If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp)) = True Then
+            FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp))
+        End If
+        If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_Description1.Get_Utam_Handle(SelectedTmp)) = True Then
+            FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_Description1.Get_Utam_Handle(SelectedTmp))
+        End If
+        If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_TechnicalDescription1.Get_Utam_Handle(SelectedTmp)) = True Then
+            FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_TechnicalDescription1.Get_Utam_Handle(SelectedTmp))
+        End If
+        FuncionesHelpers.GameEngine.UtamTemplates.Remove(SelectedTmp)
+        FuncionesHelpers.GameEngine.Utamstats.Remove(SelectedStat)
+        FuncionesHelpers.GameEngine.ProcessedGameObjectList.Remove(SelectedTmp)
+        FuncionesHelpers.GameEngine.ProcessedStatList.Remove(SelectedStat)
+        Process_Delete_Specifics()
+        BG3Selector_Template1.Delete_Ended()
     End Sub
     Private Sub Capture_Selection_Change(Template As BG3_Obj_Template_Class) Handles BG3Selector_Template1.Change_Selected
         Select_Objects(Template)
@@ -524,7 +579,6 @@ Public Class Generic_Editor
     End Sub
     Private Sub Process_Save_Final()
         BG3Selector_Template1.Edit_Ended(SelectedTmp)
-        CType(Me.MdiParent, Main).ChangedMod()
     End Sub
 
     Protected Overridable Sub Process_Edit_Specifics()
@@ -555,18 +609,18 @@ Public Class Generic_Editor
     Private Sub Create_Stat_Transfers()
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Dim lista As New List(Of ToolStripMenuItem) From {
-           New ToolStripMenuItem("Stats|Rarity|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Rarity"}},
-           New ToolStripMenuItem("Stats|Unique|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Unique"}},
-           New ToolStripMenuItem("Template|Story item|True|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"StoryItem"}},
-           New ToolStripMenuItem("Template|Icon|False|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Icon"}},
-           New ToolStripMenuItem("Stats|Trade settings|False|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Trade"}},
-           New ToolStripMenuItem("Stats|Object category|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"ObjectCategory"}},
-           New ToolStripMenuItem("Stats|Minimum level|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"MinLevel"}},
-           New ToolStripMenuItem("Stats|Inventory settings|False|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Inventory"}},
-            New ToolStripMenuItem("Stats|Game size|True|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"GameSize"}},
-           New ToolStripMenuItem("Stats|Using|False|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Using"}},
-           New ToolStripMenuItem("Stats|Value override|False|Data", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"Valueoverride"}},
-           New ToolStripMenuItem("Template|Visual template|False|Attribute", Nothing, AddressOf BG3Selector_Template1.StatsToolStripMenuItem_Click) With {.Tag = {"VisualTemplate"}}
+           New ToolStripMenuItem("Stats|Rarity|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Rarity"}},
+           New ToolStripMenuItem("Stats|Unique|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Unique"}},
+           New ToolStripMenuItem("Template|Story item|True|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"StoryItem"}},
+           New ToolStripMenuItem("Template|Icon|False|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Icon"}},
+           New ToolStripMenuItem("Stats|Trade settings|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Trade"}},
+           New ToolStripMenuItem("Stats|Object category|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ObjectCategory"}},
+           New ToolStripMenuItem("Stats|Minimum level|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"MinLevel"}},
+           New ToolStripMenuItem("Stats|Inventory settings|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Inventory"}},
+            New ToolStripMenuItem("Stats|Game size|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"GameSize"}},
+           New ToolStripMenuItem("Stats|Using|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Using"}},
+           New ToolStripMenuItem("Stats|Value override|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Valueoverride"}},
+           New ToolStripMenuItem("Template|Visual template|False|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"VisualTemplate"}}
         }
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
 
@@ -576,17 +630,19 @@ Public Class Generic_Editor
 
         For Each cat In Cats
             Dim indx = BG3Selector_Template1.PropertiesToolStripMenuItem.DropDown.Items.Add(New ToolStripMenuItem(cat))
-            Dim indx2 = BG3Selector_Template1.ToolStripMenuItemSplitBy.DropDown.Items.Add(New ToolStripMenuItem(cat))
+            Dim indx2 = BG3Selector_Template1.SplitGroupButton.DropDown.Items.Add(New ToolStripMenuItem(cat))
+            Dim indx3 = BG3Selector_Template1.PropertiesToolStripMenuItem1.DropDown.Items.Add(New ToolStripMenuItem(cat))
             For Each it In lista.Where(Function(pf) pf.Text.Split("|")(0) = cat).OrderBy(Function(pq) pq.Text.Split("|")(1)).Select(Function(pf) pf)
                 Dim splitstr = it.Text.Split("|")
                 If splitstr(2) = "True" Then
-                    Dim splitx = New ToolStripMenuItem(splitstr(1), Nothing, AddressOf BG3Selector_Template1.SplitStripMenuItem_Click) With {.Tag = CType(it.Tag, String()).Select(Function(pf) splitstr(3) + "|" + pf).ToArray}
-                    CType(BG3Selector_Template1.ToolStripMenuItemSplitBy.DropDown.Items(indx2), ToolStripMenuItem).DropDown.Items.Add(splitx)
+                    Dim splitx = New ToolStripMenuItem(splitstr(1), Nothing, AddressOf BG3Selector_Template1.SplitGroup) With {.Tag = CType(it.Tag, String()).Select(Function(pf) splitstr(3) + "|" + pf).ToArray}
+                    CType(BG3Selector_Template1.SplitGroupButton.DropDown.Items(indx2), ToolStripMenuItem).DropDown.Items.Add(splitx)
                 End If
 
                 it.Text = splitstr(1)
                 CType(BG3Selector_Template1.PropertiesToolStripMenuItem.DropDown.Items(indx), ToolStripMenuItem).DropDown.Items.Add(it)
-
+                Dim Toall = New ToolStripMenuItem(it.Text, Nothing, AddressOf BG3Selector_Template1.TransferAllClick) With {.Tag = it.Tag}
+                CType(BG3Selector_Template1.PropertiesToolStripMenuItem1.DropDown.Items(indx3), ToolStripMenuItem).DropDown.Items.Add(Toall)
             Next
         Next
     End Sub
@@ -612,15 +668,10 @@ Public Class Generic_Editor
     End Sub
 
     Protected Transfer_Stat As BG3_Obj_Stats_Class
-    Private Function Warning_accept()
-        Dim recs As String = BG3Selector_Template1.Current_Nod.Parent.Nodes.Count.ToString
-        If MsgBox("This will change " + recs + " records and can not be undone. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Return False
-        Return True
-    End Function
-    Private Sub Transfer_stats(Template As BG3_Obj_Template_Class, statsList() As String) Handles BG3Selector_Template1.Transfer_Stats
-        If Warning_accept() = False Then Exit Sub
+
+    Private Sub Transfer_stats(Template As BG3_Obj_Template_Class, statsList() As String, nods As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)) Handles BG3Selector_Template1.Transfer_Stats
         Transfer_SaveOriginal()
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
+        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In nods.Nodes
             Dim obj As BG3_Obj_Template_Class = nod.Objeto
             If obj IsNot Template Then
                 obj.Edit_start()
@@ -680,14 +731,14 @@ Public Class Generic_Editor
                             Transfer_stats_specifics(Template, statsList)
                     End Select
                 Next
-                Process_Save_Objetos()
+                SelectedTmp.Write_Data()
+                SelectedStat.Write_Data()
             End If
         Next
         BG3Selector_Template1.Edit_Ended(Template)
     End Sub
-    Private Sub Transfer_Handles(Template As BG3_Obj_Template_Class, cual As Integer) Handles BG3Selector_Template1.Transfer_Localization
-        If Warning_accept() = False Then Exit Sub
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
+    Private Sub Transfer_Handles(Template As BG3_Obj_Template_Class, cual As Integer, nods As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)) Handles BG3Selector_Template1.Transfer_Localization
+        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In nods.Nodes
             Dim obj As BG3_Obj_Template_Class = nod.Objeto
             If obj IsNot Template Then
                 obj.Edit_start()
@@ -713,9 +764,8 @@ Public Class Generic_Editor
         BG3Selector_Template1.Edit_Ended(Template)
     End Sub
 
-    Private Sub Transfer_Tags(Template As BG3_Obj_Template_Class) Handles BG3Selector_Template1.Transfer_Tags
-        If Warning_accept() = False Then Exit Sub
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
+    Private Sub Transfer_Tags(Template As BG3_Obj_Template_Class, nods As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)) Handles BG3Selector_Template1.Transfer_Tags
+        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In nods.Nodes
             Dim obj As BG3_Obj_Template_Class = nod.Objeto
             If obj IsNot Template Then
                 BG3Editor_Complex_Tags1.Read(Template)
@@ -728,9 +778,8 @@ Public Class Generic_Editor
         BG3Editor_Complex_Tags1.Read(Template)
         BG3Selector_Template1.Edit_Ended(Template)
     End Sub
-    Private Sub Transfer_WorldInjection(Template As BG3_Obj_Template_Class) Handles BG3Selector_Template1.Transfer_WorldInject
-        If Warning_accept() = False Then Exit Sub
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
+    Private Sub Transfer_WorldInjection(Template As BG3_Obj_Template_Class, nods As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)) Handles BG3Selector_Template1.Transfer_WorldInject
+        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In nods.Nodes
             Dim obj As BG3_Obj_Template_Class = nod.Objeto
             If obj IsNot Template Then
                 ' Borra nuevo
@@ -753,6 +802,16 @@ Public Class Generic_Editor
         End If
     End Sub
 
+    Private Sub FillSplit(ByVal Attr_or_data As String, ByRef selectedtmp As BG3_Obj_Template_Class, ByRef selectedstat As BG3_Obj_Stats_Class, ByRef suffix As String) Handles BG3Selector_Template1.FillSplit
+        Select Case Attr_or_data
+            Case Else
+                FillSplit_specific(Attr_or_data, selectedtmp, selectedstat, suffix)
+        End Select
+
+    End Sub
+    Protected Overridable Sub FillSplit_specific(ByVal Attr_or_data As String, ByRef selectedtmp As BG3_Obj_Template_Class, ByRef selectedstat As BG3_Obj_Stats_Class, ByRef suffix As String)
+
+    End Sub
     Private Sub BG3Cloner1_Load(sender As Object, e As EventArgs)
 
     End Sub

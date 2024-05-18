@@ -22,6 +22,14 @@ Public Class Explorer_Form_Templates
 
     End Sub
     Public Event TreeNodeSelected(sender As Object, e As TreeViewEventArgs)
+    Public Event TreeNodeDoubleClicked(Node As TreeNode)
+    Private Sub ObjectsTree_NodeSelected(sender As Object, e As TreeViewEventArgs) Handles ObjectsTree.NodeSelected
+        RaiseEvent TreeNodeSelected(sender, e)
+    End Sub
+    Private Sub ObjectsTree_NodeDoubleClicked(e As TreeNode) Handles ObjectsTree.Node_DobbleClick
+        RaiseEvent TreeNodeDoubleClicked(e)
+    End Sub
+
     Public Event Hide_Unhide_Details(Show As Boolean)
 
     Private Sub Template_Explorer_Form_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -39,9 +47,7 @@ Public Class Explorer_Form_Templates
         ObjectsTree.ObjectList = FuncionesHelpers.GameEngine.ProcessedGameObjectList
         If ObjectsTree.ArbolWorker.IsBusy = False Then ObjectsTree.Reload_Arbol(False)
     End Sub
-    Private Sub ObjectsTree_NodeSelected(sender As Object, e As TreeViewEventArgs) Handles ObjectsTree.NodeSelected
-        RaiseEvent TreeNodeSelected(sender, e)
-    End Sub
+
     Public Sub Hide_Unhide(Show As Boolean) Handles ObjectsTree.Hide_Unhide_Details
         RaiseEvent Hide_Unhide_Details(Show)
     End Sub

@@ -150,9 +150,6 @@ Public MustInherit Class Explorer_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterSelect
         RaiseEvent NodeSelected(sender, e)
     End Sub
-    Private Sub TreeView1_DoubleClick(sender As Object, e As EventArgs) Handles TreeView1.DoubleClick
-        RaiseEvent NodeDoubleClicked(sender, e)
-    End Sub
     Private Sub TreeView1_Itemdrag(sender As Object, e As ItemDragEventArgs) Handles TreeView1.ItemDrag
         DoDragDrop(e.Item, DragDropEffects.Copy)
     End Sub
@@ -261,5 +258,4 @@ Public MustInherit Class Explorer_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Public Event InititatedTask(sender As Object, e As DoWorkEventArgs)
     Public Event TaskReported(sender As Object, e As ProgressChangedEventArgs)
     Public Event NodeSelected(sender As Object, e As TreeViewEventArgs)
-    Public Event NodeDoubleClicked(sender As Object, e As EventArgs)
 End Class

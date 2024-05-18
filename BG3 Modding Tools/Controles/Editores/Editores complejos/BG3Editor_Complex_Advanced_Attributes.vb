@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.InteropServices.JavaScript.JSType
+﻿Imports System.ComponentModel
+Imports System.Runtime.InteropServices.JavaScript.JSType
 Imports LSLib.LS
 
 Public Class BG3Editor_Complex_Advanced_Attributes
@@ -11,12 +12,15 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         Me.DoubleBuffered = True
         Flickering.EnableDoubleBuffering(ListView1)
     End Sub
+
+    <DefaultValue(True)>
     Public Property [ReadOnly] As Boolean
         Get
             Return BG3Editor_Template_Undefined1.Enabled
         End Get
         Set(value As Boolean)
-            BG3Editor_Template_Undefined1.Enabled = value
+            BG3Editor_Template_Undefined1.Enabled = Not value
+            ButtonOk.Enabled = Not value
         End Set
     End Property
 
@@ -44,15 +48,17 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         Dim last_pos As String = ""
         If ListView1.SelectedItems.Count > 0 Then last_pos = ListView1.SelectedItems(0).Text
         ListView1.BeginUpdate()
+        Dim top = ListView1.TopItem
         Clear()
         _Last_read = Obj
         Dim idx As ListViewItem
         For Each stat In FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(Obj.Type).ToString) = True).Select(Function(pf) pf).Distinct
-            idx = New ListViewItem With {.Text = stat.Value}
+            idx = New ListViewItem With {.Text = stat.Value, .Name = stat.Key}
             Dim tipos() = stat.Key.Split(";")
             idx.SubItems.Add(tipos(1))
             idx.SubItems.Add(Obj.ReadAttribute_Or_Inhterithed(stat.Value))
             idx = ListView1.Items.Add(idx)
+            If Not IsNothing(top) AndAlso idx.Name = top.Name Then top = idx
             If idx.Text = last_pos Then idx.Selected = True
             If IsNothing(Obj.ReadAttribute_Or_Inhterithed(stat.Value)) Then
                 idx.ForeColor = Color.FromKnownColor(KnownColor.GrayText)
@@ -68,7 +74,9 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         ListView1.Columns(1).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
         If ListView1.Columns(1).Width < 100 Then ListView1.Columns(1).Width = 100
         ListView1.Columns(2).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
+        ListView1.TopItem = top
         ListView1.EndUpdate()
+
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.ItemSelectionChanged
@@ -83,9 +91,17 @@ Public Class BG3Editor_Complex_Advanced_Attributes
                 BG3Editor_Template_Undefined1.AttributeType = AttributeType.FixedString
                 Debugger.Break()
             End If
+            Select Case att
+                Case AttributeType.Bool
+                    BG3Editor_Template_Undefined1.EditorType = BG3_Editor_Type.Combobox
+                    BG3Editor_Template_Undefined1.ComboItems = New List(Of String) From {"False", "True"}
+                    BG3Editor_Template_Undefined1.Reload_Combo()
+                Case Else
+                    BG3Editor_Template_Undefined1.EditorType = BG3_Editor_Type.Textbox
+            End Select
             BG3Editor_Template_Undefined1.Read(_Last_read)
-            Else
-                BG3Editor_Template_Undefined1.Label = "Select"
+        Else
+            BG3Editor_Template_Undefined1.Label = "Select"
             BG3Editor_Template_Undefined1.Key = "Undefined"
             BG3Editor_Template_Undefined1.AttributeType = AttributeType.FixedString
             BG3Editor_Template_Undefined1.Clear()
@@ -94,20 +110,31 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     End Sub
 
     Private Sub BG3Editor_Stats_Undefined1_TextChanged(sender As Object) Handles BG3Editor_Template_Undefined1.Inside_Text_Changed, BG3Editor_Template_Undefined1.Inside_Checkbox_Changed
+        ButtonOk.Enabled = BG3Editor_Template_Undefined1.Enabled
+    End Sub
+
+    Private Sub ButtonOk_Click(sender As Object, e As EventArgs) Handles ButtonOk.Click
         If ListView1.SelectedItems.Count = 0 Then Exit Sub
         If BG3Editor_Template_Undefined1.Key = "Undefined" Then Exit Sub
-        ListView1.SelectedItems(0).SubItems(2).Text = BG3Editor_Template_Undefined1.TextBox1.Text
-        BG3Editor_Template_Undefined1.Write(_Last_read)
-        If IsNothing(_Last_read.ReadAttribute_Or_Inhterithed(BG3Editor_Template_Undefined1.Key)) Then
-            ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.GrayText)
-        Else
-            If _Last_read.NodeLSLIB.Attributes.ContainsKey(BG3Editor_Template_Undefined1.Key) = False Then
-                ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+        Dim oldv As String = ""
+        Try
+            oldv = ListView1.SelectedItems(0).SubItems(2).Text
+            ListView1.SelectedItems(0).SubItems(2).Text = BG3Editor_Template_Undefined1.TextBox1.Text
+            BG3Editor_Template_Undefined1.Write(_Last_read)
+            If IsNothing(_Last_read.ReadAttribute_Or_Inhterithed(BG3Editor_Template_Undefined1.Key)) Then
+                ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.GrayText)
             Else
-                ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                If _Last_read.NodeLSLIB.Attributes.ContainsKey(BG3Editor_Template_Undefined1.Key) = False Then
+                    ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+                Else
+                    ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
             End If
-        End If
-        BG3Editor_Template_Undefined1.Write(_Last_read)
-
+            BG3Editor_Template_Undefined1.Write(_Last_read)
+        Catch ex As Exception
+            BG3Editor_Template_Undefined1.TextBox1.Text = oldv
+            MsgBox("Error parsing the text to value. Try again", vbExclamation + vbOKOnly, "Error")
+        End Try
+        ButtonOk.Enabled = False
     End Sub
 End Class

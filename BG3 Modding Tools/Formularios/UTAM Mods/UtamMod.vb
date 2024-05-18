@@ -16,7 +16,7 @@ Imports LSLib.LS.Story
 Public Class UtamMod
 
     Public CurrentMod As New Utam_CurrentModClass
-    Public Source As BG3_Pak_SourceOfResource_Class
+    'Public Source As BG3_Pak_SourceOfResource_Class
     Sub New()
         MyBase.New
         ' Esta llamada es exigida por el diseñador.
@@ -43,11 +43,11 @@ Public Class UtamMod
             ButtonSave.Enabled = True
             ButtonCancel.Enabled = True
             TextBoxFolder.Enabled = True
-            Me.Source = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
+            CurrentMod.ModLsx.SourceOfResource = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
             Habilita_Deshabilita_edicion(True)
         End If
     End Sub
-
+    Private Loaded_Name As String = ""
     Public Sub Load_finished(CurrentMod As Utam_CurrentModClass)
         Me.CurrentMod = CurrentMod
         Me.NumericUpDown1.Value = CurrentMod.Versionconverter.Major
@@ -59,8 +59,9 @@ Public Class UtamMod
         CheckBoxModFixer.Checked = CurrentMod.BuildModFixer
         CheckBoxmultitoolcomp.Checked = CurrentMod.ShinyhoboCompatible
         CheckBoxAddtogame.Checked = CurrentMod.AddToGame
+        Loaded_Name = CurrentMod.ModLsx.Name
         TextBoxFolder.Enabled = False
-        Me.Source = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
+        CurrentMod.ModLsx.SourceOfResource = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
         Habilita_Deshabilita_edicion(False)
     End Sub
 
@@ -70,6 +71,7 @@ Public Class UtamMod
         ButtonCancel.Enabled = Edicion
         GroupBox1.Enabled = Edicion
         GroupBox2.Enabled = Edicion
+        TextBoxFolder.Enabled = CurrentMod.Isnew
         If repintar Then Repinta()
     End Sub
     Public Sub Repinta()
@@ -126,7 +128,10 @@ Public Class UtamMod
     End Sub
     Public Sub Save_mod()
         CurrentMod.ModLsx.SaveChanges()
+        Dim Utam_Last_CFG As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, Loaded_Name + ".utam")
         Dim Utam_CFG As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, CurrentMod.ModLsx.Name + ".utam")
+        If Utam_Last_CFG <> "" AndAlso Utam_Last_CFG <> Utam_CFG AndAlso IO.File.Exists(Utam_Last_CFG) Then IO.File.Delete(Utam_Last_CFG)
+        CurrentMod.ModLsx.SourceOfResource = New BG3_Pak_SourceOfResource_Class(IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, CurrentMod.ModLsx.Folder), BG3_Enum_Package_Type.UTAM_Mod)
         CurrentMod.SaveFolder = CurrentMod.ModLsx.Folder
         CurrentMod.SaveUUID = CurrentMod.ModLsx.UUID
         CurrentMod.Isnew = False
@@ -187,7 +192,7 @@ Public Class UtamMod
         For Each tt In FuncionesHelpers.GameEngine.UtamTreasures
             ArchivoTT.WriteLine("new treasuretable " + Chr(34) + tt.Mapkey_WithoutOverride + Chr(34) + "")
             If tt.CanMerge = True Then ArchivoTT.WriteLine("CanMerge 1")
-            For Each subt In tt.Subtables.Where(Function(pf) pf.Source.Pak_Or_Folder = Source.Pak_Or_Folder)
+            For Each subt In tt.Subtables.Where(Function(pf) pf.Source.Pak_Or_Folder = CurrentMod.ModLsx.SourceOfResource.Pak_Or_Folder)
                 ArchivoTT.WriteLine("new subtable " + Chr(34) + subt.Definition + Chr(34) + "")
                 If subt.MinLevel <> "" Then ArchivoTT.WriteLine("StartLevel " + Chr(34) + subt.MinLevel + Chr(34) + "")
                 If subt.MaxLevel <> "" Then ArchivoTT.WriteLine("EndLevel " + Chr(34) + subt.MaxLevel + Chr(34) + "")
@@ -272,7 +277,7 @@ Public Class UtamMod
             Loca(x) = New LSLib.LS.LocaResource With {.Entries = New List(Of LocalizedText)}
         Next
 
-        For Each Local In FuncionesHelpers.GameEngine.ProcessedLocalizationList.Values.Where(Function(pf) Not IsNothing(pf.SourceOfResorce) AndAlso pf.SourceOfResorce.Pak_Or_Folder = Source.Pak_Or_Folder)
+        For Each Local In FuncionesHelpers.GameEngine.ProcessedLocalizationList.Values.Where(Function(pf) Not IsNothing(pf.SourceOfResorce) AndAlso pf.SourceOfResorce.Pak_Or_Folder = CurrentMod.ModLsx.SourceOfResource.Pak_Or_Folder)
             For x = 0 To langs.Length - 1
                 If FuncionesHelpers.GameEngine.ProcessedLocalizationList.Key_Has_Language(Local.Handle + ";" + Local.Version.ToString, CType(x, Bg3_Enum_Languages)) Then
                     Dim locali As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(Local.Handle + ";" + Local.Version.ToString, CType(x, Bg3_Enum_Languages))
