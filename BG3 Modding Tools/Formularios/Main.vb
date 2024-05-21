@@ -433,7 +433,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -527,7 +527,7 @@ Public Class Main
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -698,5 +698,19 @@ Public Class Main
 
     Private Sub WeaponsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem.Click
         GenerateChildForm(GetType(Weapons_Editor), "")
+    End Sub
+
+    Private Sub ConsumablesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConsumablesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Consumables_Editor), "")
+    End Sub
+
+    Private Sub ProcessSinglePakToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProcessSinglePakToolStripMenuItem.Click
+        Dim xx As New System.Windows.Forms.OpenFileDialog
+        xx.ShowDialog()
+        GameEngine.ProcessedPackList.AddPackageContainer(xx.FileName, BG3_Enum_Package_Type.BaseMod)
+        Dim pack = GameEngine.ProcessedPackList.Last
+        Parallel.ForEach(pack.Package.Files, Sub(fil)
+                                                 Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil), False)
+                                             End Sub)
     End Sub
 End Class

@@ -1,6 +1,5 @@
 ﻿Imports System.Net
 Imports LSLib.LS
-Imports LSLib.LS.Stats.Lua
 Imports LSLib.LS.Story
 
 <ToolboxBitmap(GetType(System.Windows.Forms.TextBox))>

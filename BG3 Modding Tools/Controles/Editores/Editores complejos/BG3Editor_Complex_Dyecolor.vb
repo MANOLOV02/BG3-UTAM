@@ -1,4 +1,6 @@
 ﻿Imports System.IO
+Imports System.Reflection
+Imports System.Windows
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports LSLib.Granny
 Imports LSLib.LS
@@ -124,9 +126,18 @@ Public Class BG3Editor_Complex_Dyecolor
     End Function
     Public Function Read(Obj As BG3_Obj_VisualBank_Class) As Boolean
         If IsNothing(Obj) Then Return False
+        Clear()
         Drop_OBJ_VisualBank2(Obj)
         Return True
     End Function
+    Public Function Read(Obj As BG3_Obj_Template_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        Clear()
+        If Obj.Utam_Type <> BG3_Enum_UTAM_Type.Armor Then Return False
+        Drop_OBJ_Armor(Obj)
+        Return True
+    End Function
+
     Public Function Change_selected(Template_guid As String, Stat_Name As String, Color_template_guid As String, modsource As BG3_Pak_SourceOfResource_Class) As Boolean
         If FuncionesHelpers.GameEngine.ProcessedVisualBanksList.TryGetValue(Color_template_guid, Color_Preset) = False Then
             Create_Color_Temp(Color_template_guid, Template_guid, modsource)
@@ -329,6 +340,89 @@ Public Class BG3Editor_Complex_Dyecolor
         End Select
 
     End Sub
+    Public Sub Write(MaterialOverride As LSLib.LS.Node)
+        If IsNothing(MaterialOverride) Then Exit Sub
+        Dim puestos(14) As Integer
+        'aaa ' SACAR EL TEMA DEL FORCECOLORPRESET
+        Dim value3 As List(Of LSLib.LS.Node) = Nothing
+        If MaterialOverride.ChildCount > 0 AndAlso MaterialOverride.Children.TryGetValue("MaterialPresets", value3) Then
+            For Each nod4 In value3
+                Dim value6 As List(Of LSLib.LS.Node) = Nothing
+                If nod4.ChildCount > 0 AndAlso nod4.Children.TryGetValue("Object", value6) Then
+                    Dim force As Boolean = False
+                    Dim groupname As String = ""
+                    For Each nod5 In value6
+                        Dim value4 As LSLib.LS.NodeAttribute = Nothing
+                        Dim valuef As LSLib.LS.NodeAttribute = Nothing
+                        If nod5.Attributes.TryGetValue("ForcePresetValues", value4) Then
+                            force = value4.Value
+                        End If
+                        If nod5.Attributes.TryGetValue("GroupName", value4) Then
+                            groupname = value4.Value
+                        End If
+                        If groupname = "02 Colour" And force = True Then
+                            nod5.Attributes("ForcePresetValues").Value = False
+                        End If
+                    Next
+                End If
+            Next
+        End If
+        If MaterialOverride.ChildCount > 0 AndAlso MaterialOverride.Children.TryGetValue("ColorPreset", value3) Then
+            For Each nod4 In value3
+                Dim value4 As LSLib.LS.NodeAttribute = Nothing
+                Dim force As Boolean = False
+                Dim groupname As String = ""
+                Dim matcp As String = ""
+                If nod4.Attributes.TryGetValue("ForcePresetValues", value4) Then
+                    force = value4.Value
+                End If
+                If nod4.Attributes.TryGetValue("GroupName", value4) Then
+                    groupname = value4.Value
+                End If
+                If groupname = "02 Colour" And force = True Then
+                    nod4.Attributes("ForcePresetValues").Value = False
+                End If
+            Next
+        End If
+
+        If MaterialOverride.Children.ContainsKey("Vector3Parameters") Then
+            For Each nod As LSLib.LS.Node In MaterialOverride.Children("Vector3Parameters")
+                Dim value As LSLib.LS.NodeAttribute = Nothing
+                If nod.Attributes.TryGetValue("Parameter", value) = False Then
+                    nod.Attributes.TryGetValue("ParameterName", value)
+                End If
+                If Not IsNothing(value) Then
+                    Dim par As String = value.Value
+                    Dim ind As Integer = FuncionesHelpers.ColorMaterialsNames.IndexOf(par)
+                    If ind <> -1 Then
+                        puestos(ind) = 1
+                        Dim value2 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
+                        If nod.Attributes.TryAdd("Color", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Color").Value = True
+                        If nod.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Enabled").Value = True
+                        If nod.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Custom").Value = True
+                        If nod.Attributes.TryAdd("Parameter", New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod.Attributes("Parameter").Value = FuncionesHelpers.ColorMaterialsNames(ind)
+                        value2.FromString(Texts(ind).Text, Funciones.Guid_to_string)
+                        If nod.Attributes.TryAdd("Value", value2) = False Then nod.Attributes("Value").Value = value2.Value
+                    End If
+                End If
+            Next
+        End If
+
+        For ind = 0 To puestos.Length - 1
+            If puestos(ind) = 0 Then
+                Dim nod As New LSLib.LS.Node With {.Parent = MaterialOverride, .Name = "Vector3Parameters"}
+                Dim value2 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
+                If nod.Attributes.TryAdd("Color", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Color").Value = True
+                If nod.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Enabled").Value = True
+                If nod.Attributes.TryAdd("Parameter", New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod.Attributes("Parameter").Value = FuncionesHelpers.ColorMaterialsNames(ind)
+                If nod.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Custom").Value = True
+                value2.FromString(Texts(ind).Text, Funciones.Guid_to_string)
+                If nod.Attributes.TryAdd("Value", value2) = False Then nod.Attributes("Value").Value = value2.Value
+                MaterialOverride.AppendChild(nod)
+            End If
+        Next
+
+    End Sub
     Private Sub Save_Nodes_Template(Subnodos As List(Of LSLib.LS.Node))
         For Each nod In Subnodos
             Dim value As LSLib.LS.NodeAttribute = Nothing
@@ -458,6 +552,7 @@ Public Class BG3Editor_Complex_Dyecolor
                         Dim value2 As List(Of LSLib.LS.Node) = Nothing
                         If nod2.ChildCount > 0 AndAlso nod2.Children.TryGetValue("MaterialOverrides", value2) Then
                             Dim curnodes3 = value2
+                            Dim forced As Boolean = False
                             For Each nod3 In curnodes3
                                 Dim value3 As List(Of LSLib.LS.Node) = Nothing
                                 If nod3.ChildCount > 0 AndAlso nod3.Children.TryGetValue("ColorPreset", value3) Then
@@ -475,6 +570,7 @@ Public Class BG3Editor_Complex_Dyecolor
                                         If nod4.Attributes.TryGetValue("MaterialPresetResource", value4) Then
                                             matcp = value4.Value
                                         End If
+                                        If groupname = "02 Colour" And force = True Then forced = True
                                         If groupname = "02 Colour" Then
                                             Dim VisObj As BG3_Obj_VisualBank_Class = Nothing
                                             If FuncionesHelpers.GameEngine.ProcessedVisualBanksList.TryGetValue(matcp, VisObj) = True Then
@@ -490,8 +586,18 @@ Public Class BG3Editor_Complex_Dyecolor
                                     For Each nod4 In value3
                                         Dim value6 As List(Of LSLib.LS.Node) = Nothing
                                         If nod4.ChildCount > 0 AndAlso nod4.Children.TryGetValue("Object", value6) Then
+                                            Dim force As Boolean = False
+                                            Dim groupname As String = ""
                                             For Each nod5 In value6
                                                 Dim value4 As LSLib.LS.NodeAttribute = Nothing
+                                                Dim valuef As LSLib.LS.NodeAttribute = Nothing
+                                                If nod5.Attributes.TryGetValue("ForcePresetValues", value4) Then
+                                                    force = value4.Value
+                                                End If
+                                                If nod5.Attributes.TryGetValue("GroupName", value4) Then
+                                                    groupname = value4.Value
+                                                End If
+                                                If groupname = "02 Colour" And force = True Then forced = True
                                                 If nod5.Attributes.TryGetValue("MaterialPresetResource", value4) Then
                                                     Dim cual As String = value4.Value
                                                     Dim cpObj As BG3_Obj_VisualBank_Class = Nothing
@@ -505,7 +611,7 @@ Public Class BG3Editor_Complex_Dyecolor
                                     Next
                                 End If
                                 Dim value5 As List(Of LSLib.LS.Node) = Nothing
-                                If nod3.ChildCount > 0 AndAlso nod3.Children.TryGetValue("Vector3Parameters", value5) Then
+                                If nod3.ChildCount > 0 AndAlso nod3.Children.TryGetValue("Vector3Parameters", value5) And forced = False Then
                                     Drop_OBJ(value5)
                                     esta_tiene = True
                                 End If

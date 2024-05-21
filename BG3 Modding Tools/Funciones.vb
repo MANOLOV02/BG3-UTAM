@@ -1214,7 +1214,7 @@ Public Class Funciones
         Parallel.For(0, GameEngine.Cache_String_List.Count, Sub(x)
                                                                 If Worker.CancellationPending = True Then Exit Sub
                                                                 Try
-                                                                    If IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x))) Then IO.File.Delete(GameEngine.Cache_String_List(x))
+                                                                    If IO.File.Exists(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x))) Then IO.File.Delete(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, GameEngine.Cache_String_List(x)))
                                                                 Catch ex As Exception
                                                                     Worker.CancelAsync()
                                                                 End Try
@@ -1260,7 +1260,7 @@ Public Class Funciones
                                                             End Sub)
         If Worker.CancellationPending = True Then Return False
         Dim verchek As String = 0
-        Return DeserializeObject(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json"), verchek) AndAlso verchek = GameEngine.CacheVersion
+        Return DeserializeObject(IO.Path.Combine(GameEngine.Settings.UTAMCacheFolder, "CacheVersion.json"), verchek) AndAlso verchek = GameEngine.CacheVersion.ToString
     End Function
 
     Public Shared Sub ProcesaCacheBackground(Worker As Object, e As DoWorkEventArgs)

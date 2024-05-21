@@ -24,6 +24,7 @@ Public Class Armors_Editor
         ' Nothing
         HandledStats.Add("Slot")
         HandledStats.Add("Boosts")
+        HandledStats.Add("DefaultBoosts")
         HandledStats.Add("PassivesOnEquip")
         HandledStats.Add("StatusOnEquip")
         HandledStats.Add("ArmorType")
@@ -33,7 +34,10 @@ Public Class Armors_Editor
 
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
-        GroupBox5.Enabled = Edicion
+        GroupBoxArmors1.Enabled = Edicion
+        GroupBoxArmorsG.Enabled = Edicion
+        GroupBoxArmorsS.Enabled = Edicion
+        BG3Editor_Complex_ArmorEquipment1.Readonly = Not Edicion
     End Sub
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As LSLib.LS.Node)
         ' Nothin yet
@@ -62,14 +66,18 @@ Public Class Armors_Editor
         If Not IsNothing(SelectedTmp) Then
             BG3Editor_Stats_PassivesOnEquip1.Read(SelectedStat)
             BG3Editor_Stats_Boosts1.Read(SelectedStat)
+            BG3Editor_Stats_DefaultBoosts1.Read(SelectedStat)
             BG3Editor_Stat_Slots_Armor1.Read(SelectedStat)
             BG3Editor_Stats_ArmorType1.Read(SelectedStat)
             BG3Editor_Stats_StatusOnEquip1.Read(SelectedStat)
             BG3Editor_Stats_ProficiencyGroup1.Read(SelectedStat)
             BG3Editor_Stats_ArmorClassAbility1.Read(SelectedStat)
             BG3Editor_Stats_ArmorClass1.Read(SelectedStat)
+            BG3Editor_Complex_StatusList1.Read(SelectedTmp)
+            BG3Editor_Complex_ArmorEquipment1.Read(SelectedTmp)
         Else
             BG3Editor_Stats_Boosts1.Clear()
+            BG3Editor_Stats_DefaultBoosts1.Clear()
             BG3Editor_Stats_PassivesOnEquip1.Clear()
             BG3Editor_Stat_Slots_Armor1.Clear()
             BG3Editor_Stats_ArmorType1.Clear()
@@ -77,6 +85,9 @@ Public Class Armors_Editor
             BG3Editor_Stats_ProficiencyGroup1.Clear()
             BG3Editor_Stats_ArmorClassAbility1.Clear()
             BG3Editor_Stats_ArmorClass1.Clear()
+            BG3Editor_Complex_StatusList1.Clear()
+            BG3Editor_Complex_ArmorEquipment1.Clear()
+
         End If
     End Sub
     Protected Overrides Sub Process_Cancel_Specifics()
@@ -91,12 +102,15 @@ Public Class Armors_Editor
     Protected Overrides Sub Process_Save_Edits_Specifics()
         BG3Editor_Stats_PassivesOnEquip1.Write(SelectedStat)
         BG3Editor_Stats_Boosts1.Write(SelectedStat)
+        BG3Editor_Stats_DefaultBoosts1.Write(SelectedStat)
         BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
         BG3Editor_Stats_ArmorType1.Write(SelectedStat)
         BG3Editor_Stats_StatusOnEquip1.Write(SelectedStat)
         BG3Editor_Stats_ProficiencyGroup1.Write(SelectedStat)
         BG3Editor_Stats_ArmorClassAbility1.Write(SelectedStat)
         BG3Editor_Stats_ArmorClass1.Write(SelectedStat)
+        BG3Editor_Complex_StatusList1.Write(SelectedTmp)
+        BG3Editor_Complex_ArmorEquipment1.Write(SelectedTmp)
     End Sub
     Protected Overrides Sub Process_Save_Objetos_Specifics()
 
@@ -108,7 +122,8 @@ Public Class Armors_Editor
             New ToolStripMenuItem("Armor specific|Type|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ArmorType"}},
               New ToolStripMenuItem("Armor specific|Ability|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Armor Class Ability"}},
                 New ToolStripMenuItem("Armor specific|Proficiency|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Proficiency Group"}},
-                  New ToolStripMenuItem("Armor specific|Armor Class|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ArmorClass"}}
+                 New ToolStripMenuItem("Armor specific|Armor Class|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ArmorClass"}},
+           New ToolStripMenuItem("Armor specific|Status list|False|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"StatusList"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -138,10 +153,17 @@ Public Class Armors_Editor
                         Case "ArmorClass"
                             BG3Editor_Stats_ArmorClass1.Read(Transfer_Stat)
                             BG3Editor_Stats_ArmorClass1.Write(SelectedStat)
+                        Case "StatusList"
+                            BG3Editor_Complex_StatusList1.Read(Template)
+                            BG3Editor_Complex_StatusList1.Write(SelectedTmp)
                     End Select
                 Next
             End If
         Next
+    End Sub
+
+    Private Sub BG3Editor_Complex_ArmorEquipment1_Load(sender As Object, e As EventArgs) Handles BG3Editor_Complex_ArmorEquipment1.Load
+
     End Sub
 
     ' Subs Especificos Containers

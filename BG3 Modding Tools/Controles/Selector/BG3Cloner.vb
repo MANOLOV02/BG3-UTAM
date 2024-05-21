@@ -401,13 +401,13 @@ Public Class BG3Cloner
         None
     End Enum
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Stats_Class) As Boolean
-        If IsNothing(Stat_MustDescend_From) Then Return False
+        If IsNothing(Stat_MustDescend_From) Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Stat_MustDescend_From)
         Return False
     End Function
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Template_Class) As Boolean
-        If IsNothing(Template_MustDescend_From) Then Return False
-        If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" Then Return False
+        If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" AndAlso obj.ReadAttribute_Or_Empty("TemplateName") <> "" Then Return False
+        If IsNothing(Template_MustDescend_From) Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Template_MustDescend_From)
         Return False
     End Function

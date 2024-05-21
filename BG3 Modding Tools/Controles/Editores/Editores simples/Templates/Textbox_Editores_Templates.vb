@@ -147,6 +147,14 @@ Public Class BG3Editor_Template_TechnicalDescription
         Label = "Technical description"
     End Sub
 End Class
+
+Public Class BG3Editor_Template_OnUseDescription
+    Inherits BG3Editor_Template_LocalizationBase
+    Sub New()
+        MyBase.New("OnUseDescription", "UTAM_h4")
+        Label = "On use description"
+    End Sub
+End Class
 Public Class BG3Editor_Template_VisualTemplate
     Inherits Editor_Template_GenericAttribute
     Sub New()

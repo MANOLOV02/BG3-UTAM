@@ -95,6 +95,14 @@ Public Class BG3Editor_Stats_DefaultBoosts
         Label = "Default boosts"
     End Sub
 End Class
+Public Class BG3Editor_Stats_UseConditions
+    Inherits BG3Editor_Stats_Boosts
+    Sub New()
+        MyBase.New("UseConditions")
+        Label = "Use conditions"
+    End Sub
+End Class
+
 Public Class BG3Editor_Stats_BoostsOnEquipOffHand
     Inherits BG3Editor_Stats_Boosts
     Sub New()

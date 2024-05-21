@@ -10,7 +10,7 @@ Imports LSLib.Granny.Model
 Imports LSLib.LS
 Imports LSLib.LS.Story
 
-Public MustInherit Class Generic_Editor
+Public Class Generic_Editor
     Sub New()
         MyBase.New
         ' Esta llamada es exigida por el diseñador.
@@ -326,7 +326,7 @@ Public MustInherit Class Generic_Editor
         Process_Save_Final()
     End Sub
 
-    Private Sub CLone_Loca(OldMapkey As String, UtamHandle As String)
+    Protected Sub CLone_Loca(OldMapkey As String, UtamHandle As String)
         If OldMapkey = "" Then Exit Sub
         If OldMapkey.Contains(";"c) = False OrElse UtamHandle.Contains(";"c) = False Then
             Debugger.Break()

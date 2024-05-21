@@ -37,6 +37,8 @@ Partial Class Weapons_Editor
         TabControl2 = New TabControl()
         TabPageWeaponsG = New TabPage()
         GroupBoxWeaponsG = New GroupBox()
+        Label2 = New Label()
+        Label1 = New Label()
         BG3Editor_Template_EquipmenTypeId1 = New BG3Editor_Template_EquipmentTypeID()
         BG3Editor_Stats_WeaponProperties1 = New BG3Editor_Stats_WeaponProperties()
         BG3Editor_Stats_WeaponGroup1 = New BG3Editor_Stats_WeaponGroup()
@@ -48,8 +50,9 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_Damage_Type1 = New BG3Editor_Stats_Damage_Type()
         BG3Editor_Stats_DamageRange1 = New BG3Editor_Stats_DamageRange()
         BG3Editor_Stats_WeaponRange1 = New BG3Editor_Stats_WeaponRange()
-        Label1 = New Label()
-        Label2 = New Label()
+        TabPageWeaponsS = New TabPage()
+        BG3Editor_Complex_StatusList1 = New BG3Editor_Complex_StatusList()
+        GroupBoxWeaponsS = New GroupBox()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -71,6 +74,8 @@ Partial Class Weapons_Editor
         TabPageWeaponsB.SuspendLayout()
         TabPageWeaponsD.SuspendLayout()
         GroupBoxWeaponsD.SuspendLayout()
+        TabPageWeaponsS.SuspendLayout()
+        GroupBoxWeaponsS.SuspendLayout()
         SuspendLayout()
         ' 
         ' BG3Selector_Template1
@@ -294,6 +299,7 @@ Partial Class Weapons_Editor
         TabControl2.Controls.Add(TabPageWeaponsG)
         TabControl2.Controls.Add(TabPageWeaponsB)
         TabControl2.Controls.Add(TabPageWeaponsD)
+        TabControl2.Controls.Add(TabPageWeaponsS)
         TabControl2.Location = New Point(413, 10)
         TabControl2.Margin = New Padding(0)
         TabControl2.Name = "TabControl2"
@@ -326,6 +332,24 @@ Partial Class Weapons_Editor
         GroupBoxWeaponsG.Size = New Size(384, 229)
         GroupBoxWeaponsG.TabIndex = 0
         GroupBoxWeaponsG.TabStop = False
+        ' 
+        ' Label2
+        ' 
+        Label2.Location = New Point(3, 61)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(116, 23)
+        Label2.TabIndex = 11
+        Label2.Text = "Equipment name"
+        Label2.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' Label1
+        ' 
+        Label1.Location = New Point(125, 61)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(255, 23)
+        Label1.TabIndex = 10
+        Label1.Text = "(Unknown)"
+        Label1.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' BG3Editor_Template_EquipmenTypeId1
         ' 
@@ -458,23 +482,34 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_WeaponRange1.Size = New Size(198, 23)
         BG3Editor_Stats_WeaponRange1.TabIndex = 0
         ' 
-        ' Label1
+        ' TabPageWeaponsS
         ' 
-        Label1.Location = New Point(125, 61)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(255, 23)
-        Label1.TabIndex = 10
-        Label1.Text = "(Unknown)"
-        Label1.TextAlign = ContentAlignment.MiddleLeft
+        TabPageWeaponsS.Controls.Add(GroupBoxWeaponsS)
+        TabPageWeaponsS.Location = New Point(4, 27)
+        TabPageWeaponsS.Name = "TabPageWeaponsS"
+        TabPageWeaponsS.Size = New Size(384, 229)
+        TabPageWeaponsS.TabIndex = 3
+        TabPageWeaponsS.Text = "Status list"
+        TabPageWeaponsS.UseVisualStyleBackColor = True
         ' 
-        ' Label2
+        ' BG3Editor_Complex_StatusList1
         ' 
-        Label2.Location = New Point(3, 61)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(116, 23)
-        Label2.TabIndex = 11
-        Label2.Text = "Equipment name"
-        Label2.TextAlign = ContentAlignment.MiddleLeft
+        BG3Editor_Complex_StatusList1.Dock = DockStyle.Fill
+        BG3Editor_Complex_StatusList1.Location = New Point(3, 19)
+        BG3Editor_Complex_StatusList1.Name = "BG3Editor_Complex_StatusList1"
+        BG3Editor_Complex_StatusList1.Size = New Size(378, 207)
+        BG3Editor_Complex_StatusList1.TabIndex = 0
+        ' 
+        ' GroupBoxWeaponsS
+        ' 
+        GroupBoxWeaponsS.Controls.Add(BG3Editor_Complex_StatusList1)
+        GroupBoxWeaponsS.Dock = DockStyle.Fill
+        GroupBoxWeaponsS.Location = New Point(0, 0)
+        GroupBoxWeaponsS.Margin = New Padding(0)
+        GroupBoxWeaponsS.Name = "GroupBoxWeaponsS"
+        GroupBoxWeaponsS.Size = New Size(384, 229)
+        GroupBoxWeaponsS.TabIndex = 1
+        GroupBoxWeaponsS.TabStop = False
         ' 
         ' Weapons_Editor
         ' 
@@ -504,6 +539,8 @@ Partial Class Weapons_Editor
         TabPageWeaponsB.ResumeLayout(False)
         TabPageWeaponsD.ResumeLayout(False)
         GroupBoxWeaponsD.ResumeLayout(False)
+        TabPageWeaponsS.ResumeLayout(False)
+        GroupBoxWeaponsS.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
     Friend WithEvents BG3Editor_Stat_Slots_Armor1 As BG3Editor_Stats_Slots_Armor
@@ -534,4 +571,7 @@ Partial Class Weapons_Editor
     Friend WithEvents BG3Editor_Template_EquipmenTypeId1 As BG3Editor_Template_EquipmentTypeID
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
+    Friend WithEvents TabPageWeaponsS As TabPage
+    Friend WithEvents BG3Editor_Complex_StatusList1 As BG3Editor_Complex_StatusList
+    Friend WithEvents GroupBoxWeaponsS As GroupBox
 End Class

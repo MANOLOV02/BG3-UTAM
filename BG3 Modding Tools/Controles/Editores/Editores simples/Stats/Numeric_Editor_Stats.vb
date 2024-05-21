@@ -26,6 +26,13 @@ Public Class BG3Editor_Stats_ValueLevel
         Label = "Value level"
     End Sub
 End Class
+Public Class BG3Editor_Stats_SupplyValue
+    Inherits Numeric_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("SupplyValue", 1, 80, 0, 1)
+        Label = "Supply value"
+    End Sub
+End Class
 Public Class BG3Editor_Stats_MinLevel
     Inherits Numeric_Editor_Stats_GenericAttribute
     Sub New()
@@ -33,6 +40,7 @@ Public Class BG3Editor_Stats_MinLevel
         Label = "Minimum level"
     End Sub
 End Class
+
 Public Class BG3Editor_Stats_MinAmount
     Inherits Numeric_Editor_Stats_GenericAttribute
     Sub New()

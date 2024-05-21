@@ -237,24 +237,24 @@ Partial Class BG3Editor_Complex_Dyecolor
         TableLayoutPanel1.Dock = DockStyle.Fill
         TableLayoutPanel1.Location = New Point(0, 0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
-        TableLayoutPanel1.RowCount = 16
+        TableLayoutPanel1.RowCount = 17
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 28F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666842F))
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.66666555F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 6.666666F))
+        TableLayoutPanel1.RowStyles.Add(New RowStyle())
         TableLayoutPanel1.Size = New Size(595, 466)
         TableLayoutPanel1.TabIndex = 175
         ' 
@@ -272,10 +272,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh8
         ' 
         ButtonBrigh8.Dock = DockStyle.Fill
-        ButtonBrigh8.Location = New Point(479, 234)
-        ButtonBrigh8.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh8.Location = New Point(475, 233)
+        ButtonBrigh8.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh8.Name = "ButtonBrigh8"
-        ButtonBrigh8.Size = New Size(112, 23)
+        ButtonBrigh8.Size = New Size(120, 25)
         ButtonBrigh8.TabIndex = 139
         ButtonBrigh8.Text = "Brighter"
         ButtonBrigh8.UseVisualStyleBackColor = True
@@ -283,10 +283,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh9
         ' 
         ButtonBrigh9.Dock = DockStyle.Fill
-        ButtonBrigh9.Location = New Point(479, 263)
-        ButtonBrigh9.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh9.Location = New Point(475, 262)
+        ButtonBrigh9.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh9.Name = "ButtonBrigh9"
-        ButtonBrigh9.Size = New Size(112, 23)
+        ButtonBrigh9.Size = New Size(120, 25)
         ButtonBrigh9.TabIndex = 144
         ButtonBrigh9.Text = "Brighter"
         ButtonBrigh9.UseVisualStyleBackColor = True
@@ -294,10 +294,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh7
         ' 
         ButtonBrigh7.Dock = DockStyle.Fill
-        ButtonBrigh7.Location = New Point(479, 205)
-        ButtonBrigh7.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh7.Location = New Point(475, 204)
+        ButtonBrigh7.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh7.Name = "ButtonBrigh7"
-        ButtonBrigh7.Size = New Size(112, 23)
+        ButtonBrigh7.Size = New Size(120, 25)
         ButtonBrigh7.TabIndex = 134
         ButtonBrigh7.Text = "Brighter"
         ButtonBrigh7.UseVisualStyleBackColor = True
@@ -305,10 +305,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh10
         ' 
         ButtonBrigh10.Dock = DockStyle.Fill
-        ButtonBrigh10.Location = New Point(479, 292)
-        ButtonBrigh10.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh10.Location = New Point(475, 291)
+        ButtonBrigh10.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh10.Name = "ButtonBrigh10"
-        ButtonBrigh10.Size = New Size(112, 23)
+        ButtonBrigh10.Size = New Size(120, 25)
         ButtonBrigh10.TabIndex = 149
         ButtonBrigh10.Text = "Brighter"
         ButtonBrigh10.UseVisualStyleBackColor = True
@@ -316,10 +316,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh6
         ' 
         ButtonBrigh6.Dock = DockStyle.Fill
-        ButtonBrigh6.Location = New Point(479, 176)
-        ButtonBrigh6.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh6.Location = New Point(475, 175)
+        ButtonBrigh6.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh6.Name = "ButtonBrigh6"
-        ButtonBrigh6.Size = New Size(112, 23)
+        ButtonBrigh6.Size = New Size(120, 25)
         ButtonBrigh6.TabIndex = 129
         ButtonBrigh6.Text = "Brighter"
         ButtonBrigh6.UseVisualStyleBackColor = True
@@ -327,10 +327,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh11
         ' 
         ButtonBrigh11.Dock = DockStyle.Fill
-        ButtonBrigh11.Location = New Point(479, 321)
-        ButtonBrigh11.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh11.Location = New Point(475, 320)
+        ButtonBrigh11.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh11.Name = "ButtonBrigh11"
-        ButtonBrigh11.Size = New Size(112, 23)
+        ButtonBrigh11.Size = New Size(120, 25)
         ButtonBrigh11.TabIndex = 154
         ButtonBrigh11.Text = "Brighter"
         ButtonBrigh11.UseVisualStyleBackColor = True
@@ -338,10 +338,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh5
         ' 
         ButtonBrigh5.Dock = DockStyle.Fill
-        ButtonBrigh5.Location = New Point(479, 147)
-        ButtonBrigh5.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh5.Location = New Point(475, 146)
+        ButtonBrigh5.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh5.Name = "ButtonBrigh5"
-        ButtonBrigh5.Size = New Size(112, 23)
+        ButtonBrigh5.Size = New Size(120, 25)
         ButtonBrigh5.TabIndex = 124
         ButtonBrigh5.Text = "Brighter"
         ButtonBrigh5.UseVisualStyleBackColor = True
@@ -349,10 +349,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh12
         ' 
         ButtonBrigh12.Dock = DockStyle.Fill
-        ButtonBrigh12.Location = New Point(479, 350)
-        ButtonBrigh12.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh12.Location = New Point(475, 349)
+        ButtonBrigh12.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh12.Name = "ButtonBrigh12"
-        ButtonBrigh12.Size = New Size(112, 23)
+        ButtonBrigh12.Size = New Size(120, 25)
         ButtonBrigh12.TabIndex = 159
         ButtonBrigh12.Text = "Brighter"
         ButtonBrigh12.UseVisualStyleBackColor = True
@@ -360,10 +360,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh4
         ' 
         ButtonBrigh4.Dock = DockStyle.Fill
-        ButtonBrigh4.Location = New Point(479, 118)
-        ButtonBrigh4.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh4.Location = New Point(475, 117)
+        ButtonBrigh4.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh4.Name = "ButtonBrigh4"
-        ButtonBrigh4.Size = New Size(112, 23)
+        ButtonBrigh4.Size = New Size(120, 25)
         ButtonBrigh4.TabIndex = 119
         ButtonBrigh4.Text = "Brighter"
         ButtonBrigh4.UseVisualStyleBackColor = True
@@ -371,10 +371,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh13
         ' 
         ButtonBrigh13.Dock = DockStyle.Fill
-        ButtonBrigh13.Location = New Point(479, 379)
-        ButtonBrigh13.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh13.Location = New Point(475, 378)
+        ButtonBrigh13.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh13.Name = "ButtonBrigh13"
-        ButtonBrigh13.Size = New Size(112, 23)
+        ButtonBrigh13.Size = New Size(120, 25)
         ButtonBrigh13.TabIndex = 164
         ButtonBrigh13.Text = "Brighter"
         ButtonBrigh13.UseVisualStyleBackColor = True
@@ -382,10 +382,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh3
         ' 
         ButtonBrigh3.Dock = DockStyle.Fill
-        ButtonBrigh3.Location = New Point(479, 89)
-        ButtonBrigh3.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh3.Location = New Point(475, 88)
+        ButtonBrigh3.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh3.Name = "ButtonBrigh3"
-        ButtonBrigh3.Size = New Size(112, 23)
+        ButtonBrigh3.Size = New Size(120, 25)
         ButtonBrigh3.TabIndex = 114
         ButtonBrigh3.Text = "Brighter"
         ButtonBrigh3.UseVisualStyleBackColor = True
@@ -393,10 +393,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh14
         ' 
         ButtonBrigh14.Dock = DockStyle.Fill
-        ButtonBrigh14.Location = New Point(479, 408)
-        ButtonBrigh14.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh14.Location = New Point(475, 407)
+        ButtonBrigh14.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh14.Name = "ButtonBrigh14"
-        ButtonBrigh14.Size = New Size(112, 23)
+        ButtonBrigh14.Size = New Size(120, 25)
         ButtonBrigh14.TabIndex = 169
         ButtonBrigh14.Text = "Brighter"
         ButtonBrigh14.UseVisualStyleBackColor = True
@@ -404,10 +404,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh2
         ' 
         ButtonBrigh2.Dock = DockStyle.Fill
-        ButtonBrigh2.Location = New Point(479, 60)
-        ButtonBrigh2.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh2.Location = New Point(475, 59)
+        ButtonBrigh2.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh2.Name = "ButtonBrigh2"
-        ButtonBrigh2.Size = New Size(112, 23)
+        ButtonBrigh2.Size = New Size(120, 25)
         ButtonBrigh2.TabIndex = 109
         ButtonBrigh2.Text = "Brighter"
         ButtonBrigh2.UseVisualStyleBackColor = True
@@ -415,10 +415,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh15
         ' 
         ButtonBrigh15.Dock = DockStyle.Fill
-        ButtonBrigh15.Location = New Point(479, 437)
-        ButtonBrigh15.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh15.Location = New Point(475, 436)
+        ButtonBrigh15.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh15.Name = "ButtonBrigh15"
-        ButtonBrigh15.Size = New Size(112, 26)
+        ButtonBrigh15.Size = New Size(120, 25)
         ButtonBrigh15.TabIndex = 174
         ButtonBrigh15.Text = "Brighter"
         ButtonBrigh15.UseVisualStyleBackColor = True
@@ -436,10 +436,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark15
         ' 
         ButtonDark15.Dock = DockStyle.Fill
-        ButtonDark15.Location = New Point(361, 437)
-        ButtonDark15.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark15.Location = New Point(357, 436)
+        ButtonDark15.Margin = New Padding(0, 2, 0, 2)
         ButtonDark15.Name = "ButtonDark15"
-        ButtonDark15.Size = New Size(110, 26)
+        ButtonDark15.Size = New Size(118, 25)
         ButtonDark15.TabIndex = 173
         ButtonDark15.Text = "Darker"
         ButtonDark15.UseVisualStyleBackColor = True
@@ -450,7 +450,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         TextBox15.Location = New Point(194, 437)
         TextBox15.Multiline = True
         TextBox15.Name = "TextBox15"
-        TextBox15.Size = New Size(160, 26)
+        TextBox15.Size = New Size(160, 23)
         TextBox15.TabIndex = 172
         TextBox15.TextAlign = HorizontalAlignment.Right
         ' 
@@ -467,10 +467,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark14
         ' 
         ButtonDark14.Dock = DockStyle.Fill
-        ButtonDark14.Location = New Point(361, 408)
-        ButtonDark14.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark14.Location = New Point(357, 407)
+        ButtonDark14.Margin = New Padding(0, 2, 0, 2)
         ButtonDark14.Name = "ButtonDark14"
-        ButtonDark14.Size = New Size(110, 23)
+        ButtonDark14.Size = New Size(118, 25)
         ButtonDark14.TabIndex = 168
         ButtonDark14.Text = "Darker"
         ButtonDark14.UseVisualStyleBackColor = True
@@ -481,17 +481,17 @@ Partial Class BG3Editor_Complex_Dyecolor
         PictureBox15.Dock = DockStyle.Fill
         PictureBox15.Location = New Point(123, 437)
         PictureBox15.Name = "PictureBox15"
-        PictureBox15.Size = New Size(65, 26)
+        PictureBox15.Size = New Size(65, 23)
         PictureBox15.TabIndex = 171
         PictureBox15.TabStop = False
         ' 
         ' ButtonDark1
         ' 
         ButtonDark1.Dock = DockStyle.Fill
-        ButtonDark1.Location = New Point(361, 31)
-        ButtonDark1.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark1.Location = New Point(357, 30)
+        ButtonDark1.Margin = New Padding(0, 2, 0, 2)
         ButtonDark1.Name = "ButtonDark1"
-        ButtonDark1.Size = New Size(110, 23)
+        ButtonDark1.Size = New Size(118, 25)
         ButtonDark1.TabIndex = 99
         ButtonDark1.Text = "Darker"
         ButtonDark1.UseVisualStyleBackColor = True
@@ -499,10 +499,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark13
         ' 
         ButtonDark13.Dock = DockStyle.Fill
-        ButtonDark13.Location = New Point(361, 379)
-        ButtonDark13.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark13.Location = New Point(357, 378)
+        ButtonDark13.Margin = New Padding(0, 2, 0, 2)
         ButtonDark13.Name = "ButtonDark13"
-        ButtonDark13.Size = New Size(110, 23)
+        ButtonDark13.Size = New Size(118, 25)
         ButtonDark13.TabIndex = 163
         ButtonDark13.Text = "Darker"
         ButtonDark13.UseVisualStyleBackColor = True
@@ -520,10 +520,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonBrigh1
         ' 
         ButtonBrigh1.Dock = DockStyle.Fill
-        ButtonBrigh1.Location = New Point(479, 31)
-        ButtonBrigh1.Margin = New Padding(4, 3, 4, 3)
+        ButtonBrigh1.Location = New Point(475, 30)
+        ButtonBrigh1.Margin = New Padding(0, 2, 0, 2)
         ButtonBrigh1.Name = "ButtonBrigh1"
-        ButtonBrigh1.Size = New Size(112, 23)
+        ButtonBrigh1.Size = New Size(120, 25)
         ButtonBrigh1.TabIndex = 100
         ButtonBrigh1.Text = "Brighter"
         ButtonBrigh1.UseVisualStyleBackColor = True
@@ -531,10 +531,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark12
         ' 
         ButtonDark12.Dock = DockStyle.Fill
-        ButtonDark12.Location = New Point(361, 350)
-        ButtonDark12.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark12.Location = New Point(357, 349)
+        ButtonDark12.Margin = New Padding(0, 2, 0, 2)
         ButtonDark12.Name = "ButtonDark12"
-        ButtonDark12.Size = New Size(110, 23)
+        ButtonDark12.Size = New Size(118, 25)
         ButtonDark12.TabIndex = 158
         ButtonDark12.Text = "Darker"
         ButtonDark12.UseVisualStyleBackColor = True
@@ -545,7 +545,7 @@ Partial Class BG3Editor_Complex_Dyecolor
         Label15.AutoEllipsis = True
         Label15.Location = New Point(3, 434)
         Label15.Name = "Label15"
-        Label15.Size = New Size(114, 32)
+        Label15.Size = New Size(114, 29)
         Label15.TabIndex = 170
         Label15.Text = "Value"
         Label15.TextAlign = ContentAlignment.MiddleLeft
@@ -564,10 +564,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark11
         ' 
         ButtonDark11.Dock = DockStyle.Fill
-        ButtonDark11.Location = New Point(361, 321)
-        ButtonDark11.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark11.Location = New Point(357, 320)
+        ButtonDark11.Margin = New Padding(0, 2, 0, 2)
         ButtonDark11.Name = "ButtonDark11"
-        ButtonDark11.Size = New Size(110, 23)
+        ButtonDark11.Size = New Size(118, 25)
         ButtonDark11.TabIndex = 153
         ButtonDark11.Text = "Darker"
         ButtonDark11.UseVisualStyleBackColor = True
@@ -595,10 +595,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark10
         ' 
         ButtonDark10.Dock = DockStyle.Fill
-        ButtonDark10.Location = New Point(361, 292)
-        ButtonDark10.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark10.Location = New Point(357, 291)
+        ButtonDark10.Margin = New Padding(0, 2, 0, 2)
         ButtonDark10.Name = "ButtonDark10"
-        ButtonDark10.Size = New Size(110, 23)
+        ButtonDark10.Size = New Size(118, 25)
         ButtonDark10.TabIndex = 148
         ButtonDark10.Text = "Darker"
         ButtonDark10.UseVisualStyleBackColor = True
@@ -628,10 +628,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark9
         ' 
         ButtonDark9.Dock = DockStyle.Fill
-        ButtonDark9.Location = New Point(361, 263)
-        ButtonDark9.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark9.Location = New Point(357, 262)
+        ButtonDark9.Margin = New Padding(0, 2, 0, 2)
         ButtonDark9.Name = "ButtonDark9"
-        ButtonDark9.Size = New Size(110, 23)
+        ButtonDark9.Size = New Size(118, 25)
         ButtonDark9.TabIndex = 143
         ButtonDark9.Text = "Darker"
         ButtonDark9.UseVisualStyleBackColor = True
@@ -660,10 +660,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark8
         ' 
         ButtonDark8.Dock = DockStyle.Fill
-        ButtonDark8.Location = New Point(361, 234)
-        ButtonDark8.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark8.Location = New Point(357, 233)
+        ButtonDark8.Margin = New Padding(0, 2, 0, 2)
         ButtonDark8.Name = "ButtonDark8"
-        ButtonDark8.Size = New Size(110, 23)
+        ButtonDark8.Size = New Size(118, 25)
         ButtonDark8.TabIndex = 138
         ButtonDark8.Text = "Darker"
         ButtonDark8.UseVisualStyleBackColor = True
@@ -713,10 +713,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark6
         ' 
         ButtonDark6.Dock = DockStyle.Fill
-        ButtonDark6.Location = New Point(361, 176)
-        ButtonDark6.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark6.Location = New Point(357, 175)
+        ButtonDark6.Margin = New Padding(0, 2, 0, 2)
         ButtonDark6.Name = "ButtonDark6"
-        ButtonDark6.Size = New Size(110, 23)
+        ButtonDark6.Size = New Size(118, 25)
         ButtonDark6.TabIndex = 128
         ButtonDark6.Text = "Darker"
         ButtonDark6.UseVisualStyleBackColor = True
@@ -746,10 +746,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark5
         ' 
         ButtonDark5.Dock = DockStyle.Fill
-        ButtonDark5.Location = New Point(361, 147)
-        ButtonDark5.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark5.Location = New Point(357, 146)
+        ButtonDark5.Margin = New Padding(0, 2, 0, 2)
         ButtonDark5.Name = "ButtonDark5"
-        ButtonDark5.Size = New Size(110, 23)
+        ButtonDark5.Size = New Size(118, 25)
         ButtonDark5.TabIndex = 123
         ButtonDark5.Text = "Darker"
         ButtonDark5.UseVisualStyleBackColor = True
@@ -778,10 +778,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark4
         ' 
         ButtonDark4.Dock = DockStyle.Fill
-        ButtonDark4.Location = New Point(361, 118)
-        ButtonDark4.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark4.Location = New Point(357, 117)
+        ButtonDark4.Margin = New Padding(0, 2, 0, 2)
         ButtonDark4.Name = "ButtonDark4"
-        ButtonDark4.Size = New Size(110, 23)
+        ButtonDark4.Size = New Size(118, 25)
         ButtonDark4.TabIndex = 118
         ButtonDark4.Text = "Darker"
         ButtonDark4.UseVisualStyleBackColor = True
@@ -810,10 +810,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark3
         ' 
         ButtonDark3.Dock = DockStyle.Fill
-        ButtonDark3.Location = New Point(361, 89)
-        ButtonDark3.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark3.Location = New Point(357, 88)
+        ButtonDark3.Margin = New Padding(0, 2, 0, 2)
         ButtonDark3.Name = "ButtonDark3"
-        ButtonDark3.Size = New Size(110, 23)
+        ButtonDark3.Size = New Size(118, 25)
         ButtonDark3.TabIndex = 113
         ButtonDark3.Text = "Darker"
         ButtonDark3.UseVisualStyleBackColor = True
@@ -842,10 +842,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark2
         ' 
         ButtonDark2.Dock = DockStyle.Fill
-        ButtonDark2.Location = New Point(361, 60)
-        ButtonDark2.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark2.Location = New Point(357, 59)
+        ButtonDark2.Margin = New Padding(0, 2, 0, 2)
         ButtonDark2.Name = "ButtonDark2"
-        ButtonDark2.Size = New Size(110, 23)
+        ButtonDark2.Size = New Size(118, 25)
         ButtonDark2.TabIndex = 108
         ButtonDark2.Text = "Darker"
         ButtonDark2.UseVisualStyleBackColor = True
@@ -1045,10 +1045,10 @@ Partial Class BG3Editor_Complex_Dyecolor
         ' ButtonDark7
         ' 
         ButtonDark7.Dock = DockStyle.Fill
-        ButtonDark7.Location = New Point(361, 205)
-        ButtonDark7.Margin = New Padding(4, 3, 4, 3)
+        ButtonDark7.Location = New Point(357, 204)
+        ButtonDark7.Margin = New Padding(0, 2, 0, 2)
         ButtonDark7.Name = "ButtonDark7"
-        ButtonDark7.Size = New Size(110, 23)
+        ButtonDark7.Size = New Size(118, 25)
         ButtonDark7.TabIndex = 133
         ButtonDark7.Text = "Darker"
         ButtonDark7.UseVisualStyleBackColor = True

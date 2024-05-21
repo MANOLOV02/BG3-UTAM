@@ -8,7 +8,8 @@ Imports LSLib.LS.Story
 Public Class BG3Editor_Complex_Localization
     Private ReadOnly dataset As New DataSet
     Private ReadOnly table As New Data.DataTable("Localizations")
-    Private Controles_Linkeados() As BG3Editor_Template_LocalizationBase
+    Private Controles_Linkeados As New List(Of BG3Editor_Template_LocalizationBase)
+
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
         Get
             Return CType(Me.ParentForm, Generic_Editor).ActiveModSource
@@ -46,8 +47,8 @@ Public Class BG3Editor_Complex_Localization
         Oculta_columnas()
     End Sub
     Public Sub Link_Controls(Controles() As BG3Editor_Template_LocalizationBase)
-        Controles_Linkeados = Controles
         For Each cont In Controles
+            Controles_Linkeados.Add(cont)
             AddHandler cont.Inside_Text_Changed, AddressOf Control_changed
             AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
         Next

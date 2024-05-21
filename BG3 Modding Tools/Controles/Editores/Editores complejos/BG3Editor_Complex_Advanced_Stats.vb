@@ -48,7 +48,7 @@ Public Class BG3Editor_Complex_Advanced_Stats
         _Last_read = Obj
         Dim idx As ListViewItem
         For Each stat In FuncionesHelpers.GameEngine.ProcessedStatList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(Obj.Type).ToString) = True).Select(Function(pf) pf).Distinct
-            idx = New ListViewItem With {.Text = stat.Value}
+            idx = New ListViewItem With {.Text = stat.Value, .Name = stat.Key}
             idx.SubItems.Add("data")
             idx.SubItems.Add(Obj.Get_Data_Or_Inherited(stat.Value))
             idx = ListView1.Items.Add(idx)
@@ -68,8 +68,8 @@ Public Class BG3Editor_Complex_Advanced_Stats
         ListView1.Columns(1).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
         If ListView1.Columns(1).Width < 100 Then ListView1.Columns(1).Width = 100
         ListView1.Columns(2).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
-        ListView1.TopItem = top
         ListView1.EndUpdate()
+        ListView1.TopItem = top
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.ItemSelectionChanged

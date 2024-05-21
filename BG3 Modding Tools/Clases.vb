@@ -498,7 +498,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 4.1
+    Public ReadOnly Property CacheVersion As Double = 4.3
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -828,11 +828,28 @@ Public Class BG3_Pak_SourceOfResource_Class
         Try
             LocaReso = LocaUtils.Load(Me.CreateContentReader, LocaFormat)
         Catch ex As Exception
+            LocaReso = TryFromMemory(LocaFormat)
             Debugger.Break()
-            LocaReso = New LSLib.LS.LocaResource
         End Try
         Return LocaReso
     End Function
+
+    Private Function TryFromMemory(LocaFormat As LSLib.LS.LocaFormat) As LSLib.LS.LocaResource
+        Try
+            Dim fil As String = System.IO.Path.GetTempFileName
+            Dim filst As New FileStream(fil, FileMode.Create)
+            Me.CreateContentReader.CopyTo(filst)
+            filst.Flush()
+            filst.Close()
+            Dim Reso As LocaResource = LocaUtils.Load(fil, LocaFormat)
+            IO.File.Delete(fil)
+            Return Reso
+        Catch ex As Exception
+            Debugger.Break()
+        End Try
+        Return New LSLib.LS.LocaResource
+    End Function
+
 
     Public Function ReadResource() As Resource
         Dim ResourceFormat
@@ -854,14 +871,33 @@ Public Class BG3_Pak_SourceOfResource_Class
         Try
             Reso = ResourceUtils.LoadResource(Me.CreateContentReader, ResourceFormat, Funciones.LoadParams_LSLIB)
         Catch ex As Exception
-            Debugger.Break()
-            Reso = New LSLib.LS.Resource
+
+            If Filename_Relative.EndsWith("meta.lsx", StringComparison.OrdinalIgnoreCase) Then
+                Reso = FixVersion(ResourceFormat)
+            Else
+                Debugger.Break()
+                Reso = New LSLib.LS.Resource
+            End If
         End Try
         Return Reso
     End Function
 
+    Private Function FixVersion(ResourceFormat As Enums.ResourceFormat) As LSLib.LS.Resource
+        Try
+            Dim byt(Me.CreateContentReader.Length - 1) As Byte
+            Me.CreateContentReader.Read(byt, 0, byt.Length)
+            Dim str = System.Text.Encoding.UTF8.GetString(byt)
+            str = str.Replace("<attribute id=" + Chr(34) + "Version" + Chr(34) + " type=" + Chr(34) + "int32" + Chr(34), "<attribute id=" + Chr(34) + "Version64" + Chr(34) + " type=" + Chr(34) + "int64" + Chr(34))
+            Return ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(str)), ResourceFormat, Funciones.LoadParams_LSLIB)
+        Catch ex As Exception
+            Debugger.Break()
+        End Try
+        Return New LSLib.LS.Resource
+    End Function
+
 
 End Class
+
 
 <Serializable>
 Public Class BG3_Pak_Packages_List_Class
@@ -1527,15 +1563,20 @@ Public Class BG3_Mod_Module_Class
     End Function
 
     Public Sub Update(ByRef MetaResource As LSLib.LS.Resource)
-        Dim rec = MetaResource.Regions("Config").Children("ModuleInfo").First
-        UUID = rec.Attributes("UUID").Value
-        Name = rec.Attributes("Name").Value
-        Folder = rec.Attributes("Folder").Value
-        Author = rec.Attributes("Author").Value
-        Version = rec.TryGetOrzero("Version64")
-        Description = rec.Attributes("Description").Value
-        MetaXMLZip = MetaResource.To_XML.ZippedString
-        LoadOrderd = Main_GameEngine_Class.ModLoadOrder.IndexOf(UUID)
+        Try
+            Dim rec = MetaResource.Regions("Config").Children("ModuleInfo").First
+            UUID = rec.Attributes("UUID").Value
+            Name = rec.Attributes("Name").Value
+            Folder = rec.Attributes("Folder").Value
+            Author = rec.Attributes("Author").Value
+            Version = rec.TryGetOrzero("Version64")
+            Description = rec.Attributes("Description").Value
+            MetaXMLZip = MetaResource.To_XML.ZippedString
+            LoadOrderd = Main_GameEngine_Class.ModLoadOrder.IndexOf(UUID)
+        Catch ex As Exception
+            Debugger.Break()
+        End Try
+
     End Sub
 
 End Class
@@ -1845,7 +1886,7 @@ Public Class BG3_Obj_Template_Class
 
     Protected Overrides Sub Clear_Cached_Data()
         _CacheTagsIds = Nothing
-
+        _CacheStatus = Nothing
         _cache_tags_txt = Nothing
         MyBase.Clear_Cached_Data()
     End Sub
@@ -1929,6 +1970,33 @@ Public Class BG3_Obj_Template_Class
         End Get
     End Property
 
+    Private _CacheStatus As List(Of String) = Nothing
+
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    Public ReadOnly Property GetStatus_Ids As List(Of String)
+        Get
+            If IsNothing(_CacheStatus) Then
+
+                Dim value As List(Of LSLib.LS.Node) = Nothing
+                If NodeLSLIB.Children.TryGetValue("StatusList", value) Then
+                    If value.Count = 0 Then
+                        _CacheStatus = New List(Of String)
+                    Else
+                        Dim value2 As List(Of LSLib.LS.Node) = Nothing
+                        If value.First.Children.TryGetValue("Status", value2) Then
+                            _CacheStatus = value2.Select(Function(Pf) Pf.TryGetOrEmpty("Object").ToString).ToList
+                        Else
+                            _CacheStatus = New List(Of String)
+                        End If
+                    End If
+                Else
+                    _CacheStatus = New List(Of String)
+                End If
+            End If
+
+            Return _CacheStatus
+        End Get
+    End Property
 
 
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
@@ -2651,6 +2719,7 @@ Public Enum BG3_Enum_UTAM_Type
     Dyes
     Armor
     Weapon
+    Consumable
 End Enum
 
 <Serializable>
@@ -2921,6 +2990,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
         Get
             If Me.IsOverrided Then Return Me.Mapkey_WithoutOverride
             If Me.Type = BG3_Enum_FlagsandTagsType.GoldValues Then Return ReadAttribute_Or_Empty("ParentUUID")
+            If Me.Type = BG3_Enum_FlagsandTagsType.EquipmentRaces Then Return ReadAttribute_Or_Empty("DefaultParent")
+
             Return MyBase.ParentKey_Or_Empty
         End Get
     End Property
@@ -3002,7 +3073,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
     End Function
     Public Overrides Sub Init_Necessary_Attributes()
         ReadAttribute_Or_Nothing(MapKey_Attribute)
-        ReadAttribute_Or_Nothing("ParentUUID")
+        If Me.Type = BG3_Enum_FlagsandTagsType.GoldValues Then ReadAttribute_Or_Nothing("ParentUUID")
+        If Me.Type = BG3_Enum_FlagsandTagsType.EquipmentRaces Then ReadAttribute_Or_Nothing("DefaultParent")
         ReadAttribute_Or_Nothing("Name")
         ReadAttribute_Or_Nothing("Description")
         ReadAttribute_Or_Nothing("DisplayName")
@@ -3018,8 +3090,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
             Case Else
                 MapKey_Attribute = "UUID"
         End Select
-        Create(nod, Source)
         Me.Type = tipo
+        Create(nod, Source)
         If IsNothing(MapKey) Then Debugger.Break()
     End Sub
     Sub New()
@@ -3264,7 +3336,6 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then
                     If obj.SourceOfResorce.Pak_Or_Folder.ToUpper > ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return True
                     If obj.SourceOfResorce.Pak_Or_Folder.ToUpper < ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return False
-                    Debugger.Break()
                 End If
                 If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False Then Return True
                 If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then Return False
@@ -3290,6 +3361,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                     If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
                     If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
                 If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
+                If obj.SourceOfResorce.Pak_Or_Folder = ov.SourceOfResorce.Pak_Or_Folder AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder AndAlso obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.PackageType = ov.SourceOfResorce.PackageType Then Return True
                 Debugger.Break()
                 Else
                     Return True

@@ -74,6 +74,16 @@ Public Class BG3Editor_Stats_InventoryTab
         Reload_Combo()
     End Sub
 End Class
+Public Class BG3Editor_Stats_ItemUseType
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ItemUseType")
+        Label = "Use type"
+        ComboItems = FuncionesHelpers.ItemUseTypes
+        Reload_Combo()
+    End Sub
+End Class
+
 Public Class BG3Editor_Stats_GameSize
     Inherits Combobox_Editor_Stats_GenericAttribute
     Sub New()

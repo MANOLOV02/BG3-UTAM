@@ -74,9 +74,8 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         ListView1.Columns(1).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
         If ListView1.Columns(1).Width < 100 Then ListView1.Columns(1).Width = 100
         ListView1.Columns(2).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
-        ListView1.TopItem = top
         ListView1.EndUpdate()
-
+        ListView1.TopItem = top
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.ItemSelectionChanged

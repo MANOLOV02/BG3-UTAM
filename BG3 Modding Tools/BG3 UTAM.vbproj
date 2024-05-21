@@ -17,7 +17,7 @@
 	<Description />
 	<Copyright>Copyright © 2024</Copyright>
 	<Title>BG3 UTAM</Title>
-	<Version>3.0.0</Version>
+	<Version>4.3.0</Version>
   
   </PropertyGroup>
 
@@ -50,6 +50,9 @@
 
   <ItemGroup>
     <Compile Update="Controles\Editores\Editores complejos\BG3Editor_Complex_Advanced_Attributes.vb" />
+    <Compile Update="Controles\Editores\Editores complejos\BG3Editor_Complex_StatusList.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controles\Editores\Editores simples\Stats\Textbox_Editores_Stats.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
@@ -85,6 +88,7 @@
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\UTEM Editores\Consumables_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Weapons_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Armors_Editor.vb">
       <SubType>Form</SubType>

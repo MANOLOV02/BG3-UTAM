@@ -54,6 +54,7 @@ Public Class Weapons_Editor
         GroupBoxWeapons1.Enabled = Edicion
         GroupBoxWeaponsG.Enabled = Edicion
         GroupBoxWeaponsD.Enabled = Edicion
+        GroupBoxWeaponsS.Enabled = Edicion
     End Sub
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As LSLib.LS.Node)
         ' Nothin yet
@@ -100,6 +101,7 @@ Public Class Weapons_Editor
             BG3Editor_Stats_DamageRange1.Read(SelectedStat)
             BG3Editor_Stats_WeaponRange1.Read(SelectedStat)
             BG3Editor_Template_EquipmenTypeId1.Read(SelectedTmp)
+            BG3Editor_Complex_StatusList1.Read(SelectedTmp)
         Else
             BG3Editor_Stats_PassivesOnEquip1.Clear()
             BG3Editor_Stats_PassivesOnEquip_MainHand1.Clear()
@@ -121,6 +123,8 @@ Public Class Weapons_Editor
             BG3Editor_Stats_DamageRange1.Clear()
             BG3Editor_Stats_WeaponRange1.Clear()
             BG3Editor_Template_EquipmenTypeId1.Clear()
+            BG3Editor_Complex_StatusList1.Clear()
+
         End If
     End Sub
     Protected Overrides Sub Process_Cancel_Specifics()
@@ -158,6 +162,8 @@ Public Class Weapons_Editor
         BG3Editor_Stats_DamageRange1.Write(SelectedStat)
         BG3Editor_Stats_WeaponRange1.Write(SelectedStat)
         BG3Editor_Template_EquipmenTypeId1.Write(SelectedTmp)
+        BG3Editor_Complex_StatusList1.Write(SelectedTmp)
+
     End Sub
     Protected Overrides Sub Process_Save_Objetos_Specifics()
 
@@ -175,7 +181,8 @@ Public Class Weapons_Editor
             New ToolStripMenuItem("Weapons specific|Weapon range|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"WeaponRange"}},
             New ToolStripMenuItem("Weapons specific|Versatile damage|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"VersatileDamage"}},
             New ToolStripMenuItem("Weapons specific|Proficiency|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Proficiency Group"}},
-            New ToolStripMenuItem("Weapons specific|Equipment type|True|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"EquipmentTypeID"}}
+            New ToolStripMenuItem("Weapons specific|Equipment type|True|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"EquipmentTypeID"}},
+           New ToolStripMenuItem("Weapons specific|Status list|False|Custom", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"StatusList"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -220,6 +227,9 @@ Public Class Weapons_Editor
                         Case "EquipmentTypeID Group"
                             BG3Editor_Template_EquipmenTypeId1.Read(Template)
                             BG3Editor_Template_EquipmenTypeId1.Write(SelectedTmp)
+                        Case "StatusList"
+                            BG3Editor_Complex_StatusList1.Read(Template)
+                            BG3Editor_Complex_StatusList1.Write(SelectedTmp)
                     End Select
                 Next
             End If

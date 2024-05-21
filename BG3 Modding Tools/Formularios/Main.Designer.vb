@@ -34,6 +34,7 @@ Partial Class Main
         ToolStripSeparator2 = New ToolStripSeparator()
         LoadCacheToolStripMenuItem1 = New ToolStripMenuItem()
         MenuClearCacheBackground = New ToolStripMenuItem()
+        ProcessSinglePakToolStripMenuItem = New ToolStripMenuItem()
         ToolsToolStripMenuItem = New ToolStripMenuItem()
         ObjectsExplorerToolStripMenuItem = New ToolStripMenuItem()
         AllTemplatesToolStripMenuItem = New ToolStripMenuItem()
@@ -53,7 +54,9 @@ Partial Class Main
         ToolsToolStripMenuItem1 = New ToolStripMenuItem()
         ArmorsToolStripMenuItem = New ToolStripMenuItem()
         ContainersToolStripMenuItem = New ToolStripMenuItem()
+        ConsumablesToolStripMenuItem = New ToolStripMenuItem()
         DyesToolStripMenuItem = New ToolStripMenuItem()
+        WeaponsToolStripMenuItem = New ToolStripMenuItem()
         FoldersToolStripMenuItem = New ToolStripMenuItem()
         UTAMModsToolStripMenuItem = New ToolStripMenuItem()
         UTAMCacheToolStripMenuItem = New ToolStripMenuItem()
@@ -77,7 +80,6 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
-        WeaponsToolStripMenuItem = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -93,7 +95,7 @@ Partial Class Main
         ' 
         ' ProcessAndNavigateObjectsToolStripMenuItem
         ' 
-        ProcessAndNavigateObjectsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ProcesserToolStripMenu, ToolStripSeparator1, BackgroundWorkToolStripMenuItem})
+        ProcessAndNavigateObjectsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ProcesserToolStripMenu, ToolStripSeparator1, BackgroundWorkToolStripMenuItem, ProcessSinglePakToolStripMenuItem})
         ProcessAndNavigateObjectsToolStripMenuItem.Name = "ProcessAndNavigateObjectsToolStripMenuItem"
         ProcessAndNavigateObjectsToolStripMenuItem.Size = New Size(86, 20)
         ProcessAndNavigateObjectsToolStripMenuItem.Text = "Paks process"
@@ -101,19 +103,19 @@ Partial Class Main
         ' ProcesserToolStripMenu
         ' 
         ProcesserToolStripMenu.Name = "ProcesserToolStripMenu"
-        ProcesserToolStripMenu.Size = New Size(167, 22)
+        ProcesserToolStripMenu.Size = New Size(180, 22)
         ProcesserToolStripMenu.Text = "Processer"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(164, 6)
+        ToolStripSeparator1.Size = New Size(177, 6)
         ' 
         ' BackgroundWorkToolStripMenuItem
         ' 
         BackgroundWorkToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MenuProcessPackBackground, ToolStripSeparator2, LoadCacheToolStripMenuItem1, MenuClearCacheBackground})
         BackgroundWorkToolStripMenuItem.Name = "BackgroundWorkToolStripMenuItem"
-        BackgroundWorkToolStripMenuItem.Size = New Size(167, 22)
+        BackgroundWorkToolStripMenuItem.Size = New Size(180, 22)
         BackgroundWorkToolStripMenuItem.Text = "Background work"
         ' 
         ' MenuProcessPackBackground
@@ -151,6 +153,13 @@ Partial Class Main
         MenuClearCacheBackground.Name = "MenuClearCacheBackground"
         MenuClearCacheBackground.Size = New Size(168, 22)
         MenuClearCacheBackground.Text = "Clear cache"
+        ' 
+        ' ProcessSinglePakToolStripMenuItem
+        ' 
+        ProcessSinglePakToolStripMenuItem.Enabled = False
+        ProcessSinglePakToolStripMenuItem.Name = "ProcessSinglePakToolStripMenuItem"
+        ProcessSinglePakToolStripMenuItem.Size = New Size(180, 22)
+        ProcessSinglePakToolStripMenuItem.Text = "Process single pak"
         ' 
         ' ToolsToolStripMenuItem
         ' 
@@ -243,18 +252,18 @@ Partial Class Main
         ' NewToolStripMenuItem
         ' 
         NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        NewToolStripMenuItem.Size = New Size(180, 22)
+        NewToolStripMenuItem.Size = New Size(100, 22)
         NewToolStripMenuItem.Text = "New"
         ' 
         ' LoadToolStripMenuItem
         ' 
         LoadToolStripMenuItem.Name = "LoadToolStripMenuItem"
-        LoadToolStripMenuItem.Size = New Size(180, 22)
+        LoadToolStripMenuItem.Size = New Size(100, 22)
         LoadToolStripMenuItem.Text = "Load"
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, ConsumablesToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
         ToolsToolStripMenuItem1.Size = New Size(46, 20)
@@ -263,20 +272,32 @@ Partial Class Main
         ' ArmorsToolStripMenuItem
         ' 
         ArmorsToolStripMenuItem.Name = "ArmorsToolStripMenuItem"
-        ArmorsToolStripMenuItem.Size = New Size(180, 22)
+        ArmorsToolStripMenuItem.Size = New Size(146, 22)
         ArmorsToolStripMenuItem.Text = "Armors"
         ' 
         ' ContainersToolStripMenuItem
         ' 
         ContainersToolStripMenuItem.Name = "ContainersToolStripMenuItem"
-        ContainersToolStripMenuItem.Size = New Size(180, 22)
+        ContainersToolStripMenuItem.Size = New Size(146, 22)
         ContainersToolStripMenuItem.Text = "Containers"
+        ' 
+        ' ConsumablesToolStripMenuItem
+        ' 
+        ConsumablesToolStripMenuItem.Name = "ConsumablesToolStripMenuItem"
+        ConsumablesToolStripMenuItem.Size = New Size(146, 22)
+        ConsumablesToolStripMenuItem.Text = "Consumables"
         ' 
         ' DyesToolStripMenuItem
         ' 
         DyesToolStripMenuItem.Name = "DyesToolStripMenuItem"
-        DyesToolStripMenuItem.Size = New Size(180, 22)
+        DyesToolStripMenuItem.Size = New Size(146, 22)
         DyesToolStripMenuItem.Text = "Dyes"
+        ' 
+        ' WeaponsToolStripMenuItem
+        ' 
+        WeaponsToolStripMenuItem.Name = "WeaponsToolStripMenuItem"
+        WeaponsToolStripMenuItem.Size = New Size(146, 22)
+        WeaponsToolStripMenuItem.Text = "Weapons"
         ' 
         ' FoldersToolStripMenuItem
         ' 
@@ -427,12 +448,6 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
-        ' WeaponsToolStripMenuItem
-        ' 
-        WeaponsToolStripMenuItem.Name = "WeaponsToolStripMenuItem"
-        WeaponsToolStripMenuItem.Size = New Size(180, 22)
-        WeaponsToolStripMenuItem.Text = "Weapons"
-        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -510,4 +525,6 @@ Partial Class Main
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
     Friend WithEvents OpenDetailsWindowsAlsoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents WeaponsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConsumablesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ProcessSinglePakToolStripMenuItem As ToolStripMenuItem
 End Class
