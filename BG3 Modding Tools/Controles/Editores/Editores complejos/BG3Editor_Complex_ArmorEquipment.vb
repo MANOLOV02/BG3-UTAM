@@ -50,11 +50,11 @@ Public Class BG3Editor_Complex_ArmorEquipment
     End Sub
     Public Function Write(template As BG3_Obj_Template_Class) As Boolean
         If CheckBox1.Checked = False Then Return True
-        Dim EquipNod As LSLib.LS.Node = Nothing
-        Dim RaceNod As LSLib.LS.Node = Nothing
-        Dim ItemsEuipsNod As LSLib.LS.Node = Nothing
-        Dim Vset As LSLib.LS.Node = Nothing
-        Dim MAtOvrr As LSLib.LS.Node = Nothing
+        Dim EquipNod As LSLib.LS.Node
+        Dim RaceNod As LSLib.LS.Node
+        Dim ItemsEuipsNod As LSLib.LS.Node
+        Dim Vset As LSLib.LS.Node
+        Dim MAtOvrr As LSLib.LS.Node
 
         If template.NodeLSLIB.Children.ContainsKey("Equipment") = False Then
             EquipNod = New LSLib.LS.Node With {.Parent = template.NodeLSLIB, .Name = "Equipment"}
@@ -109,9 +109,10 @@ Public Class BG3Editor_Complex_ArmorEquipment
         Clear_nodes()
         isinherited = False
         While Not IsNothing(current)
-            If current.NodeLSLIB.Children.ContainsKey("Equipment") Then
-                Read_parent_races(current.NodeLSLIB.Children("Equipment").First)
-                Read_Equipment(current.NodeLSLIB.Children("Equipment").First)
+            Dim value As List(Of LSLib.LS.Node) = Nothing
+            If current.NodeLSLIB.Children.TryGetValue("Equipment", value) Then
+                Read_parent_races(value.First)
+                Read_Equipment(value.First)
                 Exit While
             End If
             isinherited = True
@@ -130,13 +131,14 @@ Public Class BG3Editor_Complex_ArmorEquipment
         Next
     End Sub
     Private Sub Read_parent_races(Node As LSLib.LS.Node)
-        If Node.Children.ContainsKey("ParentRace") Then
+        Dim value As List(Of LSLib.LS.Node) = Nothing
+        If Node.Children.TryGetValue("ParentRace", value) Then
             Dim treenod As System.Windows.Forms.TreeNode
             Dim raceNode As LSLib.LS.NodeAttribute = Nothing
             Dim racestr As String
             Dim raceValue As String
-            If Node.Children("ParentRace").First.Children.ContainsKey("Object") Then
-                For Each pr In Node.Children("ParentRace").First.Children("Object")
+            If value.First.Children.TryGetValue("Object", value) Then
+                For Each pr In value
                     racestr = ""
                     raceValue = ""
                     If pr.Attributes.TryGetValue("MapKey", raceNode) Then racestr = raceNode.AsString(Funciones.Guid_to_string)
@@ -148,7 +150,7 @@ Public Class BG3Editor_Complex_ArmorEquipment
             End If
         End If
     End Sub
-    Private Sub colorNode(Treenod As System.Windows.Forms.TreeNode, raceValue As String)
+    Private Sub ColorNode(Treenod As System.Windows.Forms.TreeNode, raceValue As String)
         Select Case raceValue
             Case "00000000-0000-0000-0000-000000000000"
                 Treenod.ForeColor = Color.FromKnownColor(KnownColor.Highlight)
@@ -162,8 +164,9 @@ Public Class BG3Editor_Complex_ArmorEquipment
         Dim raceNode As LSLib.LS.NodeAttribute = Nothing
         Dim racestr As String
         Dim treenod As System.Windows.Forms.TreeNode
-        If Node.Children("Visuals").First.Children.ContainsKey("Object") Then
-            For Each vis In Node.Children("Visuals").First.Children("Object")
+        Dim value As List(Of LSLib.LS.Node) = Nothing
+        If Node.Children("Visuals").First.Children.TryGetValue("Object", value) Then
+            For Each vis In value
                 If vis.Attributes.TryGetValue("MapKey", raceNode) Then
                     racestr = raceNode.AsString(Funciones.Guid_to_string)
                     treenod = TreeView1.Nodes.Find(racestr, False).First
@@ -250,7 +253,7 @@ Public Class BG3Editor_Complex_ArmorEquipment
     End Function
     Private Function Crea_Race_Item(VisualKey As String) As LSLib.LS.Node
         Dim nodls = New LSLib.LS.Node With {.Name = "MapValue"}
-        Dim value As New NodeAttribute(AttributeType.UUID)
+        Dim value As New NodeAttribute(AttributeType.FixedString)
         value.FromString(VisualKey, Funciones.Guid_to_string)
         nodls.Attributes.TryAdd("Object", value)
         Return nodls
@@ -267,7 +270,8 @@ Public Class BG3Editor_Complex_ArmorEquipment
         If RadioButton2.Checked = False Then Clear_nodes()
         Dim current As BG3_Obj_Template_Class = template
         While Not IsNothing(current)
-            If current.NodeLSLIB.Children.ContainsKey("Equipment") Then Read_Equipment(current.NodeLSLIB.Children("Equipment").First) : Exit While
+            Dim value As List(Of LSLib.LS.Node) = Nothing
+            If current.NodeLSLIB.Children.TryGetValue("Equipment", value) Then Read_Equipment(value.First) : Exit While
             current = template.Parent
         End While
     End Sub
@@ -280,7 +284,7 @@ Public Class BG3Editor_Complex_ArmorEquipment
         Dim current As BG3_Obj_Template_Class = template
         While Not IsNothing(current)
             If current.NodeLSLIB.Children.ContainsKey("Equipment") Then Return True
-            current = template.Parent
+            current = current.Parent
         End While
         Return False
     End Function
@@ -379,17 +383,14 @@ Public Class BG3Editor_Complex_ArmorEquipment
         If Not [Readonly] And CheckBox1.Checked <> Not isinherited Then
             Select Case CheckBox1.Checked
                 Case False
-                    If Last_read.NodeLSLIB.Children.ContainsKey("Equipment") Then
-                        Last_read.NodeLSLIB.Children.Remove("Equipment")
-                    End If
+                    Last_read.NodeLSLIB.Children.Remove("Equipment")
                 Case True
-                    If Last_read.NodeLSLIB.Children.ContainsKey("Equipment") Then
-                        Last_read.NodeLSLIB.Children.Remove("Equipment")
-                    End If
+                    Last_read.NodeLSLIB.Children.Remove("Equipment")
                     Dim current As BG3_Obj_Template_Class = Last_read.Parent
                     While Not IsNothing(current)
-                        If current.NodeLSLIB.Children.ContainsKey("Equipment") Then
-                            Last_read.NodeLSLIB.AppendChild(current.NodeLSLIB.Children("Equipment").First.CloneNode)
+                        Dim value As List(Of LSLib.LS.Node) = Nothing
+                        If current.NodeLSLIB.Children.TryGetValue("Equipment", value) Then
+                            Last_read.NodeLSLIB.AppendChild(value.First.CloneNode)
                             Exit While
                         End If
                         current = current.Parent

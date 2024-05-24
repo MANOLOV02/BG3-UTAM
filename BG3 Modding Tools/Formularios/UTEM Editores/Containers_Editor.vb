@@ -24,6 +24,8 @@ Public Class Containers_Editor
         ' Nothing
         HandledAttributes.Add("ContainerContentFilterCondition")
         HandledAttributes.Add("ContainerAutoAddOnPickup")
+        HandledNodes.Add("GameObjects\InventoryList")
+
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
         GroupBox5.Enabled = Edicion

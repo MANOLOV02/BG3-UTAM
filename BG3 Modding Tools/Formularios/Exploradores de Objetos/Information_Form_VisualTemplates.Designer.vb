@@ -39,7 +39,7 @@ Partial Class Information_Form_VisualTemplates
         Visual.Name = "Visual"
         Visual.Size = New Size(543, 253)
         Visual.TabIndex = 1
-        Visual.Text = "Visual"
+        Visual.Text = "Code"
         ' 
         ' XmLtoRichText2
         ' 
@@ -69,14 +69,14 @@ Partial Class Information_Form_VisualTemplates
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.TabIndex = 16
         ' 
-        ' Visuals_Information_Form
+        ' Information_Form_VisualTemplates
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(551, 284)
         Controls.Add(TabControl1)
         Icon = CType(resources.GetObject("$this.Icon"), Icon)
-        Name = "Visuals_Information_Form"
+        Name = "Information_Form_VisualTemplates"
         Visual.ResumeLayout(False)
         TabControl1.ResumeLayout(False)
         ResumeLayout(False)

@@ -27,6 +27,7 @@ Imports System.Net.Quic
 Imports System.Net
 Imports System.Net.NetworkInformation
 Imports System.DirectoryServices.ActiveDirectory
+Imports System.ComponentModel.DataAnnotations
 
 
 
@@ -121,7 +122,7 @@ Public Class BG3_CustomFilter_Class(Of T As BG3_Obj_Generic_Class)
     Public Property DisplayFormat As BG3_Enum_DisplayFormat = BG3_Enum_DisplayFormat.Name_and_DisplayName
     Public Property Textfilter As String = ""
     Public Property Deepfilter As Boolean = False
-    Public Property Filter_Level1 As Integer = [Enum].GetNames(Getenum).ToList.IndexOf("item")
+    Public Property Filter_Level1 As Integer = 0
     Public Property Filter_Level2 As String = ""
 
 
@@ -297,7 +298,7 @@ Public Class BG3_CustomFilter_Class(Of T As BG3_Obj_Generic_Class)
                 If Filter_Level1 = -1 AndAlso Not IsNothing(Getenum) Then ite = [Enum].GetValues(Getenum) Else ite = {Filter_Level1}
 
                 'Parallel.ForEach(ite, Sub(Typ)
-                For Each typ In ite
+                For Each typ In ite.OrderBy(Function(pf) [Enum].GetNames(Getenum).ToArray(pf))
                     Dim newnod As New BG3_Custom_TreeNode_Linked_Class(Of T)(Me, Nothing) With {.Name = [Enum].GetValues(Getenum)(typ).ToString, .Text = [Enum].GetValues(Getenum)(typ).ToString}
                     newnod.BeginEdit()
                     Dim filt = TreeSource.ElementValues.AsParallel.Where(Function(pf) pf.Filter_Check_Level1(typ) AndAlso ((Filter_Level2 = "" AndAlso pf.ParentKey_Or_Empty = "") OrElse (Filter_Level2 <> "" AndAlso pf.MapKey = Filter_Level2)))
@@ -498,7 +499,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 4.3
+    Public ReadOnly Property CacheVersion As Double = 4.4
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -919,20 +920,30 @@ Public Class BG3_Pak_Packages_List_Class
         End Try
     End Function
 
-    Public Shared Function Find_Asset(Prefix As String, Asset As String, Source As BG3_Pak_Packages_List_Class) As LSLib.LS.PackagedFileInfo
-        Dim Fillpath As String = IO.Path.Combine(Prefix, Asset)
-        Dim testpath As String
-        For Each pak In Source.OrderByDescending(Function(pf) pf.SortIndex)
-            If Not IsNothing(pak.Package) Then
-                For Each fil In pak.Package.Files
-                    testpath = fil.Name
-                    If Fillpath.Replace("\", "/") = testpath Then
-                        Return fil
-                    End If
-                Next
-            End If
-        Next
+    Public Shared Function Find_Asset(Prefix As String, Asset As String) As Stream
+        Dim Fillpath As String = IO.Path.Combine(Prefix, Asset).Replace("\", "/")
+        Dim ass As BG3_Obj_Assets_Class = Nothing
+        If GameEngine.ProcessedAssets.TryGetValue(Fillpath, ass) Then
+            For Each pak In GameEngine.ProcessedPackList.Where(Function(pf) pf.PackFileName = ass.SourceOfResorce.Pak_Or_Folder)
+                Dim filtro = pak.Package.Files.Where(Function(pf) pf.Name = Fillpath)
+                If filtro.Count > 1 Then Debugger.Break()
+                If filtro.Any Then Return pak.Package.Files.Where(Function(pf) pf.Name = Fillpath).First.CreateContentReader
+            Next
+        End If
         Return Nothing
+
+        '       Dim testpath As String
+        'For Each pak In GameEngine.ProcessedPackList.OrderByDescending(Function(pf) pf.SortIndex)
+        '    If Not IsNothing(pak.Package) Then
+        '        For Each fil In pak.Package.Files
+        '            testpath = fil.Name
+        '            If Fillpath.Replace("\", "/") = testpath Then
+        '                Return fil.CreateContentReader
+        '            End If
+        '        Next
+        '    End If
+        'Next
+        'Return Nothing
     End Function
 
     Sub New()
@@ -2753,45 +2764,71 @@ Public Class BG3_Obj_VisualBank_Class
         End Get
     End Property
 
-    Public Overloads ReadOnly Property Parent As BG3_Obj_VisualBank_Class
+    Public ReadOnly Property Asset As Stream
         Get
-            If ParentKey_Or_Empty = "" Then Return Nothing
-            Dim value As BG3_Obj_VisualBank_Class = Nothing
-            GameEngine.ProcessedVisualBanksList.TryGetValue(ParentKey_Or_Empty, value)
-            Return value
+            If AssetName = "" Then Return Nothing
+            Return BG3_Pak_Packages_List_Class.Find_Asset("", AssetName)
         End Get
     End Property
-    Public Overloads Property Type As BG3_Enum_VisualBank_Type = BG3_Enum_VisualBank_Type.VisualBank
-    Sub New(ByRef Nod As LSLib.LS.Node, ByRef Source As BG3_Pak_SourceOfResource_Class, type As BG3_Enum_VisualBank_Type)
-        Me.Type = type
-        If Me.Type = BG3_Enum_VisualBank_Type.Material Then
-            Me.Cached_Attributes.TryAdd("ID", Source.Filename_Relative)
-            Me.Cached_Attributes.TryAdd("Name", IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative))
-        End If
-        Create(Nod, Source)
-    End Sub
-    Public Overrides Sub Init_Necessary_Attributes()
-        ' To complete
-        ReadAttribute_Or_Nothing("Name")
-    End Sub
 
-    Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
-        If Level1 = -1 Then Return True
-        Return Level1 = Type
-    End Function
-    Public Overrides Function Filter_Check_Level2(Level2 As String) As Boolean
-        Return True
-    End Function
 
-    Sub New()
-    End Sub
-End Class
+    Public ReadOnly Property AssetName As String
+        Get
+            Select Case Type
+                Case BG3_Enum_VisualBank_Type.TextureBank
+                    Return ReadAttribute_Or_Empty("SourceFile")
+                Case BG3_Enum_VisualBank_Type.VisualBank
+                    Return ReadAttribute_Or_Empty("SourceFile")
+                Case BG3_Enum_VisualBank_Type.VirtualTextureBank
+                    Dim gtex As String = ReadAttribute_Or_Empty("GTexFileName")
+                    If gtex = "" Then Return gtex
+                    Return "Generated/Public/VirtualTextures/Albedo_Normal_Physical_" + gtex.Substring(0, 1) + "_" + gtex + ".gtp"
+                Case Else
+                    Return ""
+            End Select
+        End Get
+    End Property
+
+    Public Overloads ReadOnly Property Parent As BG3_Obj_VisualBank_Class
+            Get
+                If ParentKey_Or_Empty = "" Then Return Nothing
+                Dim value As BG3_Obj_VisualBank_Class = Nothing
+                GameEngine.ProcessedVisualBanksList.TryGetValue(ParentKey_Or_Empty, value)
+                Return value
+            End Get
+        End Property
+        Public Overloads Property Type As BG3_Enum_VisualBank_Type = BG3_Enum_VisualBank_Type.CharacterVisualBank
+        Sub New(ByRef Nod As LSLib.LS.Node, ByRef Source As BG3_Pak_SourceOfResource_Class, type As BG3_Enum_VisualBank_Type)
+            Me.Type = type
+            If Me.Type = BG3_Enum_VisualBank_Type.Material Then
+                Me.Cached_Attributes.TryAdd("ID", Source.Filename_Relative)
+                Me.Cached_Attributes.TryAdd("Name", IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative))
+            End If
+            Create(Nod, Source)
+        End Sub
+        Public Overrides Sub Init_Necessary_Attributes()
+            ' To complete
+            ReadAttribute_Or_Nothing("ID")
+            ReadAttribute_Or_Nothing("Name")
+        End Sub
+
+        Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
+            If Level1 = -1 Then Return True
+            Return Level1 = Type
+        End Function
+        Public Overrides Function Filter_Check_Level2(Level2 As String) As Boolean
+            Return True
+        End Function
+
+        Sub New()
+        End Sub
+    End Class
 
 #End Region
 
 #Region "Icons"
 
-<Serializable>
+    <Serializable>
 Public Class BG3_Obj_IconAtlass_Class
     Inherits BG3_Obj_Generic_Class
     Public Overrides ReadOnly Property MapKey_Attribute As String = "Not Implemented"
@@ -2826,9 +2863,9 @@ Public Class BG3_Obj_IconAtlass_Class
     Private _CacheAtlas As Bitmap = Nothing
     Public Function Get_Atlas() As Bitmap
         If IsNothing(_CacheAtlas) Then
-            Dim fil = BG3_Pak_Packages_List_Class.Find_Asset(IO.Path.Combine("Public", Me.SourceOfResorce.ModFolder), Internal_Path, GameEngine.ProcessedPackList)
+            Dim fil = BG3_Pak_Packages_List_Class.Find_Asset(IO.Path.Combine("Public", Me.SourceOfResorce.ModFolder), Internal_Path)
             If IsNothing(fil) Then Return Nothing
-            _CacheAtlas = PfmiToBitmap(fil.CreateContentReader).Clone
+            _CacheAtlas = PfmiToBitmap(fil).Clone
         End If
         Return _CacheAtlas
     End Function
@@ -3133,9 +3170,9 @@ Public Class BG3_Obj_Assets_Class
     Private _CacheDDS As Bitmap = Nothing
     Public Function Get_DDS() As Bitmap
         If IsNothing(_CacheDDS) Then
-            Dim fil = BG3_Pak_Packages_List_Class.Find_Asset("", Path, GameEngine.ProcessedPackList)
+            Dim fil = BG3_Pak_Packages_List_Class.Find_Asset("", Path)
             If IsNothing(fil) Then Return Nothing
-            _CacheDDS = PfmiToBitmap(fil.CreateContentReader).Clone
+            _CacheDDS = PfmiToBitmap(fil).Clone
         End If
         Return _CacheDDS
     End Function
@@ -3582,14 +3619,15 @@ Public MustInherit Class BG3_Obj_Generic_Class
         Dim tabs = 0
         Dim current = Me
         Get_txt_Single(current, Builder, tabs, True)
-        While current.ParentKey_Or_Empty <> ""
-            current = current.Parent_by_Type
+        current = current.Parent_by_Type
+        While Not IsNothing(current)
             tabs += 1
             Builder.Append("".PadLeft(tabs, vbTab) + "(inheriteds from" + ManoloSep + " ")
             Builder.Append(Chr(34) + current.MapKey + Chr(34) + " ")
             Builder.Append(ManoloSep + Chr(34) + current.Name + Chr(34))
             Builder.Append(ManoloSep + ")" + vbCrLf)
             Get_txt_Single(current, Builder, tabs, True)
+            current = current.Parent_by_Type
         End While
         _CachedTXT = Builder.ToString
         Return _CachedTXT

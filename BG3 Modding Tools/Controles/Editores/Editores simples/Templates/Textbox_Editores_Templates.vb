@@ -19,7 +19,20 @@ Public Class BG3Editor_Template_Undefined
             MyBase.AttributeType = value
         End Set
     End Property
-
+    Public Overloads Sub Read(Nod As LSLib.LS.Node)
+        If Nod.Attributes.ContainsKey(Key) Then
+            Me.TextBox1.Text = Nod.Attributes(Key).AsString(Funciones.Guid_to_string)
+        Else
+            Me.TextBox1.Text = ""
+        End If
+    End Sub
+    Public Overloads Sub Wite(Nod As LSLib.LS.Node)
+        Dim value As New LSLib.LS.NodeAttribute(AttributeType)
+        value.FromString(TextBox1.Text, Funciones.Guid_to_string)
+        If Nod.Attributes.TryAdd(Key, value) = False Then
+            Nod.Attributes(Key) = value
+        End If
+    End Sub
     Sub New()
         MyBase.New("Undefined", AttributeType.FixedString)
         Label = "Undefined"

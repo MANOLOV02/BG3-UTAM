@@ -1,5 +1,10 @@
 ﻿Imports System.Drawing.Printing
+Imports System.IO
+Imports System.IO.Compression
+Imports System.Windows.Forms.VisualStyles
 Imports BG3_Modding_Tools.FuncionesHelpers
+Imports LSLib.Granny.Model
+Imports LSLib.VirtualTextures
 Public Class Information_Form_VisualTemplates
 
     Private LastObject As BG3_Obj_VisualBank_Class = Nothing
@@ -31,7 +36,4 @@ Public Class Information_Form_VisualTemplates
         End If
         Cursor.Current = Cursors.Default
     End Sub
-
-
-
 End Class

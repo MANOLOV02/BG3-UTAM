@@ -39,13 +39,41 @@ Partial Class Main
         ObjectsExplorerToolStripMenuItem = New ToolStripMenuItem()
         AllTemplatesToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator3 = New ToolStripSeparator()
-        ItemTemplatesToolStripMenuItem = New ToolStripMenuItem()
         CharacterTemplatesToolStripMenuItem = New ToolStripMenuItem()
+        ItemTemplatesToolStripMenuItem = New ToolStripMenuItem()
+        StatsExplorerToolStripMenuItem1 = New ToolStripMenuItem()
         StatsExplorerToolStripMenuItem = New ToolStripMenuItem()
-        TrasureTablesExplorerToolStripMenuItem = New ToolStripMenuItem()
-        ObjectInformationToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator6 = New ToolStripSeparator()
+        ArmorsToolStripMenuItem1 = New ToolStripMenuItem()
+        CharactersToolStripMenuItem = New ToolStripMenuItem()
+        ObjectsToolStripMenuItem = New ToolStripMenuItem()
+        WeaponsToolStripMenuItem1 = New ToolStripMenuItem()
+        ToolStripSeparator7 = New ToolStripSeparator()
+        PasivesToolStripMenuItem = New ToolStripMenuItem()
+        SpellsToolStripMenuItem = New ToolStripMenuItem()
+        StatusToolStripMenuItem = New ToolStripMenuItem()
+        VisualsExplorerToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripMenuItem1 = New ToolStripMenuItem()
+        ToolStripSeparator8 = New ToolStripSeparator()
+        TexturesToolStripMenuItem = New ToolStripMenuItem()
+        VirtualTexturesBankToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator9 = New ToolStripSeparator()
+        MaterialsToolStripMenuItem = New ToolStripMenuItem()
+        MaterialToolStripMenuItem = New ToolStripMenuItem()
+        MaterialPresetsToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator10 = New ToolStripSeparator()
+        CharacterVisualBankToolStripMenuItem = New ToolStripMenuItem()
+        VisualBankToolStripMenuItem = New ToolStripMenuItem()
+        FlagsTagsAndListsToolStripMenuItem = New ToolStripMenuItem()
         FlagsExplorerToolStripMenuItem = New ToolStripMenuItem()
-        VisualBankExplorerToolStripMenuItem = New ToolStripMenuItem()
+        ToolStripSeparator11 = New ToolStripSeparator()
+        FlagstoolstripMenuItem = New ToolStripMenuItem()
+        TagsToolStripMenuItem = New ToolStripMenuItem()
+        RacesToolStripMenuItem = New ToolStripMenuItem()
+        GoldValuesToolStripMenuItem = New ToolStripMenuItem()
+        EquipmentTypesToolStripMenuItem = New ToolStripMenuItem()
+        ObjectInformationToolStripMenuItem = New ToolStripMenuItem()
+        TrasureTablesExplorerToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator5 = New ToolStripSeparator()
         OpenDetailsWindowsAlsoToolStripMenuItem = New ToolStripMenuItem()
         ModdsToolStripMenuItem = New ToolStripMenuItem()
@@ -80,6 +108,7 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
+        EquipmentSlotsToolStripMenuItem = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -103,19 +132,19 @@ Partial Class Main
         ' ProcesserToolStripMenu
         ' 
         ProcesserToolStripMenu.Name = "ProcesserToolStripMenu"
-        ProcesserToolStripMenu.Size = New Size(180, 22)
+        ProcesserToolStripMenu.Size = New Size(170, 22)
         ProcesserToolStripMenu.Text = "Processer"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(177, 6)
+        ToolStripSeparator1.Size = New Size(167, 6)
         ' 
         ' BackgroundWorkToolStripMenuItem
         ' 
         BackgroundWorkToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MenuProcessPackBackground, ToolStripSeparator2, LoadCacheToolStripMenuItem1, MenuClearCacheBackground})
         BackgroundWorkToolStripMenuItem.Name = "BackgroundWorkToolStripMenuItem"
-        BackgroundWorkToolStripMenuItem.Size = New Size(180, 22)
+        BackgroundWorkToolStripMenuItem.Size = New Size(170, 22)
         BackgroundWorkToolStripMenuItem.Text = "Background work"
         ' 
         ' MenuProcessPackBackground
@@ -156,21 +185,20 @@ Partial Class Main
         ' 
         ' ProcessSinglePakToolStripMenuItem
         ' 
-        ProcessSinglePakToolStripMenuItem.Enabled = False
         ProcessSinglePakToolStripMenuItem.Name = "ProcessSinglePakToolStripMenuItem"
-        ProcessSinglePakToolStripMenuItem.Size = New Size(180, 22)
+        ProcessSinglePakToolStripMenuItem.Size = New Size(170, 22)
         ProcessSinglePakToolStripMenuItem.Text = "Process single pak"
         ' 
         ' ToolsToolStripMenuItem
         ' 
-        ToolsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ObjectsExplorerToolStripMenuItem, StatsExplorerToolStripMenuItem, TrasureTablesExplorerToolStripMenuItem, ObjectInformationToolStripMenuItem, FlagsExplorerToolStripMenuItem, VisualBankExplorerToolStripMenuItem, ToolStripSeparator5, OpenDetailsWindowsAlsoToolStripMenuItem})
+        ToolsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ObjectsExplorerToolStripMenuItem, StatsExplorerToolStripMenuItem1, VisualsExplorerToolStripMenuItem, FlagsTagsAndListsToolStripMenuItem, ObjectInformationToolStripMenuItem, TrasureTablesExplorerToolStripMenuItem, ToolStripSeparator5, OpenDetailsWindowsAlsoToolStripMenuItem})
         ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         ToolsToolStripMenuItem.Size = New Size(112, 20)
         ToolsToolStripMenuItem.Text = "Objects exploring"
         ' 
         ' ObjectsExplorerToolStripMenuItem
         ' 
-        ObjectsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AllTemplatesToolStripMenuItem, ToolStripSeparator3, ItemTemplatesToolStripMenuItem, CharacterTemplatesToolStripMenuItem})
+        ObjectsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {AllTemplatesToolStripMenuItem, ToolStripSeparator3, CharacterTemplatesToolStripMenuItem, ItemTemplatesToolStripMenuItem})
         ObjectsExplorerToolStripMenuItem.Name = "ObjectsExplorerToolStripMenuItem"
         ObjectsExplorerToolStripMenuItem.Size = New Size(216, 22)
         ObjectsExplorerToolStripMenuItem.Text = "Templates explorer"
@@ -186,29 +214,200 @@ Partial Class Main
         ToolStripSeparator3.Name = "ToolStripSeparator3"
         ToolStripSeparator3.Size = New Size(177, 6)
         ' 
-        ' ItemTemplatesToolStripMenuItem
-        ' 
-        ItemTemplatesToolStripMenuItem.Name = "ItemTemplatesToolStripMenuItem"
-        ItemTemplatesToolStripMenuItem.Size = New Size(180, 22)
-        ItemTemplatesToolStripMenuItem.Text = "Item templates"
-        ' 
         ' CharacterTemplatesToolStripMenuItem
         ' 
         CharacterTemplatesToolStripMenuItem.Name = "CharacterTemplatesToolStripMenuItem"
         CharacterTemplatesToolStripMenuItem.Size = New Size(180, 22)
         CharacterTemplatesToolStripMenuItem.Text = "Character templates"
         ' 
+        ' ItemTemplatesToolStripMenuItem
+        ' 
+        ItemTemplatesToolStripMenuItem.Name = "ItemTemplatesToolStripMenuItem"
+        ItemTemplatesToolStripMenuItem.Size = New Size(180, 22)
+        ItemTemplatesToolStripMenuItem.Text = "Item templates"
+        ' 
+        ' StatsExplorerToolStripMenuItem1
+        ' 
+        StatsExplorerToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {StatsExplorerToolStripMenuItem, ToolStripSeparator6, ArmorsToolStripMenuItem1, CharactersToolStripMenuItem, ObjectsToolStripMenuItem, WeaponsToolStripMenuItem1, ToolStripSeparator7, PasivesToolStripMenuItem, SpellsToolStripMenuItem, StatusToolStripMenuItem})
+        StatsExplorerToolStripMenuItem1.Name = "StatsExplorerToolStripMenuItem1"
+        StatsExplorerToolStripMenuItem1.Size = New Size(216, 22)
+        StatsExplorerToolStripMenuItem1.Text = "Stats Explorer"
+        ' 
         ' StatsExplorerToolStripMenuItem
         ' 
         StatsExplorerToolStripMenuItem.Name = "StatsExplorerToolStripMenuItem"
-        StatsExplorerToolStripMenuItem.Size = New Size(216, 22)
-        StatsExplorerToolStripMenuItem.Text = "Stats explorer"
+        StatsExplorerToolStripMenuItem.Size = New Size(130, 22)
+        StatsExplorerToolStripMenuItem.Text = "All stats"
         ' 
-        ' TrasureTablesExplorerToolStripMenuItem
+        ' ToolStripSeparator6
         ' 
-        TrasureTablesExplorerToolStripMenuItem.Name = "TrasureTablesExplorerToolStripMenuItem"
-        TrasureTablesExplorerToolStripMenuItem.Size = New Size(216, 22)
-        TrasureTablesExplorerToolStripMenuItem.Text = "Treasure tables explorer"
+        ToolStripSeparator6.Name = "ToolStripSeparator6"
+        ToolStripSeparator6.Size = New Size(127, 6)
+        ' 
+        ' ArmorsToolStripMenuItem1
+        ' 
+        ArmorsToolStripMenuItem1.Name = "ArmorsToolStripMenuItem1"
+        ArmorsToolStripMenuItem1.Size = New Size(130, 22)
+        ArmorsToolStripMenuItem1.Text = "Armors"
+        ' 
+        ' CharactersToolStripMenuItem
+        ' 
+        CharactersToolStripMenuItem.Name = "CharactersToolStripMenuItem"
+        CharactersToolStripMenuItem.Size = New Size(130, 22)
+        CharactersToolStripMenuItem.Text = "Characters"
+        ' 
+        ' ObjectsToolStripMenuItem
+        ' 
+        ObjectsToolStripMenuItem.Name = "ObjectsToolStripMenuItem"
+        ObjectsToolStripMenuItem.Size = New Size(130, 22)
+        ObjectsToolStripMenuItem.Text = "Objects"
+        ' 
+        ' WeaponsToolStripMenuItem1
+        ' 
+        WeaponsToolStripMenuItem1.Name = "WeaponsToolStripMenuItem1"
+        WeaponsToolStripMenuItem1.Size = New Size(130, 22)
+        WeaponsToolStripMenuItem1.Text = "Weapons"
+        ' 
+        ' ToolStripSeparator7
+        ' 
+        ToolStripSeparator7.Name = "ToolStripSeparator7"
+        ToolStripSeparator7.Size = New Size(127, 6)
+        ' 
+        ' PasivesToolStripMenuItem
+        ' 
+        PasivesToolStripMenuItem.Name = "PasivesToolStripMenuItem"
+        PasivesToolStripMenuItem.Size = New Size(130, 22)
+        PasivesToolStripMenuItem.Text = "Pasives"
+        ' 
+        ' SpellsToolStripMenuItem
+        ' 
+        SpellsToolStripMenuItem.Name = "SpellsToolStripMenuItem"
+        SpellsToolStripMenuItem.Size = New Size(130, 22)
+        SpellsToolStripMenuItem.Text = "Spells"
+        ' 
+        ' StatusToolStripMenuItem
+        ' 
+        StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
+        StatusToolStripMenuItem.Size = New Size(130, 22)
+        StatusToolStripMenuItem.Text = "Status"
+        ' 
+        ' VisualsExplorerToolStripMenuItem
+        ' 
+        VisualsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ToolStripMenuItem1, ToolStripSeparator8, TexturesToolStripMenuItem, VirtualTexturesBankToolStripMenuItem, ToolStripSeparator9, MaterialsToolStripMenuItem, MaterialToolStripMenuItem, MaterialPresetsToolStripMenuItem, ToolStripSeparator10, CharacterVisualBankToolStripMenuItem, VisualBankToolStripMenuItem})
+        VisualsExplorerToolStripMenuItem.Name = "VisualsExplorerToolStripMenuItem"
+        VisualsExplorerToolStripMenuItem.Size = New Size(216, 22)
+        VisualsExplorerToolStripMenuItem.Text = "Visuals explorer"
+        ' 
+        ' ToolStripMenuItem1
+        ' 
+        ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        ToolStripMenuItem1.Size = New Size(192, 22)
+        ToolStripMenuItem1.Text = "All visuals"
+        ' 
+        ' ToolStripSeparator8
+        ' 
+        ToolStripSeparator8.Name = "ToolStripSeparator8"
+        ToolStripSeparator8.Size = New Size(189, 6)
+        ' 
+        ' TexturesToolStripMenuItem
+        ' 
+        TexturesToolStripMenuItem.Name = "TexturesToolStripMenuItem"
+        TexturesToolStripMenuItem.Size = New Size(192, 22)
+        TexturesToolStripMenuItem.Text = "Textures"
+        ' 
+        ' VirtualTexturesBankToolStripMenuItem
+        ' 
+        VirtualTexturesBankToolStripMenuItem.Name = "VirtualTexturesBankToolStripMenuItem"
+        VirtualTexturesBankToolStripMenuItem.Size = New Size(192, 22)
+        VirtualTexturesBankToolStripMenuItem.Text = "Virtual textures bank"
+        ' 
+        ' ToolStripSeparator9
+        ' 
+        ToolStripSeparator9.Name = "ToolStripSeparator9"
+        ToolStripSeparator9.Size = New Size(189, 6)
+        ' 
+        ' MaterialsToolStripMenuItem
+        ' 
+        MaterialsToolStripMenuItem.Name = "MaterialsToolStripMenuItem"
+        MaterialsToolStripMenuItem.Size = New Size(192, 22)
+        MaterialsToolStripMenuItem.Text = "Materials bank"
+        ' 
+        ' MaterialToolStripMenuItem
+        ' 
+        MaterialToolStripMenuItem.Name = "MaterialToolStripMenuItem"
+        MaterialToolStripMenuItem.Size = New Size(192, 22)
+        MaterialToolStripMenuItem.Text = "Material"
+        ' 
+        ' MaterialPresetsToolStripMenuItem
+        ' 
+        MaterialPresetsToolStripMenuItem.Name = "MaterialPresetsToolStripMenuItem"
+        MaterialPresetsToolStripMenuItem.Size = New Size(192, 22)
+        MaterialPresetsToolStripMenuItem.Text = "Material presets"
+        ' 
+        ' ToolStripSeparator10
+        ' 
+        ToolStripSeparator10.Name = "ToolStripSeparator10"
+        ToolStripSeparator10.Size = New Size(189, 6)
+        ' 
+        ' CharacterVisualBankToolStripMenuItem
+        ' 
+        CharacterVisualBankToolStripMenuItem.Name = "CharacterVisualBankToolStripMenuItem"
+        CharacterVisualBankToolStripMenuItem.Size = New Size(192, 22)
+        CharacterVisualBankToolStripMenuItem.Text = "Characters visual bank"
+        ' 
+        ' VisualBankToolStripMenuItem
+        ' 
+        VisualBankToolStripMenuItem.Name = "VisualBankToolStripMenuItem"
+        VisualBankToolStripMenuItem.Size = New Size(192, 22)
+        VisualBankToolStripMenuItem.Text = "Visual bank"
+        ' 
+        ' FlagsTagsAndListsToolStripMenuItem
+        ' 
+        FlagsTagsAndListsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {FlagsExplorerToolStripMenuItem, ToolStripSeparator11, FlagstoolstripMenuItem, TagsToolStripMenuItem, RacesToolStripMenuItem, GoldValuesToolStripMenuItem, EquipmentTypesToolStripMenuItem, EquipmentSlotsToolStripMenuItem})
+        FlagsTagsAndListsToolStripMenuItem.Name = "FlagsTagsAndListsToolStripMenuItem"
+        FlagsTagsAndListsToolStripMenuItem.Size = New Size(216, 22)
+        FlagsTagsAndListsToolStripMenuItem.Text = "Flags, tags and lists"
+        ' 
+        ' FlagsExplorerToolStripMenuItem
+        ' 
+        FlagsExplorerToolStripMenuItem.Name = "FlagsExplorerToolStripMenuItem"
+        FlagsExplorerToolStripMenuItem.Size = New Size(190, 22)
+        FlagsExplorerToolStripMenuItem.Text = "All flags, tags and lists"
+        ' 
+        ' ToolStripSeparator11
+        ' 
+        ToolStripSeparator11.Name = "ToolStripSeparator11"
+        ToolStripSeparator11.Size = New Size(187, 6)
+        ' 
+        ' FlagstoolstripMenuItem
+        ' 
+        FlagstoolstripMenuItem.Name = "FlagstoolstripMenuItem"
+        FlagstoolstripMenuItem.Size = New Size(190, 22)
+        FlagstoolstripMenuItem.Text = "Flags"
+        ' 
+        ' TagsToolStripMenuItem
+        ' 
+        TagsToolStripMenuItem.Name = "TagsToolStripMenuItem"
+        TagsToolStripMenuItem.Size = New Size(190, 22)
+        TagsToolStripMenuItem.Text = "Tags"
+        ' 
+        ' RacesToolStripMenuItem
+        ' 
+        RacesToolStripMenuItem.Name = "RacesToolStripMenuItem"
+        RacesToolStripMenuItem.Size = New Size(190, 22)
+        RacesToolStripMenuItem.Text = "Races"
+        ' 
+        ' GoldValuesToolStripMenuItem
+        ' 
+        GoldValuesToolStripMenuItem.Name = "GoldValuesToolStripMenuItem"
+        GoldValuesToolStripMenuItem.Size = New Size(190, 22)
+        GoldValuesToolStripMenuItem.Text = "Gold values"
+        ' 
+        ' EquipmentTypesToolStripMenuItem
+        ' 
+        EquipmentTypesToolStripMenuItem.Name = "EquipmentTypesToolStripMenuItem"
+        EquipmentTypesToolStripMenuItem.Size = New Size(190, 22)
+        EquipmentTypesToolStripMenuItem.Text = "Equipment types"
         ' 
         ' ObjectInformationToolStripMenuItem
         ' 
@@ -216,17 +415,11 @@ Partial Class Main
         ObjectInformationToolStripMenuItem.Size = New Size(216, 22)
         ObjectInformationToolStripMenuItem.Text = "Icon explorer"
         ' 
-        ' FlagsExplorerToolStripMenuItem
+        ' TrasureTablesExplorerToolStripMenuItem
         ' 
-        FlagsExplorerToolStripMenuItem.Name = "FlagsExplorerToolStripMenuItem"
-        FlagsExplorerToolStripMenuItem.Size = New Size(216, 22)
-        FlagsExplorerToolStripMenuItem.Text = "Flags && tags explorer"
-        ' 
-        ' VisualBankExplorerToolStripMenuItem
-        ' 
-        VisualBankExplorerToolStripMenuItem.Name = "VisualBankExplorerToolStripMenuItem"
-        VisualBankExplorerToolStripMenuItem.Size = New Size(216, 22)
-        VisualBankExplorerToolStripMenuItem.Text = "Visual bank explorer"
+        TrasureTablesExplorerToolStripMenuItem.Name = "TrasureTablesExplorerToolStripMenuItem"
+        TrasureTablesExplorerToolStripMenuItem.Size = New Size(216, 22)
+        TrasureTablesExplorerToolStripMenuItem.Text = "Treasure tables explorer"
         ' 
         ' ToolStripSeparator5
         ' 
@@ -448,6 +641,12 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
+        ' EquipmentSlotsToolStripMenuItem
+        ' 
+        EquipmentSlotsToolStripMenuItem.Name = "EquipmentSlotsToolStripMenuItem"
+        EquipmentSlotsToolStripMenuItem.Size = New Size(190, 22)
+        EquipmentSlotsToolStripMenuItem.Text = "Equipment slots"
+        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -502,13 +701,10 @@ Partial Class Main
     Friend WithEvents ToolsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ObjectsExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ObjectInformationToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents FlagsExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AllTemplatesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     Friend WithEvents ItemTemplatesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CharacterTemplatesToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents StatsExplorerToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents VisualBankExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LabelTreasureCount As ToolStripStatusLabel
     Friend WithEvents TrasureTablesExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolsToolStripMenuItem1 As ToolStripMenuItem
@@ -527,4 +723,36 @@ Partial Class Main
     Friend WithEvents WeaponsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConsumablesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProcessSinglePakToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents StatsExplorerToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents StatsExplorerToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
+    Friend WithEvents ObjectsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ArmorsToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents WeaponsToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents CharactersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Friend WithEvents SpellsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents PasivesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents StatusToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VisualsExplorerToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
+    Friend WithEvents TexturesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MaterialsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MaterialToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents MaterialPresetsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CharacterVisualBankToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VisualBankToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VirtualTexturesBankToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator9 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator10 As ToolStripSeparator
+    Friend WithEvents FlagsTagsAndListsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FlagsExplorerToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator11 As ToolStripSeparator
+    Friend WithEvents FlagstoolstripMenuItem As ToolStripMenuItem
+    Friend WithEvents TagsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RacesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents GoldValuesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents EquipmentTypesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents EquipmentSlotsToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -34,9 +34,11 @@ Public MustInherit Class Explorer_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Sub New()
         filtro = New BG3_CustomFilter_Class(Of T)(ArbolWorker, ObjectList) With {.Filter_Level1 = -1, .Filter_Level2 = "", .Textfilter = "", .SourceFilter = SourceFilter}
         ComboBoxItems.Items.Add(New BG3_Custom_ComboboxItem With {.Text = "(all)", .Value = -1})
-        If [Enum].GetValues(BG3_CustomFilter_Class(Of T).Getenum).Length > 1 Then
-            For type = 0 To [Enum].GetValues(BG3_CustomFilter_Class(Of T).Getenum).Length - 1
-                ComboBoxItems.Items.Add(New BG3_Custom_ComboboxItem With {.Text = [Enum].GetNames(BG3_CustomFilter_Class(Of T).Getenum)(type), .Value = type})
+        Dim ite As Integer() = [Enum].GetValues(BG3_CustomFilter_Class(Of T).Getenum)
+        Dim names As String() = [Enum].GetNames(BG3_CustomFilter_Class(Of T).Getenum)
+        If ite.Length > 1 Then
+            For Each type In ite.OrderBy(Function(pf) names(pf))
+                ComboBoxItems.Items.Add(New BG3_Custom_ComboboxItem With {.Text = names(type), .Value = type})
             Next
         End If
         ComboBoxItems.SelectedIndex = 0

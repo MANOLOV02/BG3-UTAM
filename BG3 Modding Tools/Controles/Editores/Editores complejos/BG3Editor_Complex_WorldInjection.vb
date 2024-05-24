@@ -7,7 +7,7 @@ Public Class BG3Editor_Complex_WorldInjection
     Private Last_Objeto As BG3_Obj_Stats_Class
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
         Get
-            Return CType(Me.ParentForm, Generic_Editor).ActiveModSource
+            Return CType(Me.ParentForm, Generic_Item_Editor).ActiveModSource
         End Get
     End Property
     Sub New()

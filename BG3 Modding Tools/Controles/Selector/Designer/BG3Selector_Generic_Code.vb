@@ -339,8 +339,8 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
 
     Private Function OpenGetNameForm(Propuesto As String) As String
         Dim Form As New GroupName With {.StartPosition = FormStartPosition.Manual}
-        Dim referencex As Integer = CType(Me.ParentForm, Generic_Editor).SplitContainer1.Location.X + CType(Me.ParentForm, Generic_Editor).SplitContainer1.SplitterDistance - 7
-        Dim referencey As Integer = CType(Me.ParentForm, Generic_Editor).SplitContainer1.Location.Y
+        Dim referencex As Integer = CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.Location.X + CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.SplitterDistance - 7
+        Dim referencey As Integer = CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.Location.Y
         Form.Location = Me.ParentForm.PointToScreen(New Point(referencex, referencey))
         Form.TextBox1.Text = Propuesto
         Form.ShowDialog()

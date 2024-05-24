@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Runtime.InteropServices.JavaScript.JSType
+Imports LSLib.Granny
 Imports LSLib.LS
 
 Public Class BG3Editor_Complex_Advanced_Attributes
@@ -13,12 +14,15 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         Flickering.EnableDoubleBuffering(ListView1)
     End Sub
 
+
+    Private _Readonly As Boolean = True
     <DefaultValue(True)>
     Public Property [ReadOnly] As Boolean
         Get
-            Return BG3Editor_Template_Undefined1.Enabled
+            Return _readonly
         End Get
         Set(value As Boolean)
+            _readonly = value
             BG3Editor_Template_Undefined1.Enabled = Not value
             ButtonOk.Enabled = Not value
         End Set
@@ -27,7 +31,17 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     Private ReadOnly Property ParentHandledList As List(Of String)
         Get
             Try
-                Return CType(ParentForm, Generic_Editor).HandledAttributes
+                Return CType(ParentForm, Generic_Item_Editor).HandledAttributes
+            Catch ex As Exception
+                Debugger.Break()
+                Return New List(Of String)
+            End Try
+        End Get
+    End Property
+    Private ReadOnly Property ParentHandledNodesList As List(Of String)
+        Get
+            Try
+                Return CType(ParentForm, Generic_Item_Editor).HandledNodes
             Catch ex As Exception
                 Debugger.Break()
                 Return New List(Of String)
@@ -35,45 +49,86 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         End Get
     End Property
 
-    Private _Last_read As BG3_Obj_Template_Class = Nothing
+    Private _Last_read As LSLib.LS.Node = Nothing
+    Private _Last_OBJ As BG3_Obj_Template_Class = Nothing
+
     Public Sub Clear()
         _Last_read = Nothing
-        ListView1.Items.Clear()
+        _Last_OBJ = Nothing
         BG3Editor_Template_Undefined1.Label = "Select"
         BG3Editor_Template_Undefined1.Key = "Undefined"
         BG3Editor_Template_Undefined1.AttributeType = AttributeType.FixedString
         BG3Editor_Template_Undefined1.Clear()
+        TreeView1.Nodes.Clear()
+    End Sub
+
+    Private Sub ReadNodes(nod As System.Windows.Forms.TreeNode, que As LSLib.LS.Node)
+        For Each childs In que.Children
+            For Each child In childs.Value
+                If ParentHandledNodesList.Contains(nod.FullPath + "\" + child.Name) = False Then
+                    Dim treenod2 As New System.Windows.Forms.TreeNode With {.Text = child.Name, .Tag = child}
+                    nod.Nodes.Add(treenod2)
+                    ReadNodes(treenod2, child)
+                End If
+            Next
+        Next
     End Sub
     Public Sub Read(Obj As BG3_Obj_Template_Class)
+        Clear()
+        _Last_read = Obj.NodeLSLIB
+        _Last_OBJ = Obj
+        Dim treenod As New System.Windows.Forms.TreeNode With {.Text = Obj.NodeLSLIB.Name, .Tag = Obj.NodeLSLIB}
+        TreeView1.Nodes.Add(treenod)
+        ReadNodes(treenod, Obj.NodeLSLIB)
+        TreeView1.SelectedNode = treenod
+
+    End Sub
+
+    Private Sub Read(Node As LSLib.LS.Node)
+        ListView1.BeginUpdate()
+        Dim idx As ListViewItem
+        Dim top = ListView1.TopItem
         Dim last_pos As String = ""
         If ListView1.SelectedItems.Count > 0 Then last_pos = ListView1.SelectedItems(0).Text
-        ListView1.BeginUpdate()
-        Dim top = ListView1.TopItem
-        Clear()
-        _Last_read = Obj
-        Dim idx As ListViewItem
-        For Each stat In FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(Obj.Type).ToString) = True).Select(Function(pf) pf).Distinct
-            idx = New ListViewItem With {.Text = stat.Value, .Name = stat.Key}
-            Dim tipos() = stat.Key.Split(";")
-            idx.SubItems.Add(tipos(1))
-            idx.SubItems.Add(Obj.ReadAttribute_Or_Inhterithed(stat.Value))
-            idx = ListView1.Items.Add(idx)
-            If Not IsNothing(top) AndAlso idx.Name = top.Name Then top = idx
-            If idx.Text = last_pos Then idx.Selected = True
-            If IsNothing(Obj.ReadAttribute_Or_Inhterithed(stat.Value)) Then
-                idx.ForeColor = Color.FromKnownColor(KnownColor.GrayText)
-            Else
-                If _Last_read.NodeLSLIB.Attributes.ContainsKey(stat.Value) = False Then
-                    idx.ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+        ListView1.Items.Clear()
+        If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
+            For Each stat In FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(_Last_OBJ.Type).ToString) = True).Select(Function(pf) pf).Distinct
+                idx = New ListViewItem With {.Text = stat.Value, .Name = stat.Key}
+                Dim tipos() = stat.Key.Split(";")
+                idx.SubItems.Add(tipos(1))
+                idx.SubItems.Add(_Last_OBJ.ReadAttribute_Or_Inhterithed(stat.Value))
+                idx = ListView1.Items.Add(idx)
+                If Not IsNothing(top) AndAlso idx.Name = top.Name Then top = idx
+                If idx.Text = last_pos Then idx.Selected = True
+                If IsNothing(_Last_OBJ.ReadAttribute_Or_Inhterithed(stat.Value)) Then
+                    idx.ForeColor = Color.FromKnownColor(KnownColor.GrayText)
                 Else
-                    idx.ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                    If _Last_read.Attributes.ContainsKey(stat.Value) = False Then
+                        idx.ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+                    Else
+                        idx.ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                    End If
                 End If
-            End If
-        Next
+            Next
+        Else
+            For Each attr In Node.Attributes
+                Try
+                    idx = New ListViewItem With {.Text = attr.Key, .Name = attr.Key}
+                    idx.SubItems.Add(attr.Value.Type.ToString)
+                    idx.SubItems.Add(attr.Value.AsString(Funciones.Guid_to_string))
+                    idx = ListView1.Items.Add(idx)
+                Catch ex As Exception
+
+                End Try
+
+            Next
+        End If
+        _Last_read = Node
         ListView1.Columns(0).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
         ListView1.Columns(1).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
         If ListView1.Columns(1).Width < 100 Then ListView1.Columns(1).Width = 100
         ListView1.Columns(2).AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent)
+        If ListView1.Columns(2).Width < 100 Then ListView1.Columns(2).Width = 100
         ListView1.EndUpdate()
         ListView1.TopItem = top
     End Sub
@@ -98,8 +153,17 @@ Public Class BG3Editor_Complex_Advanced_Attributes
                 Case Else
                     BG3Editor_Template_Undefined1.EditorType = BG3_Editor_Type.Textbox
             End Select
-            BG3Editor_Template_Undefined1.Read(_Last_read)
+            If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
+                BG3Editor_Template_Undefined1.CheckBox1.Enabled = True
+                BG3Editor_Template_Undefined1.Read(_Last_OBJ)
+            Else
+                BG3Editor_Template_Undefined1.CheckBox1.Enabled = False
+                BG3Editor_Template_Undefined1.Read(_Last_read)
+            End If
+            BG3Editor_Template_Undefined1.Enabled = Not [ReadOnly]
         Else
+            BG3Editor_Template_Undefined1.Enabled = False
+            ButtonOk.Enabled = False
             BG3Editor_Template_Undefined1.Label = "Select"
             BG3Editor_Template_Undefined1.Key = "Undefined"
             BG3Editor_Template_Undefined1.AttributeType = AttributeType.FixedString
@@ -119,21 +183,31 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         Try
             oldv = ListView1.SelectedItems(0).SubItems(2).Text
             ListView1.SelectedItems(0).SubItems(2).Text = BG3Editor_Template_Undefined1.TextBox1.Text
-            BG3Editor_Template_Undefined1.Write(_Last_read)
-            If IsNothing(_Last_read.ReadAttribute_Or_Inhterithed(BG3Editor_Template_Undefined1.Key)) Then
-                ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.GrayText)
-            Else
-                If _Last_read.NodeLSLIB.Attributes.ContainsKey(BG3Editor_Template_Undefined1.Key) = False Then
-                    ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+            If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
+                BG3Editor_Template_Undefined1.Write(_Last_OBJ)
+                If IsNothing(_Last_OBJ.ReadAttribute_Or_Inhterithed(BG3Editor_Template_Undefined1.Key)) Then
+                    ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.GrayText)
                 Else
-                    ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                    If _Last_read.Attributes.ContainsKey(BG3Editor_Template_Undefined1.Key) = False Then
+                        ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.ControlText)
+                    Else
+                        ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.Highlight)
+                    End If
                 End If
+            Else
+                BG3Editor_Template_Undefined1.Wite(_Last_read)
             End If
-            BG3Editor_Template_Undefined1.Write(_Last_read)
         Catch ex As Exception
             BG3Editor_Template_Undefined1.TextBox1.Text = oldv
             MsgBox("Error parsing the text to value. Try again", vbExclamation + vbOKOnly, "Error")
         End Try
         ButtonOk.Enabled = False
     End Sub
+
+    Private Sub TreeView1_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterSelect
+        Read(CType(e.Node.Tag, LSLib.LS.Node))
+        ListBox1_SelectedIndexChanged(Me, New EventArgs)
+    End Sub
+
+
 End Class

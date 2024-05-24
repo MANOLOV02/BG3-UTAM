@@ -5,7 +5,7 @@ Imports LSLib.Granny
 Public Class BG3Cloner
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
         Get
-            Return CType(Me.ParentForm, Generic_Editor).ActiveModSource
+            Return CType(Me.ParentForm, Generic_Item_Editor).ActiveModSource
         End Get
     End Property
     Sub New()
@@ -416,6 +416,9 @@ Public Class BG3Cloner
         If lista.Length = 0 Then Return True
         If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
         If lista.Where(Function(pf) (pf.StartsWith("Not") = False AndAlso obj.Is_Descendant(pf) = True)).Any Then Return True
+        If My.Computer.Keyboard.CtrlKeyDown Then
+            If MsgBox("The element is not descendand of the default type. Proceed anyways?", vbInformation + vbOKCancel) = MsgBoxResult.Ok Then Return True
+        End If
         Return False
     End Function
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)

@@ -17,7 +17,7 @@
 	<Description />
 	<Copyright>Copyright © 2024</Copyright>
 	<Title>BG3 UTAM</Title>
-	<Version>4.3.0</Version>
+	<Version>4.4.0</Version>
   
   </PropertyGroup>
 
@@ -89,6 +89,7 @@
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
     <Compile Update="Formularios\UTEM Editores\Consumables_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Generic_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Weapons_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Armors_Editor.vb">
       <SubType>Form</SubType>
@@ -97,7 +98,7 @@
     <Compile Update="Formularios\UTEM Editores\Containers_Editor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Formularios\UTEM Editores\Generic_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Generic_Item_Editor.vb" />
     <Compile Update="My Project\Application.Designer.vb">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

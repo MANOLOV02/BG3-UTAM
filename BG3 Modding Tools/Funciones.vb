@@ -987,6 +987,7 @@ Public Class Funciones
             Case ".dat", ".data", ".fnt"
             Case ".gamescript", ".itemscript", ".patch", ".psocache", ".khn"
             Case ".gr2", ".gtp", ".gts"
+                GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".js", ".json"
             Case ".dds"
                 GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))

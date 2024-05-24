@@ -311,13 +311,13 @@ Public Class BG3Editor_Complex_Dyecolor
                 For Each chil In cpObj.NodeLSLIB.Children.Where(Function(Pf) Pf.Key = "Presets")
                     For Each params In chil.Value
                         For Each chil2 In params.Children.Where(Function(Pf) Pf.Key = "Vector3Parameters")
-                            Drop_OBJ(chil2.Value)
+                            Drop_OBJ(chil2.Value, False)
                         Next
                     Next
                 Next
             Case BG3_Enum_VisualBank_Type.MaterialBank
                 For Each chil2 In cpObj.NodeLSLIB.Children.Where(Function(Pf) Pf.Key = "Vector3Parameters")
-                    Drop_OBJ(chil2.Value)
+                    Drop_OBJ(chil2.Value, False)
                 Next
             Case Else
                 Debugger.Break()
@@ -478,9 +478,11 @@ Public Class BG3Editor_Complex_Dyecolor
             Pictures(x).BackColor = SRGB0_1("1.00000 1.00000 1.00000")
             Texts(x).Text = SRGB0_1(Pictures(x).BackColor.R, Pictures(x).BackColor.G, Pictures(x).BackColor.B)
             Colors(x) = Pictures(x).BackColor
+            Forceds(x) = 0
         Next
     End Sub
-    Public Sub Drop_OBJ(Subnodos As List(Of LSLib.LS.Node))
+
+    Public Sub Drop_OBJ(Subnodos As List(Of LSLib.LS.Node), ForcedAvoid As Boolean)
         For Each nod In Subnodos
             Dim value As LSLib.LS.NodeAttribute = Nothing
             If nod.Attributes.TryGetValue("Parameter", value) = False Then
@@ -492,23 +494,27 @@ Public Class BG3Editor_Complex_Dyecolor
                 Dim ind As Integer = FuncionesHelpers.ColorMaterialsNames.IndexOf(par)
                 Dim col As String
                 If ind <> -1 And nod.Attributes.ContainsKey("Value") Then
-                    Select Case nod.Attributes("Value").Type
-                        Case LSLib.LS.AttributeType.Vec3
-                            col = nod.Attributes("Value").Value(0).ToString + " " + nod.Attributes("Value").Value(1).ToString + " " + nod.Attributes("Value").Value(2).ToString
-                        Case LSLib.LS.AttributeType.FixedString
-                            col = nod.Attributes("Value").Value
-                        Case Else
-                            col = "1.00000 1.00000 1.00000"
-                    End Select
-                    Pictures(ind).BackColor = SRGB0_1(col)
-                    Texts(ind).Text = SRGB0_1(Pictures(ind).BackColor.R, Pictures(ind).BackColor.G, Pictures(ind).BackColor.B)
-                    Colors(ind) = Pictures(ind).BackColor
+                    If ForcedAvoid = False OrElse Forceds(ind) = 0 Then
+                        Select Case nod.Attributes("Value").Type
+                            Case LSLib.LS.AttributeType.Vec3
+                                col = nod.Attributes("Value").Value(0).ToString + " " + nod.Attributes("Value").Value(1).ToString + " " + nod.Attributes("Value").Value(2).ToString
+                            Case LSLib.LS.AttributeType.FixedString
+                                col = nod.Attributes("Value").Value
+                            Case Else
+                                col = "1.00000 1.00000 1.00000"
+                        End Select
+                        If ForcedAvoid = False Then Forceds(ind) = 1
+                        Pictures(ind).BackColor = SRGB0_1(col)
+                        Texts(ind).Text = SRGB0_1(Pictures(ind).BackColor.R, Pictures(ind).BackColor.G, Pictures(ind).BackColor.B)
+                        Colors(ind) = Pictures(ind).BackColor
+                    End If
                 End If
-            End If
+                End If
         Next
     End Sub
-
+    Private Forceds() As Integer = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     Private Sub Drop_OBJ_Armor(Obj As BG3_Obj_Template_Class)
+        Forceds = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         Dim esta_tiene As Boolean = False
         Dim value0 As List(Of LSLib.LS.Node) = Nothing
         If Obj.NodeLSLIB.ChildCount > 0 AndAlso Obj.NodeLSLIB.Children.TryGetValue("Equipment", value0) Then
@@ -611,8 +617,8 @@ Public Class BG3Editor_Complex_Dyecolor
                                     Next
                                 End If
                                 Dim value5 As List(Of LSLib.LS.Node) = Nothing
-                                If nod3.ChildCount > 0 AndAlso nod3.Children.TryGetValue("Vector3Parameters", value5) And forced = False Then
-                                    Drop_OBJ(value5)
+                                If nod3.ChildCount > 0 AndAlso nod3.Children.TryGetValue("Vector3Parameters", value5) Then
+                                    Drop_OBJ(value5, forced)
                                     esta_tiene = True
                                 End If
                             Next

@@ -23,7 +23,7 @@ Public Class BG3Editor_Complex_Advanced_Stats
     Private ReadOnly Property ParentHandledList As List(Of String)
         Get
             Try
-                Return CType(ParentForm, Generic_Editor).HandledStats
+                Return CType(ParentForm, Generic_Item_Editor).HandledStats
             Catch ex As Exception
                 Debugger.Break()
                 Return New List(Of String)

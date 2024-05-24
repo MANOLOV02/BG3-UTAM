@@ -229,9 +229,11 @@ Public Class Main
             CancellButton.Visible = True
             ModdsToolStripMenuItem.Enabled = False
             LaunchGameToolStripMenuItem.Enabled = False
+            ProcessSinglePakToolStripMenuItem.Enabled = False
         Else
             BackgroundWorkToolStripMenuItem.Enabled = GameEngine.CheckFolders
             LoadCacheToolStripMenuItem1.Enabled = CanLoadCache
+            ProcessSinglePakToolStripMenuItem.Enabled = GameEngine.Processed
             ProcesserToolStripMenu.Enabled = True
             ModdsToolStripMenuItem.Enabled = True
             LaunchGameToolStripMenuItem.Enabled = GameEngine.Check_folders_GameExe
@@ -453,16 +455,20 @@ Public Class Main
     Public Event Explorer_Form_node_Selected(sender As Object, e As TreeViewEventArgs)
     Public Event Explorer_Form_node_Double_Clicked(nod As TreeNode)
 
-    Private Function GenerateChildForm(T As Type, Title As String, Optional L1 As Integer = 0, Optional l2 As Integer = 0) As Object
+    Private Function GenerateChildForm(T As Type, Title As String, Optional L1 As Integer = -1) As Object
         Select Case T
             Case GetType(Explorer_Form_Templates)
                 Dim form = New Explorer_Form_Templates(Me) With {.Text = Title + " (# " + (ObjectExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 ObjectExplorerForms.Add(form)
-                If L1 <> 0 OrElse l2 <> 0 Then
-                    form.ObjectsTree.ComboBoxItems.SelectedIndex = L1
+                If L1 <> -1 Then
+                    Dim idx As Integer = 0
+                    For x = 0 To form.ObjectsTree.ComboBoxItems.Items.Count - 1
+                        If form.ObjectsTree.ComboBoxItems.Items.Item(x).value = L1 Then
+                            idx = x : Exit For
+                        End If
+                    Next
+                    form.ObjectsTree.ComboBoxItems.SelectedIndex = idx
                     form.ObjectsTree.ComboBoxItems.Enabled = False
-                    form.ObjectsTree.ComboBoxParent.SelectedIndex = l2
-                    If l2 <> 0 Then form.ObjectsTree.ComboBoxParent.Enabled = False
                 End If
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
                 AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
@@ -486,34 +492,68 @@ Public Class Main
             Case GetType(Explorer_Form_Stats)
                 Dim form = New Explorer_Form_Stats(Me) With {.Text = Title + " (# " + (StatsExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 StatsExplorerForms.Add(form)
+                If L1 <> -1 Then
+                    Dim idx As Integer = 0
+                    For x = 0 To form.ObjectsTree.ComboBoxItems.Items.Count - 1
+                        If form.ObjectsTree.ComboBoxItems.Items.Item(x).value = L1 Then
+                            idx = x : Exit For
+                        End If
+                    Next
+                    form.ObjectsTree.ComboBoxItems.SelectedIndex = idx
+                    form.ObjectsTree.ComboBoxItems.Enabled = False
+                End If
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
                 AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
                 AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.Name_and_DisplayName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedStatList
+                If form.ObjectsTree.ComboBoxItems.Enabled = False Then form.ObjectsTree.Rellena_Comboparent()
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
             Case GetType(Explorer_Form_Flags_and_Tags)
                 Dim form = New Explorer_Form_Flags_and_Tags(Me) With {.Text = Title + " (# " + (FlagsAndTagsExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 FlagsAndTagsExplorerForms.Add(form)
+                If L1 <> -1 Then
+                    Dim idx As Integer = 0
+                    For x = 0 To form.ObjectsTree.ComboBoxItems.Items.Count - 1
+                        If form.ObjectsTree.ComboBoxItems.Items.Item(x).value = L1 Then
+                            idx = x : Exit For
+                        End If
+                    Next
+                    form.ObjectsTree.ComboBoxItems.SelectedIndex = idx
+                    form.ObjectsTree.ComboBoxItems.Enabled = False
+                End If
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
                 AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
                 AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.Name_and_DisplayName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedFlagsAndTags
+                If form.ObjectsTree.ComboBoxItems.Enabled = False Then form.ObjectsTree.Rellena_Comboparent()
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
             Case GetType(Explorer_Form_VisualTemplates)
                 Dim form = New Explorer_Form_VisualTemplates(Me) With {.Text = Title + " (# " + (VisualExplorerForms.Count + 1).ToString.PadLeft(4, "0") + ")"}
                 VisualExplorerForms.Add(form)
+                If L1 <> -1 Then
+                    Dim idx As Integer = 0
+                    For x = 0 To form.ObjectsTree.ComboBoxItems.Items.Count - 1
+                        If form.ObjectsTree.ComboBoxItems.Items.Item(x).value = L1 Then
+                            idx = x : Exit For
+                        End If
+                    Next
+                    form.ObjectsTree.ComboBoxItems.SelectedIndex = idx
+                    form.ObjectsTree.ComboBoxItems.Enabled = False
+                End If
+
                 AddHandler form.FormClosed, AddressOf ClosedChildForm
                 AddHandler form.TreeNodeSelected, AddressOf Explorer_node_Selected
                 AddHandler form.TreeNodeDoubleClicked, AddressOf Explorer_node_Double_Clicked
                 form.ObjectsTree.SelectedDisplayformat = BG3_Enum_DisplayFormat.OnlyName
                 form.Show()
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedVisualBanksList
+                If form.ObjectsTree.ComboBoxItems.Enabled = False Then form.ObjectsTree.Rellena_Comboparent()
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
             Case GetType(Explorer_Form_TreasureTables)
@@ -557,11 +597,11 @@ Public Class Main
     End Sub
 
     Private Sub ItemTemplatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ItemTemplatesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Templates), "Items templates explorer", 3)
+        GenerateChildForm(GetType(Explorer_Form_Templates), "Items templates explorer", BG3_Enum_Templates_Type.item)
     End Sub
 
     Private Sub CharacterTemplatesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterTemplatesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Templates), "Characters templates explorer", 1)
+        GenerateChildForm(GetType(Explorer_Form_Templates), "Characters templates explorer", BG3_Enum_Templates_Type.character)
     End Sub
 
     Private Sub StatsExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatsExplorerToolStripMenuItem.Click
@@ -569,10 +609,10 @@ Public Class Main
     End Sub
 
     Private Sub FlagsExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FlagsExplorerToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Flags & tags explorer")
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Flags, tags and lists explorer")
     End Sub
-    Private Sub VisualBankExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualBankExplorerToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Visual bank explorer")
+    Private Sub VisualBankExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Visuals banks explorer")
     End Sub
     Private Sub TrasureTablesExplorerToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TrasureTablesExplorerToolStripMenuItem.Click
         GenerateChildForm(GetType(Explorer_Form_TreasureTables), "Treasure tables explorer")
@@ -705,12 +745,100 @@ Public Class Main
     End Sub
 
     Private Sub ProcessSinglePakToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProcessSinglePakToolStripMenuItem.Click
-        Dim xx As New System.Windows.Forms.OpenFileDialog
-        xx.ShowDialog()
-        GameEngine.ProcessedPackList.AddPackageContainer(xx.FileName, BG3_Enum_Package_Type.BaseMod)
-        Dim pack = GameEngine.ProcessedPackList.Last
-        Parallel.ForEach(pack.Package.Files, Sub(fil)
-                                                 Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil), False)
-                                             End Sub)
+        Try
+            Dim xx As New OpenFileDialog With {
+                .Filter = "pak files (*.pak)|*.pak"
+            }
+            If xx.ShowDialog() = DialogResult.OK Then
+                GameEngine.ProcessedPackList.AddPackageContainer(xx.FileName, BG3_Enum_Package_Type.BaseMod)
+                Dim pack = GameEngine.ProcessedPackList.Last
+                Parallel.ForEach(pack.Package.Files, Sub(fil)
+                                                         Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil), False)
+                                                     End Sub)
+            End If
+        Catch ex As Exception
+            MsgBox("Error processing the pak", MsgBoxStyle.Information + vbOKOnly, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub ObjectsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ObjectsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Objects stats explorer", BG3_Enum_StatType.Object)
+    End Sub
+
+    Private Sub ArmorsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ArmorsToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Armors stats explorer", BG3_Enum_StatType.Armor)
+    End Sub
+
+    Private Sub WeaponsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Weapons stats explorer", BG3_Enum_StatType.Weapon)
+    End Sub
+
+    Private Sub CharactersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharactersToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Characters stats explorer", BG3_Enum_StatType.Character)
+    End Sub
+
+    Private Sub SpellsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SpellsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Spell stats explorer", BG3_Enum_StatType.SpellData)
+    End Sub
+
+    Private Sub PasivesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasivesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Pasives stats explorer", BG3_Enum_StatType.PassiveData)
+    End Sub
+
+    Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Status stats explorer", BG3_Enum_StatType.StatusData)
+    End Sub
+
+    Private Sub TexturesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TexturesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Textures explorer", BG3_Enum_VisualBank_Type.TextureBank)
+    End Sub
+
+    Private Sub MaterialsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials bank explorer", BG3_Enum_VisualBank_Type.MaterialBank)
+    End Sub
+
+    Private Sub MaterialToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Material explorer", BG3_Enum_VisualBank_Type.Material)
+    End Sub
+
+    Private Sub MaterialPresetsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialPresetsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials presets explorer", BG3_Enum_VisualBank_Type.MaterialPresetBank)
+    End Sub
+
+    Private Sub CharacterVisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterVisualBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Characters visual bank explorer", BG3_Enum_VisualBank_Type.CharacterVisualBank)
+    End Sub
+
+    Private Sub VisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Visual bank explorer", BG3_Enum_VisualBank_Type.VisualBank)
+    End Sub
+
+    Private Sub VirtualTexturesBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VirtualTexturesBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Virtual textures explorer", BG3_Enum_VisualBank_Type.VirtualTextureBank)
+    End Sub
+
+    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FlagstoolstripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Flags explorer", BG3_Enum_FlagsandTagsType.Flags)
+    End Sub
+
+    Private Sub TagsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TagsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Tags explorer", BG3_Enum_FlagsandTagsType.Tags)
+    End Sub
+
+    Private Sub RacesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Races explorer", BG3_Enum_FlagsandTagsType.EquipmentRaces)
+    End Sub
+
+    Private Sub GoldValuesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GoldValuesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "gold values explorer", BG3_Enum_FlagsandTagsType.GoldValues)
+    End Sub
+
+    Private Sub EquipmentTypesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentTypesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment types explorer", BG3_Enum_FlagsandTagsType.EquipmentTypes)
+    End Sub
+
+    Private Sub EquipmentSlotsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentSlotsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment slots explorer", BG3_Enum_FlagsandTagsType.EquipmentSlots)
     End Sub
 End Class

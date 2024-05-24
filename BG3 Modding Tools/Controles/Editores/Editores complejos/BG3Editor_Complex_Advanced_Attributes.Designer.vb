@@ -29,6 +29,7 @@ Partial Class BG3Editor_Complex_Advanced_Attributes
         TableLayoutPanel1 = New TableLayoutPanel()
         BG3Editor_Template_Undefined1 = New BG3Editor_Template_Undefined()
         ButtonOk = New Button()
+        TreeView1 = New TreeView()
         TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -38,10 +39,10 @@ Partial Class BG3Editor_Complex_Advanced_Attributes
         TableLayoutPanel1.SetColumnSpan(ListView1, 2)
         ListView1.Dock = DockStyle.Fill
         ListView1.FullRowSelect = True
-        ListView1.Location = New Point(3, 3)
+        ListView1.Location = New Point(118, 3)
         ListView1.MultiSelect = False
         ListView1.Name = "ListView1"
-        ListView1.Size = New Size(418, 404)
+        ListView1.Size = New Size(303, 404)
         ListView1.TabIndex = 2
         ListView1.UseCompatibleStateImageBehavior = False
         ListView1.View = View.Details
@@ -63,12 +64,14 @@ Partial Class BG3Editor_Complex_Advanced_Attributes
         ' 
         ' TableLayoutPanel1
         ' 
-        TableLayoutPanel1.ColumnCount = 2
-        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.ColumnCount = 3
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 30F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 70F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 40F))
-        TableLayoutPanel1.Controls.Add(BG3Editor_Template_Undefined1, 0, 1)
-        TableLayoutPanel1.Controls.Add(ListView1, 0, 0)
-        TableLayoutPanel1.Controls.Add(ButtonOk, 1, 1)
+        TableLayoutPanel1.Controls.Add(BG3Editor_Template_Undefined1, 1, 1)
+        TableLayoutPanel1.Controls.Add(ListView1, 1, 0)
+        TableLayoutPanel1.Controls.Add(ButtonOk, 2, 1)
+        TableLayoutPanel1.Controls.Add(TreeView1, 0, 0)
         TableLayoutPanel1.Dock = DockStyle.Fill
         TableLayoutPanel1.Location = New Point(0, 0)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -84,25 +87,34 @@ Partial Class BG3Editor_Complex_Advanced_Attributes
         BG3Editor_Template_Undefined1.Dock = DockStyle.Fill
         BG3Editor_Template_Undefined1.Key = "Undefined"
         BG3Editor_Template_Undefined1.Label = "Select"
-        BG3Editor_Template_Undefined1.Location = New Point(3, 410)
+        BG3Editor_Template_Undefined1.Location = New Point(118, 410)
         BG3Editor_Template_Undefined1.Margin = New Padding(3, 0, 3, 0)
         BG3Editor_Template_Undefined1.MaximumSize = New Size(3000, 23)
         BG3Editor_Template_Undefined1.MinimumSize = New Size(100, 23)
         BG3Editor_Template_Undefined1.Name = "BG3Editor_Template_Undefined1"
-        BG3Editor_Template_Undefined1.Size = New Size(378, 23)
+        BG3Editor_Template_Undefined1.Size = New Size(262, 23)
         BG3Editor_Template_Undefined1.SplitterDistance = 160
         BG3Editor_Template_Undefined1.TabIndex = 4
         ' 
         ' ButtonOk
         ' 
         ButtonOk.Dock = DockStyle.Fill
-        ButtonOk.Location = New Point(384, 410)
+        ButtonOk.Location = New Point(383, 410)
         ButtonOk.Margin = New Padding(0)
         ButtonOk.Name = "ButtonOk"
-        ButtonOk.Size = New Size(40, 24)
+        ButtonOk.Size = New Size(41, 24)
         ButtonOk.TabIndex = 5
         ButtonOk.Text = "Ok"
         ButtonOk.UseVisualStyleBackColor = True
+        ' 
+        ' TreeView1
+        ' 
+        TreeView1.Dock = DockStyle.Fill
+        TreeView1.Location = New Point(3, 3)
+        TreeView1.Name = "TreeView1"
+        TableLayoutPanel1.SetRowSpan(TreeView1, 2)
+        TreeView1.Size = New Size(109, 428)
+        TreeView1.TabIndex = 6
         ' 
         ' BG3Editor_Complex_Advanced_Attributes
         ' 
@@ -121,5 +133,6 @@ Partial Class BG3Editor_Complex_Advanced_Attributes
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents BG3Editor_Template_Undefined1 As BG3Editor_Template_Undefined
     Friend WithEvents ButtonOk As Button
+    Friend WithEvents TreeView1 As TreeView
 
 End Class

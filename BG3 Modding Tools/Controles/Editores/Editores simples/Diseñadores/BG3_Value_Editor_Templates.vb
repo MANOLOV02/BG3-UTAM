@@ -191,6 +191,7 @@ Public MustInherit Class Editor_Template_GenericTranslate
     End Function
     Public Function Get_Utam_Handle(Que As BG3_Obj_Template_Class) As String
         Dim value As LSLib.LS.NodeAttribute = Nothing
+        If IsNothing(Que) Then Return ""
         If Que.NodeLSLIB.Attributes.TryGetValue(UTAM_Handle, value) = False OrElse IsNothing(value) Then _LastHandle = "" Else _LastHandle = value.Value.ToString
         Return _LastHandle
     End Function

@@ -18,7 +18,8 @@ Public Class Armors_Editor
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         Initialize(MdiParent, Source)
         Me.DoubleBuffered = True
-
+        TabControl1.TabPages.Remove(TabPageEquipment)
+        TabControl1.TabPages.Insert(1, TabPageEquipment)
     End Sub
     Protected Overrides Sub Initialize_Specifics()
         ' Nothing
@@ -32,6 +33,9 @@ Public Class Armors_Editor
         HandledStats.Add("ArmorClass")
         HandledStats.Add("Proficiency Group")
 
+        HandledNodes.Add("GameObjects\Equipment\ParentRace")
+        HandledNodes.Add("GameObjects\Equipment\Visuals")
+        HandledNodes.Add("GameObjects\Equipment\VisualSet")
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
         GroupBoxArmors1.Enabled = Edicion

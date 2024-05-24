@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Consumables_Editor
-    Inherits Generic_Editor
+    Inherits Generic_Item_Editor
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -49,7 +49,7 @@ Partial Class Consumables_Editor
         ' 
         BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it. It must descend from consumables bases."
         BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Consumable
-        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Consumable"}
+        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Consumable", "BASE_ALCH_Ingredient", "_Poison", "OBJ_Valuable_AloeOil"}
         BG3Selector_Template1.Template_MustDescend_From = New String() {"cdd2941e-aef8-4cc6-a58b-ccb1d73060e8"}
         ' 
         ' GroupBox9
@@ -110,7 +110,7 @@ Partial Class Consumables_Editor
         ' BG3Editor_Stat_Using1
         ' 
         BG3Editor_Stat_Using1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Consumable"}
+        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Consumable", "BASE_ALCH_Ingredient", "_Poison", "OBJ_Valuable_AloeOil"}
         ' 
         ' GroupBox5
         ' 
