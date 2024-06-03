@@ -339,8 +339,8 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
 
     Private Function OpenGetNameForm(Propuesto As String) As String
         Dim Form As New GroupName With {.StartPosition = FormStartPosition.Manual}
-        Dim referencex As Integer = CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.Location.X + CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.SplitterDistance - 7
-        Dim referencey As Integer = CType(Me.ParentForm, Generic_Item_Editor).SplitContainer1.Location.Y
+        Dim referencex As Integer = CType(Me.ParentForm, Object).LocationtoNameForm.X + CType(Me.ParentForm, Object).LocationtoNameFormDistance - 7
+        Dim referencey As Integer = CType(Me.ParentForm, Object).LocationtoNameForm.Y
         Form.Location = Me.ParentForm.PointToScreen(New Point(referencex, referencey))
         Form.TextBox1.Text = Propuesto
         Form.ShowDialog()
@@ -542,7 +542,12 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Private Sub CLone_Template_Capture(objeto As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype, Stat As BG3_Obj_Stats_Class) Handles BG3Cloner1.Clone_Template
         RaiseEvent Clone_Template(objeto, tipo, Stat)
     End Sub
-
+    Private Sub Clone_Tag_Capture(objeto As BG3_Obj_FlagsAndTags_Class, tipo As BG3Cloner.Clonetype) Handles BG3Cloner1.Clone_Tag
+        RaiseEvent Clone_tag(objeto, tipo)
+    End Sub
+    Private Sub Clone_Visual_Capture(objeto As BG3_Obj_VisualBank_Class, tipo As BG3Cloner.Clonetype) Handles BG3Cloner1.Clone_Visual
+        RaiseEvent Clone_Visual(objeto, tipo)
+    End Sub
     Private Shared Function Warning_accept(Count As Integer)
         Dim recs As String = Count.ToString
         If MsgBox("This will change " + recs + " records and can not be undone. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Return False
@@ -584,7 +589,8 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
         End If
     End Sub
 
-
+    Public Event Clone_Visual(objeto As BG3_Obj_VisualBank_Class, tipo As BG3Cloner.Clonetype)
+    Public Event Clone_tag(objeto As BG3_Obj_FlagsAndTags_Class, tipo As BG3Cloner.Clonetype)
     Public Event Clone_Stat(objeto As BG3_Obj_Stats_Class, tipo As BG3Cloner.Clonetype)
     Public Event Clone_Template(objeto As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype, Stat As BG3_Obj_Stats_Class)
     Public Event Add_New_Click(Current_Group As String)

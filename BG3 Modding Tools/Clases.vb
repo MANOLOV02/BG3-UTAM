@@ -492,14 +492,16 @@ Public Class Main_GameEngine_Settings_Class
     Sub New()
 
     End Sub
-
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    <DefaultValue(True)>
+    Public Property Showdetails As Boolean = True
 
 End Class
 
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 4.4
+    Public ReadOnly Property CacheVersion As Double = 5.0
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -844,6 +846,7 @@ Public Class BG3_Pak_SourceOfResource_Class
             filst.Close()
             Dim Reso As LocaResource = LocaUtils.Load(fil, LocaFormat)
             IO.File.Delete(fil)
+            ReleaseMem()
             Return Reso
         Catch ex As Exception
             Debugger.Break()
@@ -889,6 +892,7 @@ Public Class BG3_Pak_SourceOfResource_Class
             Me.CreateContentReader.Read(byt, 0, byt.Length)
             Dim str = System.Text.Encoding.UTF8.GetString(byt)
             str = str.Replace("<attribute id=" + Chr(34) + "Version" + Chr(34) + " type=" + Chr(34) + "int32" + Chr(34), "<attribute id=" + Chr(34) + "Version64" + Chr(34) + " type=" + Chr(34) + "int64" + Chr(34))
+            ReleaseMem()
             Return ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(str)), ResourceFormat, Funciones.LoadParams_LSLIB)
         Catch ex As Exception
             Debugger.Break()
@@ -920,31 +924,19 @@ Public Class BG3_Pak_Packages_List_Class
         End Try
     End Function
 
-    Public Shared Function Find_Asset(Prefix As String, Asset As String) As Stream
+    Public Shared Function Find_Asset(Prefix As String, Asset As String) As BG3_Obj_Assets_Class
         Dim Fillpath As String = IO.Path.Combine(Prefix, Asset).Replace("\", "/")
         Dim ass As BG3_Obj_Assets_Class = Nothing
         If GameEngine.ProcessedAssets.TryGetValue(Fillpath, ass) Then
-            For Each pak In GameEngine.ProcessedPackList.Where(Function(pf) pf.PackFileName = ass.SourceOfResorce.Pak_Or_Folder)
-                Dim filtro = pak.Package.Files.Where(Function(pf) pf.Name = Fillpath)
-                If filtro.Count > 1 Then Debugger.Break()
-                If filtro.Any Then Return pak.Package.Files.Where(Function(pf) pf.Name = Fillpath).First.CreateContentReader
-            Next
+            Return ass
         End If
         Return Nothing
-
-        '       Dim testpath As String
-        'For Each pak In GameEngine.ProcessedPackList.OrderByDescending(Function(pf) pf.SortIndex)
-        '    If Not IsNothing(pak.Package) Then
-        '        For Each fil In pak.Package.Files
-        '            testpath = fil.Name
-        '            If Fillpath.Replace("\", "/") = testpath Then
-        '                Return fil.CreateContentReader
-        '            End If
-        '        Next
-        '    End If
-        'Next
-        'Return Nothing
     End Function
+    Public Shared Function Find_Assets(Prefix As String, AssetStarting As String, Extension As String) As BG3_Obj_Assets_Class()
+        Dim Fillpath As String = IO.Path.Combine(Prefix, AssetStarting).Replace("\", "/")
+        Return GameEngine.ProcessedAssets.Elements.Where(Function(pf) pf.Key.EndsWith(Extension, StringComparison.Ordinal) AndAlso pf.Key.StartsWith(AssetStarting, StringComparison.OrdinalIgnoreCase)).Select(Function(pf) pf.Value).ToArray
+    End Function
+
 
     Sub New()
     End Sub
@@ -1237,7 +1229,7 @@ Public Class Utam_CurrentModClass
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property BuildZip As Boolean = True
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
-    Public Property BuildModFixer As Boolean = True
+    Public Property BuildModFixer As Boolean = False
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property AddToGame As Boolean = True
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
@@ -1292,9 +1284,25 @@ Public Class Utam_CurrentModClass
             Return IO.Path.Combine(PublicFolderandModePath, "RootTemplates")
         End Get
     End Property
+    Public ReadOnly Property AssetsPath As String
+        Get
+            Return IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Generated\Public\" + ModLsx.Folder + "\Assets"))
+        End Get
+    End Property
+    Public ReadOnly Property MaterialsPath As String
+        Get
+            Return IO.Path.Combine(PublicFolderandModePath, "Assets\Materials")
+        End Get
+    End Property
+
     Public ReadOnly Property RootTemplateFilePath As String
         Get
             Return IO.Path.Combine(RootTemplatePath, ModLsx.Folder + ".lsf")
+        End Get
+    End Property
+    Public ReadOnly Property TagsPath As String
+        Get
+            Return IO.Path.Combine(PublicFolderandModePath, "Tags")
         End Get
     End Property
     Public ReadOnly Property VisualBanksPath As String
@@ -1370,6 +1378,12 @@ Public Class Utam_CurrentModClass
         fol = StatsGeneratedDataPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
         fol = VisualBanksPath
+        If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+        fol = TagsPath
+        If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+        fol = AssetsPath
+        If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+        fol = MaterialsPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
     End Sub
 
@@ -2717,7 +2731,7 @@ Public Enum BG3_Enum_VisualBank_Type
     MaterialBank
     TextureBank
     MaterialPresetBank
-    Material
+    MaterialShader
     VirtualTextureBank
 End Enum
 Public Enum BG3_Enum_Icon_Type
@@ -2731,6 +2745,10 @@ Public Enum BG3_Enum_UTAM_Type
     Armor
     Weapon
     Consumable
+    Tag
+    Texture
+    MaterialBank
+    VisualBank
 End Enum
 
 <Serializable>
@@ -2764,7 +2782,7 @@ Public Class BG3_Obj_VisualBank_Class
         End Get
     End Property
 
-    Public ReadOnly Property Asset As Stream
+    Public ReadOnly Property VisualAsset As BG3_Obj_Assets_Class
         Get
             If AssetName = "" Then Return Nothing
             Return BG3_Pak_Packages_List_Class.Find_Asset("", AssetName)
@@ -2779,6 +2797,8 @@ Public Class BG3_Obj_VisualBank_Class
                     Return ReadAttribute_Or_Empty("SourceFile")
                 Case BG3_Enum_VisualBank_Type.VisualBank
                     Return ReadAttribute_Or_Empty("SourceFile")
+                Case BG3_Enum_VisualBank_Type.MaterialShader
+                    Return MapKey
                 Case BG3_Enum_VisualBank_Type.VirtualTextureBank
                     Dim gtex As String = ReadAttribute_Or_Empty("GTexFileName")
                     If gtex = "" Then Return gtex
@@ -2790,45 +2810,45 @@ Public Class BG3_Obj_VisualBank_Class
     End Property
 
     Public Overloads ReadOnly Property Parent As BG3_Obj_VisualBank_Class
-            Get
-                If ParentKey_Or_Empty = "" Then Return Nothing
-                Dim value As BG3_Obj_VisualBank_Class = Nothing
-                GameEngine.ProcessedVisualBanksList.TryGetValue(ParentKey_Or_Empty, value)
-                Return value
-            End Get
-        End Property
-        Public Overloads Property Type As BG3_Enum_VisualBank_Type = BG3_Enum_VisualBank_Type.CharacterVisualBank
-        Sub New(ByRef Nod As LSLib.LS.Node, ByRef Source As BG3_Pak_SourceOfResource_Class, type As BG3_Enum_VisualBank_Type)
-            Me.Type = type
-            If Me.Type = BG3_Enum_VisualBank_Type.Material Then
-                Me.Cached_Attributes.TryAdd("ID", Source.Filename_Relative)
-                Me.Cached_Attributes.TryAdd("Name", IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative))
-            End If
-            Create(Nod, Source)
-        End Sub
-        Public Overrides Sub Init_Necessary_Attributes()
-            ' To complete
-            ReadAttribute_Or_Nothing("ID")
-            ReadAttribute_Or_Nothing("Name")
-        End Sub
+        Get
+            If ParentKey_Or_Empty = "" Then Return Nothing
+            Dim value As BG3_Obj_VisualBank_Class = Nothing
+            GameEngine.ProcessedVisualBanksList.TryGetValue(ParentKey_Or_Empty, value)
+            Return value
+        End Get
+    End Property
+    Public Overloads Property Type As BG3_Enum_VisualBank_Type = BG3_Enum_VisualBank_Type.CharacterVisualBank
+    Sub New(ByRef Nod As LSLib.LS.Node, ByRef Source As BG3_Pak_SourceOfResource_Class, type As BG3_Enum_VisualBank_Type)
+        Me.Type = type
+        If Me.Type = BG3_Enum_VisualBank_Type.MaterialShader Then
+            Me.Cached_Attributes.TryAdd("ID", Source.Filename_Relative.Replace("\", "/").Replace(".lsf.lsx", ".lsf", StringComparison.OrdinalIgnoreCase))
+            Me.Cached_Attributes.TryAdd("Name", IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative.Replace(".lsf.lsx", ".lsf", StringComparison.OrdinalIgnoreCase)))
+        End If
+        Create(Nod, Source)
+    End Sub
+    Public Overrides Sub Init_Necessary_Attributes()
+        ' To complete
+        ReadAttribute_Or_Nothing("ID")
+        ReadAttribute_Or_Nothing("Name")
+    End Sub
 
-        Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
-            If Level1 = -1 Then Return True
-            Return Level1 = Type
-        End Function
-        Public Overrides Function Filter_Check_Level2(Level2 As String) As Boolean
-            Return True
-        End Function
+    Public Overrides Function Filter_Check_Level1(Level1 As Integer) As Boolean
+        If Level1 = -1 Then Return True
+        Return Level1 = Type
+    End Function
+    Public Overrides Function Filter_Check_Level2(Level2 As String) As Boolean
+        Return True
+    End Function
 
-        Sub New()
-        End Sub
-    End Class
+    Sub New()
+    End Sub
+End Class
 
 #End Region
 
 #Region "Icons"
 
-    <Serializable>
+<Serializable>
 Public Class BG3_Obj_IconAtlass_Class
     Inherits BG3_Obj_Generic_Class
     Public Overrides ReadOnly Property MapKey_Attribute As String = "Not Implemented"
@@ -2865,7 +2885,8 @@ Public Class BG3_Obj_IconAtlass_Class
         If IsNothing(_CacheAtlas) Then
             Dim fil = BG3_Pak_Packages_List_Class.Find_Asset(IO.Path.Combine("Public", Me.SourceOfResorce.ModFolder), Internal_Path)
             If IsNothing(fil) Then Return Nothing
-            _CacheAtlas = PfmiToBitmap(fil).Clone
+            _CacheAtlas = PfmiToBitmap(fil.SourceOfResorce.CreateContentReader).Clone
+            fil.SourceOfResorce.ReleaseMem()
         End If
         Return _CacheAtlas
     End Function
@@ -3160,7 +3181,7 @@ Public Class BG3_Obj_Assets_Class
     End Sub
 
     Sub New(Source As BG3_Pak_SourceOfResource_Class)
-        Me.Cached_Attributes.TryAdd("MapKey", Source.Filename_Relative)
+        Me.Cached_Attributes.TryAdd("MapKey", Source.Filename_Relative.Replace("\", "/"))
         Create(Source)
     End Sub
     Sub New()
@@ -3172,7 +3193,8 @@ Public Class BG3_Obj_Assets_Class
         If IsNothing(_CacheDDS) Then
             Dim fil = BG3_Pak_Packages_List_Class.Find_Asset("", Path)
             If IsNothing(fil) Then Return Nothing
-            _CacheDDS = PfmiToBitmap(fil).Clone
+            _CacheDDS = PfmiToBitmap(fil.SourceOfResorce.CreateContentReader).Clone
+            fil.SourceOfResorce.ReleaseMem()
         End If
         Return _CacheDDS
     End Function
@@ -3288,7 +3310,19 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
             Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Subtable_Class)
             Case obj.GetType Is GetType(BG3_Obj_TreasureTable_TableItem_Class)
             Case obj.GetType Is GetType(BG3_Obj_FlagsAndTags_Class)
+                For Each at In obj.NodeLSLIB.Attributes
+                    Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
+                    SyncLock Attributes_Stats_List
+                        Attributes_Stats_List.TryAdd(at.Key + ";" + attId.ToString + ";" + CInt(CType(CType(obj, Object), BG3_Obj_FlagsAndTags_Class).Type).ToString, at.Key)
+                    End SyncLock
+                Next
             Case obj.GetType Is GetType(BG3_Obj_VisualBank_Class)
+                For Each at In obj.NodeLSLIB.Attributes
+                    Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
+                    SyncLock Attributes_Stats_List
+                        Attributes_Stats_List.TryAdd(at.Key + ";" + attId.ToString + ";" + CInt(CType(CType(obj, Object), BG3_Obj_VisualBank_Class).Type).ToString, at.Key)
+                    End SyncLock
+                Next
 
         End Select
 
@@ -3389,19 +3423,19 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                     If obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative.Replace(".lsx", ".lsf") Then Return True
                 End If
                 If obj.SourceOfResorce.ModFolder = "Shared" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
-                    If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "Shared" Then Return False
-                    If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
-                    If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
-                    If obj.SourceOfResorce.ModFolder = "Honour" And ov.SourceOfResorce.ModFolder <> "Honour" Then Return False
-                    If obj.SourceOfResorce.ModFolder <> "Honour" And ov.SourceOfResorce.ModFolder = "Honour" Then Return True
-                    If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
-                    If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
-                    If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
+                If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "Shared" Then Return False
+                If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
+                If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
+                If obj.SourceOfResorce.ModFolder = "Honour" And ov.SourceOfResorce.ModFolder <> "Honour" Then Return False
+                If obj.SourceOfResorce.ModFolder <> "Honour" And ov.SourceOfResorce.ModFolder = "Honour" Then Return True
+                If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
+                If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
+                If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
                 If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
                 If obj.SourceOfResorce.Pak_Or_Folder = ov.SourceOfResorce.Pak_Or_Folder AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder AndAlso obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.PackageType = ov.SourceOfResorce.PackageType Then Return True
                 Debugger.Break()
-                Else
-                    Return True
+            Else
+                Return True
             End If
         End If
         Return True
@@ -3651,6 +3685,10 @@ Public MustInherit Class BG3_Obj_Generic_Class
                 Return CType(Me, BG3_Obj_Stats_Class).Parent
             Case GetType(BG3_Obj_TreasureTable_Class)
                 Return CType(Me, BG3_Obj_TreasureTable_Class).Parent
+            Case GetType(BG3_Obj_FlagsAndTags_Class)
+                Return CType(Me, BG3_Obj_FlagsAndTags_Class).Parent
+            Case GetType(BG3_Obj_VisualBank_Class)
+                Return CType(Me, BG3_Obj_VisualBank_Class).Parent
             Case Else
                 Return Parent
         End Select
@@ -3658,17 +3696,15 @@ Public MustInherit Class BG3_Obj_Generic_Class
 
     Public Overridable Overloads ReadOnly Property Parent As BG3_Obj_Generic_Class
         Get
-            If ParentKey_Or_Empty = "" Then Return Nothing
             ' Must be overloaded
-            Debugger.Break()
-            Return Nothing
+            Return Parent_by_Type()
         End Get
     End Property
 
     Public Overridable Function ReadAttribute_Or_Inhterithed(Attribuute As String) As String
         Dim value As String = ReadAttribute_Or_Nothing(Attribuute)
         If IsNothing(value) AndAlso Not IsNothing(Me.Parent) Then Return Me.Parent.ReadAttribute_Or_Inhterithed(Attribuute)
-        Return Nothing
+        Return value
     End Function
     Public Overridable Function ReadAttribute_Or_Inhterithed_Or_Empty(Attribuute As String) As String
         Dim str = ReadAttribute_Or_Inhterithed(Attribuute)

@@ -5,8 +5,10 @@ Imports System.Resources
 Imports System.Text
 Imports System.Text.Json.Nodes
 Imports System.Text.Json.Serialization.Metadata
+Imports System.Text.RegularExpressions
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Button
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ListView
 Imports LSLib.Granny
 Imports LSLib.Granny.Model
 Imports LSLib.LS
@@ -109,6 +111,10 @@ Public Class UtamMod
         Repinta()
     End Sub
     Private Sub TextBoxFolder_Leave(sender As Object, e As EventArgs) Handles TextBoxFolder.Leave
+        Dim safe_str As String = TextBoxFolder.Text
+        safe_str = Regex.Replace(safe_str, "([0-9])+", "x")
+        safe_str = Regex.Replace(safe_str, " ", "_")
+        TextBoxFolder.Text = safe_str
         CurrentMod.ModLsx.Folder = TextBoxFolder.Text
         Repinta()
     End Sub
@@ -225,7 +231,7 @@ Public Class UtamMod
             Dim current As BG3_Obj_Stats_Class = stat
             ArchivoIC.WriteLine("new ItemCombination " + Chr(34) + current.Name + Chr(34) + "")
             Dim x As Integer = 1
-                While current.Data.ContainsKey("Object " + x.ToString) = True
+            While current.Data.ContainsKey("Object " + x.ToString) = True
                 If current.Data.ContainsKey("Type " + x.ToString) Then
                     ArchivoIC.WriteLine("data " + Chr(34) + "Type " + x.ToString + Chr(34) + " " + Chr(34) + current.Data("Type " + x.ToString) + Chr(34))
                 End If
@@ -299,8 +305,41 @@ Public Class UtamMod
             End If
         Next x
 
-        ' Genera VisualTemplates (Only Material, it goes to a separate file each one)
-        For Each temp In FuncionesHelpers.GameEngine.UtamVisuals.Where(Function(pf) pf.Type = BG3_Enum_VisualBank_Type.Material)
+        ' Genera Tags  it goes to a separate file each one
+        For Each fil In New DirectoryInfo(CurrentMod.TagsPath).GetFiles("*.ls?", SearchOption.TopDirectoryOnly)
+            fil.Delete()
+        Next
+        For Each temp In FuncionesHelpers.GameEngine.Utamflagsandtags.Where(Function(pf) pf.Type = BG3_Enum_FlagsandTagsType.Tags)
+            Dim RootV2 As New LSLib.LS.Resource
+            RootV2.Metadata.MajorVersion = Funciones.Default_LS_Version_Major
+            RootV2.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
+            RootV2.Metadata.Revision = Funciones.Default_LS_Version_Revision
+            RootV2.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
+            Dim Configv7 As New LSLib.LS.Region With {.Name = "Tags", .RegionName = "Tags"}
+            RootV2.Regions.Add("Tags", Configv7)
+            Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
+            Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
+            nod.Name = "Tags"
+            nod.Parent = Configv7
+            For Each att In nod.Attributes
+                Configv7.Attributes.TryAdd(att.Key, att.Value)
+            Next
+            For Each child In nod.Children
+                For Each nod In child.Value
+                    nod.Parent = Configv7
+                Next
+                Configv7.Children.Add(child.Key, child.Value)
+            Next
+            If CheckBoxmultitoolcomp.Checked Then
+                LSLib.LS.ResourceUtils.SaveResource(RootV2, IO.Path.Combine(CurrentMod.TagsPath, temp.Mapkey_WithoutOverride + ".lsf.lsx"), Funciones.ConversionParams_LSLIB)
+            Else
+                If IO.File.Exists(IO.Path.Combine(CurrentMod.TagsPath, temp.Mapkey_WithoutOverride + ".lsf.lsx")) Then IO.File.Delete(IO.Path.Combine(CurrentMod.TagsPath, temp.Mapkey_WithoutOverride + ".lsf.lsx"))
+            End If
+            LSLib.LS.ResourceUtils.SaveResource(RootV2, IO.Path.Combine(CurrentMod.TagsPath, temp.Mapkey_WithoutOverride + ".lsf"), Funciones.ConversionParams_LSLIB)
+        Next
+
+        'Genera VisualTemplates(Only Material, it goes To a separate file Each one)
+        For Each temp In FuncionesHelpers.GameEngine.UtamVisuals.Where(Function(pf) pf.Type = BG3_Enum_VisualBank_Type.MaterialShader)
             Dim RootV2 As New LSLib.LS.Resource
             RootV2.Metadata.MajorVersion = Funciones.Default_LS_Version_Major
             RootV2.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
@@ -308,21 +347,30 @@ Public Class UtamMod
             RootV2.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
             Dim Configv7 As New LSLib.LS.Region With {.Name = "Material", .RegionName = "Material"}
             RootV2.Regions.Add("Material", Configv7)
-
+            Dim mdf As New LSFMetadataFormat With {.value__ = LSFMetadataFormat.KeysAndAdjacency}
+            RootV2.MetadataFormat = mdf
             Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
             Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
             Select Case temp.Type
-                Case BG3_Enum_VisualBank_Type.Material
-                    nod.Name = "Resource"
+                Case BG3_Enum_VisualBank_Type.MaterialShader
+                    nod.Name = "Material"
                     nod.Parent = Configv7
-                    Configv7.AppendChild(nod)
+                    For Each att In nod.Attributes
+                        Configv7.Attributes.TryAdd(att.Key, att.Value)
+                    Next
+                    For Each child In nod.Children
+                        For Each nod In child.Value
+                            nod.Parent = Configv7
+                        Next
+                        Configv7.Children.Add(child.Key, child.Value)
+                    Next
                 Case Else
                     Debugger.Break()
             End Select
             If CheckBoxmultitoolcomp.Checked Then
                 LSLib.LS.ResourceUtils.SaveResource(RootV2, CurrentMod.MaterialFilePath(temp) + ".lsx", Funciones.ConversionParams_LSLIB)
             Else
-                If IO.File.Exists(CurrentMod.VisualBanksFilePath + ".lsx") Then IO.File.Delete(CurrentMod.VisualBanksFilePath + ".lsx")
+                If IO.File.Exists(CurrentMod.MaterialFilePath(temp) + ".lsx") Then IO.File.Delete(CurrentMod.MaterialFilePath(temp) + ".lsx")
             End If
             LSLib.LS.ResourceUtils.SaveResource(RootV2, CurrentMod.MaterialFilePath(temp), Funciones.ConversionParams_LSLIB)
         Next
@@ -334,7 +382,6 @@ Public Class UtamMod
         RootV.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
         RootV.Metadata.Revision = Funciones.Default_LS_Version_Revision
         RootV.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
-
         Dim Configv1 As New LSLib.LS.Region With {.Name = "CharacterVisualBank", .RegionName = "CharacterVisualBank"}
         RootV.Regions.Add("CharacterVisualBank", Configv1)
         Dim Configv2 As New LSLib.LS.Region With {.Name = "VisualBank", .RegionName = "VisualBank"}
@@ -348,7 +395,7 @@ Public Class UtamMod
         Dim Configv6 As New LSLib.LS.Region With {.Name = "VirtualTextureBank", .RegionName = "VirtualTextureBank"}
         RootV.Regions.Add("VirtualTextureBank", Configv6)
 
-        For Each temp In FuncionesHelpers.GameEngine.UtamVisuals.Where(Function(pf) pf.Type <> BG3_Enum_VisualBank_Type.Material)
+        For Each temp In FuncionesHelpers.GameEngine.UtamVisuals.Where(Function(pf) pf.Type <> BG3_Enum_VisualBank_Type.MaterialShader)
             Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
             Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
             Select Case temp.Type
@@ -387,7 +434,6 @@ Public Class UtamMod
             If IO.File.Exists(CurrentMod.VisualBanksFilePath + ".lsx") Then IO.File.Delete(CurrentMod.VisualBanksFilePath + ".lsx")
         End If
         LSLib.LS.ResourceUtils.SaveResource(RootV, CurrentMod.VisualBanksFilePath, Funciones.ConversionParams_LSLIB)
-
 
         ' Genera RootTemplate
         Dim RootT As New LSLib.LS.Resource
@@ -441,10 +487,12 @@ Public Class UtamMod
         End If
 
         If CheckBoxAddtogame.Enabled = True AndAlso CheckBoxAddtogame.Checked Then
-#Disable Warning BC42025 ' Acceso del miembro compartido, el miembro de constante, el miembro de enumeración o el tipo anidado a través de una instancia
-            FuncionesHelpers.GameEngine.IncludeModInGame(CurrentMod.ModLsx)
-#Enable Warning BC42025 ' Acceso del miembro compartido, el miembro de constante, el miembro de enumeración o el tipo anidado a través de una instancia
-            IO.File.Copy(packfile, ModPackfile, True)
+            Main_GameEngine_Class.IncludeModInGame(CurrentMod.ModLsx)
+            Try
+                IO.File.Copy(packfile, ModPackfile, True)
+            Catch ex As Exception
+                MsgBox("Can not copy to game mod folder. Ensure the game is closed.", vbInformation + vbOKOnly, "Error")
+            End Try
         End If
 
         If CheckBoxBuildzip.Checked Then
@@ -491,6 +539,7 @@ Public Class UtamMod
             e.Cancel = True
         End If
     End Sub
+
 
     Public Event Changed_status()
 

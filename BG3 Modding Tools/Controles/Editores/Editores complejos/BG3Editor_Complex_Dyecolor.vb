@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Reflection
+Imports System.Reflection.Metadata
 Imports System.Windows
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports LSLib.Granny
@@ -330,11 +331,12 @@ Public Class BG3Editor_Complex_Dyecolor
             Case BG3_Enum_VisualBank_Type.MaterialPresetBank
                 For Each chil In cpObj.NodeLSLIB.Children.Where(Function(Pf) Pf.Key = "Presets")
                     For Each params In chil.Value
-                        For Each chil2 In params.Children.Where(Function(Pf) Pf.Key = "Vector3Parameters")
-                            Save_Nodes_Template(chil2.Value)
-                        Next
+                        Save_Nodes_Generic(params, Typesave.ArmorDye)
                     Next
                 Next
+            Case BG3_Enum_VisualBank_Type.MaterialBank
+                Save_Nodes_Generic(cpObj.NodeLSLIB, Typesave.MaterialBank)
+
             Case Else
                 Debugger.Break()
         End Select
@@ -342,8 +344,7 @@ Public Class BG3Editor_Complex_Dyecolor
     End Sub
     Public Sub Write(MaterialOverride As LSLib.LS.Node)
         If IsNothing(MaterialOverride) Then Exit Sub
-        Dim puestos(14) As Integer
-        'aaa ' SACAR EL TEMA DEL FORCECOLORPRESET
+
         Dim value3 As List(Of LSLib.LS.Node) = Nothing
         If MaterialOverride.ChildCount > 0 AndAlso MaterialOverride.Children.TryGetValue("MaterialPresets", value3) Then
             For Each nod4 In value3
@@ -372,7 +373,6 @@ Public Class BG3Editor_Complex_Dyecolor
                 Dim value4 As LSLib.LS.NodeAttribute = Nothing
                 Dim force As Boolean = False
                 Dim groupname As String = ""
-                Dim matcp As String = ""
                 If nod4.Attributes.TryGetValue("ForcePresetValues", value4) Then
                     force = value4.Value
                 End If
@@ -385,66 +385,140 @@ Public Class BG3Editor_Complex_Dyecolor
             Next
         End If
 
-        If MaterialOverride.Children.ContainsKey("Vector3Parameters") Then
-            For Each nod As LSLib.LS.Node In MaterialOverride.Children("Vector3Parameters")
+        Save_Nodes_Generic(MaterialOverride, Typesave.ArmorDye)
+
+    End Sub
+    Private Enum Typesave
+        ArmorDye
+        MaterialBank
+    End Enum
+    Private Sub Save_Nodes_Generic(Node As LSLib.LS.Node, typesave As Typesave)
+        Dim puestos(14) As Integer
+        Dim nam As String = "Parameter"
+        Dim iscolor As String = "Color"
+        Dim Groupname As String = "02 Colour"
+        If typesave = Typesave.MaterialBank Then
+            nam = "ParameterName"
+            iscolor = "IsColor"
+        End If
+
+        Dim value3 As List(Of LSLib.LS.Node) = Nothing
+        If Node.Children.TryGetValue("Vector3Parameters", value3) Then
+            For Each nod2 As LSLib.LS.Node In value3
                 Dim value As LSLib.LS.NodeAttribute = Nothing
-                If nod.Attributes.TryGetValue("Parameter", value) = False Then
-                    nod.Attributes.TryGetValue("ParameterName", value)
-                End If
+                nod2.Attributes.TryGetValue(nam, value)
                 If Not IsNothing(value) Then
                     Dim par As String = value.Value
                     Dim ind As Integer = FuncionesHelpers.ColorMaterialsNames.IndexOf(par)
                     If ind <> -1 Then
                         puestos(ind) = 1
-                        Dim value2 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
-                        If nod.Attributes.TryAdd("Color", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Color").Value = True
-                        If nod.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Enabled").Value = True
-                        If nod.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Custom").Value = True
-                        If nod.Attributes.TryAdd("Parameter", New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod.Attributes("Parameter").Value = FuncionesHelpers.ColorMaterialsNames(ind)
-                        value2.FromString(Texts(ind).Text, Funciones.Guid_to_string)
-                        If nod.Attributes.TryAdd("Value", value2) = False Then nod.Attributes("Value").Value = value2.Value
+                        Dim value4 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
+                        If nod2.Attributes.TryAdd(iscolor, New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes(iscolor).Value = True
+                        If nod2.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Enabled").Value = True
+                        If nod2.Attributes.TryAdd("GroupName", New NodeAttribute(AttributeType.FixedString) With {.Value = Groupname}) = False Then nod2.Attributes("GroupName").Value = Groupname
+                        If nod2.Attributes.TryAdd(nam, New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod2.Attributes(nam).Value = FuncionesHelpers.ColorMaterialsNames(ind)
+                        value4.FromString(Texts(ind).Text, Funciones.Guid_to_string)
+                        If nod2.Attributes.TryAdd("Value", value4) = False Then nod2.Attributes("Value").Value = value4.Value
+                        If typesave = Typesave.ArmorDye Then
+                            If nod2.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Custom").Value = True
+                        End If
+                        If typesave = Typesave.MaterialBank Then
+                            If nod2.Attributes.TryAdd("BaseValue", value4) = False Then nod2.Attributes("BaseValue").Value = value4.Value
+                            If nod2.Attributes.TryAdd("ExportAsPreset", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("ExportAsPreset").Value = True
+                        End If
                     End If
                 End If
             Next
         End If
 
+
         For ind = 0 To puestos.Length - 1
             If puestos(ind) = 0 Then
-                Dim nod As New LSLib.LS.Node With {.Parent = MaterialOverride, .Name = "Vector3Parameters"}
-                Dim value2 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
-                If nod.Attributes.TryAdd("Color", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Color").Value = True
-                If nod.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Enabled").Value = True
-                If nod.Attributes.TryAdd("Parameter", New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod.Attributes("Parameter").Value = FuncionesHelpers.ColorMaterialsNames(ind)
-                If nod.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod.Attributes("Custom").Value = True
-                value2.FromString(Texts(ind).Text, Funciones.Guid_to_string)
-                If nod.Attributes.TryAdd("Value", value2) = False Then nod.Attributes("Value").Value = value2.Value
-                MaterialOverride.AppendChild(nod)
+                Dim nod2 As New LSLib.LS.Node With {.Parent = Node, .Name = "Vector3Parameters"}
+                Dim value4 As New LSLib.LS.NodeAttribute(AttributeType.Vec3)
+                If nod2.Attributes.TryAdd(iscolor, New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes(iscolor).Value = True
+                If nod2.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Enabled").Value = True
+                If nod2.Attributes.TryAdd("GroupName", New NodeAttribute(AttributeType.FixedString) With {.Value = Groupname}) = False Then nod2.Attributes("GroupName").Value = Groupname
+                If nod2.Attributes.TryAdd(nam, New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames(ind)}) = False Then nod2.Attributes(nam).Value = FuncionesHelpers.ColorMaterialsNames(ind)
+                value4.FromString(Texts(ind).Text, Funciones.Guid_to_string)
+                If nod2.Attributes.TryAdd("Value", value4) = False Then nod2.Attributes("Value").Value = value4.Value
+                If typesave = Typesave.ArmorDye Then
+                    If nod2.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Custom").Value = True
+                End If
+                If typesave = Typesave.MaterialBank Then
+                    If nod2.Attributes.TryAdd("BaseValue", value4) = False Then nod2.Attributes("BaseValue").Value = value4.Value
+                    If nod2.Attributes.TryAdd("ExportAsPreset", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("ExportAsPreset").Value = True
+                End If
+                Node.AppendChild(nod2)
             End If
         Next
-
+        'Node.Children.Remove("VectorParameters")
+        'Save_Nodes_GenericV4(Node, typesave)
     End Sub
-    Private Sub Save_Nodes_Template(Subnodos As List(Of LSLib.LS.Node))
-        For Each nod In Subnodos
-            Dim value As LSLib.LS.NodeAttribute = Nothing
-            If nod.Attributes.TryGetValue("Parameter", value) = False Then
-                nod.Attributes.TryGetValue("ParameterName", value)
-            End If
+    Private Sub Save_Nodes_GenericV4(Node As LSLib.LS.Node, typesave As Typesave)
+        Dim puestos(4) As Integer
+        Dim nam As String = "Parameter"
+        Dim iscolor As String = "Color"
+        Dim Groupname As String = "Colour"
+        If typesave = Typesave.MaterialBank Then
+            nam = "ParameterName"
+            iscolor = "IsColor"
+        End If
+        Dim copies(4) As String
+        copies(0) = "0 0 1 1" ' Texts(FuncionesHelpers.ColorMaterialsNames.IndexOf("Color_01")).Text + " 1"
+        copies(1) = "0 0 1 1" 'Texts(FuncionesHelpers.ColorMaterialsNames.IndexOf("Color_02")).Text + " 1"
+        copies(2) = "0 0 1 1" 'Texts(FuncionesHelpers.ColorMaterialsNames.IndexOf("Color_03")).Text + " 1"
+        copies(3) = "0 0 1 1" 'Texts(FuncionesHelpers.ColorMaterialsNames.IndexOf("Custom_1")).Text + " 1"
+        copies(4) = "0 0 1 1" 'Texts(FuncionesHelpers.ColorMaterialsNames.IndexOf("Custom_2")).Text + " 1"
 
-            If Not IsNothing(value) Then
-                Dim par As String = value.Value
-                Dim ind As Integer = FuncionesHelpers.ColorMaterialsNames.IndexOf(par)
-                Dim col As String
-                If ind <> -1 And nod.Attributes.ContainsKey("Value") Then
-                    col = SRGB0_1(Colors(ind).R, Colors(ind).G, Colors(ind).B)
-                    Select Case nod.Attributes("Value").Type
-                        Case LSLib.LS.AttributeType.Vec3
-                            nod.Attributes("Value").Value = {CSng(col.Split(" ")(0)), CSng(col.Split(" ")(1)), CSng(col.Split(" ")(2))}
-                        Case LSLib.LS.AttributeType.FixedString
-                            nod.Attributes("Value").Value = col
-                        Case Else
-                            Debugger.Break()
-                    End Select
+        Dim value3 As List(Of LSLib.LS.Node) = Nothing
+        If Node.Children.TryGetValue("VectorParameters", value3) Then
+            For Each nod2 As LSLib.LS.Node In value3
+                Dim value As LSLib.LS.NodeAttribute = Nothing
+                nod2.Attributes.TryGetValue(nam, value)
+                If Not IsNothing(value) Then
+                    Dim par As String = value.Value
+                    Dim ind As Integer = FuncionesHelpers.ColorMaterialsNames2.IndexOf(par)
+                    If ind <> -1 Then
+                        puestos(ind) = 1
+                        Dim value4 As New LSLib.LS.NodeAttribute(AttributeType.Vec4)
+                        If nod2.Attributes.TryAdd(iscolor, New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes(iscolor).Value = True
+                        If nod2.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Enabled").Value = True
+                        If nod2.Attributes.TryAdd("GroupName", New NodeAttribute(AttributeType.FixedString) With {.Value = Groupname}) = False Then nod2.Attributes("GroupName").Value = Groupname
+                        If nod2.Attributes.TryAdd(nam, New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames2(ind)}) = False Then nod2.Attributes(nam).Value = FuncionesHelpers.ColorMaterialsNames2(ind)
+                        value4.FromString(copies(ind), Funciones.Guid_to_string)
+                        If nod2.Attributes.TryAdd("Value", value4) = False Then nod2.Attributes("Value").Value = value4.Value
+                        If typesave = Typesave.ArmorDye Then
+                            If nod2.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Custom").Value = True
+                        End If
+                        If typesave = Typesave.MaterialBank Then
+                            'If nod2.Attributes.TryAdd("BaseValue", value4) = False Then nod2.Attributes("BaseValue").Value = value4.Value
+                            If nod2.Attributes.TryAdd("ExportAsPreset", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("ExportAsPreset").Value = True
+                        End If
+                    End If
                 End If
+            Next
+        End If
+
+
+        For ind = 0 To puestos.Length - 1
+            If puestos(ind) = 0 Then
+                Dim nod2 As New LSLib.LS.Node With {.Parent = Node, .Name = "VectorParameters"}
+                Dim value4 As New LSLib.LS.NodeAttribute(AttributeType.Vec4)
+                If nod2.Attributes.TryAdd(iscolor, New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes(iscolor).Value = True
+                If nod2.Attributes.TryAdd("Enabled", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Enabled").Value = True
+                If nod2.Attributes.TryAdd("GroupName", New NodeAttribute(AttributeType.FixedString) With {.Value = Groupname}) = False Then nod2.Attributes("GroupName").Value = Groupname
+                If nod2.Attributes.TryAdd(nam, New NodeAttribute(AttributeType.FixedString) With {.Value = FuncionesHelpers.ColorMaterialsNames2(ind)}) = False Then nod2.Attributes(nam).Value = FuncionesHelpers.ColorMaterialsNames2(ind)
+                value4.FromString(copies(ind), Funciones.Guid_to_string)
+                If nod2.Attributes.TryAdd("Value", value4) = False Then nod2.Attributes("Value").Value = value4.Value
+                If typesave = Typesave.ArmorDye Then
+                    If nod2.Attributes.TryAdd("Custom", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("Custom").Value = True
+                End If
+                If typesave = Typesave.MaterialBank Then
+                    'If nod2.Attributes.TryAdd("BaseValue", value4) = False Then nod2.Attributes("BaseValue").Value = value4.Value
+                    If nod2.Attributes.TryAdd("ExportAsPreset", New NodeAttribute(AttributeType.Bool) With {.Value = True}) = False Then nod2.Attributes("ExportAsPreset").Value = True
+                End If
+                Node.AppendChild(nod2)
             End If
         Next
     End Sub

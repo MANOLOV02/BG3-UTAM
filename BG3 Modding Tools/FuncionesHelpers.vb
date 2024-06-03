@@ -31,6 +31,7 @@ Class FuncionesHelpers
     Public Shared ProficiencyGroup_Others As New List(Of String) From {"None", "MusicalInstrument"}
 
     Public Shared ColorMaterialsNames As New List(Of String) From {"Color_01", "Color_02", "Color_03", "Cloth_Primary", "Cloth_Secondary", "Cloth_Tertiary", "Leather_Primary", "Leather_Secondary", "Leather_Tertiary", "Metal_Primary", "Metal_Secondary", "Metal_Tertiary", "Custom_1", "Custom_2", "Accent_Color"}
+    Public Shared ColorMaterialsNames2 As New List(Of String) From {"Color1", "Color2", "Color3", "Color4", "Color5"}
 
     ' Lists from ValueList.txt
     Public Shared Ability As New List(Of String) From {"None", "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"}
@@ -130,6 +131,8 @@ Class FuncionesHelpers
     Public Shared WeaponFlags As New List(Of String) From {"None", "Light", "Ammunition", "Finesse", "Heavy", "Loading", "Range", "Reach", "Lance", "Net", "Thrown", "Twohanded", "Versatile", "Melee", "Dippable", "Torch", "NoDualWield", "Magical", "NeedDualWieldingBoost", "NotSheathable", "Unstowable", "AddToHotbar"}
     Public Shared WeaponSet As New List(Of String) From {"Melee", "Ranged"}
     Public Shared YesNo As New List(Of String) From {"No", "Yes"}
+    Public Shared Visual_Slots As New List(Of String) From {"Unassigned", "Body", "Footwear", "Cloak", "Gloves", "Underwear", "DragonbornTop", "Head", "Headwear", "Horns", "HelmetHair", "Hair", "DragonbornChin", "Hair DWR", "NakedBody", "Private Parts", "DragonbornJaw", "Piercing", "ModestyLeaf", "Beard", "Test", ""}
+    Public Shared VertexColorMaskSlots As New List(Of String) From {"Torso", "Shoulders", "upperarm", "lowerarm", "wrists", "hands", "Thighs", "knees", "shins", "feet", "decolletage_01", "decolletage_02", "Underwear_Bra", "Underwear_Panties", "Underwear_Panties_Tail", "Private_Parts", "ModestyLeaf", "Nipple Covers", "Sleeves", "Pants", "Never Hide Hair", "(Hot Pink Physics Paint)", "(Red Physics Paint)"}
 
 End Class
 Module Flickering

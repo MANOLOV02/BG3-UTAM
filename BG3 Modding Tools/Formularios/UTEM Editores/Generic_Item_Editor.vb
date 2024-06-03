@@ -16,6 +16,7 @@ Public Class Generic_Item_Editor
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        Me.DoubleBuffered = True
         Flickering.EnableDoubleBuffering(BG3Selector_Template1.TreeView1)
     End Sub
 
@@ -40,8 +41,22 @@ Public Class Generic_Item_Editor
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         Initialize(MdiParent, Source)
         Me.DoubleBuffered = True
-
+        Flickering.EnableDoubleBuffering(BG3Selector_Template1.TreeView1)
     End Sub
+    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        Me.Activate()
+    End Sub
+    Public ReadOnly Property LocationtoNameForm As Point
+        Get
+            Return Me.SplitContainer1.Location
+        End Get
+    End Property
+    Public ReadOnly Property LocationtoNameFormDistance As Integer
+        Get
+            Return Me.SplitContainer1.SplitterDistance
+        End Get
+    End Property
+
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Current = Cursors.WaitCursor
         BG3Selector_Template1.Selection = UtamType

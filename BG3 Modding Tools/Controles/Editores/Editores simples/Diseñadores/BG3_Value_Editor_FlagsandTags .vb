@@ -1,72 +1,7 @@
 ﻿Imports System.Net
 Imports LSLib.LS
 Imports LSLib.LS.Story
-
-<ToolboxBitmap(GetType(System.Windows.Forms.TextBox))>
-Public MustInherit Class Editor_Generic_GenericAttribute
-    Inherits BG3_Value_Editor_Generic
-
-    Protected AttributeType As LSLib.LS.AttributeType = LSLib.LS.AttributeType.FixedString
-    Protected Key As String = "ToDefine"
-    Public Overloads Function Read(Que As LSLib.LS.Node) As Boolean
-        If IsNothing(Que) Then TextBox1.Text = "" : Return True
-        Dim ov As LSLib.LS.NodeAttribute = Nothing
-        If Que.Attributes.TryGetValue(Key, ov) = False OrElse IsNothing(ov) Then TextBox1.Text = "" : Return True
-        Dim str As String = ov.AsString(Funciones.Guid_to_string)
-        TextBox1.Text = str
-        Return True
-    End Function
-    Public Overloads Function Write(Que As LSLib.LS.Node) As Boolean
-        If IsNothing(Que) Then Return False
-        Dim val As String = TextBox1.Text
-        Dim ov As New LSLib.LS.NodeAttribute(Me.AttributeType)
-        ov.FromString(TextBox1.Text, Funciones.Guid_to_string)
-        If Que.Attributes.TryAdd(Key, ov) = False Then Que.Attributes(Key).Value = ov.Value
-        Return True
-    End Function
-    Public Overridable Function Create_Attribute(ByRef Que As LSLib.LS.Node, ValueString As String) As Boolean
-        Return Que.Attributes.TryAdd(Key, Conver_String_to_Node(ValueString))
-    End Function
-
-    Public Shared Function Create_Attribute_Generic(ByRef Que As LSLib.LS.Node, Key As String, ValueString As String, attributeType As LSLib.LS.AttributeType) As Boolean
-        Return Que.Attributes.TryAdd(Key, Conver_String_to_Node_Generic(ValueString, attributeType))
-    End Function
-    Public Overridable Function Replace_Attribute(ByRef Que As LSLib.LS.Node, ValueString As String) As Boolean
-        If Que.Attributes.TryAdd(Key, Conver_String_to_Node(ValueString)) = False Then
-            Que.Attributes(Key) = Conver_String_to_Node(ValueString)
-        End If
-        Return True
-    End Function
-    Public Shared Function Replace_Attribute_Generic(ByRef Que As LSLib.LS.Node, Key As String, ValueString As String, attributeType As LSLib.LS.AttributeType) As Boolean
-        If Que.Attributes.TryAdd(Key, Conver_String_to_Node_Generic(ValueString, attributeType)) = False Then
-            Que.Attributes(Key) = Conver_String_to_Node_Generic(ValueString, attributeType)
-        End If
-        Return True
-    End Function
-    Public Overridable Function Conver_String_to_Node(valueString As String) As LSLib.LS.NodeAttribute
-        Return Conver_String_to_Node_Generic(valueString, Me.AttributeType)
-    End Function
-    Public Shared Function Conver_Attribute_to_String(Attr As LSLib.LS.NodeAttribute) As String
-        Return Attr.AsString(Funciones.Guid_to_string)
-    End Function
-
-    Public Shared Function Conver_String_to_Node_Generic(valueString As String, attributeType As LSLib.LS.AttributeType) As LSLib.LS.NodeAttribute
-        Select Case attributeType
-            Case AttributeType.TranslatedString, AttributeType.TranslatedFSString
-                Return New LSLib.LS.NodeAttribute(attributeType) With {.Value = New LSLib.LS.TranslatedString With {.Version = valueString.Split(";")(1), .Handle = valueString.Split(";")(0)}}
-            Case Else
-                Dim value = New LSLib.LS.NodeAttribute(attributeType)
-                value.FromString(valueString, Funciones.Guid_to_string)
-                Return value
-        End Select
-
-    End Function
-
-    'Private Shared ReadOnly Guid_to_String_Unreversed = New NodeSerializationSettings With {.DefaultByteSwapGuids = True, .ByteSwapGuids = True}
-
-End Class
-
-Public MustInherit Class Editor_Template_GenericAttribute
+Public MustInherit Class Editor_FlagsandTags_GenericAttribute
     Inherits Editor_Generic_GenericAttribute
     Sub New(Key As String)
         Me.Key = Key
@@ -78,17 +13,17 @@ Public MustInherit Class Editor_Template_GenericAttribute
     Sub New()
     End Sub
 
-    Public Overrides Function Read(Que As BG3_Obj_Template_Class) As Boolean
+    Public Overrides Function Read(Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         Last_read = Que
         Dim value As LSLib.LS.NodeAttribute = Nothing
         If Me.EditIsConditional Then
             If Que.NodeLSLIB.Attributes.TryGetValue(Key, value) = False Then Me.CheckBox1.Checked = False Else Me.CheckBox1.Checked = True
-            Return Conditional_Changed(Que)
+            Return Conditional_changed(Que)
         End If
         Que.NodeLSLIB.Attributes.TryGetValue(Key, value)
         Return Get_ValueString(value)
     End Function
-    Public Overrides Function Create(value As String, Que As BG3_Obj_Template_Class) As Boolean
+    Public Overrides Function Create(value As String, Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         If Que.NodeLSLIB.Attributes.TryAdd(Key, Conver_String_to_Node(value)) = False Then
             Que.NodeLSLIB.Attributes(Key) = Conver_String_to_Node(value)
             Return True
@@ -96,12 +31,12 @@ Public MustInherit Class Editor_Template_GenericAttribute
         Return False
     End Function
 
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
+    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_FlagsAndTags_Class) As String
         Dim str = Parent.ReadAttribute_Or_Inhterithed(Key)
         If IsNothing(str) Then Return ""
         Return str
     End Function
-    Public Overrides Function Conditional_Changed(Que As BG3_Obj_Template_Class) As Boolean
+    Public Overrides Function Conditional_Changed(Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         If Me.EditIsConditional = True AndAlso CheckBox1.Checked = False Then
             If Not IsNothing(Que.Parent) Then
                 TextBox1.Text = Conditional_GetParent_Value(Que.Parent)
@@ -116,7 +51,7 @@ Public MustInherit Class Editor_Template_GenericAttribute
         If IsNothing(value) AndAlso Not IsNothing(Que.Parent) Then value = Conditional_changed_Empty(Que)
         Return Get_ValueString(value)
     End Function
-    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_Template_Class) As LSLib.LS.NodeAttribute
+    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_FlagsAndTags_Class) As LSLib.LS.NodeAttribute
         Dim value As LSLib.LS.NodeAttribute = Nothing
         Dim current = Que
         While Not IsNothing(current.Parent)
@@ -132,11 +67,11 @@ Public MustInherit Class Editor_Template_GenericAttribute
         TextBox1.Text = value.AsString(Funciones.Guid_to_string)
         Return True
     End Function
-    Public Overridable Function Set_ValueString(Que As BG3_Obj_Template_Class) As String
+    Public Overridable Function Set_ValueString(Que As BG3_Obj_FlagsAndTags_Class) As String
         Return TextBox1.Text
     End Function
 
-    Public Overrides Function Write(Que As BG3_Obj_Template_Class) As Boolean
+    Public Overrides Function Write(Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         If Me.AllowEdit = False Then Return False
         If Me.AllowEdit = True Then
             If Me.EditIsConditional AndAlso Me.CheckBox1.Checked = False Then
@@ -157,8 +92,8 @@ Public MustInherit Class Editor_Template_GenericAttribute
 End Class
 
 <ToolboxBitmap(GetType(System.Windows.Forms.TextBox))>
-Public MustInherit Class Editor_Template_GenericTranslate
-    Inherits Editor_Template_GenericAttribute
+Public MustInherit Class Editor_FlagsAndTags_GenericTranslate
+    Inherits Editor_FlagsandTags_GenericAttribute
     Protected UTAM_Handle As String = "ToDefine"
     Public Overrides Function Create_Attribute(ByRef Que As LSLib.LS.Node, Value As String) As Boolean
         Que.Attributes.TryAdd(UTAM_Handle, Conver_String_to_Node(Value))
@@ -187,7 +122,7 @@ Public MustInherit Class Editor_Template_GenericTranslate
         TextBox1.Text = "Not defined"
         Return False
     End Function
-    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_Template_Class) As LSLib.LS.NodeAttribute
+    Public Overrides Function Conditional_changed_Empty(Que As BG3_Obj_FlagsAndTags_Class) As LSLib.LS.NodeAttribute
         Dim value As LSLib.LS.NodeAttribute = Nothing
         Que.NodeLSLIB.Attributes.TryGetValue(UTAM_Handle, value)
         Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(value.Value.ToString, Bg3_Enum_Languages.English)
@@ -201,17 +136,17 @@ Public MustInherit Class Editor_Template_GenericTranslate
     Public Function GetPropertyName() As String
         Return Key
     End Function
-    Public Function Get_Utam_Handle(Que As BG3_Obj_Template_Class) As String
+    Public Function Get_Utam_Handle(Que As BG3_Obj_FlagsAndTags_Class) As String
         Dim value As LSLib.LS.NodeAttribute = Nothing
         If IsNothing(Que) Then Return ""
         If Que.NodeLSLIB.Attributes.TryGetValue(UTAM_Handle, value) = False OrElse IsNothing(value) Then _LastHandle = "" Else _LastHandle = value.Value.ToString
         Return _LastHandle
     End Function
-    Public Function Get_inherited_Handle(Que As BG3_Obj_Template_Class) As String
+    Public Function Get_inherited_Handle(Que As BG3_Obj_FlagsAndTags_Class) As String
         If IsNothing(Que.Parent) Then Return Nothing
         Return Que.Parent.ReadAttribute_Or_Inhterithed(Key)
     End Function
-    Public Function Get_Current_Handle(Que As BG3_Obj_Template_Class) As String
+    Public Function Get_Current_Handle(Que As BG3_Obj_FlagsAndTags_Class) As String
         If Me.EditIsConditional = True AndAlso Me.CheckBox1.Checked Then
             Return Get_inherited_Handle(Que)
         Else
@@ -224,14 +159,14 @@ Public MustInherit Class Editor_Template_GenericTranslate
     Public Function Get_Last_Utam_Handle() As String
         Return _LastHandle
     End Function
-    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_Template_Class) As String
+    Public Overrides Function Conditional_GetParent_Value(Parent As BG3_Obj_FlagsAndTags_Class) As String
         Dim handle As String
         handle = Parent.ReadAttribute_Or_Inhterithed(Key)
         Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(handle, Bg3_Enum_Languages.English)
         If Not IsNothing(Loca) Then Return Loca
         Return ""
     End Function
-    Public Overrides Function Set_ValueString(Que As BG3_Obj_Template_Class) As String
+    Public Overrides Function Set_ValueString(Que As BG3_Obj_FlagsAndTags_Class) As String
         Dim value As LSLib.LS.NodeAttribute = Nothing
         If Que.NodeLSLIB.Attributes.TryGetValue(UTAM_Handle, value) = False Then Return ""
         Return value.Value.ToString
@@ -239,8 +174,8 @@ Public MustInherit Class Editor_Template_GenericTranslate
 End Class
 
 <ToolboxBitmap(GetType(System.Windows.Forms.ComboBox))>
-Public MustInherit Class Combobox_Editor_Generic_GenericAttribute
-    Inherits Editor_Template_GenericAttribute
+Public MustInherit Class Combobox_Editor_FlagsAndTags_GenericAttribute
+    Inherits Editor_FlagsandTags_GenericAttribute
     Sub New(Key As String)
         Me.Key = Key
         Me.EditorType = BG3_Editor_Type.Combobox
@@ -255,8 +190,8 @@ Public MustInherit Class Combobox_Editor_Generic_GenericAttribute
 End Class
 
 <ToolboxBitmap(GetType(System.Windows.Forms.NumericUpDown))>
-Public MustInherit Class Numeric_Editor_Template_GenericAttribute
-    Inherits Editor_Template_GenericAttribute
+Public MustInherit Class Numeric_Editor_FlagsandTags_GenericAttribute
+    Inherits Editor_FlagsandTags_GenericAttribute
     Sub New(Key As String, AttributeType As LSLib.LS.AttributeType)
         Me.Key = Key
         Me.AttributeType = AttributeType

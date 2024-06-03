@@ -20,13 +20,14 @@ Public Class BG3Editor_Template_Undefined
         End Set
     End Property
     Public Overloads Sub Read(Nod As LSLib.LS.Node)
-        If Nod.Attributes.ContainsKey(Key) Then
-            Me.TextBox1.Text = Nod.Attributes(Key).AsString(Funciones.Guid_to_string)
+        Dim value As NodeAttribute = Nothing
+        If Nod.Attributes.TryGetValue(Key, value) Then
+            Me.TextBox1.Text = value.AsString(Funciones.Guid_to_string)
         Else
             Me.TextBox1.Text = ""
         End If
     End Sub
-    Public Overloads Sub Wite(Nod As LSLib.LS.Node)
+    Public Overloads Sub Write(Nod As LSLib.LS.Node)
         Dim value As New LSLib.LS.NodeAttribute(AttributeType)
         value.FromString(TextBox1.Text, Funciones.Guid_to_string)
         If Nod.Attributes.TryAdd(Key, value) = False Then

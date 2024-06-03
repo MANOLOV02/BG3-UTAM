@@ -58,7 +58,7 @@ Public MustInherit Class Explorer_Generic_Code(Of T As BG3_Obj_Generic_Class)
         If ComboBoxItems.Items(ComboBoxItems.SelectedIndex).value <> -1 And Not IsNothing(ObjectList) Then
             Dim typ As Integer = ComboBoxItems.Items(ComboBoxItems.SelectedIndex).value
             Dim arr = ObjectList.ElementValues.AsParallel.Where(Function(pf) pf.Filter_Check_Level1(typ) AndAlso pf.ParentKey_Or_Empty = "").OrderBy(Function(pq) pq.Name).Select(Function(pq) New BG3_Custom_ComboboxItem With {.Text = pq.Name, .Value = pq.MapKey}).ToArray
-            ComboBoxParent.Items.AddRange(arr)
+            If arr.Length <= 1000 Then ComboBoxParent.Items.AddRange(arr)
         End If
     End Sub
     Private Sub ComboBoxParent_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxParent.SelectedIndexChanged

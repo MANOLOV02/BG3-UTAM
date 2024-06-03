@@ -8,11 +8,11 @@ Imports LSLib.LS.Story
 Public Class BG3Editor_Complex_Localization
     Private ReadOnly dataset As New DataSet
     Private ReadOnly table As New Data.DataTable("Localizations")
-    Private Controles_Linkeados As New List(Of BG3Editor_Template_LocalizationBase)
+    Private Controles_Linkeados As New List(Of BG3_Value_Editor_Generic)
 
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
         Get
-            Return CType(Me.ParentForm, Generic_Item_Editor).ActiveModSource
+            Return CType(Me.ParentForm, Object).ActiveModSource
         End Get
     End Property
 
@@ -53,14 +53,21 @@ Public Class BG3Editor_Complex_Localization
             AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
         Next
     End Sub
+    Public Sub Link_Controls(Controles() As BG3Editor_FlagsAndTag_LocalizationBase)
+        For Each cont In Controles
+            Controles_Linkeados.Add(cont)
+            AddHandler cont.Inside_Text_Changed, AddressOf Control_changed
+            AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
+        Next
+    End Sub
 
-    Private Sub Control_changed(quien As BG3Editor_Template_LocalizationBase)
-        If table.Select("Mapkey='" + quien.Get_Last_Utam_Handle + "'").Length <> 0 Then
-            Dim dr As DataRow = table.Select("Mapkey='" + quien.Get_Last_Utam_Handle + "'").First
+    Private Sub Control_changed(quien As BG3_Value_Editor_Generic)
+        If table.Select("Mapkey='" + CType(quien, Object).Get_Last_Utam_Handle + "'").Length <> 0 Then
+            Dim dr As DataRow = table.Select("Mapkey='" + CType(quien, Object).Get_Last_Utam_Handle + "'").First
             If quien.CheckBox1.Checked = True Then
                 dr.Item("English") = quien.Text
             Else
-                Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(quien.Get_Last_Utam_Handle, Bg3_Enum_Languages.English)
+                Dim Loca As String = FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(CType(quien, Object).Get_Last_Utam_Handle, Bg3_Enum_Languages.English)
                 If Not IsNothing(Loca) Then
                     dr.Item("English") = Loca
                 Else
@@ -76,16 +83,16 @@ Public Class BG3Editor_Complex_Localization
         table.Clear()
     End Sub
 
-    Public Sub Read_Data(Template As BG3_Obj_Template_Class)
+    Public Sub Read_Data(Template As BG3_Obj_Generic_Class)
         If Not IsNothing(Template) Then
             table.BeginLoadData()
             table.Clear()
             For Each cont In Controles_Linkeados
                 Dim nr As DataRow = table.NewRow
-                Dim key As String = cont.Get_Utam_Handle(Template)
+                Dim key As String = CType(cont, Object).Get_Utam_Handle(Template)
                 If key <> "" Then
                     nr.Item("Mapkey") = key
-                    nr.Item("PropertyName") = cont.GetPropertyName
+                    nr.Item("PropertyName") = CType(cont, Object).GetPropertyName
                     table.Rows.Add(nr)
                 End If
             Next
@@ -93,9 +100,9 @@ Public Class BG3Editor_Complex_Localization
         End If
         LoadLocalizations()
     End Sub
-    Public Function Get_Localization(quien As BG3Editor_Template_LocalizationBase, template As BG3_Obj_Template_Class, lang As Bg3_Enum_Languages) As String
+    Public Function Get_Localization(quien As BG3_Value_Editor_Generic, template As BG3_Obj_Generic_Class, lang As Bg3_Enum_Languages) As String
         If quien.EditIsConditional = True AndAlso quien.CheckBox1.Checked = False Then
-            Dim hand As String = quien.Get_inherited_Handle(template)
+            Dim hand As String = CType(quien, Object).Get_inherited_Handle(template)
             If FuncionesHelpers.GameEngine.ProcessedLocalizationList.Key_Has_Language(hand, lang) Then
                 Return FuncionesHelpers.GameEngine.ProcessedLocalizationList.Localize(hand, lang)
             Else
@@ -103,7 +110,7 @@ Public Class BG3Editor_Complex_Localization
             End If
             Return "Unknown"
         Else
-            Dim key As String = quien.Get_Utam_Handle(template)
+            Dim key As String = CType(quien, Object).Get_Utam_Handle(template)
             If key <> "" AndAlso table.Select("Mapkey='" + key + "'").Length <> 0 Then
                 Dim dr As DataRow = table.Select("Mapkey='" + key + "'").First
                 If IsDBNull(dr.Item(lang.ToString)) = False AndAlso Not IsNothing(dr.Item(lang.ToString)) Then
@@ -111,7 +118,7 @@ Public Class BG3Editor_Complex_Localization
                 Else
                     If lang <> Bg3_Enum_Languages.English Then Return Get_Localization(quien, template, Bg3_Enum_Languages.English)
                 End If
-                End If
+            End If
             Return "Unknown"
         End If
     End Function

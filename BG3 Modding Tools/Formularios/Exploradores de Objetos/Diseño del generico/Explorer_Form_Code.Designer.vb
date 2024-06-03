@@ -26,7 +26,8 @@ Partial Class ExploraForm_code
         ' 
         ' ExploraForm_code
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AllowDrop = True
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(284, 261)
         FormBorderStyle = FormBorderStyle.SizableToolWindow

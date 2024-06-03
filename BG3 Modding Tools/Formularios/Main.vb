@@ -100,6 +100,7 @@ Public Class Main
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
         GameEngine.Load_Settings()
+        OpenDetailsWindowsAlsoToolStripMenuItem.Checked = FuncionesHelpers.GameEngine.Settings.Showdetails
         Me.DoubleBuffered = True
     End Sub
 
@@ -435,7 +436,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -567,7 +568,7 @@ Public Class Main
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -618,7 +619,85 @@ Public Class Main
         GenerateChildForm(GetType(Explorer_Form_TreasureTables), "Treasure tables explorer")
 
     End Sub
+    Private Sub ObjectsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ObjectsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Objects stats explorer", BG3_Enum_StatType.Object)
+    End Sub
 
+    Private Sub ArmorsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ArmorsToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Armors stats explorer", BG3_Enum_StatType.Armor)
+    End Sub
+
+    Private Sub WeaponsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Weapons stats explorer", BG3_Enum_StatType.Weapon)
+    End Sub
+
+    Private Sub CharactersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharactersToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Characters stats explorer", BG3_Enum_StatType.Character)
+    End Sub
+
+    Private Sub SpellsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SpellsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Spell stats explorer", BG3_Enum_StatType.SpellData)
+    End Sub
+
+    Private Sub PasivesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasivesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Pasives stats explorer", BG3_Enum_StatType.PassiveData)
+    End Sub
+
+    Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Status stats explorer", BG3_Enum_StatType.StatusData)
+    End Sub
+
+    Private Sub TexturesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TexturesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Textures explorer", BG3_Enum_VisualBank_Type.TextureBank)
+    End Sub
+
+    Private Sub MaterialsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials bank explorer", BG3_Enum_VisualBank_Type.MaterialBank)
+    End Sub
+
+    Private Sub MaterialToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Material shaders explorer", BG3_Enum_VisualBank_Type.MaterialShader)
+    End Sub
+
+    Private Sub MaterialPresetsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialPresetsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials presets explorer", BG3_Enum_VisualBank_Type.MaterialPresetBank)
+    End Sub
+
+    Private Sub CharacterVisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterVisualBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Characters visual bank explorer", BG3_Enum_VisualBank_Type.CharacterVisualBank)
+    End Sub
+
+    Private Sub VisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Visual bank explorer", BG3_Enum_VisualBank_Type.VisualBank)
+    End Sub
+
+    Private Sub VirtualTexturesBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VirtualTexturesBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Virtual textures explorer", BG3_Enum_VisualBank_Type.VirtualTextureBank)
+    End Sub
+
+    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FlagstoolstripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Flags explorer", BG3_Enum_FlagsandTagsType.Flags)
+    End Sub
+
+    Private Sub TagsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TagsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Tags explorer", BG3_Enum_FlagsandTagsType.Tags)
+    End Sub
+
+    Private Sub RacesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Races explorer", BG3_Enum_FlagsandTagsType.EquipmentRaces)
+    End Sub
+
+    Private Sub GoldValuesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GoldValuesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "gold values explorer", BG3_Enum_FlagsandTagsType.GoldValues)
+    End Sub
+
+    Private Sub EquipmentTypesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentTypesToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment types explorer", BG3_Enum_FlagsandTagsType.EquipmentTypes)
+    End Sub
+
+    Private Sub EquipmentSlotsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentSlotsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment slots explorer", BG3_Enum_FlagsandTagsType.EquipmentSlots)
+    End Sub
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
         If IsNothing(ActiveMod) = False Then Throw New Exception
         Clear_Current_Mod_Loaded()
@@ -681,7 +760,6 @@ Public Class Main
             Catch ex As Exception
             End Try
         End If
-
     End Sub
 
     Private Sub ArmorsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ArmorsToolStripMenuItem.Click
@@ -690,7 +768,7 @@ Public Class Main
 
     Private Sub LaunchGameToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LaunchGameToolStripMenuItem.Click
         Try
-            Process.Start(IO.Path.Combine(GameEngine.Settings.GameExeFolder, "bg3.exe"), "--skip-launcher")
+            Process.Start(IO.Path.Combine(GameEngine.Settings.GameExeFolder, "bg3.exe"))
         Catch ex As Exception
 
         End Try
@@ -734,6 +812,7 @@ Public Class Main
 
     Private Sub OpenDetailsWindowsAlsoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenDetailsWindowsAlsoToolStripMenuItem.Click
         OpenDetailsWindowsAlsoToolStripMenuItem.Checked = Not OpenDetailsWindowsAlsoToolStripMenuItem.Checked
+        FuncionesHelpers.GameEngine.Settings.Showdetails = OpenDetailsWindowsAlsoToolStripMenuItem.Checked
     End Sub
 
     Private Sub WeaponsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem.Click
@@ -762,83 +841,19 @@ Public Class Main
 
     End Sub
 
-    Private Sub ObjectsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ObjectsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Objects stats explorer", BG3_Enum_StatType.Object)
+    Private Sub TagsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles TagsToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Tags_Editor), "")
     End Sub
 
-    Private Sub ArmorsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ArmorsToolStripMenuItem1.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Armors stats explorer", BG3_Enum_StatType.Armor)
+    Private Sub TexturesToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles TexturesToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Textures_Editor), "")
     End Sub
 
-    Private Sub WeaponsToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles WeaponsToolStripMenuItem1.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Weapons stats explorer", BG3_Enum_StatType.Weapon)
+    Private Sub MaterialBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(MaterialBank_Editor), "")
     End Sub
 
-    Private Sub CharactersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharactersToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Characters stats explorer", BG3_Enum_StatType.Character)
-    End Sub
-
-    Private Sub SpellsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SpellsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Spell stats explorer", BG3_Enum_StatType.SpellData)
-    End Sub
-
-    Private Sub PasivesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasivesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Pasives stats explorer", BG3_Enum_StatType.PassiveData)
-    End Sub
-
-    Private Sub StatusToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StatusToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Stats), "Status stats explorer", BG3_Enum_StatType.StatusData)
-    End Sub
-
-    Private Sub TexturesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TexturesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Textures explorer", BG3_Enum_VisualBank_Type.TextureBank)
-    End Sub
-
-    Private Sub MaterialsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials bank explorer", BG3_Enum_VisualBank_Type.MaterialBank)
-    End Sub
-
-    Private Sub MaterialToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Material explorer", BG3_Enum_VisualBank_Type.Material)
-    End Sub
-
-    Private Sub MaterialPresetsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaterialPresetsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Materials presets explorer", BG3_Enum_VisualBank_Type.MaterialPresetBank)
-    End Sub
-
-    Private Sub CharacterVisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterVisualBankToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Characters visual bank explorer", BG3_Enum_VisualBank_Type.CharacterVisualBank)
-    End Sub
-
-    Private Sub VisualBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VisualBankToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Visual bank explorer", BG3_Enum_VisualBank_Type.VisualBank)
-    End Sub
-
-    Private Sub VirtualTexturesBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VirtualTexturesBankToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_VisualTemplates), "Virtual textures explorer", BG3_Enum_VisualBank_Type.VirtualTextureBank)
-    End Sub
-
-    Private Sub OtherToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles FlagstoolstripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Flags explorer", BG3_Enum_FlagsandTagsType.Flags)
-    End Sub
-
-    Private Sub TagsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TagsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Tags explorer", BG3_Enum_FlagsandTagsType.Tags)
-    End Sub
-
-    Private Sub RacesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Races explorer", BG3_Enum_FlagsandTagsType.EquipmentRaces)
-    End Sub
-
-    Private Sub GoldValuesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GoldValuesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "gold values explorer", BG3_Enum_FlagsandTagsType.GoldValues)
-    End Sub
-
-    Private Sub EquipmentTypesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentTypesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment types explorer", BG3_Enum_FlagsandTagsType.EquipmentTypes)
-    End Sub
-
-    Private Sub EquipmentSlotsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EquipmentSlotsToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment slots explorer", BG3_Enum_FlagsandTagsType.EquipmentSlots)
+    Private Sub VisualBankToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles VisualBankToolStripMenuItem1.Click
+        GenerateChildForm(GetType(VisualBank_Editor), "")
     End Sub
 End Class

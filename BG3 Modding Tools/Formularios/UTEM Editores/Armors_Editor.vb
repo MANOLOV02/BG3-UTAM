@@ -35,7 +35,11 @@ Public Class Armors_Editor
 
         HandledNodes.Add("GameObjects\Equipment\ParentRace")
         HandledNodes.Add("GameObjects\Equipment\Visuals")
-        HandledNodes.Add("GameObjects\Equipment\VisualSet")
+        For Each col In FuncionesHelpers.ColorMaterialsNames
+            HandledNodes.Add("GameObjects\Equipment\VisualSet\MaterialOverrides\Vector3Parameters;Parameter=" + col)
+        Next
+
+
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
         GroupBoxArmors1.Enabled = Edicion

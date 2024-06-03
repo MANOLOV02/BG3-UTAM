@@ -58,8 +58,8 @@ Partial Class Main
         TexturesToolStripMenuItem = New ToolStripMenuItem()
         VirtualTexturesBankToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator9 = New ToolStripSeparator()
-        MaterialsToolStripMenuItem = New ToolStripMenuItem()
         MaterialToolStripMenuItem = New ToolStripMenuItem()
+        MaterialsToolStripMenuItem = New ToolStripMenuItem()
         MaterialPresetsToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator10 = New ToolStripSeparator()
         CharacterVisualBankToolStripMenuItem = New ToolStripMenuItem()
@@ -72,6 +72,7 @@ Partial Class Main
         RacesToolStripMenuItem = New ToolStripMenuItem()
         GoldValuesToolStripMenuItem = New ToolStripMenuItem()
         EquipmentTypesToolStripMenuItem = New ToolStripMenuItem()
+        EquipmentSlotsToolStripMenuItem = New ToolStripMenuItem()
         ObjectInformationToolStripMenuItem = New ToolStripMenuItem()
         TrasureTablesExplorerToolStripMenuItem = New ToolStripMenuItem()
         ToolStripSeparator5 = New ToolStripSeparator()
@@ -80,11 +81,18 @@ Partial Class Main
         NewToolStripMenuItem = New ToolStripMenuItem()
         LoadToolStripMenuItem = New ToolStripMenuItem()
         ToolsToolStripMenuItem1 = New ToolStripMenuItem()
+        ItemsTemplatesToolStripMenuItem = New ToolStripMenuItem()
         ArmorsToolStripMenuItem = New ToolStripMenuItem()
         ContainersToolStripMenuItem = New ToolStripMenuItem()
         ConsumablesToolStripMenuItem = New ToolStripMenuItem()
         DyesToolStripMenuItem = New ToolStripMenuItem()
         WeaponsToolStripMenuItem = New ToolStripMenuItem()
+        FlagsAndTagsToolStripMenuItem = New ToolStripMenuItem()
+        TagsToolStripMenuItem1 = New ToolStripMenuItem()
+        VisualsToolStripMenuItem = New ToolStripMenuItem()
+        MaterialBankToolStripMenuItem = New ToolStripMenuItem()
+        TexturesToolStripMenuItem1 = New ToolStripMenuItem()
+        VisualBankToolStripMenuItem1 = New ToolStripMenuItem()
         FoldersToolStripMenuItem = New ToolStripMenuItem()
         UTAMModsToolStripMenuItem = New ToolStripMenuItem()
         UTAMCacheToolStripMenuItem = New ToolStripMenuItem()
@@ -108,7 +116,6 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
-        EquipmentSlotsToolStripMenuItem = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -293,7 +300,7 @@ Partial Class Main
         ' 
         ' VisualsExplorerToolStripMenuItem
         ' 
-        VisualsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ToolStripMenuItem1, ToolStripSeparator8, TexturesToolStripMenuItem, VirtualTexturesBankToolStripMenuItem, ToolStripSeparator9, MaterialsToolStripMenuItem, MaterialToolStripMenuItem, MaterialPresetsToolStripMenuItem, ToolStripSeparator10, CharacterVisualBankToolStripMenuItem, VisualBankToolStripMenuItem})
+        VisualsExplorerToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ToolStripMenuItem1, ToolStripSeparator8, TexturesToolStripMenuItem, VirtualTexturesBankToolStripMenuItem, ToolStripSeparator9, MaterialToolStripMenuItem, MaterialsToolStripMenuItem, MaterialPresetsToolStripMenuItem, ToolStripSeparator10, CharacterVisualBankToolStripMenuItem, VisualBankToolStripMenuItem})
         VisualsExplorerToolStripMenuItem.Name = "VisualsExplorerToolStripMenuItem"
         VisualsExplorerToolStripMenuItem.Size = New Size(216, 22)
         VisualsExplorerToolStripMenuItem.Text = "Visuals explorer"
@@ -326,17 +333,17 @@ Partial Class Main
         ToolStripSeparator9.Name = "ToolStripSeparator9"
         ToolStripSeparator9.Size = New Size(189, 6)
         ' 
+        ' MaterialToolStripMenuItem
+        ' 
+        MaterialToolStripMenuItem.Name = "MaterialToolStripMenuItem"
+        MaterialToolStripMenuItem.Size = New Size(192, 22)
+        MaterialToolStripMenuItem.Text = "Material shaders"
+        ' 
         ' MaterialsToolStripMenuItem
         ' 
         MaterialsToolStripMenuItem.Name = "MaterialsToolStripMenuItem"
         MaterialsToolStripMenuItem.Size = New Size(192, 22)
         MaterialsToolStripMenuItem.Text = "Materials bank"
-        ' 
-        ' MaterialToolStripMenuItem
-        ' 
-        MaterialToolStripMenuItem.Name = "MaterialToolStripMenuItem"
-        MaterialToolStripMenuItem.Size = New Size(192, 22)
-        MaterialToolStripMenuItem.Text = "Material"
         ' 
         ' MaterialPresetsToolStripMenuItem
         ' 
@@ -409,6 +416,12 @@ Partial Class Main
         EquipmentTypesToolStripMenuItem.Size = New Size(190, 22)
         EquipmentTypesToolStripMenuItem.Text = "Equipment types"
         ' 
+        ' EquipmentSlotsToolStripMenuItem
+        ' 
+        EquipmentSlotsToolStripMenuItem.Name = "EquipmentSlotsToolStripMenuItem"
+        EquipmentSlotsToolStripMenuItem.Size = New Size(190, 22)
+        EquipmentSlotsToolStripMenuItem.Text = "Equipment slots"
+        ' 
         ' ObjectInformationToolStripMenuItem
         ' 
         ObjectInformationToolStripMenuItem.Name = "ObjectInformationToolStripMenuItem"
@@ -456,11 +469,18 @@ Partial Class Main
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, ConsumablesToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ItemsTemplatesToolStripMenuItem, FlagsAndTagsToolStripMenuItem, VisualsToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
-        ToolsToolStripMenuItem1.Size = New Size(46, 20)
-        ToolsToolStripMenuItem1.Text = "Tools"
+        ToolsToolStripMenuItem1.Size = New Size(97, 20)
+        ToolsToolStripMenuItem1.Text = "Modding tools"
+        ' 
+        ' ItemsTemplatesToolStripMenuItem
+        ' 
+        ItemsTemplatesToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, ConsumablesToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
+        ItemsTemplatesToolStripMenuItem.Name = "ItemsTemplatesToolStripMenuItem"
+        ItemsTemplatesToolStripMenuItem.Size = New Size(158, 22)
+        ItemsTemplatesToolStripMenuItem.Text = "Items templates"
         ' 
         ' ArmorsToolStripMenuItem
         ' 
@@ -491,6 +511,44 @@ Partial Class Main
         WeaponsToolStripMenuItem.Name = "WeaponsToolStripMenuItem"
         WeaponsToolStripMenuItem.Size = New Size(146, 22)
         WeaponsToolStripMenuItem.Text = "Weapons"
+        ' 
+        ' FlagsAndTagsToolStripMenuItem
+        ' 
+        FlagsAndTagsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {TagsToolStripMenuItem1})
+        FlagsAndTagsToolStripMenuItem.Name = "FlagsAndTagsToolStripMenuItem"
+        FlagsAndTagsToolStripMenuItem.Size = New Size(158, 22)
+        FlagsAndTagsToolStripMenuItem.Text = "Flags and tags"
+        ' 
+        ' TagsToolStripMenuItem1
+        ' 
+        TagsToolStripMenuItem1.Name = "TagsToolStripMenuItem1"
+        TagsToolStripMenuItem1.Size = New Size(97, 22)
+        TagsToolStripMenuItem1.Text = "Tags"
+        ' 
+        ' VisualsToolStripMenuItem
+        ' 
+        VisualsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MaterialBankToolStripMenuItem, TexturesToolStripMenuItem1, VisualBankToolStripMenuItem1})
+        VisualsToolStripMenuItem.Name = "VisualsToolStripMenuItem"
+        VisualsToolStripMenuItem.Size = New Size(158, 22)
+        VisualsToolStripMenuItem.Text = "Visuals"
+        ' 
+        ' MaterialBankToolStripMenuItem
+        ' 
+        MaterialBankToolStripMenuItem.Name = "MaterialBankToolStripMenuItem"
+        MaterialBankToolStripMenuItem.Size = New Size(146, 22)
+        MaterialBankToolStripMenuItem.Text = "Material Bank"
+        ' 
+        ' TexturesToolStripMenuItem1
+        ' 
+        TexturesToolStripMenuItem1.Name = "TexturesToolStripMenuItem1"
+        TexturesToolStripMenuItem1.Size = New Size(146, 22)
+        TexturesToolStripMenuItem1.Text = "Textures"
+        ' 
+        ' VisualBankToolStripMenuItem1
+        ' 
+        VisualBankToolStripMenuItem1.Name = "VisualBankToolStripMenuItem1"
+        VisualBankToolStripMenuItem1.Size = New Size(146, 22)
+        VisualBankToolStripMenuItem1.Text = "Visual Bank"
         ' 
         ' FoldersToolStripMenuItem
         ' 
@@ -641,12 +699,6 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
-        ' EquipmentSlotsToolStripMenuItem
-        ' 
-        EquipmentSlotsToolStripMenuItem.Name = "EquipmentSlotsToolStripMenuItem"
-        EquipmentSlotsToolStripMenuItem.Size = New Size(190, 22)
-        EquipmentSlotsToolStripMenuItem.Text = "Equipment slots"
-        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -708,9 +760,6 @@ Partial Class Main
     Friend WithEvents LabelTreasureCount As ToolStripStatusLabel
     Friend WithEvents TrasureTablesExplorerToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolsToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents ContainersToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents DyesToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ArmorsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents LaunchGameToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents FoldersToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UTAMModsToolStripMenuItem As ToolStripMenuItem
@@ -720,8 +769,6 @@ Partial Class Main
     Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
     Friend WithEvents OpenDetailsWindowsAlsoToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents WeaponsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ConsumablesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ProcessSinglePakToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents StatsExplorerToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents StatsExplorerToolStripMenuItem As ToolStripMenuItem
@@ -755,4 +802,16 @@ Partial Class Main
     Friend WithEvents GoldValuesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EquipmentTypesToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EquipmentSlotsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ItemsTemplatesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ContainersToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConsumablesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DyesToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ArmorsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents FlagsAndTagsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VisualsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents WeaponsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents TagsToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents TexturesToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents MaterialBankToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VisualBankToolStripMenuItem1 As ToolStripMenuItem
 End Class

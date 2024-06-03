@@ -17,7 +17,7 @@
 	<Description />
 	<Copyright>Copyright © 2024</Copyright>
 	<Title>BG3 UTAM</Title>
-	<Version>4.4.0</Version>
+	<Version>5.0.0</Version>
   
   </PropertyGroup>
 
@@ -53,6 +53,12 @@
     <Compile Update="Controles\Editores\Editores complejos\BG3Editor_Complex_StatusList.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controles\Editores\Editores simples\Diseñadores\BG3_Value_Editor_Visuals.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controles\Editores\Editores simples\Diseñadores\BG3_Value_Editor_FlagsandTags .vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controles\Editores\Editores simples\Stats\Textbox_Editores_Stats.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
@@ -64,8 +70,14 @@
     <Compile Update="Controles\Explorers\BG3Explorer_Icons.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controles\Selector\BG3Selector_Visuals.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controles\Selector\Designer\BG3Selector_Generic_Code.vb" />
     <Compile Update="Controles\Selector\Designer\BG3Selector_Generic_Designer.vb" />
+    <Compile Update="Controles\Selector\BG3Selector_FlagsAndTags.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Diseño del generico\Explorer_Form_Code.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -89,7 +101,9 @@
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
     <Compile Update="Formularios\UTEM Editores\Consumables_Editor.vb" />
-    <Compile Update="Formularios\UTEM Editores\Generic_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Generic_Visuals_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\Tags_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\MaterialBank_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Weapons_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Armors_Editor.vb">
       <SubType>Form</SubType>

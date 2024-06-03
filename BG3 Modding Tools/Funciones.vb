@@ -309,8 +309,9 @@ Public Class Funciones
                         Next
                     Next
                 Case "Material"
-                    Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(reg.Value, source, BG3_Enum_VisualBank_Type.Material))
-
+                    Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(reg.Value, source, BG3_Enum_VisualBank_Type.MaterialShader))
+                    ' Lo agrego ademas como asset!
+                    GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(source))
                 Case "VirtualTextureBank"
                     For Each Nod In reg.Value.Children
                         For Each child In Nod.Value
@@ -982,10 +983,12 @@ Public Class Funciones
             Case ".txt"
                 Read_Txt(Source)
             Case ".anc", ".anm", ".ann"
-            Case ".bin", ".bk2", ".bnk", ".bshd"
+            Case ".bin", ".bk2", ".bnk"
             Case ".chroma", ".clc", ".clm", ".cln", ".cur"
             Case ".dat", ".data", ".fnt"
             Case ".gamescript", ".itemscript", ".patch", ".psocache", ".khn"
+            Case ".bshd"
+                GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".gr2", ".gtp", ".gts"
                 GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".js", ".json"
@@ -997,8 +1000,8 @@ Public Class Funciones
                 If IO.Path.GetDirectoryName(Source.Filename_Relative).Contains("GUI\Assets\Portraits", StringComparison.OrdinalIgnoreCase) Then
                     GameEngine.ProcessedIcons.Manage_Overrides(New BG3_Obj_IconUV_Class(Source))
                 End If
-            Case ".jpg", ".png"
-            ' Do nothing
+            Case ".jpg", ".png", ".bmp"
+            '    GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".xml"
                 If Source.Filename_Relative.ToLower.EndsWith(".loca.xml") = False Then
                     'Read_loca(Source)
@@ -1284,38 +1287,43 @@ Public Class Funciones
     Public Shared Function PfmiToBitmap(stream As Stream) As Bitmap
         Dim bitmap As Bitmap
         Dim stream2 As New MemoryStream
-        Using image = Pfimage.FromStream(stream)
+        Try
+            Using image = Pfimage.FromStream(stream)
 
-            Dim format As New PixelFormat
-            Select Case image.Format
-                Case Pfim.ImageFormat.Rgba32
-                    format = PixelFormat.Format32bppArgb
-                Case Pfim.ImageFormat.Rgba16
-                    Debugger.Break()
-                Case Pfim.ImageFormat.Rgb8
-                    Debugger.Break()
-                Case Pfim.ImageFormat.Rgb24
-                    Debugger.Break()
-                Case Pfim.ImageFormat.R5g6b5
-                    Debugger.Break()
-                Case Pfim.ImageFormat.R5g5b5a1
-                    Debugger.Break()
-                Case Pfim.ImageFormat.R5g5b5
-                    Debugger.Break()
-            End Select
+                Dim format As New PixelFormat
+                Select Case image.Format
+                    Case Pfim.ImageFormat.Rgba32
+                        format = PixelFormat.Format32bppArgb
+                    Case Pfim.ImageFormat.Rgba16
+                        Debugger.Break()
+                        format = PixelFormat.Format16bppGrayScale
+                    Case Pfim.ImageFormat.Rgb8
+                        format = PixelFormat.Format8bppIndexed
+                    Case Pfim.ImageFormat.Rgb24
+                        format = PixelFormat.Format24bppRgb
+                    Case Pfim.ImageFormat.R5g6b5
+                        format = PixelFormat.Format16bppRgb565
+                    Case Pfim.ImageFormat.R5g5b5a1
+                        format = PixelFormat.Format16bppArgb1555
+                    Case Pfim.ImageFormat.R5g5b5
+                        format = PixelFormat.Format16bppRgb555
+                End Select
 
-            Dim handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned)
-            Try
-                Dim data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0)
-                bitmap = New Bitmap(image.Width, image.Height, image.Stride, format, data)
-                bitmap.Save(stream2, Imaging.ImageFormat.Png)
-            Catch ex As Exception
-                Debugger.Break()
-            Finally
-                handle.Free()
-            End Try
-        End Using
-
+                Dim handle = GCHandle.Alloc(image.Data, GCHandleType.Pinned)
+                Try
+                    Dim data = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0)
+                    bitmap = New Bitmap(image.Width, image.Height, image.Stride, format, data)
+                    bitmap.Save(stream2, Imaging.ImageFormat.Png)
+                Catch ex As Exception
+                    Debugger.Break()
+                Finally
+                    handle.Free()
+                End Try
+            End Using
+        Catch ex As Exception
+            MsgBox("DDS format not supported by Pfim", vbInformation, "Error")
+            Return New Bitmap(32, 32)
+        End Try
         Return New Bitmap(stream2)
     End Function
 

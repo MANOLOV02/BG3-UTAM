@@ -31,7 +31,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     Private ReadOnly Property ParentHandledList As List(Of String)
         Get
             Try
-                Return CType(ParentForm, Generic_Item_Editor).HandledAttributes
+                Return CType(ParentForm, Object).HandledAttributes
             Catch ex As Exception
                 Debugger.Break()
                 Return New List(Of String)
@@ -41,7 +41,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     Private ReadOnly Property ParentHandledNodesList As List(Of String)
         Get
             Try
-                Return CType(ParentForm, Generic_Item_Editor).HandledNodes
+                Return CType(ParentForm, Object).HandledNodes
             Catch ex As Exception
                 Debugger.Break()
                 Return New List(Of String)
@@ -50,7 +50,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     End Property
 
     Private _Last_read As LSLib.LS.Node = Nothing
-    Private _Last_OBJ As BG3_Obj_Template_Class = Nothing
+    Private _Last_OBJ As BG3_Obj_Generic_Class = Nothing
 
     Public Sub Clear()
         _Last_read = Nothing
@@ -65,7 +65,25 @@ Public Class BG3Editor_Complex_Advanced_Attributes
     Private Sub ReadNodes(nod As System.Windows.Forms.TreeNode, que As LSLib.LS.Node)
         For Each childs In que.Children
             For Each child In childs.Value
-                If ParentHandledNodesList.Contains(nod.FullPath + "\" + child.Name) = False Then
+                Dim agrega As Boolean = True
+                For Each handled In ParentHandledNodesList
+                    Dim handlednode As String = handled
+                    Dim handledParam As String = ""
+                    Dim handledParamValue As String = ""
+                    If handled.Contains(";"c) Then
+                        handlednode = handled.Split(";")(0)
+                        handledParam = handled.Split(";")(1).Split("=")(0)
+                        handledParamValue = handled.Split(";")(1).Split("=")(1)
+                    End If
+                    If handlednode.Equals(nod.FullPath + "\" + child.Name) Then
+                        If handledParam = "" Then agrega = False : Exit For
+                        Dim val As LSLib.LS.NodeAttribute = Nothing
+                        If child.Attributes.TryGetValue(handledParam, val) Then
+                            If val.AsString(Funciones.Guid_to_string).Equals(handledParamValue) Then agrega = False : Exit For
+                        End If
+                    End If
+                Next
+                If agrega Then
                     Dim treenod2 As New System.Windows.Forms.TreeNode With {.Text = child.Name, .Tag = child}
                     nod.Nodes.Add(treenod2)
                     ReadNodes(treenod2, child)
@@ -73,13 +91,14 @@ Public Class BG3Editor_Complex_Advanced_Attributes
             Next
         Next
     End Sub
-    Public Sub Read(Obj As BG3_Obj_Template_Class)
+    Public Sub Read(Obj As BG3_Obj_Generic_Class)
         Clear()
         _Last_read = Obj.NodeLSLIB
         _Last_OBJ = Obj
         Dim treenod As New System.Windows.Forms.TreeNode With {.Text = Obj.NodeLSLIB.Name, .Tag = Obj.NodeLSLIB}
         TreeView1.Nodes.Add(treenod)
         ReadNodes(treenod, Obj.NodeLSLIB)
+        treenod.ExpandAll()
         TreeView1.SelectedNode = treenod
 
     End Sub
@@ -92,7 +111,19 @@ Public Class BG3Editor_Complex_Advanced_Attributes
         If ListView1.SelectedItems.Count > 0 Then last_pos = ListView1.SelectedItems(0).Text
         ListView1.Items.Clear()
         If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
-            For Each stat In FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(_Last_OBJ.Type).ToString) = True).Select(Function(pf) pf).Distinct
+            Dim filtro As IEnumerable(Of KeyValuePair(Of String, String))
+            Select Case _Last_OBJ.GetType
+                Case GetType(BG3_Obj_Template_Class)
+                    filtro = FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(CType(_Last_OBJ, BG3_Obj_Template_Class).Type).ToString) = True).Select(Function(pf) pf).Distinct
+                Case GetType(BG3_Obj_FlagsAndTags_Class)
+                    filtro = FuncionesHelpers.GameEngine.ProcessedFlagsAndTags.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(CType(_Last_OBJ, BG3_Obj_FlagsAndTags_Class).Type).ToString) = True).Select(Function(pf) pf).Distinct
+                Case GetType(BG3_Obj_VisualBank_Class)
+                    filtro = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.EndsWith(";" + CInt(CType(_Last_OBJ, BG3_Obj_VisualBank_Class).Type).ToString) = True).Select(Function(pf) pf).Distinct
+                Case Else
+                    filtro = Nothing
+                    Debugger.Break()
+            End Select
+            For Each stat In filtro
                 idx = New ListViewItem With {.Text = stat.Value, .Name = stat.Key}
                 Dim tipos() = stat.Key.Split(";")
                 idx.SubItems.Add(tipos(1))
@@ -155,7 +186,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
             End Select
             If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
                 BG3Editor_Template_Undefined1.CheckBox1.Enabled = True
-                BG3Editor_Template_Undefined1.Read(_Last_OBJ)
+                BG3Editor_Template_Undefined1.Read(_Last_OBJ.NodeLSLIB)
             Else
                 BG3Editor_Template_Undefined1.CheckBox1.Enabled = False
                 BG3Editor_Template_Undefined1.Read(_Last_read)
@@ -184,7 +215,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
             oldv = ListView1.SelectedItems(0).SubItems(2).Text
             ListView1.SelectedItems(0).SubItems(2).Text = BG3Editor_Template_Undefined1.TextBox1.Text
             If TreeView1.SelectedNode Is TreeView1.Nodes(0) Then
-                BG3Editor_Template_Undefined1.Write(_Last_OBJ)
+                BG3Editor_Template_Undefined1.Write(_Last_OBJ.NodeLSLIB)
                 If IsNothing(_Last_OBJ.ReadAttribute_Or_Inhterithed(BG3Editor_Template_Undefined1.Key)) Then
                     ListView1.SelectedItems(0).ForeColor = Color.FromKnownColor(KnownColor.GrayText)
                 Else
@@ -195,7 +226,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
                     End If
                 End If
             Else
-                BG3Editor_Template_Undefined1.Wite(_Last_read)
+                BG3Editor_Template_Undefined1.Write(_Last_read)
             End If
         Catch ex As Exception
             BG3Editor_Template_Undefined1.TextBox1.Text = oldv

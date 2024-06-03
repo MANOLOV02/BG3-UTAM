@@ -17,8 +17,7 @@ Public Class BG3Editor_Template_Node_ParentRaceMapkey
         If IsNothing(Que) Then TextBox1.Text = "" : Return True
         Dim ov As LSLib.LS.NodeAttribute = Nothing
         If Que.Attributes.TryGetValue(KeyToRead, ov) = False OrElse IsNothing(ov) Then TextBox1.Text = "" : Return True
-        Dim str As String = "00000000-0000-0000-0000-000000000000"
-        str = ov.AsString(Funciones.Guid_to_string)
+        Dim str As String = ov.AsString(Funciones.Guid_to_string)
         TextBox1.Text = str
         Return True
     End Function

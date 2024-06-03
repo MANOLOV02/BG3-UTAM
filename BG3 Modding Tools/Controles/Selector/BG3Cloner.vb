@@ -5,7 +5,7 @@ Imports LSLib.Granny
 Public Class BG3Cloner
     Private ReadOnly Property ModSource As BG3_Pak_SourceOfResource_Class
         Get
-            Return CType(Me.ParentForm, Generic_Item_Editor).ActiveModSource
+            Return CType(Me.ParentForm, Object).ActiveModSource
         End Get
     End Property
     Sub New()
@@ -393,6 +393,8 @@ Public Class BG3Cloner
     Public Event Clone_Started()
     Public Event Clone_Finished()
     Public Event Clone_Template(Objeto As BG3_Obj_Template_Class, Tipo As Clonetype, Stat As BG3_Obj_Stats_Class)
+    Public Event Clone_Tag(Objeto As BG3_Obj_FlagsAndTags_Class, Tipo As Clonetype)
+    Public Event Clone_Visual(Objeto As BG3_Obj_VisualBank_Class, Tipo As Clonetype)
     Public Event Clone_Stat(Objeto As BG3_Obj_Stats_Class, Tipo As Clonetype)
     Public Enum Clonetype
         Inherit
@@ -401,17 +403,43 @@ Public Class BG3Cloner
         None
     End Enum
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Stats_Class) As Boolean
+        If CheckType(obj) = False Then Return False
         If IsNothing(Stat_MustDescend_From) Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Stat_MustDescend_From)
         Return False
     End Function
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Template_Class) As Boolean
+        If CheckType(obj) = False Then Return False
         If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" AndAlso obj.ReadAttribute_Or_Empty("TemplateName") <> "" Then Return False
         If IsNothing(Template_MustDescend_From) Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Template_MustDescend_From)
         Return False
     End Function
-
+    Public Function Drop_Verify_OBJ(obj As BG3_Obj_FlagsAndTags_Class) As Boolean
+        If CheckType(obj) = False Then Return False
+        Return True
+    End Function
+    Public Function Drop_Verify_OBJ(obj As BG3_Obj_VisualBank_Class) As Boolean
+        If CheckType(obj) = False Then Return False
+        Return True
+    End Function
+    Private Function CheckType(Obj As Object) As Boolean
+        Select Case Me.ParentForm.GetType
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor)
+                If Obj.GetType = GetType(BG3_Obj_Template_Class) Or Obj.GetType = GetType(BG3_Obj_Stats_Class) Then Return True
+            Case GetType(Tags_Editor)
+                If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.Tags Then Return True
+            Case GetType(Textures_Editor)
+                If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.TextureBank Then Return True
+            Case GetType(MaterialBank_Editor)
+                If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.MaterialBank Then Return True
+            Case GetType(VisualBank_Editor)
+                If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.VisualBank Then Return True
+            Case Else
+                Return False
+        End Select
+        Return False
+    End Function
     Public Shared Function CheckDescendant_Generic(obj As Object, lista As String())
         If lista.Length = 0 Then Return True
         If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
@@ -421,6 +449,18 @@ Public Class BG3Cloner
         End If
         Return False
     End Function
+    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_FlagsAndTags_Class)
+        Dim Tipo As Clonetype = Clonetype.Inherit
+        If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
+        If RadioButtonOverride.Checked = True Then Tipo = Clonetype.Override
+        Do_Clone_OBJ(Obj, Tipo, Not RadioButtonOnlyChilds.Checked, Not RadioButtonItemOnly.Checked)
+    End Sub
+    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
+        Dim Tipo As Clonetype = Clonetype.Inherit
+        If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
+        If RadioButtonOverride.Checked = True Then Tipo = Clonetype.Override
+        Do_Clone_OBJ(Obj, Tipo, Not RadioButtonOnlyChilds.Checked, Not RadioButtonItemOnly.Checked)
+    End Sub
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
         Dim Tipo As Clonetype = Clonetype.Inherit
         If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
@@ -449,7 +489,24 @@ Public Class BG3Cloner
         If RadioButtonOverride.Checked = True Then Tipo = Clonetype.Override
         Do_Clone_OBJ(Obj, Tipo, Not RadioButtonOnlyChilds.Checked, Not RadioButtonItemOnly.Checked)
     End Sub
-
+    Public Sub Do_Clone_OBJ(obj As BG3_Obj_VisualBank_Class, tipo As Clonetype, Copyself As Boolean, Copychilds As Boolean)
+        RaiseEvent Clone_Started()
+        If Copyself = True Then
+            If obj.IsOverrided = False Then
+                RaiseEvent Clone_Visual(obj, tipo)
+            End If
+        End If
+        RaiseEvent Clone_Finished()
+    End Sub
+    Public Sub Do_Clone_OBJ(obj As BG3_Obj_FlagsAndTags_Class, tipo As Clonetype, Copyself As Boolean, Copychilds As Boolean)
+        RaiseEvent Clone_Started()
+        If Copyself = True Then
+            If obj.IsOverrided = False Then
+                RaiseEvent Clone_Tag(obj, tipo)
+            End If
+        End If
+        RaiseEvent Clone_Finished()
+    End Sub
     Public Sub Do_Clone_OBJ(obj As BG3_Obj_Template_Class, tipo As Clonetype, Copyself As Boolean, Copychilds As Boolean)
         Child_Temp.Clear()
         RaiseEvent Clone_Started()
@@ -523,9 +580,7 @@ Public Class BG3Cloner
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Assets_Class)
         Debugger.Break()
     End Sub
-    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_FlagsAndTags_Class)
-        Debugger.Break()
-    End Sub
+
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Generic_Class)
         Debugger.Break()
     End Sub
@@ -542,16 +597,11 @@ Public Class BG3Cloner
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_TreasureTable_TableItem_Class)
         Debugger.Break()
     End Sub
-    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
-        Debugger.Break()
-    End Sub
+
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_IconUV_Class) As Boolean
         Return False
     End Function
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_Assets_Class) As Boolean
-        Return False
-    End Function
-    Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_FlagsAndTags_Class) As Boolean
         Return False
     End Function
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_Generic_Class) As Boolean
@@ -569,9 +619,7 @@ Public Class BG3Cloner
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_TreasureTable_TableItem_Class) As Boolean
         Return False
     End Function
-    Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
-        Return False
-    End Function
+
 
     Private Sub GroupBox1_Enter(sender As Object, e As EventArgs) Handles GroupBox1.Enter
 
