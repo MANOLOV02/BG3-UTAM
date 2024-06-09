@@ -27,7 +27,7 @@ Partial Class MaterialBank_Editor
         BG3Editor_Visuals_MaterialType1 = New BG3Editor_Visuals_MaterialType()
         BG3Editor_Textures_Name1 = New BG3Editor_Textures_Name()
         BG3Editor_Textures_iD_Fixed1 = New BG3Editor_Textures_ID_Fixed()
-        BG3Editor_Textures_SourceFile1 = New BG3Editor_Materialbank_SourceFile()
+        BG3Editor_Material_SourceFile1 = New BG3Editor_Materialbank_SourceFile()
         GroupboxAsset = New GroupBox()
         GroupBoxVT = New GroupBox()
         ButtonVT = New Button()
@@ -149,24 +149,24 @@ Partial Class MaterialBank_Editor
         BG3Editor_Textures_iD_Fixed1.Size = New Size(401, 23)
         BG3Editor_Textures_iD_Fixed1.TabIndex = 0
         ' 
-        ' BG3Editor_Textures_SourceFile1
+        ' BG3Editor_Material_SourceFile1
         ' 
-        BG3Editor_Textures_SourceFile1.DropIcon = True
-        BG3Editor_Textures_SourceFile1.EditIsConditional = False
-        BG3Editor_Textures_SourceFile1.Label = "Material shader"
-        BG3Editor_Textures_SourceFile1.Location = New Point(3, 13)
-        BG3Editor_Textures_SourceFile1.Margin = New Padding(0)
-        BG3Editor_Textures_SourceFile1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Textures_SourceFile1.MinimumSize = New Size(100, 23)
-        BG3Editor_Textures_SourceFile1.Name = "BG3Editor_Textures_SourceFile1"
-        BG3Editor_Textures_SourceFile1.ReadOnly = True
-        BG3Editor_Textures_SourceFile1.Size = New Size(789, 23)
-        BG3Editor_Textures_SourceFile1.SplitterDistance = 100
-        BG3Editor_Textures_SourceFile1.TabIndex = 10
+        BG3Editor_Material_SourceFile1.DropIcon = True
+        BG3Editor_Material_SourceFile1.EditIsConditional = False
+        BG3Editor_Material_SourceFile1.Label = "Material shader"
+        BG3Editor_Material_SourceFile1.Location = New Point(3, 13)
+        BG3Editor_Material_SourceFile1.Margin = New Padding(0)
+        BG3Editor_Material_SourceFile1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Material_SourceFile1.MinimumSize = New Size(100, 23)
+        BG3Editor_Material_SourceFile1.Name = "BG3Editor_Material_SourceFile1"
+        BG3Editor_Material_SourceFile1.ReadOnly = True
+        BG3Editor_Material_SourceFile1.Size = New Size(789, 23)
+        BG3Editor_Material_SourceFile1.SplitterDistance = 100
+        BG3Editor_Material_SourceFile1.TabIndex = 10
         ' 
         ' GroupboxAsset
         ' 
-        GroupboxAsset.Controls.Add(BG3Editor_Textures_SourceFile1)
+        GroupboxAsset.Controls.Add(BG3Editor_Material_SourceFile1)
         GroupboxAsset.Location = New Point(6, 10)
         GroupboxAsset.Name = "GroupboxAsset"
         GroupboxAsset.Size = New Size(795, 43)
@@ -504,7 +504,7 @@ Partial Class MaterialBank_Editor
     Protected Friend WithEvents GroupBoxTexture As GroupBox
     Friend WithEvents BG3Editor_Textures_iD_Fixed1 As BG3Editor_Textures_ID_Fixed
     Friend WithEvents BG3Editor_Textures_Name1 As BG3Editor_Textures_Name
-    Friend WithEvents BG3Editor_Textures_SourceFile1 As BG3Editor_Materialbank_SourceFile
+    Friend WithEvents BG3Editor_Material_SourceFile1 As BG3Editor_Materialbank_SourceFile
     Friend WithEvents GroupboxAsset As GroupBox
     Friend WithEvents BG3Editor_Visuals_MaterialType1 As BG3Editor_Visuals_MaterialType
     Friend WithEvents BG3Editor_Visuals_DiffusionProfileuuid1 As BG3Editor_Visuals_DiffusionProfileUUID

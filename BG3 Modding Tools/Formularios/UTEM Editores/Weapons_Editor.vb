@@ -192,47 +192,42 @@ Public Class Weapons_Editor
 
     Protected Transfer_Combo As BG3_Obj_Stats_Class
     Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_Template_Class, statsList() As String)
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
-            Dim obj As BG3_Obj_Template_Class = nod.Objeto
-            If obj IsNot Template Then
-                For Each stat In statsList
-                    Select Case stat
-                        Case "Slot"
-                            BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
-                        Case "Weapon Group"
-                            BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
-                        Case "Damage"
-                            BG3Editor_Stats_VersatileDamage1.Read(Transfer_Stat)
-                            BG3Editor_Stats_VersatileDamage1.Write(SelectedStat)
-                        Case "Weapon Properties"
-                            BG3Editor_Stats_WeaponProperties1.Read(Transfer_Stat)
-                            BG3Editor_Stats_WeaponProperties1.Write(SelectedStat)
-                        Case "Damage Type"
-                            BG3Editor_Stats_Damage_Type1.Read(Transfer_Stat)
-                            BG3Editor_Stats_Damage_Type1.Write(SelectedStat)
-                        Case "Damage Range"
-                            BG3Editor_Stats_WeaponRange1.Read(Transfer_Stat)
-                            BG3Editor_Stats_WeaponRange1.Write(SelectedStat)
-                        Case "WeaponRange"
-                            BG3Editor_Stats_WeaponRange1.Read(Transfer_Stat)
-                            BG3Editor_Stats_WeaponRange1.Write(SelectedStat)
-                        Case "VersatileDamage"
-                            BG3Editor_Stats_VersatileDamage1.Read(Transfer_Stat)
-                            BG3Editor_Stats_VersatileDamage1.Write(SelectedStat)
-                        Case "Proficiency Group"
-                            BG3Editor_Stats_WeaponsProficiencyGroup1.Read(Transfer_Stat)
-                            BG3Editor_Stats_WeaponsProficiencyGroup1.Write(SelectedStat)
-                        Case "EquipmentTypeID Group"
-                            BG3Editor_Template_EquipmenTypeId1.Read(Template)
-                            BG3Editor_Template_EquipmenTypeId1.Write(SelectedTmp)
-                        Case "StatusList"
-                            BG3Editor_Complex_StatusList1.Read(Template)
-                            BG3Editor_Complex_StatusList1.Write(SelectedTmp)
-                    End Select
-                Next
-            End If
+        For Each stat In statsList
+            Select Case stat
+                Case "Slot"
+                    BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
+                    BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
+                Case "Weapon Group"
+                    BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
+                    BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
+                Case "Damage"
+                    BG3Editor_Stats_VersatileDamage1.Read(Transfer_Stat)
+                    BG3Editor_Stats_VersatileDamage1.Write(SelectedStat)
+                Case "Weapon Properties"
+                    BG3Editor_Stats_WeaponProperties1.Read(Transfer_Stat)
+                    BG3Editor_Stats_WeaponProperties1.Write(SelectedStat)
+                Case "Damage Type"
+                    BG3Editor_Stats_Damage_Type1.Read(Transfer_Stat)
+                    BG3Editor_Stats_Damage_Type1.Write(SelectedStat)
+                Case "Damage Range"
+                    BG3Editor_Stats_WeaponRange1.Read(Transfer_Stat)
+                    BG3Editor_Stats_WeaponRange1.Write(SelectedStat)
+                Case "WeaponRange"
+                    BG3Editor_Stats_WeaponRange1.Read(Transfer_Stat)
+                    BG3Editor_Stats_WeaponRange1.Write(SelectedStat)
+                Case "VersatileDamage"
+                    BG3Editor_Stats_VersatileDamage1.Read(Transfer_Stat)
+                    BG3Editor_Stats_VersatileDamage1.Write(SelectedStat)
+                Case "Proficiency Group"
+                    BG3Editor_Stats_WeaponsProficiencyGroup1.Read(Transfer_Stat)
+                    BG3Editor_Stats_WeaponsProficiencyGroup1.Write(SelectedStat)
+                Case "EquipmentTypeID Group"
+                    BG3Editor_Template_EquipmenTypeId1.Read(Template)
+                    BG3Editor_Template_EquipmenTypeId1.Write(SelectedTmp)
+                Case "StatusList"
+                    BG3Editor_Complex_StatusList1.Read(Template)
+                    BG3Editor_Complex_StatusList1.Write(SelectedTmp)
+            End Select
         Next
     End Sub
 

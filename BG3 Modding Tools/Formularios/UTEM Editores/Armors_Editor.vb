@@ -141,32 +141,27 @@ Public Class Armors_Editor
 
     Protected Transfer_Combo As BG3_Obj_Stats_Class
     Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_Template_Class, statsList() As String)
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
-            Dim obj As BG3_Obj_Template_Class = nod.Objeto
-            If obj IsNot Template Then
-                For Each stat In statsList
-                    Select Case stat
-                        Case "Slot"
-                            BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
-                        Case "ArmorType"
-                            BG3Editor_Stats_ArmorType1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ArmorType1.Write(SelectedStat)
-                        Case "Armor Class Ability"
-                            BG3Editor_Stats_ArmorClassAbility1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ArmorClassAbility1.Write(SelectedStat)
-                        Case "Proficiency Group"
-                            BG3Editor_Stats_ProficiencyGroup1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ProficiencyGroup1.Write(SelectedStat)
-                        Case "ArmorClass"
-                            BG3Editor_Stats_ArmorClass1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ArmorClass1.Write(SelectedStat)
-                        Case "StatusList"
-                            BG3Editor_Complex_StatusList1.Read(Template)
-                            BG3Editor_Complex_StatusList1.Write(SelectedTmp)
-                    End Select
-                Next
-            End If
+        For Each stat In statsList
+            Select Case stat
+                Case "Slot"
+                    BG3Editor_Stat_Slots_Armor1.Read(Transfer_Stat)
+                    BG3Editor_Stat_Slots_Armor1.Write(SelectedStat)
+                Case "ArmorType"
+                    BG3Editor_Stats_ArmorType1.Read(Transfer_Stat)
+                    BG3Editor_Stats_ArmorType1.Write(SelectedStat)
+                Case "Armor Class Ability"
+                    BG3Editor_Stats_ArmorClassAbility1.Read(Transfer_Stat)
+                    BG3Editor_Stats_ArmorClassAbility1.Write(SelectedStat)
+                Case "Proficiency Group"
+                    BG3Editor_Stats_ProficiencyGroup1.Read(Transfer_Stat)
+                    BG3Editor_Stats_ProficiencyGroup1.Write(SelectedStat)
+                Case "ArmorClass"
+                    BG3Editor_Stats_ArmorClass1.Read(Transfer_Stat)
+                    BG3Editor_Stats_ArmorClass1.Write(SelectedStat)
+                Case "StatusList"
+                    BG3Editor_Complex_StatusList1.Read(Template)
+                    BG3Editor_Complex_StatusList1.Write(SelectedTmp)
+            End Select
         Next
     End Sub
 

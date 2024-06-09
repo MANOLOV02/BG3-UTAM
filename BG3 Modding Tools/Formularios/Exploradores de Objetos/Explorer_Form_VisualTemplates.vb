@@ -10,6 +10,7 @@ Imports System.Xml
 Imports BG3_Modding_Tools.Funciones
 Imports BG3_Modding_Tools.FuncionesHelpers
 Imports LSLib.Granny
+Imports LSLib.Granny.Model
 Imports LSLib.LS.Enums
 Imports LSLib.VirtualTextures
 
@@ -81,6 +82,9 @@ Public Class Explorer_Form_VisualTemplates
                     End If
                 Case _Last_Obj.Type = BG3_Enum_VisualBank_Type.VisualBank
                     Save_as_Is(xx.FileName)
+                    If MsgBox("Do you want to also convert to a DAE file", vbOKCancel, "Virtual bank") = MsgBoxResult.Ok Then
+                        Extract_DAE(xx.FileName)
+                    End If
                 Case _Last_Obj.Type = BG3_Enum_VisualBank_Type.TextureBank
                     Save_as_Is(xx.FileName)
                 Case BG3_Enum_VisualBank_Type.MaterialShader
@@ -91,6 +95,153 @@ Public Class Explorer_Form_VisualTemplates
         End If
 
 
+    End Sub
+
+    Private Sub Extract_Dae(NewnameFull As String)
+        Try
+            Dim reader As New LSLib.Granny.GR2.GR2Reader(_Last_Obj.VisualAsset.SourceOfResorce.CreateContentReader)
+            Dim exporter As New LSLib.Granny.Model.Exporter
+            Dim root As New LSLib.Granny.Model.Root
+            Dim settings = exporter.Options
+
+            reader.Read(root)
+            root.PostLoad(reader.Tag)
+            ' Common setting TO DAE
+            settings.FlipUVs = True
+            settings.BuildDummySkeleton = True
+            settings.DeduplicateUVs = False
+            settings.ApplyBasisTransforms = True
+            settings.FlipMesh = True
+            settings.FlipSkeleton = False
+            settings.LoadGameSettings(Game.BaldursGate3)
+            settings.ModelType = 0
+            settings.ConformGR2Path = Nothing
+            settings.ConformSkeletonsCopy = False
+            'InputStatus
+            Dim skinned As Boolean = root.Skeletons IsNot Nothing AndAlso root.Skeletons.Count > 0
+            Dim animationsOnly As Boolean = Not skinned AndAlso (root.Models Is Nothing OrElse root.Models.Count = 0) AndAlso root.Animations IsNot Nothing AndAlso root.Animations.Count > 0
+            If skinned Then settings.BuildDummySkeleton = False
+            If skinned Then
+                settings.BuildDummySkeleton = False
+            ElseIf animationsOnly Then
+                settings.BuildDummySkeleton = False
+            Else
+                settings.BuildDummySkeleton = True
+            End If
+            Dim hasUndeterminedModelTypes As Boolean = False
+            Dim accumulatedModelFlags As DivinityModelFlag = 0
+            For Each mesh In If(root.Meshes, Enumerable.Empty(Of LSLib.Granny.Model.Mesh)())
+                If mesh.ExtendedData?.UserMeshProperties Is Nothing OrElse mesh.ExtendedData.UserMeshProperties.MeshFlags = 0 Then
+                    hasUndeterminedModelTypes = True
+                ElseIf mesh.ExtendedData?.UserMeshProperties Is Nothing Then
+                    accumulatedModelFlags = accumulatedModelFlags Or mesh.ExtendedData.UserMeshProperties.MeshFlags
+                End If
+            Next
+            If accumulatedModelFlags.IsRigid() Then settings.ModelType = settings.ModelType Or DivinityModelFlag.Rigid
+            If accumulatedModelFlags.IsCloth() Then settings.ModelType = settings.ModelType Or DivinityModelFlag.Cloth
+            If accumulatedModelFlags.IsMeshProxy() Then settings.ModelType = settings.ModelType Or DivinityModelFlag.MeshProxy Or DivinityModelFlag.HasProxyGeometry
+
+            UpdateExportableObjects(root)
+            UpdateResourceFormats(root)
+
+            For Each item As ListViewItem In exportableObjects.Items
+                If Not item.Checked Then
+                    Dim name = item.SubItems(0).Text
+                    Dim itemType = item.SubItems(1).Text
+                    If itemType = "Model" Then
+                        settings.DisabledModels.Add(name)
+                    ElseIf itemType = "Skeleton" Then
+                        settings.DisabledSkeletons.Add(name)
+                    ElseIf itemType = "Animation" Then
+                        settings.DisabledAnimations.Add(name)
+                    End If
+                End If
+            Next
+
+            For Each setting As ListViewItem In From item In resourceFormats.Items Select TryCast(item, ListViewItem)
+                Dim name As String = setting.SubItems(0).Text
+                Dim type As String = setting.SubItems(1).Text
+                Dim value As String = setting.SubItems(2).Text
+                If type = "Mesh" AndAlso value <> "Automatic" Then
+                    Throw New NotImplementedException("Custom vertex formats not supported")
+                End If
+            Next
+
+            exporter.Options.Input = root
+            exporter.Options.OutputFormat = ExportFormat.DAE
+            exporter.Options.OutputPath = NewnameFull.Replace(".GR2", ".DAE", StringComparison.OrdinalIgnoreCase)
+            exporter.Export()
+        Catch ex As Exception
+            MsgBox("Error exporting DAE. Make sure the Granny dll is in the application directory", MsgBoxStyle.Information + vbOKOnly, "Error")
+        End Try
+    End Sub
+    Private exportableObjects As New ListView
+    Private resourceFormats As New ListView
+    Private Sub UpdateResourceFormats(ByRef _root As LSLib.Granny.Model.Root)
+        resourceFormats.Items.Clear()
+
+        If _root.Meshes IsNot Nothing Then
+
+            For Each mesh As LSLib.Granny.Model.Mesh In _root.Meshes
+                Dim item = New ListViewItem({mesh.Name, "Mesh", "Automatic"})
+                resourceFormats.Items.Add(item)
+            Next
+        End If
+
+        If _root.TrackGroups IsNot Nothing Then
+
+            For Each trackGroup As TrackGroup In _root.TrackGroups
+
+                For Each track As TransformTrack In trackGroup.TransformTracks
+
+                    If track.PositionCurve.CurveData.NumKnots() > 2 Then
+                        Dim item = New ListViewItem({track.Name, "Position Track", "Automatic"})
+                        resourceFormats.Items.Add(item)
+                    End If
+
+                    If track.OrientationCurve.CurveData.NumKnots() > 2 Then
+                        Dim item = New ListViewItem({track.Name, "Rotation Track", "Automatic"})
+                        resourceFormats.Items.Add(item)
+                    End If
+
+                    If track.ScaleShearCurve.CurveData.NumKnots() > 2 Then
+                        Dim item = New ListViewItem({track.Name, "Scale/Shear Track", "Automatic"})
+                        resourceFormats.Items.Add(item)
+                    End If
+                Next
+            Next
+        End If
+    End Sub
+
+    Private Sub UpdateExportableObjects(ByRef _root As LSLib.Granny.Model.Root)
+        exportableObjects.Items.Clear()
+
+        If _root.Models IsNot Nothing Then
+
+            For Each model As Model In _root.Models
+                Dim item = New ListViewItem({model.Name, "Model"})
+                item.Checked = True
+                exportableObjects.Items.Add(item)
+            Next
+        End If
+
+        If _root.Skeletons IsNot Nothing Then
+
+            For Each skeleton As Skeleton In _root.Skeletons
+                Dim item = New ListViewItem({skeleton.Name, "Skeleton"})
+                item.Checked = True
+                exportableObjects.Items.Add(item)
+            Next
+        End If
+
+        If _root.Animations IsNot Nothing Then
+
+            For Each animation As LSLib.Granny.Model.Animation In _root.Animations
+                Dim item = New ListViewItem({animation.Name, "Animation"})
+                item.Checked = True
+                exportableObjects.Items.Add(item)
+            Next
+        End If
     End Sub
     Private Sub Extractshader(ShaderFile As String, NewnameFull As String)
         Try

@@ -48,7 +48,7 @@ Public Class MaterialBank_Editor
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As Node)
         BG3Editor_Textures_iD_Fixed1.Create_Attribute(nuevonod, Template_guid)
         BG3Editor_Textures_Name1.Create_Attribute(nuevonod, "New_Material")
-        BG3Editor_Textures_SourceFile1.Create_Attribute(nuevonod, "Public/Shared/Assets/Materials/Characters/CHAR_BASE.lsf")
+        BG3Editor_Material_SourceFile1.Create_Attribute(nuevonod, "Public/Shared/Assets/Materials/Characters/CHAR_BASE.lsf")
         BG3Editor_Visuals_MaterialType1.Create_Attribute(nuevonod, "0")
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
@@ -64,7 +64,7 @@ Public Class MaterialBank_Editor
             BG3Editor_Complex_Dyecolor1.Read(SelectedTmp)
             BG3Editor_Textures_iD_Fixed1.Read(SelectedTmp)
             BG3Editor_Textures_Name1.Read(SelectedTmp)
-            BG3Editor_Textures_SourceFile1.Read(SelectedTmp)
+            BG3Editor_Material_SourceFile1.Read(SelectedTmp)
             BG3Editor_Visuals_MaterialType1.Read(SelectedTmp)
             BG3Editor_Visuals_DiffusionProfileuuid1.Read(SelectedTmp)
             BG3Editor_Visuals_VirtualTexture1.Read(SelectedTmp)
@@ -78,7 +78,7 @@ Public Class MaterialBank_Editor
             BG3Editor_Complex_Dyecolor1.Clear()
             BG3Editor_Textures_iD_Fixed1.Clear()
             BG3Editor_Textures_Name1.Clear()
-            BG3Editor_Textures_SourceFile1.Clear()
+            BG3Editor_Material_SourceFile1.Clear()
             BG3Editor_Visuals_MaterialType1.Clear()
             BG3Editor_Visuals_DiffusionProfileuuid1.Clear()
             BG3Editor_Visuals_VirtualTexture1.Clear()
@@ -94,7 +94,7 @@ Public Class MaterialBank_Editor
         BG3Editor_Complex_Dyecolor1.Write(SelectedTmp)
         BG3Editor_Textures_iD_Fixed1.Write(SelectedTmp)
         BG3Editor_Textures_Name1.Write(SelectedTmp)
-        BG3Editor_Textures_SourceFile1.Write(SelectedTmp)
+        BG3Editor_Material_SourceFile1.Write(SelectedTmp)
         BG3Editor_Visuals_MaterialType1.Write(SelectedTmp)
         BG3Editor_Visuals_DiffusionProfileuuid1.Write(SelectedTmp)
         BG3Editor_Visuals_VirtualTexture1.Write(SelectedTmp)
@@ -104,6 +104,55 @@ Public Class MaterialBank_Editor
         BG3Editor_Visuals_PhisicalMap1.Write(SelectedTmp)
         BG3Editor_Visuals_VertexColor_msk1.Write(SelectedTmp)
         BG3Editor_Visuals_msKcloth1.Write(SelectedTmp)
+    End Sub
+    Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
+#Disable Warning CA1861 ' Evitar matrices constantes como argumentos
+        Lista.AddRange(
+            {New ToolStripMenuItem("Material bank specific|Material shader|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialShader"}},
+            New ToolStripMenuItem("Material bank specific|Material type|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Materialtype"}},
+            New ToolStripMenuItem("Textures|Base color map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Basecolormap"}},
+            New ToolStripMenuItem("Textures|Normal map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Normalmap"}},
+            New ToolStripMenuItem("Textures|Virtual texture|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"VirtualTexture"}},
+            New ToolStripMenuItem("Textures|Phycial map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Phisicalmap"}},
+            New ToolStripMenuItem("Textures|Color mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Colormask"}},
+            New ToolStripMenuItem("Textures|Vertex color mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Clothmask"}},
+            New ToolStripMenuItem("Textures|Cloth mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Vertexmask"}}
+            })
+#Enable Warning CA1861 ' Evitar matrices constantes como argumentos
+    End Sub
+    Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_VisualBank_Class, statsList() As String)
+        For Each stat In statsList
+            Select Case stat
+                Case "MaterialShader"
+                    BG3Editor_Material_SourceFile1.Read(Template)
+                    BG3Editor_Material_SourceFile1.Write(SelectedTmp)
+                Case "Materialtype"
+                    BG3Editor_Visuals_MaterialType1.Read(Template)
+                    BG3Editor_Visuals_MaterialType1.Write(SelectedTmp)
+                Case "VirtualTexture"
+                    BG3Editor_Visuals_VirtualTexture1.Read(Template)
+                    BG3Editor_Visuals_VirtualTexture1.Write(SelectedTmp)
+                Case "Basecolormap"
+                    BG3Editor_Visuals_BasecolorMap1.Read(Template)
+                    BG3Editor_Visuals_BasecolorMap1.Write(SelectedTmp)
+                Case "Normalmap"
+                    BG3Editor_Visuals_NormalMap1.Read(Template)
+                    BG3Editor_Visuals_NormalMap1.Write(SelectedTmp)
+                Case "Phisicalmap"
+                    BG3Editor_Visuals_PhisicalMap1.Read(Template)
+                    BG3Editor_Visuals_PhisicalMap1.Write(SelectedTmp)
+                Case "Colormask"
+                    BG3Editor_Visuals_MaskTexture1.Read(Template)
+                    BG3Editor_Visuals_MaskTexture1.Write(SelectedTmp)
+                Case "Clothmask"
+                    BG3Editor_Visuals_msKcloth1.Read(Template)
+                    BG3Editor_Visuals_msKcloth1.Write(SelectedTmp)
+                Case "Vertexmask"
+                    BG3Editor_Visuals_VertexColor_msk1.Read(Template)
+                    BG3Editor_Visuals_VertexColor_msk1.Write(SelectedTmp)
+
+            End Select
+        Next
     End Sub
     Protected Overrides Sub Capture_Clone_specific(obj As BG3_Obj_VisualBank_Class, tipo As BG3Cloner.Clonetype)
         Select Case tipo

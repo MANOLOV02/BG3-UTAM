@@ -36,6 +36,9 @@ Partial Class VisualBank_Editor
         TabPageObjects = New TabPage()
         GroupBoxObjects = New GroupBox()
         GroupBoxObject = New GroupBox()
+        BG3Editor_Visuals_oBjectid3 = New BG3Editor_Visuals_OBjectID()
+        BG3Editor_Visuals_oBjectid2 = New BG3Editor_Visuals_OBjectID()
+        LabelMat = New Label()
         BG3Editor_Visuals_oBjectid1 = New BG3Editor_Visuals_OBjectID()
         BG3Editor_Visuals_lod1 = New BG3Editor_Visuals_LOD()
         BG3Editor_Visuals_Materialid1 = New BG3Editor_Visuals_MaterialID()
@@ -236,25 +239,63 @@ Partial Class VisualBank_Editor
         ' 
         ' GroupBoxObject
         ' 
+        GroupBoxObject.Controls.Add(BG3Editor_Visuals_oBjectid3)
+        GroupBoxObject.Controls.Add(BG3Editor_Visuals_oBjectid2)
+        GroupBoxObject.Controls.Add(LabelMat)
         GroupBoxObject.Controls.Add(BG3Editor_Visuals_oBjectid1)
         GroupBoxObject.Controls.Add(BG3Editor_Visuals_lod1)
         GroupBoxObject.Controls.Add(BG3Editor_Visuals_Materialid1)
         GroupBoxObject.Location = New Point(169, 72)
         GroupBoxObject.Name = "GroupBoxObject"
-        GroupBoxObject.Size = New Size(611, 94)
+        GroupBoxObject.Size = New Size(611, 173)
         GroupBoxObject.TabIndex = 16
         GroupBoxObject.TabStop = False
         GroupBoxObject.Text = "Object properties"
+        ' 
+        ' BG3Editor_Visuals_oBjectid3
+        ' 
+        BG3Editor_Visuals_oBjectid3.EditIsConditional = False
+        BG3Editor_Visuals_oBjectid3.Label = "Mesh Prefix"
+        BG3Editor_Visuals_oBjectid3.Location = New Point(6, 42)
+        BG3Editor_Visuals_oBjectid3.Margin = New Padding(0)
+        BG3Editor_Visuals_oBjectid3.MaximumSize = New Size(3000, 23)
+        BG3Editor_Visuals_oBjectid3.MinimumSize = New Size(100, 23)
+        BG3Editor_Visuals_oBjectid3.Name = "BG3Editor_Visuals_oBjectid3"
+        BG3Editor_Visuals_oBjectid3.Size = New Size(602, 23)
+        BG3Editor_Visuals_oBjectid3.TabIndex = 18
+        ' 
+        ' BG3Editor_Visuals_oBjectid2
+        ' 
+        BG3Editor_Visuals_oBjectid2.EditIsConditional = False
+        BG3Editor_Visuals_oBjectid2.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Visuals_oBjectid2.Label = "Mesh Name"
+        BG3Editor_Visuals_oBjectid2.Location = New Point(6, 65)
+        BG3Editor_Visuals_oBjectid2.Margin = New Padding(0)
+        BG3Editor_Visuals_oBjectid2.MaximumSize = New Size(3000, 23)
+        BG3Editor_Visuals_oBjectid2.MinimumSize = New Size(100, 23)
+        BG3Editor_Visuals_oBjectid2.Name = "BG3Editor_Visuals_oBjectid2"
+        BG3Editor_Visuals_oBjectid2.Size = New Size(602, 23)
+        BG3Editor_Visuals_oBjectid2.TabIndex = 17
+        ' 
+        ' LabelMat
+        ' 
+        LabelMat.Location = New Point(358, 111)
+        LabelMat.Name = "LabelMat"
+        LabelMat.Size = New Size(250, 23)
+        LabelMat.TabIndex = 6
+        LabelMat.Text = "(None)"
+        LabelMat.TextAlign = ContentAlignment.MiddleLeft
         ' 
         ' BG3Editor_Visuals_oBjectid1
         ' 
         BG3Editor_Visuals_oBjectid1.EditIsConditional = False
         BG3Editor_Visuals_oBjectid1.Label = "Object ID"
-        BG3Editor_Visuals_oBjectid1.Location = New Point(6, 65)
+        BG3Editor_Visuals_oBjectid1.Location = New Point(6, 88)
         BG3Editor_Visuals_oBjectid1.Margin = New Padding(0)
         BG3Editor_Visuals_oBjectid1.MaximumSize = New Size(3000, 23)
         BG3Editor_Visuals_oBjectid1.MinimumSize = New Size(100, 23)
         BG3Editor_Visuals_oBjectid1.Name = "BG3Editor_Visuals_oBjectid1"
+        BG3Editor_Visuals_oBjectid1.ReadOnly = True
         BG3Editor_Visuals_oBjectid1.Size = New Size(602, 23)
         BG3Editor_Visuals_oBjectid1.TabIndex = 2
         ' 
@@ -276,13 +317,13 @@ Partial Class VisualBank_Editor
         BG3Editor_Visuals_Materialid1.DropIcon = True
         BG3Editor_Visuals_Materialid1.EditIsConditional = False
         BG3Editor_Visuals_Materialid1.Label = "Material"
-        BG3Editor_Visuals_Materialid1.Location = New Point(6, 42)
+        BG3Editor_Visuals_Materialid1.Location = New Point(6, 111)
         BG3Editor_Visuals_Materialid1.Margin = New Padding(0)
         BG3Editor_Visuals_Materialid1.MaximumSize = New Size(3000, 23)
         BG3Editor_Visuals_Materialid1.MinimumSize = New Size(100, 23)
         BG3Editor_Visuals_Materialid1.Name = "BG3Editor_Visuals_Materialid1"
         BG3Editor_Visuals_Materialid1.ReadOnly = True
-        BG3Editor_Visuals_Materialid1.Size = New Size(354, 23)
+        BG3Editor_Visuals_Materialid1.Size = New Size(349, 23)
         BG3Editor_Visuals_Materialid1.SplitterDistance = 80
         BG3Editor_Visuals_Materialid1.TabIndex = 0
         ' 
@@ -426,4 +467,7 @@ Partial Class VisualBank_Editor
     Friend WithEvents BG3Editor_Visuals_Materialid1 As BG3Editor_Visuals_MaterialID
     Friend WithEvents BG3Editor_Visuals_SupportsVertexColorMask1 As BG3Editor_Visuals_SupportsVertexColorMask
     Friend WithEvents BG3Editor_Visuals_Slot1 As BG3Editor_Visuals_Slot
+    Friend WithEvents LabelMat As Label
+    Friend WithEvents BG3Editor_Visuals_oBjectid2 As BG3Editor_Visuals_OBjectID
+    Friend WithEvents BG3Editor_Visuals_oBjectid3 As BG3Editor_Visuals_OBjectID
 End Class

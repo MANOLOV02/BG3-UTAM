@@ -231,8 +231,7 @@ Public Class BG3Visualizer_XML
                         If reader.Name = "children" Then MyBase.SelectionColor = NamesColor
                         MyBase.AppendText(reader.Name)
                         MyBase.SelectionColor = NodesColor
-                        MyBase.AppendText(">")
-                        MyBase.AppendText(vbLf)
+                        MyBase.AppendText(">" + vbCrLf)
                         Exit Select
                     Case Xml.XmlNodeType.Whitespace
 
@@ -252,6 +251,7 @@ Public Class BG3Visualizer_XML
     Private Sub StattoRich(ByVal XMLString As String)
         MyBase.Text = ""
         Me.SuspendLayout()
+
         If XMLString = "" Then Exit Sub
         Try
             Dim lins = XMLString.Split(vbCrLf)

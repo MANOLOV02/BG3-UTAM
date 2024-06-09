@@ -11,13 +11,13 @@
     <ApplicationIcon>identity.ico</ApplicationIcon>
     <Description></Description>
     <NeutralLanguage>en</NeutralLanguage>
-	<Company>José Ricardo Varela</Company>
+	<Company>ManoloV02</Company>
 	<Authors>ManoloV02</Authors>
 	<Product>BG3 UTAM (Ultimate Tool for Amateur Modders)</Product>
 	<Description />
 	<Copyright>Copyright © 2024</Copyright>
 	<Title>BG3 UTAM</Title>
-	<Version>5.0.0</Version>
+	<Version>5.1.0</Version>
   
   </PropertyGroup>
 

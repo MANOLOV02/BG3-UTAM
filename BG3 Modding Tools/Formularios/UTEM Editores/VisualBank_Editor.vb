@@ -1,7 +1,10 @@
 ﻿Imports System.IO
+Imports System.Reflection.Emit
 Imports System.Runtime.InteropServices.JavaScript.JSType
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports LSLib.Granny.Model
 Imports LSLib.LS
+Imports LSLib.LS.Enums
 
 Public Class VisualBank_Editor
     Sub New()
@@ -65,6 +68,7 @@ Public Class VisualBank_Editor
             BG3Editor_Visuals_Slot1.Clear()
             BG3Editor_Visuals_SupportsVertexColorMask1.Clear()
         End If
+        Read_Model()
         Read_Listboxes()
 
     End Sub
@@ -149,17 +153,127 @@ Public Class VisualBank_Editor
         End Select
 
     End Sub
+    Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
+#Disable Warning CA1861 ' Evitar matrices constantes como argumentos
+        Lista.AddRange(
+            {New ToolStripMenuItem("Visual bank specific|Vertex mask slot|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"VertexMaxSlot"}},
+            New ToolStripMenuItem("Visual bank specific|Material (first object to all)|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Material"}},
+            New ToolStripMenuItem("Visual bank specific|Material (per order)|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialPO"}},
+            New ToolStripMenuItem("Visual bank specific|Material type|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialType"}}}
+            )
+#Enable Warning CA1861 ' Evitar matrices constantes como argumentos
+    End Sub
 
+    Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_VisualBank_Class, statsList() As String)
+        For Each stat In statsList
+            Select Case stat
+                Case "MaterialType"
+                    BG3Editor_Visuals_MaterialType1.Read(Template)
+                    BG3Editor_Visuals_MaterialType1.Write(SelectedTmp)
+                Case "VertexMaxSlot"
+                    Dim values2 As List(Of LSLib.LS.Node) = Nothing
+                    If Template.NodeLSLIB.Children.TryGetValue("VertexColorMaskSlots", values2) Then
+                        SelectedTmp.NodeLSLIB.Children.Remove("VertexColorMaskSlots")
+                        For Each value In values2
+                            SelectedTmp.NodeLSLIB.AppendChild(value.CloneNode)
+                        Next
+                    End If
+                Case "Material"
+                    Dim value As LSLib.LS.Node
+                    Dim values As List(Of LSLib.LS.Node) = Nothing
+                    Dim mat As String = ""
+                    If Template.NodeLSLIB.Children.TryGetValue("Objects", values) Then
+                        For Each value In values
+                            Dim value2 As NodeAttribute = Nothing
+                            If value.Attributes.TryGetValue("MaterialID", value2) Then
+                                mat = value2.AsString(Funciones.Guid_to_string)
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If mat <> "" Then
+                        If SelectedTmp.NodeLSLIB.Children.TryGetValue("Objects", values) Then
+                            For Each value In values
+                                Dim value2 As NodeAttribute = Nothing
+                                If value.Attributes.TryGetValue("MaterialID", value2) Then
+                                    value2.FromString(mat, Funciones.Guid_to_string)
+                                End If
+                            Next
+                        End If
+                    End If
+                Case "MaterialPO"
+                    Dim value As LSLib.LS.Node
+                    Dim values As List(Of LSLib.LS.Node) = Nothing
+                    Dim mat As New List(Of String)
+                    If Template.NodeLSLIB.Children.TryGetValue("Objects", values) Then
+                        For Each value In values
+                            Dim value2 As NodeAttribute = Nothing
+                            If value.Attributes.TryGetValue("MaterialID", value2) Then
+                                mat.Add(value2.AsString(Funciones.Guid_to_string))
+                            End If
+                        Next
+                    End If
+                    If mat.Count > 0 Then
+                        If SelectedTmp.NodeLSLIB.Children.TryGetValue("Objects", values) Then
+                            Dim x = 0
+                            For Each value In values
+                                Dim value2 As NodeAttribute = Nothing
+                                If value.Attributes.TryGetValue("MaterialID", value2) Then
+                                    value2.FromString(mat(x), Funciones.Guid_to_string)
+                                    x += 1
+                                    If x > mat.Count - 1 Then Exit For
+                                End If
+                            Next
+                        End If
+                    End If
+            End Select
+        Next
 
+    End Sub
     Private Sub ButtonAsset_Click(sender As Object, e As EventArgs) Handles ButtonAsset.Click
         Dim xx As New OpenFileDialog With {.Filter = "gr2 files|*.gr2", .InitialDirectory = CType(MdiParent, Main).ActiveMod.CurrentMod.AssetsPath}
         If xx.ShowDialog = DialogResult.OK Then
             Dim path = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, CType(MdiParent, Main).ActiveMod.CurrentMod.SaveFolder)
             Dim ass = FuncionesHelpers.GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(New BG3_Pak_SourceOfResource_Class(path, xx.FileName, BG3_Enum_Package_Type.UTAM_Mod)))
             BG3Editor_VisualBank_SourceFile1.TextBox1.Text = IO.Path.GetRelativePath(path, xx.FileName).Replace("\", "/")
-            BG3Editor_Visuals_TemplategR21.TextBox1.Text = IO.Path.GetRelativePath(path, xx.FileName).Replace("\", "/").Replace(IO.Path.GetExtension(xx.FileName), "") + ".Dummy_Root.0"
+            Capture_Source_Change(BG3Editor_VisualBank_SourceFile1)
         End If
     End Sub
+
+    Private Sub Capture_Source_Change(sender As Object) Handles BG3Editor_Visuals_TemplategR21.Dropped
+        BG3Editor_Visuals_TemplategR21.TextBox1.Text = BG3Editor_VisualBank_SourceFile1.TextBox1.Text.Replace(IO.Path.GetExtension(BG3Editor_VisualBank_SourceFile1.TextBox1.Text), "") + ".Dummy_Root.0"
+        Read_Model()
+    End Sub
+    Private Model_Objects As New List(Of String)
+    Private Sub Read_Model()
+        Try
+            Model_Objects.Clear()
+            Dim ass = BG3_Pak_Packages_List_Class.Find_AssetRelative("", BG3Editor_VisualBank_SourceFile1.TextBox1.Text)
+            If Not IsNothing(ass) Then
+                Dim reader As New LSLib.Granny.GR2.GR2Reader(ass.SourceOfResorce.CreateContentReader)
+                Dim exporter As New LSLib.Granny.Model.Exporter
+                Dim root As New LSLib.Granny.Model.Root
+                Dim settings = exporter.Options
+                reader.Read(root)
+                root.PostLoad(reader.Tag)
+                If root.Meshes IsNot Nothing Then
+                    For Each mesh As LSLib.Granny.Model.Mesh In root.Meshes
+                        Model_Objects.Add(mesh.Name + "." + mesh.ExportOrder.ToString)
+                    Next
+                End If
+
+            End If
+            BG3Editor_Visuals_oBjectid2.ComboItems = Model_Objects
+            BG3Editor_Visuals_oBjectid2.Reload_Combo()
+        Catch ex As Exception
+            Debugger.Break()
+#Disable Warning CA1861 ' Evitar matrices constantes como argumentos
+            BG3Editor_Visuals_oBjectid2.ComboItems = {"None"}.ToList
+#Enable Warning CA1861 ' Evitar matrices constantes como argumentos
+            BG3Editor_Visuals_oBjectid2.Reload_Combo()
+        End Try
+    End Sub
+
 
     Private Sub ButtonDeletePropery_Click(sender As Object, e As EventArgs) Handles ButtonDeleteMaskSlot.Click
         If ListBoxVertex.SelectedIndex <> -1 Then
@@ -191,17 +305,27 @@ Public Class VisualBank_Editor
             BG3Editor_Visuals_lod1.Read(objNode)
             BG3Editor_Visuals_Materialid1.Read(objNode)
             BG3Editor_Visuals_oBjectid1.Read(objNode)
+            If BG3Editor_Visuals_oBjectid1.Text.Contains("."c) Then
+                BG3Editor_Visuals_oBjectid3.TextBox1.Text = BG3Editor_Visuals_oBjectid1.Text.Split("."c)(0)
+                BG3Editor_Visuals_oBjectid2.TextBox1.Text = BG3Editor_Visuals_oBjectid1.Text.Remove(0, BG3Editor_Visuals_oBjectid3.TextBox1.Text.Length + 1)
+            Else
+                BG3Editor_Visuals_oBjectid3.TextBox1.Text = ""
+                BG3Editor_Visuals_oBjectid2.TextBox1.Text = BG3Editor_Visuals_oBjectid1.Text
+            End If
         Else
             BG3Editor_Visuals_lod1.Clear()
             BG3Editor_Visuals_Materialid1.Clear()
             BG3Editor_Visuals_oBjectid1.Clear()
+            BG3Editor_Visuals_oBjectid3.Clear()
+            BG3Editor_Visuals_oBjectid2.Clear()
         End If
     End Sub
-    Private Sub Write_On_leave() Handles BG3Editor_Visuals_lod1.Leave, BG3Editor_Visuals_Materialid1.Leave, BG3Editor_Visuals_oBjectid1.Leave, BG3Editor_Visuals_Materialid1.Dropped
+    Private Sub Write_On_leave() Handles BG3Editor_Visuals_lod1.Leave, BG3Editor_Visuals_Materialid1.Leave, BG3Editor_Visuals_oBjectid1.Leave, BG3Editor_Visuals_Materialid1.Dropped, BG3Editor_Visuals_oBjectid3.Leave, BG3Editor_Visuals_oBjectid2.Leave
         If ListBoxObjects.SelectedIndex <> -1 Then
-            Dim objNode As LSLib.LS.Node = CType(ListBoxObjects.Items(ListBoxObjects.SelectedIndex).value, LSLib.LS.Node)
+            Dim objNode = CType(ListBoxObjects.Items(ListBoxObjects.SelectedIndex).value, Node)
             BG3Editor_Visuals_lod1.Write(objNode)
             BG3Editor_Visuals_Materialid1.Write(objNode)
+            BG3Editor_Visuals_oBjectid1.TextBox1.Text = BG3Editor_Visuals_oBjectid3.TextBox1.Text + "." + BG3Editor_Visuals_oBjectid2.TextBox1.Text
             BG3Editor_Visuals_oBjectid1.Write(objNode)
             ListBoxObjects.Items(ListBoxObjects.SelectedIndex).text = "Object (LOD:" + BG3Editor_Visuals_lod1.TextBox1.Text + ")"
         End If
@@ -216,4 +340,12 @@ Public Class VisualBank_Editor
         ListBoxObjects.SelectedIndex = ListBoxObjects.Items.Add(cust)
 
     End Sub
+
+    Private Sub CaptureMaterialChange(sender As Object) Handles BG3Editor_Visuals_Materialid1.Inside_Text_Changed
+        Dim st As BG3_Obj_VisualBank_Class = Nothing
+        FuncionesHelpers.GameEngine.ProcessedVisualBanksList.TryGetValue(BG3Editor_Visuals_Materialid1.TextBox1.Text, st)
+        If IsNothing(st) Then LabelMat.Text = "(None)" Else LabelMat.Text = "(" + st.Name + ")"
+    End Sub
+
+
 End Class

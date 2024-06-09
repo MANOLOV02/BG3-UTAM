@@ -501,7 +501,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.0
+    Public ReadOnly Property CacheVersion As Double = 5.1
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -749,31 +749,31 @@ Public Class BG3_Pak_SourceOfResource_Class
     Sub New(ByRef Pack As BG3_Pak_PackageContainer_Class, ByRef fil As PackagedFileInfo)
         Me.PackageType = Pack.PackageType
         Me.Pak_Or_Folder = Pack.PackFileName
-        Me.Filename_Relative = fil.Name
+        Me.Filename_Relative = fil.Name.Replace("\", "/")
     End Sub
     Sub New(ByRef Path As String, ByRef fil As String)
         Me.PackageType = BG3_Enum_Package_Type.Loose_Files
         Me.Pak_Or_Folder = Path
-        Me.Filename_Relative = IO.Path.GetRelativePath(Path, fil)
+        Me.Filename_Relative = IO.Path.GetRelativePath(Path, fil).Replace("\", "/")
     End Sub
     Sub New(ByRef Path As String, ByRef fil As String, type As BG3_Enum_Package_Type)
         Me.PackageType = type
         Me.Pak_Or_Folder = Path
-        Me.Filename_Relative = IO.Path.GetRelativePath(Path, fil)
+        Me.Filename_Relative = IO.Path.GetRelativePath(Path, fil).Replace("\", "/")
     End Sub
     Sub New(ByRef Path As String, type As BG3_Enum_Package_Type)
         Me.PackageType = type
         Me.Pak_Or_Folder = Path
         Me.Filename_Relative = ""
     End Sub
-    Public Shared Function GetModFolder(Filename_Relative As String, Pack_Or_Path As String) As String
+    Public Shared Function GetModFolder(Filename_Relative_param As String, Pack_Or_Path As String) As String
         Try
-            Filename_Relative = Filename_Relative.Replace("/", "\")
-            If Filename_Relative.Contains("\"c) = False Then
+            Filename_Relative_param = Filename_Relative_param.Replace("\", "/")
+            If Filename_Relative_param.Contains("/"c) = False Then
                 Debugger.Break()
                 Return "Unknown"
             End If
-            Dim roots As String() = Filename_Relative.Split("\")
+            Dim roots As String() = Filename_Relative_param.Split("/")
             If roots(0).Equals("Public", StringComparison.OrdinalIgnoreCase) Then Return roots(1)
             If roots(0).Equals("Mods", StringComparison.OrdinalIgnoreCase) Then Return roots(1)
             If roots(0).Equals("Generated", StringComparison.OrdinalIgnoreCase) Then
@@ -930,6 +930,13 @@ Public Class BG3_Pak_Packages_List_Class
         If GameEngine.ProcessedAssets.TryGetValue(Fillpath, ass) Then
             Return ass
         End If
+        Return Nothing
+    End Function
+    Public Shared Function Find_AssetRelative(Prefix As String, Asset As String) As BG3_Obj_Assets_Class
+        Dim Fillpath As String = IO.Path.Combine(Prefix, Asset).Replace("\", "/")
+        Dim ass As BG3_Obj_Assets_Class = Nothing
+        Dim filtro = GameEngine.ProcessedAssets.ElementValues.Where(Function(pf) pf.SourceOfResorce.Filename_Relative = Fillpath)
+        If filtro.Count = 1 Then Return filtro.First
         Return Nothing
     End Function
     Public Shared Function Find_Assets(Prefix As String, AssetStarting As String, Extension As String) As BG3_Obj_Assets_Class()
@@ -2516,7 +2523,7 @@ Public Class BG3_Obj_Stats_Class
     Public ReadOnly Property Get_Data_or_Empty(key As String) As String
         Get
             Dim value As String = Nothing
-            If Data.TryGetValue(key, Value) Then Return value
+            If Data.TryGetValue(key, value) Then Return value
             Return ""
         End Get
     End Property
@@ -3181,7 +3188,7 @@ Public Class BG3_Obj_Assets_Class
     End Sub
 
     Sub New(Source As BG3_Pak_SourceOfResource_Class)
-        Me.Cached_Attributes.TryAdd("MapKey", Source.Filename_Relative.Replace("\", "/"))
+        Me.Cached_Attributes.TryAdd("MapKey", Source.Filename_Relative.Replace("\", "/").Replace(".lsf.lsx", ".lsf", StringComparison.OrdinalIgnoreCase))
         Create(Source)
     End Sub
     Sub New()

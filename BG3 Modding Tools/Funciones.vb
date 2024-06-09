@@ -689,6 +689,7 @@ Public Class Funciones
                                     Case "using"
                                         stobj.Using = lines(1)
                                     Case "type"
+                                        If lines(1) = "item" Then lines(1) = "Object"
                                         stobj.Type = [Enum].GetNames(GetType(BG3_Enum_StatType)).ToList.IndexOf(lines(1))
                                         If stobj.Type = -1 Then Debugger.Break()
                                     Case "data"
@@ -1052,6 +1053,7 @@ Public Class Funciones
             Case ".ffxanim"
             Case ".ffxanim"
             Case ".ffxactor"
+            Case ".xcf"
             Case Else
                 Debugger.Break()
         End Select

@@ -240,8 +240,9 @@ Public Class BG3Editor_Visuals_TemplateGR2
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
         TextBox1.Text = Obj.ReadAttribute_Or_Inhterithed_Or_Empty("Template")
+        RaiseEvent Dropped(Me)
     End Sub
-
+    Public Shadows Event Dropped(sender As Object)
 End Class
 
 Public Class BG3Editor_Visuals_OBjectID

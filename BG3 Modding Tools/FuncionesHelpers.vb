@@ -143,10 +143,27 @@ Module Flickering
     Private Const TVM_SETEXTENDEDSTYLE As Integer = &H1100 + 44
     'Private Const TVM_GETEXTENDEDSTYLE As Integer = &H1100 + 45
     Private Const TVS_EX_DOUBLEBUFFER As Integer = &H4
+    Private Const WM_SETREDRAW As Integer = 11
+
 
     <DllImport("user32.dll")>
     Private Function SendMessage(ByVal hWnd As IntPtr, ByVal msg As Integer, ByVal wp As IntPtr, ByVal lp As IntPtr) As IntPtr
     End Function
+    <DllImport("user32.dll")>
+    Private Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Boolean, ByVal lParam As IntPtr) As Integer
+    End Function
+    Public Sub ResumeDrawing(ByVal Target As Control, ByVal Redraw As Boolean)
+        SendMessage(Target.Handle, WM_SETREDRAW, True, IntPtr.Zero)
+        If Redraw Then
+            Target.Refresh()
+        End If
+    End Sub
+    Public Sub SuspendDrawing(ByVal Target As Control)
+        SendMessage(Target.Handle, WM_SETREDRAW, False, IntPtr.Zero)
+    End Sub
+    Public Sub ResumeDrawing(ByVal Target As Control)
+        ResumeDrawing(Target, True)
+    End Sub
 
 End Module
 

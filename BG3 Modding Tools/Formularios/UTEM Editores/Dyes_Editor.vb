@@ -140,20 +140,15 @@ Public Class Dyes_Editor
 
     Protected Transfer_Combo As BG3_Obj_Stats_Class
     Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_Template_Class, statsList() As String)
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In BG3Selector_Template1.Current_Nod.Parent.Nodes
-            Dim obj As BG3_Obj_Template_Class = nod.Objeto
-            If obj IsNot Template Then
-                For Each stat In statsList
-                    Select Case stat
-                        Case "Unlimiteddye"
-                            BG3Editor_Stat_Special_UnlimitedDye1.Read(Transfer_Combo)
-                            BG3Editor_Stat_Special_UnlimitedDye1.Write(SelectedCombo)
-                        Case "DyeRemover"
-                            BG3Editor_Stat_Special_RemoverDye1.Read(Transfer_Combo)
-                            BG3Editor_Stat_Special_RemoverDye1.Write(SelectedCombo, SelectedColor.MapKey)
-                    End Select
-                Next
-            End If
+        For Each stat In statsList
+            Select Case stat
+                Case "Unlimiteddye"
+                    BG3Editor_Stat_Special_UnlimitedDye1.Read(Transfer_Combo)
+                    BG3Editor_Stat_Special_UnlimitedDye1.Write(SelectedCombo)
+                Case "DyeRemover"
+                    BG3Editor_Stat_Special_RemoverDye1.Read(Transfer_Combo)
+                    BG3Editor_Stat_Special_RemoverDye1.Write(SelectedCombo, SelectedColor.MapKey)
+            End Select
         Next
     End Sub
 
