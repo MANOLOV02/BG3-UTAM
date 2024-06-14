@@ -501,7 +501,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.1
+    Public ReadOnly Property CacheVersion As Double = 5.2
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -1241,6 +1241,10 @@ Public Class Utam_CurrentModClass
     Public Property AddToGame As Boolean = True
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property ShinyhoboCompatible As Boolean = True
+
+    <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property PackPriority As Byte = 30
+
     <JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property SaveUUID As String = ""
 
@@ -1356,6 +1360,11 @@ Public Class Utam_CurrentModClass
     Public ReadOnly Property StatsObjectsFilePath As String
         Get
             Return IO.Path.Combine(StatsGeneratedDataPath, "Object.txt")
+        End Get
+    End Property
+    Public ReadOnly Property StatsDataFilePath As String
+        Get
+            Return IO.Path.Combine(StatsGeneratedDataPath, "Data.txt")
         End Get
     End Property
     Public ReadOnly Property StatsCombinationsFilePath As String
@@ -2439,7 +2448,7 @@ Public Class BG3_Obj_Stats_Class
     Public ReadOnly Property AssociatedTemplate As BG3_Obj_Template_Class
         Get
             Dim objs As String = Get_Data_Or_Inherited("RootTemplate")
-            If IsNothing(objs) Then Return Nothing
+            If IsNothing(objs) OrElse objs = "" Then Return Nothing
             Dim obj As BG3_Obj_Template_Class = Nothing
             GameEngine.ProcessedGameObjectList.TryGetValue(objs, obj)
             Return obj
@@ -2508,11 +2517,38 @@ Public Class BG3_Obj_Stats_Class
         Get
             Dim value As String = Nothing
             If Data.TryGetValue(key, value) Then Return value
-            If IsNothing(Parent) Then Return Nothing
-            Return Parent.Get_Data_Or_Inherited(key)
+            If Me.Type <> BG3_Enum_StatType.ConfigKeys Then
+                If IsNothing(Parent) Then Return Nothing
+                Return Parent.Get_Data_Or_Inherited(key)
+            Else
+                For Each x In OverridedKeys
+                    If x.Data.TryGetValue(key, value) Then Return value
+                Next
+            End If
             Return Nothing
         End Get
     End Property
+
+
+    Private ReadOnly Property OverridedKeys As List(Of BG3_Obj_Stats_Class)
+        Get
+            Dim lista As List(Of String) = Nothing
+            Dim overridedlist As New List(Of BG3_Obj_Stats_Class)
+            If FuncionesHelpers.GameEngine.ProcessedStatList.Hierarchy_Helper.TryGetValue(Me.MapKey, lista) Then
+                Dim obj As BG3_Obj_Stats_Class = Nothing
+                For Each li In lista
+                    If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(li, obj) Then
+                        overridedlist.Add(obj)
+                    End If
+                Next
+                Return overridedlist.OrderByDescending(Function(pf) pf.OverrideNumber).ToList
+            End If
+            Return overridedlist
+        End Get
+    End Property
+
+
+
     Public ReadOnly Property Get_Data_Or_Inherited_or_Empty(key As String) As String
         Get
             Dim value As String = Get_Data_Or_Inherited(key)
@@ -2685,6 +2721,7 @@ Public Enum BG3_Enum_StatType
     CriticalHitTypes
     InterruptData
     ItemCombination
+    ConfigKeys
 End Enum
 Public Enum BG3_Enum_TreasureTables
     Alchemy
@@ -3272,6 +3309,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
     Public Overridable Sub Clear_Cached_Data()
         Hierarchy_Helper.Clear()
         Elements.Clear()
+        Attributes_Stats_List.Clear()
     End Sub
     Public Overloads Sub Clear()
         Clear_Cached_Data()
@@ -3293,46 +3331,51 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
 
     'Public _Attr As New SortedList(Of String, String)
     Private Sub Save_Attributes_List(ByRef obj As T)
-        Select Case True
-            Case obj.GetType Is GetType(BG3_Obj_IconUV_Class)
-            Case obj.GetType Is GetType(BG3_Obj_Assets_Class)
-            Case obj.GetType Is GetType(BG3_Obj_Generic_Class)
-            Case obj.GetType Is GetType(BG3_Obj_IconAtlass_Class)
-            Case obj.GetType Is GetType(BG3_Obj_Stats_Class)
-                For Each da In CType(CType(obj, Object), BG3_Obj_Stats_Class).Data
-                    Dim attId As Integer = CInt(CType(CType(obj, Object), BG3_Obj_Stats_Class).Type)
-                    SyncLock Attributes_Stats_List
-                        Attributes_Stats_List.TryAdd(da.Key + ";" + attId.ToString, da.Key)
-                    End SyncLock
-                Next
-            Case obj.GetType Is GetType(BG3_Obj_Template_Class)
-                For Each at In obj.NodeLSLIB.Attributes
-                    Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
-                    SyncLock Attributes_Stats_List
-                        Attributes_Stats_List.TryAdd(at.Key + ";" + attId.ToString + ";" + CInt(CType(CType(obj, Object), BG3_Obj_Template_Class).Type).ToString, at.Key)
-                    End SyncLock
-                Next
+        If obj.SourceOfResorce.PackageType = BG3_Enum_Package_Type.BaseGame Then
+            Select Case True
+                Case obj.GetType Is GetType(BG3_Obj_IconUV_Class)
+                Case obj.GetType Is GetType(BG3_Obj_Assets_Class)
+                Case obj.GetType Is GetType(BG3_Obj_Generic_Class)
+                Case obj.GetType Is GetType(BG3_Obj_IconAtlass_Class)
+                Case obj.GetType Is GetType(BG3_Obj_Stats_Class)
+                    For Each da In CType(CType(obj, Object), BG3_Obj_Stats_Class).Data
+                        Dim attId As Integer = CInt(CType(CType(obj, Object), BG3_Obj_Stats_Class).Type)
+                        SyncLock Attributes_Stats_List
+                            Attributes_Stats_List.TryAdd(da.Key + ";" + attId.ToString, da.Key)
+                        End SyncLock
+                    Next
 
-            Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Class)
-            Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Subtable_Class)
-            Case obj.GetType Is GetType(BG3_Obj_TreasureTable_TableItem_Class)
-            Case obj.GetType Is GetType(BG3_Obj_FlagsAndTags_Class)
-                For Each at In obj.NodeLSLIB.Attributes
-                    Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
-                    SyncLock Attributes_Stats_List
-                        Attributes_Stats_List.TryAdd(at.Key + ";" + attId.ToString + ";" + CInt(CType(CType(obj, Object), BG3_Obj_FlagsAndTags_Class).Type).ToString, at.Key)
-                    End SyncLock
-                Next
-            Case obj.GetType Is GetType(BG3_Obj_VisualBank_Class)
-                For Each at In obj.NodeLSLIB.Attributes
-                    Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
-                    SyncLock Attributes_Stats_List
-                        Attributes_Stats_List.TryAdd(at.Key + ";" + attId.ToString + ";" + CInt(CType(CType(obj, Object), BG3_Obj_VisualBank_Class).Type).ToString, at.Key)
-                    End SyncLock
-                Next
+                Case obj.GetType Is GetType(BG3_Obj_Template_Class)
+                    SaveAttributesListNode(obj.NodeLSLIB, CType(CType(obj, Object), BG3_Obj_Template_Class).Type.ToString, "")
+                Case obj.GetType Is GetType(BG3_Obj_FlagsAndTags_Class)
+                    SaveAttributesListNode(obj.NodeLSLIB, CType(CType(obj, Object), BG3_Obj_FlagsAndTags_Class).Type.ToString, "")
+                Case obj.GetType Is GetType(BG3_Obj_VisualBank_Class)
+                    If obj.Mapkey_WithoutOverride <> "936318c6-8e61-d821-baea-dbd0c6cfd66d" Then ' Este esta mal!
+                        SaveAttributesListNode(obj.NodeLSLIB, CType(CType(obj, Object), BG3_Obj_VisualBank_Class).Type.ToString, "")
+                    End If
 
-        End Select
+                Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Class)
+                Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Subtable_Class)
+                Case obj.GetType Is GetType(BG3_Obj_TreasureTable_TableItem_Class)
 
+            End Select
+        End If
+
+    End Sub
+
+    Private Sub SaveAttributesListNode(Node As LSLib.LS.Node, type As String, prefix As String)
+        If prefix = "" Then prefix = Node.Name
+        For Each at In Node.Attributes
+            Dim attId As LSLib.LS.AttributeType = CInt(at.Value.Type)
+            SyncLock Attributes_Stats_List
+                Attributes_Stats_List.TryAdd(prefix + ";" + at.Key + ";" + attId.ToString + ";" + type, at.Key)
+            End SyncLock
+        Next
+        For Each nod In Node.Children
+            For Each Subnod In nod.Value
+                SaveAttributesListNode(Subnod, type, prefix + "\" + Subnod.Name)
+            Next
+        Next
     End Sub
 
     Private Sub SaveUtamAndOthers(ByRef obj As T)
@@ -3365,6 +3408,10 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 If Elements.TryAdd(obj.MapKey, obj) = True Then AddHyerarchy(obj) : Return obj
                 ' If cant add try to read same key
                 If Elements.TryGetValue(obj.MapKey, ov) = True Then
+                    If obj Is ov Then
+                        ' En el caso que sea el mismo....
+                        Return obj
+                    End If
                     RemoveHyerarchy(ov)
                     Dim swap As Object = Nothing
                     If Check_order(obj, ov) = False Then
@@ -3375,7 +3422,11 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                     If DoOverride(obj, ov, swap) = True Then
                         Dim ovn As Integer = 1
                         Dim ovst As String = obj.MapKey + "ov_" + ovn.ToString.PadLeft(4, "0")
-                        Elements(obj.MapKey) = obj
+                        If obj.IsOverrided Then
+                            ovn = obj.OverrideNumber
+                            obj.OverrideNumber = 0
+                        End If
+                        Elements(obj.Mapkey_WithoutOverride) = obj
                         While Elements.ContainsKey(ovst)
                             ovn += 1
                             ovst = obj.MapKey + "ov_" + ovn.ToString.PadLeft(4, "0")

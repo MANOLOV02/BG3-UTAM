@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.IO
 Imports System.IO.Compression
+Imports System.IO.Packaging
 Imports System.Resources
 Imports System.Text
 Imports System.Text.Json.Nodes
@@ -61,6 +62,7 @@ Public Class UtamMod
         CheckBoxModFixer.Checked = CurrentMod.BuildModFixer
         CheckBoxmultitoolcomp.Checked = CurrentMod.ShinyhoboCompatible
         CheckBoxAddtogame.Checked = CurrentMod.AddToGame
+        NumericUpDownPriority.Value = CurrentMod.PackPriority
         Loaded_Name = CurrentMod.ModLsx.Name
         TextBoxFolder.Enabled = False
         CurrentMod.ModLsx.SourceOfResource = New BG3_Pak_SourceOfResource_Class(CurrentMod.Paths_Mod, BG3_Enum_Package_Type.UTAM_Mod)
@@ -211,9 +213,20 @@ Public Class UtamMod
         ArchivoTT.Flush()
         ArchivoTT.Close()
 
+        ' Genera DATA File
+        Dim Archivodata As New IO.StreamWriter(CurrentMod.StatsDataFilePath, False)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type = BG3_Enum_StatType.ConfigKeys)
+            For Each dat In stat.Data
+                ArchivodatA.WriteLine("key " + Chr(34) + dat.Key + Chr(34) + "," + Chr(34) + dat.Value + Chr(34) + "")
+            Next
+            ArchivodatA.WriteLine("")
+        Next
+        ArchivodatA.Flush()
+        ArchivodatA.Close()
+
         ' Genera Stats File
         Dim ArchivoST As New IO.StreamWriter(CurrentMod.StatsObjectsFilePath, False)
-        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination AndAlso pf.Type <> BG3_Enum_StatType.ConfigKeys)
             ArchivoST.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
             ArchivoST.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
             If stat.Using <> "" Then ArchivoST.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
@@ -224,6 +237,8 @@ Public Class UtamMod
         Next
         ArchivoST.Flush()
         ArchivoST.Close()
+
+
 
         'Genera ItemCombination
         Dim ArchivoIC As New IO.StreamWriter(CurrentMod.StatsCombinationsFilePath, False)
@@ -475,10 +490,11 @@ Public Class UtamMod
         'Add dependencies to json
 
         ' Pack
-        build.Version = 18
+        build.Version = PackageVersion.V18
         build.Compression = CompressionMethod.LZ4
         build.CompressionLevel = LSCompressionLevel.Fast
-        build.Priority = 0
+        build.Priority = CurrentMod.PackPriority
+        build.Flags = 0
         Dim Packager As New Packager()
         Packager.CreatePackage(packfile, directorio, build).Wait()
 
@@ -540,6 +556,9 @@ Public Class UtamMod
         End If
     End Sub
 
+    Private Sub NumericUpDownPriority_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDownPriority.ValueChanged
+        CurrentMod.PackPriority = NumericUpDownPriority.Value
+    End Sub
 
     Public Event Changed_status()
 

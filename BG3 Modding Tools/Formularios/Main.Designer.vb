@@ -116,6 +116,7 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
+        ConfigKeysToolStripMenuItem = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -139,19 +140,19 @@ Partial Class Main
         ' ProcesserToolStripMenu
         ' 
         ProcesserToolStripMenu.Name = "ProcesserToolStripMenu"
-        ProcesserToolStripMenu.Size = New Size(170, 22)
+        ProcesserToolStripMenu.Size = New Size(180, 22)
         ProcesserToolStripMenu.Text = "Processer"
         ' 
         ' ToolStripSeparator1
         ' 
         ToolStripSeparator1.Name = "ToolStripSeparator1"
-        ToolStripSeparator1.Size = New Size(167, 6)
+        ToolStripSeparator1.Size = New Size(177, 6)
         ' 
         ' BackgroundWorkToolStripMenuItem
         ' 
         BackgroundWorkToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MenuProcessPackBackground, ToolStripSeparator2, LoadCacheToolStripMenuItem1, MenuClearCacheBackground})
         BackgroundWorkToolStripMenuItem.Name = "BackgroundWorkToolStripMenuItem"
-        BackgroundWorkToolStripMenuItem.Size = New Size(170, 22)
+        BackgroundWorkToolStripMenuItem.Size = New Size(180, 22)
         BackgroundWorkToolStripMenuItem.Text = "Background work"
         ' 
         ' MenuProcessPackBackground
@@ -193,7 +194,7 @@ Partial Class Main
         ' ProcessSinglePakToolStripMenuItem
         ' 
         ProcessSinglePakToolStripMenuItem.Name = "ProcessSinglePakToolStripMenuItem"
-        ProcessSinglePakToolStripMenuItem.Size = New Size(170, 22)
+        ProcessSinglePakToolStripMenuItem.Size = New Size(180, 22)
         ProcessSinglePakToolStripMenuItem.Text = "Process single pak"
         ' 
         ' ToolsToolStripMenuItem
@@ -469,7 +470,7 @@ Partial Class Main
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ItemsTemplatesToolStripMenuItem, FlagsAndTagsToolStripMenuItem, VisualsToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ItemsTemplatesToolStripMenuItem, FlagsAndTagsToolStripMenuItem, VisualsToolStripMenuItem, ConfigKeysToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
         ToolsToolStripMenuItem1.Size = New Size(97, 20)
@@ -479,7 +480,7 @@ Partial Class Main
         ' 
         ItemsTemplatesToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ContainersToolStripMenuItem, ConsumablesToolStripMenuItem, DyesToolStripMenuItem, WeaponsToolStripMenuItem})
         ItemsTemplatesToolStripMenuItem.Name = "ItemsTemplatesToolStripMenuItem"
-        ItemsTemplatesToolStripMenuItem.Size = New Size(158, 22)
+        ItemsTemplatesToolStripMenuItem.Size = New Size(180, 22)
         ItemsTemplatesToolStripMenuItem.Text = "Items templates"
         ' 
         ' ArmorsToolStripMenuItem
@@ -516,7 +517,7 @@ Partial Class Main
         ' 
         FlagsAndTagsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {TagsToolStripMenuItem1})
         FlagsAndTagsToolStripMenuItem.Name = "FlagsAndTagsToolStripMenuItem"
-        FlagsAndTagsToolStripMenuItem.Size = New Size(158, 22)
+        FlagsAndTagsToolStripMenuItem.Size = New Size(180, 22)
         FlagsAndTagsToolStripMenuItem.Text = "Flags and tags"
         ' 
         ' TagsToolStripMenuItem1
@@ -529,7 +530,7 @@ Partial Class Main
         ' 
         VisualsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {MaterialBankToolStripMenuItem, TexturesToolStripMenuItem1, VisualBankToolStripMenuItem1})
         VisualsToolStripMenuItem.Name = "VisualsToolStripMenuItem"
-        VisualsToolStripMenuItem.Size = New Size(158, 22)
+        VisualsToolStripMenuItem.Size = New Size(180, 22)
         VisualsToolStripMenuItem.Text = "Visuals"
         ' 
         ' MaterialBankToolStripMenuItem
@@ -699,6 +700,12 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
+        ' ConfigKeysToolStripMenuItem
+        ' 
+        ConfigKeysToolStripMenuItem.Name = "ConfigKeysToolStripMenuItem"
+        ConfigKeysToolStripMenuItem.Size = New Size(180, 22)
+        ConfigKeysToolStripMenuItem.Text = "Config keys"
+        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -814,4 +821,5 @@ Partial Class Main
     Friend WithEvents TexturesToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents MaterialBankToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents VisualBankToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents ConfigKeysToolStripMenuItem As ToolStripMenuItem
 End Class

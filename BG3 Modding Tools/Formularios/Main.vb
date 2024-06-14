@@ -436,7 +436,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -568,7 +568,7 @@ Public Class Main
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -855,5 +855,9 @@ Public Class Main
 
     Private Sub VisualBankToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles VisualBankToolStripMenuItem1.Click
         GenerateChildForm(GetType(VisualBank_Editor), "")
+    End Sub
+
+    Private Sub ConfigKeysToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConfigKeysToolStripMenuItem.Click
+        GenerateChildForm(GetType(Config_Editor), "")
     End Sub
 End Class

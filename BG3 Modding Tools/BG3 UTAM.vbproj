@@ -100,7 +100,10 @@
     </Compile>
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_Stats.vb" />
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
+    <Compile Update="Formularios\Otros\AddAKey.vb" />
+    <Compile Update="Formularios\Otros\AddAttribute.vb" />
     <Compile Update="Formularios\UTEM Editores\Consumables_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\ConfigEditor.vb" />
     <Compile Update="Formularios\UTEM Editores\Generic_Visuals_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Tags_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\MaterialBank_Editor.vb" />

@@ -18,6 +18,7 @@ Imports Pfim
 
 Class FuncionesHelpers
     'Public Shared Lista_Enum_GameObjectType As List(Of String) = [Enum].GetNames(GetType(BG3_Enum_GameObject_Type)).ToList
+    Public Shared ConfigDataID As String = "bd316367-1964-4e17-b849-cde8f33d9f6e"
     Public Shared GameEngine As New Main_GameEngine_Class
     Public Shared Progreso As New BG3_Custom_Progreso_Class
     Public Shared Jsonoptions As New JsonSerializerOptions With {.IgnoreReadOnlyProperties = True, .IgnoreReadOnlyFields = True, .WriteIndented = True, .DefaultIgnoreCondition = Serialization.JsonIgnoreCondition.WhenWritingDefault}

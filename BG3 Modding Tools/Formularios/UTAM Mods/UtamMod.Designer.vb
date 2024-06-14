@@ -52,6 +52,8 @@ Partial Class UtamMod
         Label7 = New Label()
         TextBoxUUID = New TextBox()
         GroupBox1 = New GroupBox()
+        Label6 = New Label()
+        NumericUpDownPriority = New NumericUpDown()
         CheckBoxModFixer = New CheckBox()
         CheckBoxmultitoolcomp = New CheckBox()
         CheckBoxBuildzip = New CheckBox()
@@ -66,6 +68,7 @@ Partial Class UtamMod
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox1.SuspendLayout()
+        CType(NumericUpDownPriority, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' TabControl1
@@ -76,7 +79,7 @@ Partial Class UtamMod
         TabControl1.Location = New Point(410, 3)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
-        TabControl1.Size = New Size(531, 402)
+        TabControl1.Size = New Size(531, 424)
         TabControl1.SizeMode = TabSizeMode.Fixed
         TabControl1.TabIndex = 0
         ' 
@@ -87,7 +90,7 @@ Partial Class UtamMod
         LSXCode.Controls.Add(XmLtoRichText1)
         LSXCode.Location = New Point(4, 27)
         LSXCode.Name = "LSXCode"
-        LSXCode.Size = New Size(523, 371)
+        LSXCode.Size = New Size(523, 393)
         LSXCode.TabIndex = 1
         LSXCode.Text = "LSX Code"
         ' 
@@ -102,7 +105,7 @@ Partial Class UtamMod
         XmLtoRichText1.NodesColor = Color.Black
         XmLtoRichText1.Overridedolor = Color.Gray
         XmLtoRichText1.ReadOnly = True
-        XmLtoRichText1.Size = New Size(521, 369)
+        XmLtoRichText1.Size = New Size(521, 391)
         XmLtoRichText1.TabIndex = 0
         XmLtoRichText1.Text = ""
         XmLtoRichText1.ValueColor = Color.Blue
@@ -114,7 +117,7 @@ Partial Class UtamMod
         GroupBox3.Controls.Add(ButtonCancel)
         GroupBox3.Controls.Add(ButtonSave)
         GroupBox3.Controls.Add(ButtonEdit)
-        GroupBox3.Location = New Point(2, 333)
+        GroupBox3.Location = New Point(2, 355)
         GroupBox3.Name = "GroupBox3"
         GroupBox3.Size = New Size(402, 68)
         GroupBox3.TabIndex = 30
@@ -182,7 +185,7 @@ Partial Class UtamMod
         ' 
         ' Label11
         ' 
-        Label11.Location = New Point(334, 191)
+        Label11.Location = New Point(331, 191)
         Label11.Name = "Label11"
         Label11.Size = New Size(53, 23)
         Label11.TabIndex = 21
@@ -198,7 +201,7 @@ Partial Class UtamMod
         ' 
         ' NumericUpDown4
         ' 
-        NumericUpDown4.Location = New Point(333, 215)
+        NumericUpDown4.Location = New Point(331, 215)
         NumericUpDown4.Maximum = New Decimal(New Integer() {99, 0, 0, 0})
         NumericUpDown4.Name = "NumericUpDown4"
         NumericUpDown4.Size = New Size(53, 23)
@@ -216,7 +219,7 @@ Partial Class UtamMod
         ' 
         ' Label10
         ' 
-        Label10.Location = New Point(257, 191)
+        Label10.Location = New Point(261, 191)
         Label10.Name = "Label10"
         Label10.Size = New Size(53, 23)
         Label10.TabIndex = 19
@@ -234,7 +237,7 @@ Partial Class UtamMod
         ' 
         ' NumericUpDown3
         ' 
-        NumericUpDown3.Location = New Point(257, 215)
+        NumericUpDown3.Location = New Point(261, 215)
         NumericUpDown3.Maximum = New Decimal(New Integer() {99, 0, 0, 0})
         NumericUpDown3.Name = "NumericUpDown3"
         NumericUpDown3.Size = New Size(53, 23)
@@ -250,7 +253,7 @@ Partial Class UtamMod
         ' 
         ' Label9
         ' 
-        Label9.Location = New Point(181, 191)
+        Label9.Location = New Point(191, 191)
         Label9.Name = "Label9"
         Label9.Size = New Size(53, 23)
         Label9.TabIndex = 17
@@ -268,7 +271,7 @@ Partial Class UtamMod
         ' 
         ' NumericUpDown2
         ' 
-        NumericUpDown2.Location = New Point(181, 215)
+        NumericUpDown2.Location = New Point(191, 215)
         NumericUpDown2.Maximum = New Decimal(New Integer() {99, 0, 0, 0})
         NumericUpDown2.Name = "NumericUpDown2"
         NumericUpDown2.Size = New Size(53, 23)
@@ -284,7 +287,7 @@ Partial Class UtamMod
         ' 
         ' Label8
         ' 
-        Label8.Location = New Point(105, 191)
+        Label8.Location = New Point(121, 191)
         Label8.Name = "Label8"
         Label8.Size = New Size(53, 23)
         Label8.TabIndex = 15
@@ -302,7 +305,7 @@ Partial Class UtamMod
         ' 
         ' NumericUpDown1
         ' 
-        NumericUpDown1.Location = New Point(105, 215)
+        NumericUpDown1.Location = New Point(121, 215)
         NumericUpDown1.Maximum = New Decimal(New Integer() {99, 0, 0, 0})
         NumericUpDown1.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         NumericUpDown1.Name = "NumericUpDown1"
@@ -354,6 +357,8 @@ Partial Class UtamMod
         ' 
         ' GroupBox1
         ' 
+        GroupBox1.Controls.Add(Label6)
+        GroupBox1.Controls.Add(NumericUpDownPriority)
         GroupBox1.Controls.Add(CheckBoxModFixer)
         GroupBox1.Controls.Add(CheckBoxmultitoolcomp)
         GroupBox1.Controls.Add(CheckBoxBuildzip)
@@ -362,10 +367,29 @@ Partial Class UtamMod
         GroupBox1.Enabled = False
         GroupBox1.Location = New Point(2, 252)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(402, 80)
+        GroupBox1.Size = New Size(402, 102)
         GroupBox1.TabIndex = 28
         GroupBox1.TabStop = False
         GroupBox1.Text = "Save settings"
+        ' 
+        ' Label6
+        ' 
+        Label6.Location = New Point(10, 73)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(89, 23)
+        Label6.TabIndex = 31
+        Label6.Text = "Pak priority"
+        Label6.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' NumericUpDownPriority
+        ' 
+        NumericUpDownPriority.Location = New Point(121, 73)
+        NumericUpDownPriority.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
+        NumericUpDownPriority.Name = "NumericUpDownPriority"
+        NumericUpDownPriority.Size = New Size(71, 23)
+        NumericUpDownPriority.TabIndex = 30
+        NumericUpDownPriority.TextAlign = HorizontalAlignment.Right
+        NumericUpDownPriority.Value = New Decimal(New Integer() {30, 0, 0, 0})
         ' 
         ' CheckBoxModFixer
         ' 
@@ -431,12 +455,12 @@ Partial Class UtamMod
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(944, 409)
+        ClientSize = New Size(944, 431)
         Controls.Add(GroupBox3)
         Controls.Add(TabControl1)
         Controls.Add(GroupBox1)
         Controls.Add(GroupBox2)
-        MinimumSize = New Size(960, 430)
+        MinimumSize = New Size(960, 470)
         Name = "UtamMod"
         StartPosition = FormStartPosition.CenterScreen
         Text = "UTAM Mod (New)"
@@ -451,6 +475,7 @@ Partial Class UtamMod
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).EndInit()
         GroupBox1.ResumeLayout(False)
         GroupBox1.PerformLayout()
+        CType(NumericUpDownPriority, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
     End Sub
 
@@ -488,4 +513,6 @@ Partial Class UtamMod
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents CheckBoxmultitoolcomp As CheckBox
     Friend WithEvents CheckBoxModFixer As CheckBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents NumericUpDownPriority As NumericUpDown
 End Class

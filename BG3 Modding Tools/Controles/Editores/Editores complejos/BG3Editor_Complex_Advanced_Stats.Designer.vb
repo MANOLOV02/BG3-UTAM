@@ -20,15 +20,20 @@ Partial Class BG3Editor_Complex_Advanced_Stats
     'NOTA: el Diseñador de Windows Forms necesita el siguiente procedimiento
     'Se puede modificar usando el Diseñador de Windows Forms.  
     'No lo modifique con el editor de código.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        components = New ComponentModel.Container()
         BG3Editor_Stats_Undefined1 = New BG3Editor_Stats_Undefined()
         ListView1 = New ListView()
         ColumnHeader1 = New ColumnHeader()
         ColumnHeader2 = New ColumnHeader()
         ColumnHeader3 = New ColumnHeader()
+        ContextMenuStripKeys = New ContextMenuStrip(components)
+        CopyValueToolStripMenuItem = New ToolStripMenuItem()
+        AddAttributeToolStripMenuItem = New ToolStripMenuItem()
         TableLayoutPanel1 = New TableLayoutPanel()
         ButtonOk = New Button()
+        ContextMenuStripKeys.SuspendLayout()
         TableLayoutPanel1.SuspendLayout()
         SuspendLayout()
         ' 
@@ -50,6 +55,7 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         ' 
         ListView1.Columns.AddRange(New ColumnHeader() {ColumnHeader1, ColumnHeader2, ColumnHeader3})
         TableLayoutPanel1.SetColumnSpan(ListView1, 2)
+        ListView1.ContextMenuStrip = ContextMenuStripKeys
         ListView1.Dock = DockStyle.Fill
         ListView1.FullRowSelect = True
         ListView1.Location = New Point(3, 3)
@@ -74,6 +80,24 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         ' 
         ColumnHeader3.Text = "Value"
         ColumnHeader3.Width = 325
+        ' 
+        ' ContextMenuStripKeys
+        ' 
+        ContextMenuStripKeys.Items.AddRange(New ToolStripItem() {CopyValueToolStripMenuItem, AddAttributeToolStripMenuItem})
+        ContextMenuStripKeys.Name = "ContextMenuStripKeys"
+        ContextMenuStripKeys.Size = New Size(134, 48)
+        ' 
+        ' CopyValueToolStripMenuItem
+        ' 
+        CopyValueToolStripMenuItem.Name = "CopyValueToolStripMenuItem"
+        CopyValueToolStripMenuItem.Size = New Size(133, 22)
+        CopyValueToolStripMenuItem.Text = "Copy value"
+        ' 
+        ' AddAttributeToolStripMenuItem
+        ' 
+        AddAttributeToolStripMenuItem.Name = "AddAttributeToolStripMenuItem"
+        AddAttributeToolStripMenuItem.Size = New Size(133, 22)
+        AddAttributeToolStripMenuItem.Text = "Add key"
         ' 
         ' TableLayoutPanel1
         ' 
@@ -110,6 +134,7 @@ Partial Class BG3Editor_Complex_Advanced_Stats
         Controls.Add(TableLayoutPanel1)
         Name = "BG3Editor_Complex_Advanced_Stats"
         Size = New Size(424, 434)
+        ContextMenuStripKeys.ResumeLayout(False)
         TableLayoutPanel1.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
@@ -120,5 +145,7 @@ Partial Class BG3Editor_Complex_Advanced_Stats
     Friend WithEvents ColumnHeader3 As ColumnHeader
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Friend WithEvents ButtonOk As Button
-
+    Friend WithEvents ContextMenuStripKeys As ContextMenuStrip
+    Friend WithEvents CopyValueToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents AddAttributeToolStripMenuItem As ToolStripMenuItem
 End Class

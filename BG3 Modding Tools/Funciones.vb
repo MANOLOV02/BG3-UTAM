@@ -16,6 +16,7 @@ Imports System.Net.WebRequestMethods
 Imports LSLib.Granny
 Imports System.Runtime
 Imports System.Net.NetworkInformation
+Imports Microsoft.VisualBasic.Logging
 
 Module Extensions
     <Extension>
@@ -652,7 +653,53 @@ Public Class Funciones
     Public Shared Sub Read_Txt_Stats(ByRef Source As BG3_Pak_SourceOfResource_Class)
         Dim ShortName = IO.Path.GetFileNameWithoutExtension(Source.Filename_Relative)
         Select Case ShortName
-            Case "ItemProgressionVisuals", "ItemProgressionNames", "XPData", "BloodTypes", "Data", "ItemColor"
+            Case "XPData", "Data"
+                Try
+                    Using fileStream = New StreamReader(Source.CreateContentReader)
+                        Dim line2 As String = fileStream.ReadLine
+                        Dim name2 As String = "DataKeys"
+
+                        Dim stobj2 As BG3_Obj_Stats_Class = Nothing
+                        Dim pack2 = Source.Pak_Or_Folder
+                        Dim fil2 = Source.Filename_Relative
+                        Dim filtro As List(Of BG3_Obj_Stats_Class)
+                        SyncLock GameEngine.ProcessedStatList.Elements
+                            filtro = GameEngine.ProcessedStatList.Elements.Where(Function(pf) pf.Key = name2 AndAlso pf.Value.SourceOfResorce.Pak_Or_Folder = pack2 AndAlso pf.Value.SourceOfResorce.Filename_Relative = fil2).Select(Function(pf) pf.Value).ToList
+                        End SyncLock
+                        If filtro.Count > 0 Then
+                            stobj2 = filtro.First
+                        Else
+                            stobj2 = New BG3_Obj_Stats_Class(Source, name2) With {.Type = BG3_Enum_StatType.ConfigKeys, .[Using] = ""}
+                        End If
+                        While line2 IsNot Nothing
+                            If line2 <> "" Then
+                                Try
+                                    Select Case True
+                                        Case line2.StartsWith("key ")
+                                            Dim lines2 As String()
+                                            lines2 = line2.Replace("key ", "").Split(",")
+                                            If stobj2.Data.TryAdd(lines2(0).Replace(Chr(34), ""), lines2(1).Replace(Chr(34), "")) = False Then
+                                                stobj2.Data(lines2(0).Replace(Chr(34), "")) = lines2(1).Replace(Chr(34), "")
+                                            End If
+                                        Case Else
+                                            Debugger.Break()
+                                    End Select
+                                Catch ex As Exception
+                                    Debugger.Break()
+                                End Try
+                            End If
+                            line2 = fileStream.ReadLine
+                        End While
+                        stobj2 = GameEngine.ProcessedStatList.Manage_Overrides(stobj2)
+                        fileStream.Close()
+                        fileStream.Dispose()
+                    End Using
+
+                Catch ex As Exception
+                    Debugger.Break()
+                End Try
+
+            Case "ItemProgressionVisuals", "ItemProgressionNames", "BloodTypes", "ItemColor"
                 ' IGNORED
             Case Else
                 Using fileStream = New StreamReader(Source.CreateContentReader)
@@ -669,7 +716,7 @@ Public Class Funciones
                                     Case "new entry"
                                         If Not IsNothing(stobj) And ICRWorking = False Then GameEngine.ProcessedStatList.Manage_Overrides(stobj) : stobj = Nothing
                                         name = lines(1)
-                                        stobj = New BG3_Obj_Stats_Class(Source, name)
+                                        stobj = New BG3_Obj_Stats_Class(Source, name) With {.Type = BG3_Enum_StatType.Object}
                                         'stobj = GameEngine.ProcessedStatList.Manage_Overrides(stobj)
                                         ICRWorking = False
                                     Case "new ItemCombination"
@@ -691,6 +738,9 @@ Public Class Funciones
                                     Case "type"
                                         If lines(1) = "item" Then lines(1) = "Object"
                                         stobj.Type = [Enum].GetNames(GetType(BG3_Enum_StatType)).ToList.IndexOf(lines(1))
+                                        If stobj.Type = BG3_Enum_StatType.ConfigKeys Then
+                                            Debugger.Break()
+                                        End If
                                         If stobj.Type = -1 Then Debugger.Break()
                                     Case "data"
                                         If stobj.Data.TryAdd(lines(1), lines(2)) = False Then
