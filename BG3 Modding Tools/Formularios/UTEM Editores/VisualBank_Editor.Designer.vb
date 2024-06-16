@@ -93,25 +93,25 @@ Partial Class VisualBank_Editor
         BG3Editor_Visuals_Slot1.EditIsConditional = False
         BG3Editor_Visuals_Slot1.EditorType = BG3_Editor_Type.Combobox
         BG3Editor_Visuals_Slot1.Label = "Slot"
-        BG3Editor_Visuals_Slot1.Location = New Point(440, 43)
+        BG3Editor_Visuals_Slot1.Location = New Point(417, 43)
         BG3Editor_Visuals_Slot1.Margin = New Padding(0)
         BG3Editor_Visuals_Slot1.MaximumSize = New Size(3000, 23)
         BG3Editor_Visuals_Slot1.MinimumSize = New Size(100, 23)
         BG3Editor_Visuals_Slot1.Name = "BG3Editor_Visuals_Slot1"
-        BG3Editor_Visuals_Slot1.Size = New Size(349, 23)
+        BG3Editor_Visuals_Slot1.Size = New Size(372, 23)
         BG3Editor_Visuals_Slot1.TabIndex = 4
         ' 
         ' BG3Editor_Visuals_SupportsVertexColorMask1
         ' 
         BG3Editor_Visuals_SupportsVertexColorMask1.EditIsConditional = False
         BG3Editor_Visuals_SupportsVertexColorMask1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Visuals_SupportsVertexColorMask1.Label = "Vertec color mask"
-        BG3Editor_Visuals_SupportsVertexColorMask1.Location = New Point(440, 66)
+        BG3Editor_Visuals_SupportsVertexColorMask1.Label = "Support vertex color"
+        BG3Editor_Visuals_SupportsVertexColorMask1.Location = New Point(417, 66)
         BG3Editor_Visuals_SupportsVertexColorMask1.Margin = New Padding(0)
         BG3Editor_Visuals_SupportsVertexColorMask1.MaximumSize = New Size(3000, 23)
         BG3Editor_Visuals_SupportsVertexColorMask1.MinimumSize = New Size(100, 23)
         BG3Editor_Visuals_SupportsVertexColorMask1.Name = "BG3Editor_Visuals_SupportsVertexColorMask1"
-        BG3Editor_Visuals_SupportsVertexColorMask1.Size = New Size(349, 23)
+        BG3Editor_Visuals_SupportsVertexColorMask1.Size = New Size(372, 23)
         BG3Editor_Visuals_SupportsVertexColorMask1.TabIndex = 3
         ' 
         ' BG3Editor_Visuals_MaterialType1

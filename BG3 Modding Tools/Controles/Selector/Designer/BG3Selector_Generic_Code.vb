@@ -11,6 +11,10 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Public IsEditing As Boolean = False
     Public Isclonning_or_transfering As Boolean = False
     Public Property Selection As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Dyes
+    Public Property NameField As String = "Name"
+    Public Property NameType As String = "Attribute"
+
+
     Private WithEvents SelectorWorker As New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
     Private ReadOnly filter As New BG3_CustomFilter_Class(Of T)(SelectorWorker, Nothing)
     Protected Groups As New List(Of String)
@@ -320,10 +324,12 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
             RemoveGroupButton.Enabled = True
             RenameGroupButton.Enabled = True
             AddGroupButton.Enabled = True
+            RenameSiblingsToolStripMenuItem.Enabled = NameField <> ""
             If MergeGroupButton.DropDown.Items.Count = 0 Then MergeGroupButton.DropDown.Items.Add("(Default)")
             MergeGroupButton.Enabled = TreeView1.Nodes.Count > 1
             RemoveGroupButton.Enabled = Current_Nod.Nodes.Count = 0
         Else
+            RenameSiblingsToolStripMenuItem.Enabled = False
             TransferToSiblingsButton.Enabled = Current_Group_nod.Nodes.Count > 1
             MergeGroupButton.Enabled = False
             SplitGroupButton.Enabled = False
@@ -416,6 +422,45 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
                 AddHandler it.Click, AddressOf Merge_Group
             End If
         Next
+    End Sub
+    Private Sub RenameToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RenameToolStripMenuItem.Click
+        ContextMenuStrip1.Close()
+        TreeView1.BeginUpdate()
+        IsEditing = True
+        Dim oldnod = Current_Group_nod
+        Dim nods(oldnod.Nodes.Count - 1) As Object
+        oldnod.Nodes.CopyTo(nods, 0)
+
+        For Each nod In nods
+            Select Case NameType
+                Case "Attribute"
+                    Dim selectedtmp = CType(nod.objeto, T)
+                    selectedtmp.Edit_start()
+                    Dim att As LSLib.LS.NodeAttribute = Nothing
+                    If selectedtmp.NodeLSLIB.Attributes.TryGetValue(NameField, att) Then
+                        Dim old = att.AsString(Funciones.Guid_to_string)
+                        att.FromString(old.Replace(ToolStripTextBox1.Text, ToolStripTextBox2.Text, StringComparison.OrdinalIgnoreCase), Funciones.Guid_to_string)
+                    End If
+                    selectedtmp.Write_Data()
+                Case "Data"
+                    Dim selectedtmp = CType(nod.objeto, BG3_Obj_Stats_Class)
+                    selectedtmp.Edit_start()
+                    Dim old As String = Nothing
+                    If selectedtmp.Data.TryGetValue(NameField, "Value") Then
+                        selectedtmp.Data(NameField) = old.Replace(ToolStripTextBox1.Text, ToolStripTextBox2.Text, StringComparison.OrdinalIgnoreCase)
+                    End If
+                    selectedtmp.Write_Data()
+                Case Else
+                    Debugger.Break()
+            End Select
+            TreeView1.LabelEdit = True
+            nod.Change_to_DisplayFormat()
+            TreeView1.LabelEdit = False
+        Next
+
+        IsEditing = False
+        TreeView1.EndUpdate()
+        CType(Me.ParentForm.MdiParent, Main).ChangedMod()
     End Sub
     Private Sub Merge_Group(sender As Object, e As EventArgs)
         ContextMenuStrip1.Close()

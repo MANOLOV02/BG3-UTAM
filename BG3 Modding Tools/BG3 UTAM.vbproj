@@ -59,6 +59,12 @@
     <Compile Update="Controles\Editores\Editores simples\Diseñadores\BG3_Value_Editor_FlagsandTags .vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controles\Editores\Editores simples\FlagsandTags\Combobox_Editores_FlagsAndTags.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controles\Editores\Editores simples\FlagsandTags\Numeric_Editores_FlagsAndTags.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controles\Editores\Editores simples\Stats\Textbox_Editores_Stats.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_TreasureTables.vb" />
     <Compile Update="Controles\Explorers\BG3Explorer_VisualTemplates.vb">
@@ -105,6 +111,7 @@
     <Compile Update="Formularios\UTEM Editores\Consumables_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\ConfigEditor.vb" />
     <Compile Update="Formularios\UTEM Editores\Generic_Visuals_Editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\ActionResource_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Tags_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\MaterialBank_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Weapons_Editor.vb" />

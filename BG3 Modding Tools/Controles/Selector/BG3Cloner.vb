@@ -429,6 +429,8 @@ Public Class BG3Cloner
                 If Obj.GetType = GetType(BG3_Obj_Template_Class) Or Obj.GetType = GetType(BG3_Obj_Stats_Class) Then Return True
             Case GetType(Tags_Editor)
                 If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.Tags Then Return True
+            Case GetType(ActionResource_Editor)
+                If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.ActionResource Then Return True
             Case GetType(Textures_Editor)
                 If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.TextureBank Then Return True
             Case GetType(MaterialBank_Editor)

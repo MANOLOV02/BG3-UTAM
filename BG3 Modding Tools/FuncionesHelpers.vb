@@ -134,7 +134,7 @@ Class FuncionesHelpers
     Public Shared YesNo As New List(Of String) From {"No", "Yes"}
     Public Shared Visual_Slots As New List(Of String) From {"Unassigned", "Body", "Footwear", "Cloak", "Gloves", "Underwear", "DragonbornTop", "Head", "Headwear", "Horns", "HelmetHair", "Hair", "DragonbornChin", "Hair DWR", "NakedBody", "Private Parts", "DragonbornJaw", "Piercing", "ModestyLeaf", "Beard", "Test", ""}
     Public Shared VertexColorMaskSlots As New List(Of String) From {"Torso", "Shoulders", "upperarm", "lowerarm", "wrists", "hands", "Thighs", "knees", "shins", "feet", "decolletage_01", "decolletage_02", "Underwear_Bra", "Underwear_Panties", "Underwear_Panties_Tail", "Private_Parts", "ModestyLeaf", "Nipple Covers", "Sleeves", "Pants", "Never Hide Hair", "(Hot Pink Physics Paint)", "(Red Physics Paint)"}
-
+    Public Shared ReplenishType As New List(Of String) From {"Never", "Turn", "Rest", "ShortRest", "FullRest"}
 End Class
 Module Flickering
     Public Sub EnableDoubleBuffering(ByVal control As Control)
@@ -153,15 +153,16 @@ Module Flickering
     <DllImport("user32.dll")>
     Private Function SendMessage(ByVal hWnd As IntPtr, ByVal Msg As Integer, ByVal wParam As Boolean, ByVal lParam As IntPtr) As Integer
     End Function
-    Public Sub ResumeDrawing(ByVal Target As Control, ByVal Redraw As Boolean)
-        SendMessage(Target.Handle, WM_SETREDRAW, True, IntPtr.Zero)
+    Public Function ResumeDrawing(ByVal Target As Control, ByVal Redraw As Boolean) As Integer
+        Dim rs = SendMessage(Target.Handle, WM_SETREDRAW, True, IntPtr.Zero)
         If Redraw Then
             Target.Refresh()
         End If
-    End Sub
-    Public Sub SuspendDrawing(ByVal Target As Control)
-        SendMessage(Target.Handle, WM_SETREDRAW, False, IntPtr.Zero)
-    End Sub
+        Return rs
+    End Function
+    Public Function SuspendDrawing(ByVal Target As Control) As Integer
+        Return SendMessage(Target.Handle, WM_SETREDRAW, False, IntPtr.Zero)
+    End Function
     Public Sub ResumeDrawing(ByVal Target As Control)
         ResumeDrawing(Target, True)
     End Sub

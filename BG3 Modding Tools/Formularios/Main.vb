@@ -89,10 +89,10 @@ Public Class Main
             AddHandler obj.Click, AddressOf LocaChange
             LocalizationButton.DropDownItems.Add(obj)
         Next
-        'Dim st As New StikyNote
-        'st.MdiParent = Me
-        'st.Location = New Point(30, 245)
-        'st.Show()
+        Dim st As New StikyNote
+        st.MdiParent = Me
+        st.Location = New Point(30, 245)
+        st.Show()
     End Sub
 
     Sub New()
@@ -436,7 +436,7 @@ Public Class Main
                 TtablesExplorerForms(ind).Dispose()
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
-            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor)
+            Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -568,7 +568,7 @@ Public Class Main
                 form.ObjectsTree.ObjectList = GameEngine.ProcessedTTables
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -859,5 +859,18 @@ Public Class Main
 
     Private Sub ConfigKeysToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConfigKeysToolStripMenuItem.Click
         GenerateChildForm(GetType(Config_Editor), "")
+    End Sub
+
+    Private Sub ActionResourcesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ActionResourcesToolStripMenuItem.Click
+        GenerateChildForm(GetType(ActionResource_Editor), "")
+
+    End Sub
+
+    Private Sub ActionResourcesToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ActionResourcesToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Action resources", BG3_Enum_FlagsandTagsType.ActionResource)
+    End Sub
+
+    Private Sub ConfigKeysToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ConfigKeysToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Stats), "Config keys", BG3_Enum_StatType.ConfigKeys)
     End Sub
 End Class

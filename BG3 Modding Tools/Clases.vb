@@ -1311,6 +1311,17 @@ Public Class Utam_CurrentModClass
             Return IO.Path.Combine(RootTemplatePath, ModLsx.Folder + ".lsf")
         End Get
     End Property
+    Public ReadOnly Property ActionResourcPath As String
+        Get
+            Return IO.Path.Combine(PublicFolderandModePath, "ActionResourceDefinitions")
+        End Get
+    End Property
+
+    Public ReadOnly Property ActionResourceFilePath As String
+        Get
+            Return IO.Path.Combine(ActionResourcPath, ModLsx.Folder + ".lsf")
+        End Get
+    End Property
     Public ReadOnly Property TagsPath As String
         Get
             Return IO.Path.Combine(PublicFolderandModePath, "Tags")
@@ -1400,6 +1411,8 @@ Public Class Utam_CurrentModClass
         fol = AssetsPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
         fol = MaterialsPath
+        If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+        fol = ActionResourcPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
     End Sub
 
@@ -2793,6 +2806,7 @@ Public Enum BG3_Enum_UTAM_Type
     Texture
     MaterialBank
     VisualBank
+    ActionResource
 End Enum
 
 <Serializable>
@@ -3039,6 +3053,11 @@ Public Enum BG3_Enum_FlagsandTagsType
     EquipmentTypes
     EquipmentRaces
     EquipmentSlots
+    PasivesList
+    AbilityList
+    SpellList
+    SkillList
+    ActionResource
 End Enum
 
 
@@ -3071,6 +3090,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
             Select Case Type
                 Case BG3_Enum_FlagsandTagsType.EquipmentSlots
                     nam = ReadAttribute_Or_Nothing("MapKey")
+                Case BG3_Enum_FlagsandTagsType.AbilityList, BG3_Enum_FlagsandTagsType.PasivesList, BG3_Enum_FlagsandTagsType.SpellList, BG3_Enum_FlagsandTagsType.SkillList
+                    nam = ReadAttribute_Or_Nothing("UUID")
                 Case Else
                     nam = ReadAttribute_Or_Nothing("Name")
             End Select
@@ -3124,10 +3145,14 @@ Public Class BG3_Obj_FlagsAndTags_Class
                     Return ReadAttribute_Or_Nothing("Name")
                 Case BG3_Enum_FlagsandTagsType.EquipmentTypes
                     Return ReadAttribute_Or_Nothing("Name")
+                Case BG3_Enum_FlagsandTagsType.ActionResource
+                    Return ReadAttribute_Or_Nothing("Name")
                 Case BG3_Enum_FlagsandTagsType.EquipmentRaces
                     Return ReadAttribute_Or_Nothing("Name")
                 Case BG3_Enum_FlagsandTagsType.EquipmentSlots
                     Return ReadAttribute_Or_Nothing("MapValue")
+                Case BG3_Enum_FlagsandTagsType.SpellList
+                    Return ReadAttribute_Or_Nothing("Comment")
                 Case Else
                     Debugger.Break()
                     Return ""
@@ -3144,10 +3169,15 @@ Public Class BG3_Obj_FlagsAndTags_Class
                     Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("DisplayDescription"))
                     If IsNothing(str) Or str = "" Then Return Description
                     Return str
+                Case BG3_Enum_FlagsandTagsType.ActionResource
+                    If IsNothing(ReadAttribute_Or_Nothing("Description")) Then Return Description
+                    Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("Description"))
+                    If IsNothing(str) Or str = "" Then Return Description
+                    Return str
                 Case BG3_Enum_FlagsandTagsType.EquipmentSlots
                     Return ReadAttribute_Or_Nothing("MapValue")
                 Case Else
-                    Return ReadAttribute_Or_Nothing("Name")
+                    Return ReadAttribute_Or_Nothing("Description")
             End Select
         End Get
     End Property
@@ -3157,7 +3187,14 @@ Public Class BG3_Obj_FlagsAndTags_Class
             Select Case Type
                 Case BG3_Enum_FlagsandTagsType.Flags
                     Return ReadAttribute_Or_Nothing("Description")
+                Case BG3_Enum_FlagsandTagsType.SpellList
+                    Return ReadAttribute_Or_Nothing("Comment")
                 Case BG3_Enum_FlagsandTagsType.Tags
+                    If IsNothing(ReadAttribute_Or_Nothing("DisplayName")) Then Return Description
+                    Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("DisplayName"))
+                    If IsNothing(str) Or str = "" Then Return Description
+                    Return str
+                Case BG3_Enum_FlagsandTagsType.ActionResource
                     If IsNothing(ReadAttribute_Or_Nothing("DisplayName")) Then Return Description
                     Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("DisplayName"))
                     If IsNothing(str) Or str = "" Then Return Description
@@ -3179,6 +3216,7 @@ Public Class BG3_Obj_FlagsAndTags_Class
         If Me.Type = BG3_Enum_FlagsandTagsType.EquipmentRaces Then ReadAttribute_Or_Nothing("DefaultParent")
         ReadAttribute_Or_Nothing("Name")
         ReadAttribute_Or_Nothing("Description")
+        If Me.Type = BG3_Enum_FlagsandTagsType.SpellList Then ReadAttribute_Or_Nothing("Comment")
         ReadAttribute_Or_Nothing("DisplayName")
         ReadAttribute_Or_Nothing("DisplayDescription")
     End Sub
@@ -3491,9 +3529,11 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
                 If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
                 If obj.SourceOfResorce.Pak_Or_Folder = ov.SourceOfResorce.Pak_Or_Folder AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder AndAlso obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.PackageType = ov.SourceOfResorce.PackageType Then Return True
+                If obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return False
+                If ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return True
                 Debugger.Break()
-            Else
-                Return True
+                    Else
+                        Return True
             End If
         End If
         Return True

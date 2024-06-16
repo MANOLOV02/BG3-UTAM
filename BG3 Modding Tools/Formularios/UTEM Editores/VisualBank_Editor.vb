@@ -156,10 +156,12 @@ Public Class VisualBank_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange(
-            {New ToolStripMenuItem("Visual bank specific|Vertex mask slot|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"VertexMaxSlot"}},
+            {New ToolStripMenuItem("Visual bank specific|Vertex mask slots|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"VertexMaxSlot"}},
             New ToolStripMenuItem("Visual bank specific|Material (first object to all)|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Material"}},
             New ToolStripMenuItem("Visual bank specific|Material (per order)|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialPO"}},
-            New ToolStripMenuItem("Visual bank specific|Material type|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialType"}}}
+             New ToolStripMenuItem("Visual bank specific|Supports vertex color mask|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"SupportsVertexColorMask"}},
+              New ToolStripMenuItem("Visual bank specific|Slot|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Slot"}},
+            New ToolStripMenuItem("Visual bank specific|Material type|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialType"}}}
             )
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -167,6 +169,12 @@ Public Class VisualBank_Editor
     Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_VisualBank_Class, statsList() As String)
         For Each stat In statsList
             Select Case stat
+                Case "SupportsVertexColorMask"
+                    BG3Editor_Visuals_SupportsVertexColorMask1.Read(Template)
+                    BG3Editor_Visuals_SupportsVertexColorMask1.Write(SelectedTmp)
+                Case "Slot"
+                    BG3Editor_Visuals_Slot1.Read(Template)
+                    BG3Editor_Visuals_Slot1.Write(SelectedTmp)
                 Case "MaterialType"
                     BG3Editor_Visuals_MaterialType1.Read(Template)
                     BG3Editor_Visuals_MaterialType1.Write(SelectedTmp)

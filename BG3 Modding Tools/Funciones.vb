@@ -323,7 +323,7 @@ Public Class Funciones
                 Case "MaterialPreset"
                     'Dim result = GameSettings.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(reg.Value, source, BG3_Enum_VisualBank_Type.MaterialPreset))
                 Case "Resource"
-
+                    'Debugger.Break()
                 Case "Templates"
                     For Each Nod In reg.Value.Children
                         Select Case Nod.Key
@@ -383,6 +383,29 @@ Public Class Funciones
                             Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.EquipmentSlots))
                         Next
                     Next
+                Case "PassiveLists"
+                    For Each child In reg.Value.Children("PassiveList")
+                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.PasivesList))
+                    Next
+                Case "AbilityLists"
+                    For Each child In reg.Value.Children("AbilityList")
+                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.AbilityList))
+                    Next
+                Case "SpellLists"
+                    For Each child In reg.Value.Children("SpellList")
+                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SpellList))
+                    Next
+                Case "SkillLists"
+                    For Each child In reg.Value.Children("SkillList")
+                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SkillList))
+                    Next
+                Case "ActionResourceDefinitions"
+                    For Each child In reg.Value.Children("ActionResourceDefinition")
+                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.ActionResource))
+                    Next
+                Case "ActionResourceGroupDefinitions"
+                    ' No
+
                 Case "root"
                 Case "AnimationBank"
                 Case "AnimationBlueprintBank"
@@ -464,10 +487,7 @@ Public Class Funciones
                 Case "Voices"
                 Case "ConditionErrors"
 
-                Case "PassiveLists"
-                Case "AbilityLists"
-                Case "SpellLists"
-                Case "SkillLists"
+
                 Case "PassivesVFX"
                 Case "CharacterCreationPresets"
                 Case "CharacterCreationMaterialOverrides"
@@ -486,7 +506,6 @@ Public Class Funciones
                 Case "ProjectileDefaults"
                 Case "DefaultValues"
                 Case "MetaConditions"
-                Case "ActionResourceGroupDefinitions"
                 Case "SpellSoundTrajectoryRules"
                 Case "TrajectoryRules"
                 Case "Feats"
@@ -518,7 +537,6 @@ Public Class Funciones
                 Case "LimbsMapping"
                 Case "ModalTutorials"
                 Case "Races"
-                Case "ActionResourceDefinitions"
                 Case "ItemWallTemplates"
                 Case "ClassDescriptions"
                 Case "AiPathSettings"

@@ -41,6 +41,20 @@ Public Class BG3Editor_FlagsandTag_DisplayDescription
         Label = "Display description"
     End Sub
 End Class
+Public Class BG3Editor_FlagsandTag_TranslatedError
+    Inherits BG3Editor_FlagsAndTag_LocalizationBase
+    Sub New()
+        MyBase.New("Error", "UTAM_h3")
+        Label = "Error description"
+    End Sub
+End Class
+Public Class BG3Editor_FlagsandTag_TranslatedDescription
+    Inherits BG3Editor_FlagsAndTag_LocalizationBase
+    Sub New()
+        MyBase.New("Description", "UTAM_h2")
+        Label = "Description"
+    End Sub
+End Class
 Public Class BG3Editor_FlagsandTag_Icon
     Inherits Editor_FlagsandTags_GenericAttribute
     Sub New()

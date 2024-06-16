@@ -41,7 +41,7 @@ Public Class Config_Editor
     Protected Sub Initialize(ByRef MdiParent As Main, Source As BG3_Pak_SourceOfResource_Class)
         Me.DoubleBuffered = True
         Me.MinimumSize = New Size(Me.Width, Me.Height)
-        Me.MaximumSize = New Size(2000, Me.Height)
+        Me.MaximumSize = New Size(2000, 1024)
         Me.MdiParent = MdiParent
         AddHandler MdiParent.BackGroundWorkstarted, AddressOf BackgroundWork_WorkStarted_Sub
         AddHandler MdiParent.BackGroundWorkFinished, AddressOf BackgroundWork_Finished_Sub

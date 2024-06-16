@@ -285,7 +285,7 @@ Partial Class Tags_Editor
         ' BG3Editor_FlagsandTag_DisplayDescription1
         ' 
         BG3Editor_FlagsandTag_DisplayDescription1.EditIsConditional = False
-        BG3Editor_FlagsandTag_DisplayDescription1.Label = "Display description"
+        BG3Editor_FlagsandTag_DisplayDescription1.Label = "Display descript."
         BG3Editor_FlagsandTag_DisplayDescription1.Location = New Point(3, 111)
         BG3Editor_FlagsandTag_DisplayDescription1.Margin = New Padding(0)
         BG3Editor_FlagsandTag_DisplayDescription1.MaximumSize = New Size(3000, 23)

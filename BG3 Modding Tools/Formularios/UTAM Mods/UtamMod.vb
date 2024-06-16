@@ -390,6 +390,28 @@ Public Class UtamMod
             LSLib.LS.ResourceUtils.SaveResource(RootV2, CurrentMod.MaterialFilePath(temp), Funciones.ConversionParams_LSLIB)
         Next
 
+        ' Genera ActionResources 
+        Dim RootAR As New LSLib.LS.Resource
+        RootAR.Metadata.MajorVersion = Funciones.Default_LS_Version_Major
+        RootAR.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
+        RootAR.Metadata.Revision = Funciones.Default_LS_Version_Revision
+        RootAR.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
+        Dim ConfigAr As New LSLib.LS.Region With {.Name = "root", .RegionName = "ActionResourceDefinitions"}
+        RootAR.Regions.Add("ActionResourceDefinitions", ConfigAr)
+
+        For Each temp In FuncionesHelpers.GameEngine.Utamflagsandtags.Where(Function(pf) pf.Type = BG3_Enum_FlagsandTagsType.ActionResource)
+            Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
+            Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
+            nod.Name = "ActionResourceDefinition"
+            nod.Parent = ConfigAr
+            ConfigAr.AppendChild(nod)
+        Next
+        If CheckBoxmultitoolcomp.Checked Then
+            LSLib.LS.ResourceUtils.SaveResource(RootAR, CurrentMod.ActionResourceFilePath + ".lsx", Funciones.ConversionParams_LSLIB)
+        Else
+            If IO.File.Exists(CurrentMod.ActionResourceFilePath + ".lsx") Then IO.File.Delete(CurrentMod.ActionResourceFilePath + ".lsx")
+        End If
+        LSLib.LS.ResourceUtils.SaveResource(RootAR, CurrentMod.ActionResourceFilePath, Funciones.ConversionParams_LSLIB)
 
         ' Genera VisualTemplates (Except Material)
         Dim RootV As New LSLib.LS.Resource

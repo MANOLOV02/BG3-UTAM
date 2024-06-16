@@ -108,8 +108,8 @@ Public Class MaterialBank_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange(
-            {New ToolStripMenuItem("Material bank specific|Material shader|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"MaterialShader"}},
-            New ToolStripMenuItem("Material bank specific|Material type|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Materialtype"}},
+            {New ToolStripMenuItem("Material bank specific|Material shader|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"SourceFile"}},
+            New ToolStripMenuItem("Material bank specific|Material type|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Materialtype"}},
             New ToolStripMenuItem("Textures|Base color map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Basecolormap"}},
             New ToolStripMenuItem("Textures|Normal map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Normalmap"}},
             New ToolStripMenuItem("Textures|Virtual texture|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"VirtualTexture"}},
@@ -123,7 +123,7 @@ Public Class MaterialBank_Editor
     Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_VisualBank_Class, statsList() As String)
         For Each stat In statsList
             Select Case stat
-                Case "MaterialShader"
+                Case "SourceFile"
                     BG3Editor_Material_SourceFile1.Read(Template)
                     BG3Editor_Material_SourceFile1.Write(SelectedTmp)
                 Case "Materialtype"
