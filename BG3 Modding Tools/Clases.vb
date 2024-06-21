@@ -501,7 +501,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.2
+    Public ReadOnly Property CacheVersion As Double = 5.4
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -1319,7 +1319,7 @@ Public Class Utam_CurrentModClass
 
     Public ReadOnly Property ActionResourceFilePath As String
         Get
-            Return IO.Path.Combine(ActionResourcPath, ModLsx.Folder + ".lsf")
+            Return IO.Path.Combine(ActionResourcPath, "ActionResourceDefinitions.lsx")
         End Get
     End Property
     Public ReadOnly Property TagsPath As String
@@ -1371,6 +1371,11 @@ Public Class Utam_CurrentModClass
     Public ReadOnly Property StatsObjectsFilePath As String
         Get
             Return IO.Path.Combine(StatsGeneratedDataPath, "Object.txt")
+        End Get
+    End Property
+    Public ReadOnly Property StatsStatusFilePath As String
+        Get
+            Return IO.Path.Combine(StatsGeneratedDataPath, "Status.txt")
         End Get
     End Property
     Public ReadOnly Property StatsDataFilePath As String
@@ -2483,14 +2488,23 @@ Public Class BG3_Obj_Stats_Class
         FuncionesHelpers.GameEngine.ProcessedStatList.AddHyerarchy(Me)
     End Sub
 
-    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    Public Sub Process_Name_Change(NewName As String)
+        If NewName = Me.MapKey Then Exit Sub
+        FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
+        Me.Name_Write = NewName
+        FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(Me)
+    End Sub
+
+        <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public Overrides ReadOnly Property DisplayName As String
         Get
-            If IsNothing(Me.AssociatedTemplate) Then Return ""
-            Return Me.AssociatedTemplate.DisplayName
+            If Get_Data_Or_Inherited_or_Empty("DisplayName") = "" Then
+                If IsNothing(Me.AssociatedTemplate) Then Return ""
+                Return Me.AssociatedTemplate.DisplayName
+            End If
+            Return GameEngine.ProcessedLocalizationList.Localize(Get_Data_Or_Inherited_or_Empty("DisplayName"))
         End Get
     End Property
-
 
     Public Property [Using] As String = ""
     Public Overloads Property [Type] As BG3_Enum_StatType
@@ -2729,7 +2743,7 @@ Public Enum BG3_Enum_StatType
     SpellData
     StatusData
     Weapon
-    Interrupt
+    Unused
     CriticalHitTypeData
     CriticalHitTypes
     InterruptData
@@ -2790,6 +2804,7 @@ Public Enum BG3_Enum_VisualBank_Type
     MaterialPresetBank
     MaterialShader
     VirtualTextureBank
+    EffectsBank
 End Enum
 Public Enum BG3_Enum_Icon_Type
     Items
@@ -2807,6 +2822,13 @@ Public Enum BG3_Enum_UTAM_Type
     MaterialBank
     VisualBank
     ActionResource
+    Status
+    Passives
+    Spells
+    Interrupt
+    Book
+    GenericItem
+    Scrolls
 End Enum
 
 <Serializable>
@@ -3058,6 +3080,7 @@ Public Enum BG3_Enum_FlagsandTagsType
     SpellList
     SkillList
     ActionResource
+    MultieffectInfo
 End Enum
 
 
@@ -3153,6 +3176,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
                     Return ReadAttribute_Or_Nothing("MapValue")
                 Case BG3_Enum_FlagsandTagsType.SpellList
                     Return ReadAttribute_Or_Nothing("Comment")
+                Case BG3_Enum_FlagsandTagsType.MultieffectInfo
+                    Return ReadAttribute_Or_Nothing("Name")
                 Case Else
                     Debugger.Break()
                     Return ""
@@ -3680,18 +3705,35 @@ Public MustInherit Class BG3_Obj_Generic_Class
     End Property
     Public ReadOnly Property Utam_Group As String
         Get
-            Dim valor = ReadAttribute_Or_Nothing("UTAM_Group")
-            If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
-            Return valor
+            Select Case Me.GetType
+                Case GetType(BG3_Obj_Stats_Class)
+                    Dim valor = CType(Me, BG3_Obj_Stats_Class).Get_Data_or_Empty("UTAM_Group")
+                    If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
+                    Return valor
+                Case Else
+                    Dim valor = ReadAttribute_Or_Nothing("UTAM_Group")
+                    If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
+                    Return valor
+            End Select
         End Get
     End Property
     Public ReadOnly Property Utam_Type As BG3_Enum_UTAM_Type
         Get
-            Dim valor = ReadAttribute_Or_Nothing("UTAM_Type")
-            If IsNothing(valor) Then Return -1
-            Dim resultado As BG3_Enum_UTAM_Type
-            If [Enum].TryParse(Of BG3_Enum_UTAM_Type)(valor, resultado) = True Then Return resultado
-            Return -1
+
+            Select Case Me.GetType
+                Case GetType(BG3_Obj_Stats_Class)
+                    Dim valor = CType(Me, BG3_Obj_Stats_Class).Get_Data_or_Empty("UTAM_Type")
+                    If IsNothing(valor) Then Return -1
+                    Dim resultado As BG3_Enum_UTAM_Type
+                    If [Enum].TryParse(Of BG3_Enum_UTAM_Type)(valor, resultado) = True Then Return resultado
+                    Return -1
+                Case Else
+                    Dim valor = ReadAttribute_Or_Nothing("UTAM_Type")
+                    If IsNothing(valor) Then Return -1
+                    Dim resultado As BG3_Enum_UTAM_Type
+                    If [Enum].TryParse(Of BG3_Enum_UTAM_Type)(valor, resultado) = True Then Return resultado
+                    Return -1
+            End Select
         End Get
     End Property
 

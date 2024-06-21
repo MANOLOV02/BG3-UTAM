@@ -405,6 +405,7 @@ Public Class BG3Cloner
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Stats_Class) As Boolean
         If CheckType(obj) = False Then Return False
         If IsNothing(Stat_MustDescend_From) Then Return True
+        If Stat_MustDescend_From.Length = 1 AndAlso Stat_MustDescend_From(0) = "None" Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Stat_MustDescend_From)
         Return False
     End Function
@@ -412,6 +413,7 @@ Public Class BG3Cloner
         If CheckType(obj) = False Then Return False
         If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" AndAlso obj.ReadAttribute_Or_Empty("TemplateName") <> "" Then Return False
         If IsNothing(Template_MustDescend_From) Then Return True
+        If Template_MustDescend_From.Length = 1 AndAlso Template_MustDescend_From(0) = "None" Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Template_MustDescend_From)
         Return False
     End Function
@@ -425,7 +427,7 @@ Public Class BG3Cloner
     End Function
     Private Function CheckType(Obj As Object) As Boolean
         Select Case Me.ParentForm.GetType
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor), GetType(Books_Editor), GetType(Scrolls_Editor)
                 If Obj.GetType = GetType(BG3_Obj_Template_Class) Or Obj.GetType = GetType(BG3_Obj_Stats_Class) Then Return True
             Case GetType(Tags_Editor)
                 If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.Tags Then Return True
@@ -437,6 +439,14 @@ Public Class BG3Cloner
                 If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.MaterialBank Then Return True
             Case GetType(VisualBank_Editor)
                 If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.VisualBank Then Return True
+            Case GetType(Status_editor)
+                If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.StatusData Then Return True
+            Case GetType(Pasives_Editor)
+                If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.PassiveData Then Return True
+            Case GetType(Spell_Editor)
+                If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.SpellData Then Return True
+            Case GetType(Interrupt_Editor)
+                If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.InterruptData Then Return True
             Case Else
                 Return False
         End Select
@@ -444,10 +454,11 @@ Public Class BG3Cloner
     End Function
     Public Shared Function CheckDescendant_Generic(obj As Object, lista As String())
         If lista.Length = 0 Then Return True
+        If lista.Length = 1 AndAlso lista(0) = "None" Then Return True
         If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
         If lista.Where(Function(pf) (pf.StartsWith("Not") = False AndAlso obj.Is_Descendant(pf) = True)).Any Then Return True
         If My.Computer.Keyboard.CtrlKeyDown Then
-            If MsgBox("The element is not descendand of the default type. Proceed anyways?", vbInformation + vbOKCancel) = MsgBoxResult.Ok Then Return True
+            If MsgBox("The element is not descendand of the default type. Proceed anyways? (use keyboard to answer)", vbInformation + vbOKCancel) = MsgBoxResult.Ok Then Return True
         End If
         Return False
     End Function

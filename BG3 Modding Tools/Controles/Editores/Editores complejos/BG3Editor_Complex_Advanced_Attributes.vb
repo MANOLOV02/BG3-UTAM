@@ -309,7 +309,7 @@ Public Class BG3Editor_Complex_Advanced_Attributes
                     Debugger.Break()
             End Select
             ComboBox1.Items.Clear()
-            If Not IsNothing(filtro) Then ComboBox1.Items.AddRange(filtro.ToArray)
+            If Not IsNothing(filtro) Then ComboBox1.Items.AddRange(filtro.ToArray) 'filtro.Where(Function(pf) ParentHandledNodesList.Contains(prefix + pf) = False).ToArray) ' OJO QUE SI NO MANEJO TODO
             If ComboBox1.Items.Count > 0 Then ComboBox1.SelectedIndex = 0
             ComboBox1.Enabled = ComboBox1.Items.Count > 0
             ButtonAddNode.Enabled = ComboBox1.Items.Count > 0
@@ -318,6 +318,10 @@ Public Class BG3Editor_Complex_Advanced_Attributes
 
     Private Sub ButtonAddNode_Click(sender As Object, e As EventArgs) Handles ButtonAddNode.Click
         Dim nombre As String = ComboBox1.Items(ComboBox1.SelectedIndex)
+        Dim Completo = TreeView1.SelectedNode.FullPath + "\" + nombre
+        If ParentHandledNodesList.Contains(Completo) Then
+            If MsgBox("Seems you are adding an already managed node. ¿Are you sure, it could cause problems?", vbInformation + vbYesNo, "Warning") = MsgBoxResult.No Then Exit Sub
+        End If
         Dim child As New LSLib.LS.Node With {.Name = nombre}
         _Last_read.AppendChild(child)
         Dim treenod2 As New System.Windows.Forms.TreeNode With {.Text = child.Name, .Tag = child}

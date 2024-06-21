@@ -2,12 +2,12 @@
 Imports LSLib.LS
 Imports LSLib.LS.Story
 
-Public Class Consumables_Editor
+Public Class Books_Editor
 
-    Protected Overrides ReadOnly Property Prefix As String = "UTAM_Consumable_"
-    Protected Overrides ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Consumable
-    Protected Overrides ReadOnly Property DefaulStatUsing As String = "_Consumable"
-    Protected Overrides ReadOnly Property DefaulParent As String = "cdd2941e-aef8-4cc6-a58b-ccb1d73060e8"
+    Protected Overrides ReadOnly Property Prefix As String = "UTAM_Book_"
+    Protected Overrides ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Book
+    Protected Overrides ReadOnly Property DefaulStatUsing As String = "_Book"
+    Protected Overrides ReadOnly Property DefaulParent As String = "23f65dff-a1ca-42fb-91ee-4cbb69450336"
     Protected Overrides ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Object
 
 
@@ -65,14 +65,12 @@ Public Class Consumables_Editor
         If Not IsNothing(SelectedTmp) Then
             BG3Editor_Stats_DefaultBoosts1.Read(SelectedStat)
             BG3Editor_Stats_ItemUseType1.Read(SelectedStat)
-            BG3Editor_Stats_SupplyValue1.Read(SelectedStat)
             BG3Editor_Stats_UseConditions1.Read(SelectedStat)
             BG3Editor_Template_OnUseDescription1.Read(SelectedTmp)
 
         Else
             BG3Editor_Stats_DefaultBoosts1.Clear()
             BG3Editor_Stats_ItemUseType1.Clear()
-            BG3Editor_Stats_SupplyValue1.Clear()
             BG3Editor_Stats_UseConditions1.Clear()
             BG3Editor_Template_OnUseDescription1.Clear()
         End If
@@ -89,7 +87,6 @@ Public Class Consumables_Editor
     Protected Overrides Sub Process_Save_Edits_Specifics()
         BG3Editor_Stats_DefaultBoosts1.Write(SelectedStat)
         BG3Editor_Stats_ItemUseType1.Write(SelectedStat)
-        BG3Editor_Stats_SupplyValue1.Write(SelectedStat)
         BG3Editor_Stats_UseConditions1.Write(SelectedStat)
         BG3Editor_Template_OnUseDescription1.Write(SelectedTmp)
 
@@ -100,9 +97,8 @@ Public Class Consumables_Editor
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange({
-            New ToolStripMenuItem("Consumables specific|Use type|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ItemUseType"}},
-              New ToolStripMenuItem("Consumables specific|Use type|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"SupplyValue"}},
-                New ToolStripMenuItem("Consumables specific|Use type|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"UseConditions"}}
+            New ToolStripMenuItem("Book specific|Use type|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ItemUseType"}},
+                New ToolStripMenuItem("Book specific|Use conditions|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"UseConditions"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
     End Sub
@@ -117,9 +113,6 @@ Public Class Consumables_Editor
                 Case "ItemUseType"
                     BG3Editor_Stats_ItemUseType1.Read(Transfer_Stat)
                     BG3Editor_Stats_ItemUseType1.Write(SelectedStat)
-                Case "SupplyValue"
-                    BG3Editor_Stats_SupplyValue1.Read(Transfer_Stat)
-                    BG3Editor_Stats_SupplyValue1.Write(SelectedStat)
                 Case "UseConditions"
                     BG3Editor_Stats_UseConditions1.Read(Transfer_Stat)
                     BG3Editor_Stats_UseConditions1.Write(SelectedStat)

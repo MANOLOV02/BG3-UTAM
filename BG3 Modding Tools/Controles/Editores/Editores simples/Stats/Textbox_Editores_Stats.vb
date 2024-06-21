@@ -17,6 +17,35 @@ Public Class BG3Editor_Stats_Undefined
         Label = "Undefined"
     End Sub
 End Class
+Public Class BG3Editor_Stat_LocalizationBase
+    Inherits Editor_Stat_GenericTranslate
+    Sub New(Key As String, Utam_Handle As String)
+        MyBase.New(Key, Utam_Handle)
+    End Sub
+
+End Class
+Public Class BG3Editor_Stats_DisplayName
+    Inherits BG3Editor_Stat_LocalizationBase
+    Sub New()
+        MyBase.New("DisplayName", "UTAM_h1")
+        Label = "Display name"
+    End Sub
+End Class
+Public Class BG3Editor_Stats_Description
+    Inherits BG3Editor_Stat_LocalizationBase
+    Sub New()
+        MyBase.New("Description", "UTAM_h2")
+        Label = "Description"
+    End Sub
+End Class
+Public Class BG3Editor_Stats_ExtraDescription
+    Inherits BG3Editor_Stat_LocalizationBase
+    Sub New()
+        MyBase.New("ExtraDescription", "UTAM_h3")
+        Label = "ExtraDescription"
+    End Sub
+End Class
+
 
 Public Class BG3Editor_Stats_Name
     Inherits TextBox_Editor_Stats_GenericAttribute
@@ -26,9 +55,18 @@ Public Class BG3Editor_Stats_Name
     End Sub
     Public Overrides Function Write(Que As BG3_Obj_Stats_Class) As Boolean
         ' Can not change mapker
-        If Me.AllowEdit = True Then Throw New Exception : Return False
+        If Me.AllowEdit = True Then
+            Dim oldname As String = Que.Name_Write
+            If oldname <> TextBox1.Text Then
+                Que.Name_Write = TextBox1.Text
+                RaiseEvent WritedNewName(Que, oldname, Que.Name_Write)
+            End If
+            'Throw New Exception : Return False
+        End If
         Return True
     End Function
+
+    Public Event WritedNewName(Quien As BG3_Obj_Stats_Class, Oldname As String, newname As String)
 End Class
 
 Public Class BG3Editor_Stats_PassivesOnEquip
@@ -212,6 +250,54 @@ Public Class BG3Editor_Stat_Using
     End Sub
 
 End Class
+Public Class BG3Editor_Stat_Using_Bytype
+    Inherits TextBox_Editor_Stats_GenericAttribute
+    Public type As BG3_Enum_StatType = BG3_Enum_StatType.StatusData
+    Sub New()
+        MyBase.New("Using")
+        Label = "Using"
+    End Sub
 
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        If Me.AllowEdit = False Then Return False
+        If Not IsNothing(Last_read) AndAlso Obj.Is_Descendant(CType(Last_read, BG3_Obj_Stats_Class).MapKey) Then Return False
+        Return Obj.Type = type
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
+    End Sub
 
+End Class
+Public Class BG3Editor_Stats_Icon
+    Inherits TextBox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.Key = "Icon"
+        Label = "Icon"
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_IconUV_Class) As Boolean
+        If IsNothing(Obj.MapKey) Then Return False
+        Return Me.AllowEdit
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_IconUV_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.MapKey
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
+        If IsNothing(Obj.Icon) Then Return False
+        Return Me.AllowEdit
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.Icon
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
+        If IsNothing(Obj.AssociatedTemplate) Then Return False
+        Return Drop_Verify_OBJ(Obj.AssociatedTemplate)
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
+        Drop_OBJ(Obj.AssociatedTemplate)
+    End Sub
+End Class
 

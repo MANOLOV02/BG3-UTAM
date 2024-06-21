@@ -376,7 +376,12 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
         For Each nod In node.Nodes
             Dim selectedtmp = CType(nod.objeto, T)
             selectedtmp.Edit_start()
-            Editor_Generic_GenericAttribute.Replace_Attribute_Generic(selectedtmp.NodeLSLIB, "UTAM_Group", label, LSLib.LS.AttributeType.FixedString)
+            Select Case selectedtmp.GetType
+                Case GetType(BG3_Obj_Stats_Class)
+                    Editor_Stats_Generic.Replace_Generic("UTAM_Group", label, CType(CType(selectedtmp, Object), BG3_Obj_Stats_Class))
+                Case Else
+                    Editor_Generic_GenericAttribute.Replace_Attribute_Generic(selectedtmp.NodeLSLIB, "UTAM_Group", label, LSLib.LS.AttributeType.FixedString)
+            End Select
             selectedtmp.Write_Data()
         Next
     End Sub

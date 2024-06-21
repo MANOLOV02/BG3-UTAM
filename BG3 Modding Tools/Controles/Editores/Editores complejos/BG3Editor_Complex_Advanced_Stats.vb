@@ -173,8 +173,15 @@ Public Class BG3Editor_Complex_Advanced_Stats
         Try
             oldv = ListView1.SelectedItems(0).SubItems(2).Text
             ListView1.SelectedItems(0).SubItems(2).Text = BG3Editor_Stats_Undefined1.TextBox1.Text
-            BG3Editor_Stats_Undefined1.Write(_Last_read)
+            If BG3Editor_Stats_Undefined1.CheckBox1.Checked = False Then
+                _Last_read.Data.Remove(BG3Editor_Stats_Undefined1.Key)
+            Else
+                BG3Editor_Stats_Undefined1.Write(_Last_read)
+            End If
+            Dim valor As String = _Last_read.Get_Data_or_Empty(BG3Editor_Stats_Undefined1.Key)
+            ListView1.SelectedItems(0).SubItems.Item(2).Text = valor
             ColorSubitem(BG3Editor_Stats_Undefined1.Key, ListView1.SelectedItems(0))
+            BG3Editor_Stats_Undefined1.TextBox1.Text = valor
         Catch ex As Exception
             BG3Editor_Stats_Undefined1.TextBox1.Text = oldv
             MsgBox("Error parsing the text to value. Try again", vbExclamation + vbOKOnly, "Error")

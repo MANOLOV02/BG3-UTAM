@@ -53,6 +53,13 @@ Public Class BG3Editor_Complex_Localization
             AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
         Next
     End Sub
+    Public Sub Link_Controls(Controles() As BG3Editor_stat_LocalizationBase)
+        For Each cont In Controles
+            Controles_Linkeados.Add(cont)
+            AddHandler cont.Inside_Text_Changed, AddressOf Control_changed
+            AddHandler cont.Inside_Checkbox_Changed, AddressOf Control_changed
+        Next
+    End Sub
     Public Sub Link_Controls(Controles() As BG3Editor_FlagsAndTag_LocalizationBase)
         For Each cont In Controles
             Controles_Linkeados.Add(cont)

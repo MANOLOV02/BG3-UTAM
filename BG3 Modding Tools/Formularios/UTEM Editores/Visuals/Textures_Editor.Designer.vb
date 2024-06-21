@@ -23,6 +23,7 @@ Partial Class Textures_Editor
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         GroupBoxTexture = New GroupBox()
+        BG3Editor_Visuals_Streaming1 = New BG3Editor_Visuals_Streaming()
         Label2 = New Label()
         Label1 = New Label()
         BG3Editor_Visuals_srgb1 = New BG3Editor_Visuals_SRGB()
@@ -55,6 +56,7 @@ Partial Class Textures_Editor
         ' 
         ' GroupBoxTexture
         ' 
+        GroupBoxTexture.Controls.Add(BG3Editor_Visuals_Streaming1)
         GroupBoxTexture.Controls.Add(Label2)
         GroupBoxTexture.Controls.Add(Label1)
         GroupBoxTexture.Controls.Add(BG3Editor_Visuals_srgb1)
@@ -69,10 +71,22 @@ Partial Class Textures_Editor
         GroupBoxTexture.Controls.Add(BG3Editor_Textures_iD_Fixed1)
         GroupBoxTexture.Location = New Point(6, 10)
         GroupBoxTexture.Name = "GroupBoxTexture"
-        GroupBoxTexture.Size = New Size(407, 256)
+        GroupBoxTexture.Size = New Size(407, 281)
         GroupBoxTexture.TabIndex = 1
         GroupBoxTexture.TabStop = False
         GroupBoxTexture.Text = "Texture"
+        ' 
+        ' BG3Editor_Visuals_Streaming1
+        ' 
+        BG3Editor_Visuals_Streaming1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Visuals_Streaming1.Label = "Streaming"
+        BG3Editor_Visuals_Streaming1.Location = New Point(3, 226)
+        BG3Editor_Visuals_Streaming1.Margin = New Padding(0)
+        BG3Editor_Visuals_Streaming1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Visuals_Streaming1.MinimumSize = New Size(100, 23)
+        BG3Editor_Visuals_Streaming1.Name = "BG3Editor_Visuals_Streaming1"
+        BG3Editor_Visuals_Streaming1.Size = New Size(212, 23)
+        BG3Editor_Visuals_Streaming1.TabIndex = 12
         ' 
         ' Label2
         ' 
@@ -97,7 +111,7 @@ Partial Class Textures_Editor
         BG3Editor_Visuals_srgb1.EditIsConditional = False
         BG3Editor_Visuals_srgb1.EditorType = BG3_Editor_Type.Combobox
         BG3Editor_Visuals_srgb1.Label = "SRGB"
-        BG3Editor_Visuals_srgb1.Location = New Point(3, 226)
+        BG3Editor_Visuals_srgb1.Location = New Point(3, 249)
         BG3Editor_Visuals_srgb1.Margin = New Padding(0)
         BG3Editor_Visuals_srgb1.MaximumSize = New Size(3000, 23)
         BG3Editor_Visuals_srgb1.MinimumSize = New Size(100, 23)
@@ -236,7 +250,7 @@ Partial Class Textures_Editor
         ' 
         GroupboxAsset.Controls.Add(ButtonAsset)
         GroupboxAsset.Controls.Add(BG3Editor_Textures_SourceFile1)
-        GroupboxAsset.Location = New Point(6, 272)
+        GroupboxAsset.Location = New Point(6, 297)
         GroupboxAsset.Name = "GroupboxAsset"
         GroupboxAsset.Size = New Size(795, 43)
         GroupboxAsset.TabIndex = 11
@@ -255,9 +269,9 @@ Partial Class Textures_Editor
         ' PictureBox1
         ' 
         PictureBox1.BorderStyle = BorderStyle.FixedSingle
-        PictureBox1.Location = New Point(502, 16)
+        PictureBox1.Location = New Point(498, 22)
         PictureBox1.Name = "PictureBox1"
-        PictureBox1.Size = New Size(250, 250)
+        PictureBox1.Size = New Size(260, 260)
         PictureBox1.SizeMode = PictureBoxSizeMode.Zoom
         PictureBox1.TabIndex = 12
         PictureBox1.TabStop = False
@@ -295,4 +309,5 @@ Partial Class Textures_Editor
     Friend WithEvents ButtonAsset As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Label1 As Label
+    Friend WithEvents BG3Editor_Visuals_Streaming1 As BG3Editor_Visuals_Streaming
 End Class

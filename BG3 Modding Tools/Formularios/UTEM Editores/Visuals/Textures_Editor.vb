@@ -28,6 +28,8 @@ Public Class Textures_Editor
         HandledAttributes.Add("Depth")
         HandledAttributes.Add("Name")
         HandledAttributes.Add("Template")
+        HandledAttributes.Add("Streaming")
+
     End Sub
 
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As Node)
@@ -38,6 +40,7 @@ Public Class Textures_Editor
         BG3Editor_Texture_Height1.Create_Attribute(nuevonod, "16")
         BG3Editor_Texture_Width1.Create_Attribute(nuevonod, "16")
         BG3Editor_Visuals_srgb1.Create_Attribute(nuevonod, "False")
+        'BG3Editor_Visuals_Streaming1.Create_Attribute(nuevonod, "True")
         'BG3Editor_Visuals_Localized1.Create_Attribute(nuevonod, "False")
         BG3Editor_Texture_Type1.Create_Attribute(nuevonod, "1")
         BG3Editor_Textures_SourceFile1.Create_Attribute(nuevonod, "")
@@ -56,6 +59,7 @@ Public Class Textures_Editor
             BG3Editor_Texture_Height1.Read(SelectedTmp)
             BG3Editor_Texture_Width1.Read(SelectedTmp)
             BG3Editor_Visuals_srgb1.Read(SelectedTmp)
+            BG3Editor_Visuals_Streaming1.Read(SelectedTmp)
             BG3Editor_Visuals_Localized1.Read(SelectedTmp)
             BG3Editor_Texture_Type1.Read(SelectedTmp)
             BG3Editor_Textures_SourceFile1.Read(SelectedTmp)
@@ -69,6 +73,7 @@ Public Class Textures_Editor
             BG3Editor_Texture_Height1.Clear()
             BG3Editor_Texture_Width1.Clear()
             BG3Editor_Visuals_srgb1.Clear()
+            BG3Editor_Visuals_Streaming1.Clear()
             BG3Editor_Visuals_Localized1.Clear()
             BG3Editor_Texture_Type1.Clear()
             BG3Editor_Textures_SourceFile1.Clear()
@@ -84,6 +89,7 @@ Public Class Textures_Editor
         BG3Editor_Texture_Height1.Write(SelectedTmp)
         BG3Editor_Texture_Width1.Write(SelectedTmp)
         BG3Editor_Visuals_srgb1.Write(SelectedTmp)
+        BG3Editor_Visuals_Streaming1.Write(SelectedTmp)
         BG3Editor_Visuals_Localized1.Write(SelectedTmp)
         BG3Editor_Texture_Type1.Write(SelectedTmp)
         BG3Editor_Textures_SourceFile1.Write(SelectedTmp)
@@ -102,7 +108,49 @@ Public Class Textures_Editor
             End If
         End If
     End Sub
+    Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
+        Lista.AddRange(
+            {New ToolStripMenuItem("Texture specific|Height|False|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Height"}},
+            New ToolStripMenuItem("Texture specific|Width|False|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Width"}},
+            New ToolStripMenuItem("Texture specific|SRGB|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"SRGB"}},
+            New ToolStripMenuItem("Texture specific|Type|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Type"}},
+            New ToolStripMenuItem("Texture specific|Format|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Format"}},
+            New ToolStripMenuItem("Texture specific|Localized|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Localized"}},
+            New ToolStripMenuItem("Texture specific|Depth|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Depth"}},
+            New ToolStripMenuItem("Texture specific|Streaming|True|Attribute", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Streaming"}}
+            })
 
+    End Sub
+    Protected Overrides Sub Transfer_stats_specifics(Template As BG3_Obj_VisualBank_Class, statsList() As String)
+        For Each stat In statsList
+            Select Case stat
+                Case "Height"
+                    BG3Editor_Texture_Height1.Read(Template)
+                    BG3Editor_Texture_Height1.Write(SelectedTmp)
+                Case "Width"
+                    BG3Editor_Texture_Width1.Read(Template)
+                    BG3Editor_Texture_Width1.Write(SelectedTmp)
+                Case "SRGB"
+                    BG3Editor_Visuals_srgb1.Read(Template)
+                    BG3Editor_Visuals_srgb1.Write(SelectedTmp)
+                Case "Type"
+                    BG3Editor_Texture_Type1.Read(Template)
+                    BG3Editor_Texture_Type1.Write(SelectedTmp)
+                Case "Format"
+                    BG3Editor_Texture_Format1.Read(Template)
+                    BG3Editor_Texture_Format1.Write(SelectedTmp)
+                Case "Localized"
+                    BG3Editor_Visuals_Localized1.Read(Template)
+                    BG3Editor_Visuals_Localized1.Write(SelectedTmp)
+                Case "Depth"
+                    BG3Editor_Texture_Depth1.Read(Template)
+                    BG3Editor_Texture_Depth1.Write(SelectedTmp)
+                Case "Streaming"
+                    BG3Editor_Visuals_Streaming1.Read(Template)
+                    BG3Editor_Visuals_Streaming1.Write(SelectedTmp)
+            End Select
+        Next
+    End Sub
     Private Sub Capture_Texture_changed(sender As Object) Handles BG3Editor_Textures_SourceFile1.Inside_Text_Changed
         Dim stream = BG3_Pak_Packages_List_Class.Find_Asset("", BG3Editor_Textures_SourceFile1.TextBox1.Text)
         If Not IsNothing(stream) Then

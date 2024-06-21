@@ -213,7 +213,7 @@ Public Class UtamMod
         ArchivoTT.Flush()
         ArchivoTT.Close()
 
-        ' Genera DATA File
+        ' Genera DATA File (Configkeys)
         Dim Archivodata As New IO.StreamWriter(CurrentMod.StatsDataFilePath, False)
         For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type = BG3_Enum_StatType.ConfigKeys)
             For Each dat In stat.Data
@@ -224,9 +224,23 @@ Public Class UtamMod
         ArchivodatA.Flush()
         ArchivodatA.Close()
 
-        ' Genera Stats File
+        ' Genera Stats File (Pasives,Spells,Status)
+        Dim ArchivoSTat As New IO.StreamWriter(CurrentMod.StatsStatusFilePath, False)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type = BG3_Enum_StatType.PassiveData OrElse pf.Type = BG3_Enum_StatType.SpellData OrElse pf.Type = BG3_Enum_StatType.StatusData)
+            ArchivoSTat.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
+            ArchivoSTat.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
+            If stat.Using <> "" Then ArchivoSTat.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
+            For Each dat In stat.Data
+                ArchivoSTat.WriteLine("data " + Chr(34) + dat.Key + Chr(34) + " " + Chr(34) + dat.Value + Chr(34) + "")
+            Next
+            ArchivoSTat.WriteLine("")
+        Next
+        ArchivoSTat.Flush()
+        ArchivoSTat.Close()
+
+        ' Genera Stats File (Objects)
         Dim ArchivoST As New IO.StreamWriter(CurrentMod.StatsObjectsFilePath, False)
-        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination AndAlso pf.Type <> BG3_Enum_StatType.ConfigKeys)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination AndAlso pf.Type <> BG3_Enum_StatType.ConfigKeys AndAlso pf.Type <> BG3_Enum_StatType.PassiveData AndAlso pf.Type <> BG3_Enum_StatType.SpellData AndAlso pf.Type <> BG3_Enum_StatType.StatusData)
             ArchivoST.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
             ArchivoST.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
             If stat.Using <> "" Then ArchivoST.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
@@ -398,7 +412,6 @@ Public Class UtamMod
         RootAR.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
         Dim ConfigAr As New LSLib.LS.Region With {.Name = "root", .RegionName = "ActionResourceDefinitions"}
         RootAR.Regions.Add("ActionResourceDefinitions", ConfigAr)
-
         For Each temp In FuncionesHelpers.GameEngine.Utamflagsandtags.Where(Function(pf) pf.Type = BG3_Enum_FlagsandTagsType.ActionResource)
             Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
             Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
@@ -406,12 +419,9 @@ Public Class UtamMod
             nod.Parent = ConfigAr
             ConfigAr.AppendChild(nod)
         Next
-        If CheckBoxmultitoolcomp.Checked Then
-            LSLib.LS.ResourceUtils.SaveResource(RootAR, CurrentMod.ActionResourceFilePath + ".lsx", Funciones.ConversionParams_LSLIB)
-        Else
-            If IO.File.Exists(CurrentMod.ActionResourceFilePath + ".lsx") Then IO.File.Delete(CurrentMod.ActionResourceFilePath + ".lsx")
-        End If
+        ' ITS ONLY LSX !!
         LSLib.LS.ResourceUtils.SaveResource(RootAR, CurrentMod.ActionResourceFilePath, Funciones.ConversionParams_LSLIB)
+
 
         ' Genera VisualTemplates (Except Material)
         Dim RootV As New LSLib.LS.Resource
@@ -431,7 +441,8 @@ Public Class UtamMod
         RootV.Regions.Add("MaterialPresetBank", Configv5)
         Dim Configv6 As New LSLib.LS.Region With {.Name = "VirtualTextureBank", .RegionName = "VirtualTextureBank"}
         RootV.Regions.Add("VirtualTextureBank", Configv6)
-
+        Dim Configv8 As New LSLib.LS.Region With {.Name = "EffectBank", .RegionName = "EffectBank"}
+        RootV.Regions.Add("EffectBank", Configv8)
         For Each temp In FuncionesHelpers.GameEngine.UtamVisuals.Where(Function(pf) pf.Type <> BG3_Enum_VisualBank_Type.MaterialShader)
             Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
             Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
@@ -455,6 +466,10 @@ Public Class UtamMod
                 Case BG3_Enum_VisualBank_Type.MaterialPresetBank
                     nod.Name = "Resource"
                     nod.Parent = Configv5
+                    Configv5.AppendChild(nod)
+                Case BG3_Enum_VisualBank_Type.EffectsBank
+                    nod.Name = "Resource"
+                    nod.Parent = Configv8
                     Configv5.AppendChild(nod)
                 Case BG3_Enum_VisualBank_Type.VirtualTextureBank
                     nod.Name = "Material"
@@ -517,6 +532,7 @@ Public Class UtamMod
         build.CompressionLevel = LSCompressionLevel.Fast
         build.Priority = CurrentMod.PackPriority
         build.Flags = 0
+        build.ExcludeHidden = True
         Dim Packager As New Packager()
         Packager.CreatePackage(packfile, directorio, build).Wait()
 
@@ -529,7 +545,7 @@ Public Class UtamMod
             Try
                 IO.File.Copy(packfile, ModPackfile, True)
             Catch ex As Exception
-                MsgBox("Can not copy to game mod folder. Ensure the game is closed.", vbInformation + vbOKOnly, "Error")
+                MsgBox("Can not copy to game mod folder. Ensure the game and the launcher are closed.", vbInformation + vbOKOnly, "Error")
             End Try
         End If
 

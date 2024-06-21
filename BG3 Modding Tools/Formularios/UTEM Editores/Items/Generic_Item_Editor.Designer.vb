@@ -64,6 +64,7 @@ Partial Class Generic_Item_Editor
         BG3Editor_Template_Icon1 = New BG3Editor_Template_Icon()
         BG3Editor_Template_VisualTemplate1 = New BG3Editor_Template_VisualTemplate()
         GroupBoxBasicStats = New GroupBox()
+        BG3Editor_Stats_GameSize1 = New BG3Editor_Stats_GameSize()
         BG3Editor_Stats_ObjectCategory1 = New BG3Editor_Stats_ObjectCategory()
         BG3Editor_Stats_MinLevel1 = New BG3Editor_Stats_MinLevel()
         BG3Editor_Template_Stats1 = New BG3Editor_Template_Stats()
@@ -79,7 +80,6 @@ Partial Class Generic_Item_Editor
         GroupBoxAttributes = New GroupBox()
         BG3Editor_Complex_Advanced_Attributes1 = New BG3Editor_Complex_Advanced_Attributes()
         SplitContainer1 = New SplitContainer()
-        BG3Editor_Stats_GameSize1 = New BG3Editor_Stats_GameSize()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -109,9 +109,10 @@ Partial Class Generic_Item_Editor
         ' BG3Selector_Template1
         ' 
         BG3Selector_Template1.Dock = DockStyle.Fill
-        BG3Selector_Template1.IsEditing = False
         BG3Selector_Template1.Location = New Point(0, 0)
         BG3Selector_Template1.Name = "BG3Selector_Template1"
+        BG3Selector_Template1.NameField = "Name"
+        BG3Selector_Template1.NameType = "Attribute"
         BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Dyes
         BG3Selector_Template1.Size = New Size(350, 596)
         BG3Selector_Template1.Stat_MustDescend_From = New String() {"None"}
@@ -616,6 +617,19 @@ Partial Class Generic_Item_Editor
         GroupBoxBasicStats.TabStop = False
         GroupBoxBasicStats.Text = "Stat attributes"
         ' 
+        ' BG3Editor_Stats_GameSize1
+        ' 
+        BG3Editor_Stats_GameSize1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_GameSize1.Label = "Size"
+        BG3Editor_Stats_GameSize1.Location = New Point(244, 111)
+        BG3Editor_Stats_GameSize1.Margin = New Padding(0)
+        BG3Editor_Stats_GameSize1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_GameSize1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_GameSize1.Name = "BG3Editor_Stats_GameSize1"
+        BG3Editor_Stats_GameSize1.Size = New Size(154, 23)
+        BG3Editor_Stats_GameSize1.SplitterDistance = 57
+        BG3Editor_Stats_GameSize1.TabIndex = 9
+        ' 
         ' BG3Editor_Stats_ObjectCategory1
         ' 
         BG3Editor_Stats_ObjectCategory1.Label = "Object category"
@@ -783,7 +797,6 @@ Partial Class Generic_Item_Editor
         BG3Editor_Complex_Advanced_Attributes1.Dock = DockStyle.Fill
         BG3Editor_Complex_Advanced_Attributes1.Location = New Point(3, 19)
         BG3Editor_Complex_Advanced_Attributes1.Name = "BG3Editor_Complex_Advanced_Attributes1"
-        BG3Editor_Complex_Advanced_Attributes1.ReadOnly = True
         BG3Editor_Complex_Advanced_Attributes1.Size = New Size(801, 450)
         BG3Editor_Complex_Advanced_Attributes1.TabIndex = 0
         ' 
@@ -807,27 +820,14 @@ Partial Class Generic_Item_Editor
         SplitContainer1.SplitterDistance = 350
         SplitContainer1.TabIndex = 36
         ' 
-        ' BG3Editor_Stats_GameSize1
-        ' 
-        BG3Editor_Stats_GameSize1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_GameSize1.Label = "Size"
-        BG3Editor_Stats_GameSize1.Location = New Point(244, 111)
-        BG3Editor_Stats_GameSize1.Margin = New Padding(0)
-        BG3Editor_Stats_GameSize1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_GameSize1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_GameSize1.Name = "BG3Editor_Stats_GameSize1"
-        BG3Editor_Stats_GameSize1.Size = New Size(154, 23)
-        BG3Editor_Stats_GameSize1.SplitterDistance = 57
-        BG3Editor_Stats_GameSize1.TabIndex = 9
-        ' 
-        ' Generic_Editor
+        ' Generic_Item_Editor
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Controls.Add(SplitContainer1)
         MinimumSize = New Size(0, 0)
-        Name = "Generic_Editor"
+        Name = "Generic_Item_Editor"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Generic Editor"
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()

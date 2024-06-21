@@ -43,6 +43,15 @@ Public Class BG3Editor_Template_UtamGroup
         End If
         Return True
     End Function
+    Private Function Do_read(que As BG3_Obj_Stats_Class) As Boolean
+        Dim value As String = Nothing
+        If que.Data.TryGetValue(Key, value) = False Then
+            TextBox1.Text = "(Default)"
+        Else
+            TextBox1.Text = value
+        End If
+        Return True
+    End Function
 
     Public Overrides Function Read(Que As BG3_Obj_Template_Class) As Boolean
         Return Do_read(Que)
@@ -56,16 +65,36 @@ Public Class BG3Editor_Template_UtamGroup
     Public Overrides Function Read(Que As BG3_Obj_VisualBank_Class) As Boolean
         Return Do_read(Que)
     End Function
+    Public Overrides Function Read(Que As BG3_Obj_Stats_Class) As Boolean
+        Return Do_read(Que)
+    End Function
+
     Public Overrides Function Write(Que As BG3_Obj_FlagsAndTags_Class) As Boolean
         Return do_write(Que)
     End Function
     Public Overrides Function Write(Que As BG3_Obj_VisualBank_Class) As Boolean
         Return Do_write(Que)
     End Function
+    Public Overrides Function Write(Que As BG3_Obj_Stats_Class) As Boolean
+        Return Do_write(Que)
+    End Function
+
     Public Overrides Sub Clear()
         TextBox1.Text = "(Default)"
     End Sub
-
+    Private Function Do_write(que As BG3_Obj_Stats_Class) As Boolean
+        If Me.AllowEdit = False Then Return False
+        If Me.AllowEdit = True Then
+            Dim valueString As String = TextBox1.Text
+            Dim value As String = valueString
+            If que.Data.TryAdd(Key, value) = False Then
+                que.Data(Key) = value
+                Return True
+            End If
+            Return True
+        End If
+        Return False
+    End Function
     Private Function Do_write(que As BG3_Obj_Generic_Class) As Boolean
         If Me.AllowEdit = False Then Return False
         If Me.AllowEdit = True Then

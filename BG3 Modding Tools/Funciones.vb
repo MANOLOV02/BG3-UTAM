@@ -26,6 +26,15 @@ Module Extensions
     End Function
 
     <Extension>
+    Public Function CloneData(resource As BG3_Obj_Stats_Class) As SortedList(Of String, String)
+        If IsNothing(resource) Then Return Nothing
+        Dim dat As New SortedList(Of String, String)
+        For Each dato In resource.Data
+            dat.Add(dato.Key, dato.Value)
+        Next
+        Return dat
+    End Function
+    <Extension>
     Public Function TryGetOrEmpty(str As String) As String
         If IsNothing(str) Then Return "Nothing"
         Return str
@@ -319,7 +328,12 @@ Public Class Funciones
                             Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(child, source, BG3_Enum_VisualBank_Type.VirtualTextureBank))
                         Next
                     Next
-
+                Case "EffectBank"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(child, source, BG3_Enum_VisualBank_Type.EffectsBank))
+                        Next
+                    Next
                 Case "MaterialPreset"
                     'Dim result = GameSettings.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(reg.Value, source, BG3_Enum_VisualBank_Type.MaterialPreset))
                 Case "Resource"
@@ -400,9 +414,14 @@ Public Class Funciones
                         Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SkillList))
                     Next
                 Case "ActionResourceDefinitions"
-                    For Each child In reg.Value.Children("ActionResourceDefinition")
-                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.ActionResource))
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.ActionResource))
+                        Next
                     Next
+                Case "MultiEffectInfos"
+                    GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(reg.Value, source, BG3_Enum_FlagsandTagsType.MultieffectInfo))
+
                 Case "ActionResourceGroupDefinitions"
                     ' No
 
@@ -423,7 +442,7 @@ Public Class Funciones
                 Case "dialog"
                 Case "DialogBank"
                 Case "DiffusionProfileBank"
-                Case "EffectBank"
+
                 Case "Emotions"
                 Case "EnterPhaseSoundEvents"
                 Case "EnterSoundEvents"
@@ -438,7 +457,6 @@ Public Class Funciones
                 Case "LightingBank"
 
                 Case "MeshProxyBank"
-                Case "MultiEffectInfos"
                 Case "PhysicsBank"
                 Case "PortalData"
                 Case "ScriptBank"
@@ -1181,7 +1199,7 @@ Public Class Funciones
                                          Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(path, fil, BG3_Enum_Package_Type.UTAM_Mod), ReadFromLsx)
                                      Catch ex As Exception
                                          Debugger.Break()
-                                         result = False
+                                         MsgBox("Error reading " + fil.ToString + ". It will be skipped and can cause loss of data if you save the mode", vbCritical + vbOK, "Error reading file")
                                      End Try
 
                                      SyncLock (Progreso)

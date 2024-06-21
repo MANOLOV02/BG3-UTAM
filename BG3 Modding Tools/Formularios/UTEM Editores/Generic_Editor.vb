@@ -38,6 +38,17 @@ Public Class Generic_Editor
         Me.DoubleBuffered = True
 
     End Sub
+    Public ReadOnly Property LocationtoNameForm As Point
+        Get
+            Return Me.SplitContainer1.Location
+        End Get
+    End Property
+    Public ReadOnly Property LocationtoNameFormDistance As Integer
+        Get
+            Return Me.SplitContainer1.SplitterDistance
+        End Get
+    End Property
+
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Current = Cursors.WaitCursor
         BG3Selector_Template1.Selection = UtamType

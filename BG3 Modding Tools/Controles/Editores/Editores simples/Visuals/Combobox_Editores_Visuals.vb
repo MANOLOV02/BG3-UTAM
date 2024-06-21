@@ -8,6 +8,16 @@
     End Sub
 
 End Class
+Public Class BG3Editor_Visuals_Streaming
+    Inherits Combobox_Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("Streaming", LSLib.LS.AttributeType.Bool)
+        Label = "Streaming"
+        ComboItems = New List(Of String) From {"True", "False"}
+        Reload_Combo()
+    End Sub
+
+End Class
 Public Class BG3Editor_Visuals_Localized
     Inherits Combobox_Editor_Visuals_GenericAttribute
     Sub New()
