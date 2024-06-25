@@ -41,7 +41,7 @@ Partial Class AboutBox1
         OKButton.Name = "OKButton"
         OKButton.Size = New Size(88, 27)
         OKButton.TabIndex = 0
-        OKButton.Text = "&Aceptar"
+        OKButton.Text = "&Ok"
         ' 
         ' Label1
         ' 

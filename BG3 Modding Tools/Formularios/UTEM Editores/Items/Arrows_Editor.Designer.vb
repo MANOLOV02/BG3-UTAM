@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class Scrolls_Editor
+Partial Class Arrows_Editor
     Inherits Generic_Item_Editor
 
     'Form reemplaza a Dispose para limpiar la lista de componentes.
@@ -47,9 +47,9 @@ Partial Class Scrolls_Editor
         ' BG3Selector_Template1
         ' 
         BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it. It must descend from scrolls bases."
-        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Scrolls
-        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_MagicScroll"}
-        BG3Selector_Template1.Template_MustDescend_From = New String() {"4ffd5c4b-4c56-4f05-a228-a33754bb1806"}
+        BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Arrows
+        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Arrow"}
+        BG3Selector_Template1.Template_MustDescend_From = New String() {"493d043f-3eb1-4a57-b41d-0129f3e07444"}
         ' 
         ' GroupBox9
         ' 
@@ -80,7 +80,7 @@ Partial Class Scrolls_Editor
         ' BG3Editor_Template_Parent1
         ' 
         BG3Editor_Template_Parent1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"4ffd5c4b-4c56-4f05-a228-a33754bb1806"}
+        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"493d043f-3eb1-4a57-b41d-0129f3e07444"}
         ' 
         ' BG3Editor_Template_TechnicalDescription1
         ' 
@@ -109,7 +109,7 @@ Partial Class Scrolls_Editor
         ' BG3Editor_Stat_Using1
         ' 
         BG3Editor_Stat_Using1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_MagicScroll"}
+        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Arrow"}
         ' 
         ' GroupBox5
         ' 
@@ -122,7 +122,7 @@ Partial Class Scrolls_Editor
         GroupBox5.Size = New Size(385, 94)
         GroupBox5.TabIndex = 6
         GroupBox5.TabStop = False
-        GroupBox5.Text = "Scroll specifics"
+        GroupBox5.Text = "Arrows specifics"
         ' 
         ' BG3Editor_Template_OnUseDescription1
         ' 
@@ -169,13 +169,13 @@ Partial Class Scrolls_Editor
         BG3Editor_Stats_ItemUseType1.Size = New Size(395, 23)
         BG3Editor_Stats_ItemUseType1.TabIndex = 6
         ' 
-        ' Scrolls_Editor
+        ' Arrows_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
-        Name = "Scrolls_Editor"
-        Text = "Scrolls editor"
+        Name = "Arrows_Editor"
+        Text = "Arrows editor"
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         GroupBox3.ResumeLayout(False)
         TabPage3.ResumeLayout(False)

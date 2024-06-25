@@ -427,7 +427,7 @@ Public Class BG3Cloner
     End Function
     Private Function CheckType(Obj As Object) As Boolean
         Select Case Me.ParentForm.GetType
-            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor), GetType(Books_Editor), GetType(Scrolls_Editor)
+            Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor)
                 If Obj.GetType = GetType(BG3_Obj_Template_Class) Or Obj.GetType = GetType(BG3_Obj_Stats_Class) Then Return True
             Case GetType(Tags_Editor)
                 If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.Tags Then Return True
@@ -439,6 +439,8 @@ Public Class BG3Cloner
                 If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.MaterialBank Then Return True
             Case GetType(VisualBank_Editor)
                 If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.VisualBank Then Return True
+            Case GetType(CharacterBank_Editor)
+                If Obj.GetType = GetType(BG3_Obj_VisualBank_Class) AndAlso CType(Obj, BG3_Obj_VisualBank_Class).Type = BG3_Enum_VisualBank_Type.CharacterVisualBank Then Return True
             Case GetType(Status_editor)
                 If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.StatusData Then Return True
             Case GetType(Pasives_Editor)
@@ -458,7 +460,7 @@ Public Class BG3Cloner
         If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
         If lista.Where(Function(pf) (pf.StartsWith("Not") = False AndAlso obj.Is_Descendant(pf) = True)).Any Then Return True
         If My.Computer.Keyboard.CtrlKeyDown Then
-            If MsgBox("The element is not descendand of the default type. Proceed anyways? (use keyboard to answer)", vbInformation + vbOKCancel) = MsgBoxResult.Ok Then Return True
+            If MsgBox("The element is not descendand of the default type. Proceed anyways? (use keyboard to answer and remain with the cursor in drop place)", vbInformation + vbOKCancel) = MsgBoxResult.Ok Then Return True
         End If
         Return False
     End Function

@@ -119,7 +119,7 @@ Partial Class Books_Editor
         GroupBox5.Enabled = False
         GroupBox5.Location = New Point(416, 10)
         GroupBox5.Name = "GroupBox5"
-        GroupBox5.Size = New Size(385, 191)
+        GroupBox5.Size = New Size(385, 95)
         GroupBox5.TabIndex = 6
         GroupBox5.TabStop = False
         GroupBox5.Text = "Book specifics"
@@ -171,7 +171,7 @@ Partial Class Books_Editor
         ' 
         ' Books_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Name = "Books_Editor"

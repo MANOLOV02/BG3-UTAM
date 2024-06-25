@@ -202,7 +202,7 @@ Public MustInherit Class Numeric_Editor_Visuals_GenericAttribute
         NumericIncrement = 1
         Me.EditorType = BG3_Editor_Type.NumericUpDown
     End Sub
-    Sub New(Key As String, Minimum As Decimal, Maximum As Decimal, DecimalPlaces As Integer, Increment As Integer, AttributeType As LSLib.LS.AttributeType)
+    Sub New(Key As String, Minimum As Decimal, Maximum As Decimal, DecimalPlaces As Integer, Increment As Decimal, AttributeType As LSLib.LS.AttributeType)
         Me.Key = Key
         Me.AttributeType = AttributeType
         Me.NumericMinimum = Minimum

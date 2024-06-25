@@ -48,3 +48,18 @@ Public Class BG3Editor_Visuals_LOD
         Label = "LOD"
     End Sub
 End Class
+Public Class BG3Editor_ScalarsandVectors_ValueFloat
+    Inherits Numeric_Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("Value", -1000, 1000, 5, 0.1, LSLib.LS.AttributeType.Float)
+        Label = "Value"
+    End Sub
+End Class
+
+Public Class BG3Editor_ScalarsandVectors_BaseValueFloat
+    Inherits Numeric_Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("BaseValue", -1000, 1000, 5, 0.1, LSLib.LS.AttributeType.Float)
+        Label = "BaseValue"
+    End Sub
+End Class

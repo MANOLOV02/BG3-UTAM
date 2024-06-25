@@ -59,7 +59,6 @@ Public Class Main
     End Sub
 
     Private Sub Main_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Application.CurrentCulture = New Globalization.CultureInfo("en")
         AddHandler CacheWorker.ProgressChanged, AddressOf Reporte_progreso
         AddHandler CacheWorker.RunWorkerCompleted, AddressOf Tarea_completada
         AddHandler CacheWorker.DoWork, AddressOf ProcesaCacheBackground
@@ -99,6 +98,8 @@ Public Class Main
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
+        System.Threading.Thread.CurrentThread.CurrentCulture = New Globalization.CultureInfo("en-US")
+        Application.CurrentCulture = New Globalization.CultureInfo("en-US")
         GameEngine.Load_Settings()
         OpenDetailsWindowsAlsoToolStripMenuItem.Checked = FuncionesHelpers.GameEngine.Settings.Showdetails
         Me.DoubleBuffered = True
@@ -437,7 +438,7 @@ Public Class Main
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
             Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor), GetType(Status_Editor), GetType(Spell_Editor), GetType(Pasives_Editor),
-                 GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor)
+                 GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -570,7 +571,7 @@ Public Class Main
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
             Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor), GetType(Status_Editor), GetType(Spell_Editor), GetType(Pasives_Editor),
-                GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor)
+                GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -916,5 +917,21 @@ Public Class Main
     Private Sub ScrollsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ScrollsToolStripMenuItem.Click
         GenerateChildForm(GetType(Scrolls_Editor), "")
 
+    End Sub
+
+    Private Sub ArrowsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ArrowsToolStripMenuItem.Click
+        GenerateChildForm(GetType(Arrows_Editor), "")
+    End Sub
+
+    Private Sub CharacterBankToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterBankToolStripMenuItem.Click
+        GenerateChildForm(GetType(CharacterBank_Editor), "")
+    End Sub
+
+    Private Sub SupportbuyMeACoffeeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SupportbuyMeACoffeeToolStripMenuItem.Click
+        Try
+            Process.Start(New ProcessStartInfo("https://ko-fi.com/Manolov02") With {.UseShellExecute = True})
+        Catch ex As Exception
+
+        End Try
     End Sub
 End Class

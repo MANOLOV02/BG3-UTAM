@@ -259,19 +259,34 @@ Public Class BG3Editor_Complex_Dyecolor
         tex.Text = SRGB0_1(pic.BackColor.R, pic.BackColor.G, pic.BackColor.B)
         Colors(indice) = pic.BackColor
     End Sub
-    Private Shared Function SRGB0_1(r As Byte, g As Byte, b As Byte) As String
+    Public Shared Function SRGB0_1(r As Byte, g As Byte, b As Byte) As String
         Dim s1 As String = Format(Math.Round(r / 255, 8), "0.00000")
         Dim s2 As String = Format(Math.Round(g / 255, 8), "0.00000")
         Dim s3 As String = Format(Math.Round(b / 255, 8), "0.00000")
         Return (s1 + " " + s2 + " " + s3).Replace(Application.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".")
     End Function
-
-    Private Shared Function SRGB0_1(texto As String) As Color
+    Public Shared Function SRGB0_1(r As Byte, g As Byte, b As Byte, alpha As Byte) As String
+        Dim s1 As String = Format(Math.Round(r / 255, 8), "0.00000")
+        Dim s2 As String = Format(Math.Round(g / 255, 8), "0.00000")
+        Dim s3 As String = Format(Math.Round(b / 255, 8), "0.00000")
+        Dim s4 As String = Format(Math.Round(alpha / 255, 8), "0.00000")
+        Return (s1 + " " + s2 + " " + s3 + " " + s4).Replace(Application.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".")
+    End Function
+    Public Shared Function SRGB0_1(texto As String) As Color
         Dim r As Byte
         Dim g As Byte
         Dim b As Byte
+        Dim alpha As Byte = 255
         Dim s() As String = texto.Split(" ")
-        If s.Length <> 3 Then Return Color.FromArgb(0, 0, 0)
+        If s.Length <> 3 AndAlso s.Length <> 4 Then Return Color.FromArgb(0, 0, 0)
+        If s.Length = 4 Then
+            alpha = CInt(CDbl(s(3).Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)) * 255)
+            If alpha < 0 Then alpha = 255
+            If alpha > 255 Then alpha = 255
+        Else
+            alpha = 255
+        End If
+
         Try
             r = CInt(CDbl(s(0).Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)) * 255)
             g = CInt(CDbl(s(1).Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)) * 255)
@@ -284,11 +299,8 @@ Public Class BG3Editor_Complex_Dyecolor
         If r < 0 Or r > 255 Then Return Color.FromArgb(0, 0, 0)
         If g < 0 Or g > 255 Then Return Color.FromArgb(0, 0, 0)
         If b < 0 Or b > 255 Then Return Color.FromArgb(0, 0, 0)
-        Return Color.FromArgb(r, g, b)
+        Return Color.FromArgb(alpha, r, g, b)
     End Function
-
-
-
 
     Public Sub Drop_OBJ_VisualBank1(Obj As BG3_Obj_VisualBank_Class)
         Dim value0 As List(Of LSLib.LS.Node) = Nothing

@@ -23,11 +23,11 @@ Partial Class Consumables_Editor
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         GroupBox5 = New GroupBox()
+        BG3Editor_Template_OnUseDescription1 = New BG3Editor_Template_OnUseDescription()
         BG3Editor_Stats_SupplyValue1 = New BG3Editor_Stats_SupplyValue()
         BG3Editor_Stats_UseConditions1 = New BG3Editor_Stats_UseConditions()
         BG3Editor_Stats_DefaultBoosts1 = New BG3Editor_Stats_DefaultBoosts()
         BG3Editor_Stats_ItemUseType1 = New BG3Editor_Stats_ItemUseType()
-        BG3Editor_Template_OnUseDescription1 = New BG3Editor_Template_OnUseDescription()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -121,10 +121,21 @@ Partial Class Consumables_Editor
         GroupBox5.Enabled = False
         GroupBox5.Location = New Point(416, 10)
         GroupBox5.Name = "GroupBox5"
-        GroupBox5.Size = New Size(385, 191)
+        GroupBox5.Size = New Size(385, 119)
         GroupBox5.TabIndex = 6
         GroupBox5.TabStop = False
         GroupBox5.Text = "Consumables specifics"
+        ' 
+        ' BG3Editor_Template_OnUseDescription1
+        ' 
+        BG3Editor_Template_OnUseDescription1.Label = "Use description"
+        BG3Editor_Template_OnUseDescription1.Location = New Point(3, 88)
+        BG3Editor_Template_OnUseDescription1.Margin = New Padding(0)
+        BG3Editor_Template_OnUseDescription1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_OnUseDescription1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_OnUseDescription1.Name = "BG3Editor_Template_OnUseDescription1"
+        BG3Editor_Template_OnUseDescription1.Size = New Size(378, 23)
+        BG3Editor_Template_OnUseDescription1.TabIndex = 11
         ' 
         ' BG3Editor_Stats_SupplyValue1
         ' 
@@ -171,17 +182,6 @@ Partial Class Consumables_Editor
         BG3Editor_Stats_ItemUseType1.Name = "BG3Editor_Stats_ItemUseType1"
         BG3Editor_Stats_ItemUseType1.Size = New Size(395, 23)
         BG3Editor_Stats_ItemUseType1.TabIndex = 6
-        ' 
-        ' BG3Editor_Template_OnUseDescription1
-        ' 
-        BG3Editor_Template_OnUseDescription1.Label = "Use description"
-        BG3Editor_Template_OnUseDescription1.Location = New Point(3, 88)
-        BG3Editor_Template_OnUseDescription1.Margin = New Padding(0)
-        BG3Editor_Template_OnUseDescription1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Template_OnUseDescription1.MinimumSize = New Size(100, 23)
-        BG3Editor_Template_OnUseDescription1.Name = "BG3Editor_Template_OnUseDescription1"
-        BG3Editor_Template_OnUseDescription1.Size = New Size(378, 23)
-        BG3Editor_Template_OnUseDescription1.TabIndex = 11
         ' 
         ' Consumables_Editor
         ' 

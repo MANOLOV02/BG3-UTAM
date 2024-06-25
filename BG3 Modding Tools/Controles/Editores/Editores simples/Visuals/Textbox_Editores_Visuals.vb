@@ -15,6 +15,14 @@ Public Class BG3Editor_Textures_Name
         Label = "Name"
     End Sub
 End Class
+Public Class BG3Editor_Visuals_Bone
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("Bone", LSLib.LS.AttributeType.FixedString)
+        Label = "Bone"
+    End Sub
+End Class
+
 Public Class BG3Editor_Textures_Template
     Inherits Editor_Visuals_GenericAttribute
     Sub New()
@@ -27,6 +35,42 @@ Public Class BG3Editor_Visuals_DiffusionProfileUUID
     Sub New()
         MyBase.New("DiffusionProfileUUID", LSLib.LS.AttributeType.FixedString)
         Label = "Diffusion profile"
+    End Sub
+End Class
+Public Class BG3Editor_ScalarsandVectors_BaseValueVec3
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("BaseValue", LSLib.LS.AttributeType.Vec3)
+        Label = "Base value"
+    End Sub
+End Class
+Public Class BG3Editor_ScalarsandVectors_ValueVec3
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("Value", LSLib.LS.AttributeType.Vec3)
+        Label = "Value"
+    End Sub
+End Class
+Public Class BG3Editor_ScalarsandVectors_GroupName
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("GroupName", LSLib.LS.AttributeType.FixedString)
+        Label = "Group name"
+    End Sub
+End Class
+
+Public Class BG3Editor_ScalarsandVectors_BaseValueVec4
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("BaseValue", LSLib.LS.AttributeType.Vec4)
+        Label = "Base value"
+    End Sub
+End Class
+Public Class BG3Editor_ScalarsandVectors_ValueVec4
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("Value", LSLib.LS.AttributeType.Vec4)
+        Label = "Value"
     End Sub
 End Class
 
@@ -227,6 +271,8 @@ Public Class BG3Editor_Visuals_PhisicalMap
         Label = "Physical map"
     End Sub
 End Class
+
+
 Public Class BG3Editor_Visuals_TemplateGR2
     Inherits Editor_Visuals_GenericAttribute
     Sub New()
@@ -280,6 +326,60 @@ Public Class BG3Editor_Visuals_MaterialID
 
     Public Shadows Event Dropped(sender As Object)
 End Class
+Public Class BG3Editor_Visuals_BaseVisual
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("BaseVisual", LSLib.LS.AttributeType.FixedString)
+        Label = "Base visual"
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        If Obj.Type <> BG3_Enum_VisualBank_Type.VisualBank Then Return False
+        Return True
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
+        TextBox1.Text = Obj.Mapkey_WithoutOverride
+        RaiseEvent Dropped(Me)
+    End Sub
+
+    Public Shadows Event Dropped(sender As Object)
+End Class
+Public Class BG3Editor_Visuals_VisualResource
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("VisualResource", LSLib.LS.AttributeType.FixedString)
+        Label = "Visual Resource"
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        If Obj.Type <> BG3_Enum_VisualBank_Type.VisualBank Then Return False
+        Return True
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
+        TextBox1.Text = Obj.Mapkey_WithoutOverride
+        RaiseEvent Dropped(Me)
+    End Sub
+
+    Public Shadows Event Dropped(sender As Object)
+End Class
+Public Class BG3Editor_Visuals_BodySetVisual
+    Inherits Editor_Visuals_GenericAttribute
+    Sub New()
+        MyBase.New("BodySetVisual", LSLib.LS.AttributeType.FixedString)
+        Label = "Body set visual"
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_VisualBank_Class) As Boolean
+        If IsNothing(Obj) Then Return False
+        If Obj.Type <> BG3_Enum_VisualBank_Type.VisualBank Then Return False
+        Return True
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_VisualBank_Class)
+        TextBox1.Text = Obj.Mapkey_WithoutOverride
+        RaiseEvent Dropped(Me)
+    End Sub
+
+    Public Shadows Event Dropped(sender As Object)
+End Class
 
 Public Class BG3Editor_Visualbank_SourceFile
     Inherits Editor_Visuals_GenericAttribute
@@ -297,3 +397,6 @@ Public Class BG3Editor_Visualbank_SourceFile
         TextBox1.Text = Obj.ReadAttribute_Or_Inhterithed_Or_Empty("SourceFile")
     End Sub
 End Class
+
+
+

@@ -206,10 +206,10 @@ Partial Class VisualBank_Editor
         TabControl2.Appearance = TabAppearance.FlatButtons
         TabControl2.Controls.Add(TabPageObjects)
         TabControl2.Controls.Add(TabPageVertexMasks)
-        TabControl2.Location = New Point(6, 184)
+        TabControl2.Location = New Point(6, 199)
         TabControl2.Name = "TabControl2"
         TabControl2.SelectedIndex = 0
-        TabControl2.Size = New Size(795, 282)
+        TabControl2.Size = New Size(795, 347)
         TabControl2.TabIndex = 12
         ' 
         ' TabPageObjects
@@ -218,7 +218,7 @@ Partial Class VisualBank_Editor
         TabPageObjects.Location = New Point(4, 27)
         TabPageObjects.Margin = New Padding(0)
         TabPageObjects.Name = "TabPageObjects"
-        TabPageObjects.Size = New Size(787, 251)
+        TabPageObjects.Size = New Size(787, 316)
         TabPageObjects.TabIndex = 0
         TabPageObjects.Text = "Objects"
         TabPageObjects.UseVisualStyleBackColor = True
@@ -233,7 +233,7 @@ Partial Class VisualBank_Editor
         GroupBoxObjects.Location = New Point(0, 0)
         GroupBoxObjects.Margin = New Padding(0)
         GroupBoxObjects.Name = "GroupBoxObjects"
-        GroupBoxObjects.Size = New Size(787, 251)
+        GroupBoxObjects.Size = New Size(787, 316)
         GroupBoxObjects.TabIndex = 1
         GroupBoxObjects.TabStop = False
         ' 
@@ -333,7 +333,7 @@ Partial Class VisualBank_Editor
         ListBoxObjects.ItemHeight = 15
         ListBoxObjects.Location = New Point(6, 18)
         ListBoxObjects.Name = "ListBoxObjects"
-        ListBoxObjects.Size = New Size(154, 229)
+        ListBoxObjects.Size = New Size(154, 289)
         ListBoxObjects.TabIndex = 15
         ' 
         ' ButtonDeleteObject
@@ -360,7 +360,7 @@ Partial Class VisualBank_Editor
         TabPageVertexMasks.Location = New Point(4, 27)
         TabPageVertexMasks.Margin = New Padding(0)
         TabPageVertexMasks.Name = "TabPageVertexMasks"
-        TabPageVertexMasks.Size = New Size(787, 251)
+        TabPageVertexMasks.Size = New Size(787, 316)
         TabPageVertexMasks.TabIndex = 1
         TabPageVertexMasks.Text = "Vertex Mask Slots"
         TabPageVertexMasks.UseVisualStyleBackColor = True
@@ -375,7 +375,7 @@ Partial Class VisualBank_Editor
         GroupBoxVertex.Location = New Point(0, 0)
         GroupBoxVertex.Margin = New Padding(0)
         GroupBoxVertex.Name = "GroupBoxVertex"
-        GroupBoxVertex.Size = New Size(787, 251)
+        GroupBoxVertex.Size = New Size(787, 316)
         GroupBoxVertex.TabIndex = 0
         GroupBoxVertex.TabStop = False
         ' 
@@ -385,7 +385,7 @@ Partial Class VisualBank_Editor
         ListBoxVertex.ItemHeight = 15
         ListBoxVertex.Location = New Point(6, 46)
         ListBoxVertex.Name = "ListBoxVertex"
-        ListBoxVertex.Size = New Size(334, 184)
+        ListBoxVertex.Size = New Size(334, 259)
         ListBoxVertex.TabIndex = 14
         ' 
         ' BG3Editor_Visuals_VertexMasks1

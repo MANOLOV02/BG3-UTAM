@@ -17,11 +17,15 @@ Public Class MaterialBank_Editor
         Initialize(MdiParent, Source)
         TabControl1.TabPages.Remove(TabPageDyes)
         TabControl1.TabPages.Insert(1, TabPageDyes)
+        TabControl1.TabPages.Remove(TabPageScalars)
+        TabControl1.TabPages.Insert(2, TabPageScalars)
     End Sub
     Protected Overrides Property Visualtype As BG3_Enum_VisualBank_Type = BG3_Enum_VisualBank_Type.MaterialBank
     Protected Overrides ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.MaterialBank
 
     Protected Overrides Sub Initialize_Specifics()
+        BG3Editor_Complex_ScalarsandVectors1.InitializeByType(Visualtype)
+
         HandledAttributes.Add("ID")
         HandledAttributes.Add("Name")
         HandledAttributes.Add("SourceFile")
@@ -40,9 +44,9 @@ Public Class MaterialBank_Editor
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=normalmap")
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=physicalmap")
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=basecolor")
-        For Each col In FuncionesHelpers.ColorMaterialsNames
-            HandledNodes.Add("Resource\Vector3Parameters;ParameterName=" + col)
-        Next
+        HandledNodes.Add("Resource\Vector3Parameters")
+        HandledNodes.Add("Resource\VectorParameters")
+        HandledNodes.Add("Resource\ScalarParameters")
     End Sub
 
     Protected Overrides Sub Create_Initial_Specific(ByRef nuevonod As Node)
@@ -58,6 +62,7 @@ Public Class MaterialBank_Editor
         GroupBoxTextures2d.Enabled = Edicion
         GroupBoxMsk.Enabled = Edicion
         BG3Editor_Complex_Dyecolor1.Enabled = Edicion
+        BG3Editor_Complex_ScalarsandVectors1.ReadOnly = Not Edicion
     End Sub
     Protected Overrides Sub Process_Selection_Change_specific()
         If Not IsNothing(SelectedTmp) Then
@@ -74,6 +79,8 @@ Public Class MaterialBank_Editor
             BG3Editor_Visuals_PhisicalMap1.Read(SelectedTmp)
             BG3Editor_Visuals_VertexColor_msk1.Read(SelectedTmp)
             BG3Editor_Visuals_msKcloth1.Read(SelectedTmp)
+            BG3Editor_Complex_ScalarsandVectors1.Read_Data(SelectedTmp)
+
         Else
             BG3Editor_Complex_Dyecolor1.Clear()
             BG3Editor_Textures_iD_Fixed1.Clear()
@@ -88,6 +95,7 @@ Public Class MaterialBank_Editor
             BG3Editor_Visuals_PhisicalMap1.Clear()
             BG3Editor_Visuals_VertexColor_msk1.Clear()
             BG3Editor_Visuals_msKcloth1.Clear()
+            BG3Editor_Complex_ScalarsandVectors1.Clear()
         End If
     End Sub
     Protected Overrides Sub Process_Save_Edits_Specifics()

@@ -2829,6 +2829,8 @@ Public Enum BG3_Enum_UTAM_Type
     Book
     GenericItem
     Scrolls
+    Arrows
+    CharacterBank
 End Enum
 
 <Serializable>
@@ -3415,6 +3417,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 Case obj.GetType Is GetType(BG3_Obj_VisualBank_Class)
                     If obj.Mapkey_WithoutOverride <> "936318c6-8e61-d821-baea-dbd0c6cfd66d" Then ' Este esta mal!
                         SaveAttributesListNode(obj.NodeLSLIB, CType(CType(obj, Object), BG3_Obj_VisualBank_Class).Type.ToString, "")
+                        'ScalarsAndOthers(CType(CType(obj, Object), BG3_Obj_VisualBank_Class))
                     End If
 
                 Case obj.GetType Is GetType(BG3_Obj_TreasureTable_Class)
@@ -3425,6 +3428,81 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
         End If
 
     End Sub
+
+    'Public ScalarParametersMaterialBank As New SortedList(Of String, Integer)
+    'Public ScalarParametersCharacterBank As New SortedList(Of String, Integer)
+
+    'Public Vector3ParametersMaterialBank As New SortedList(Of String, Integer)
+    'Public Vector3ParametersCharacterBank As New SortedList(Of String, Integer)
+
+    'Public VectorParametersMaterialBank As New SortedList(Of String, Integer)
+    'Public VectorParametersCharacterBank As New SortedList(Of String, Integer)
+    'Private Sub ScalarsAndOthers(obj As BG3_Obj_VisualBank_Class)
+    '    Dim nod As LSLib.LS.Node = Nothing
+    '    Dim Name As String = "Parameter"
+    '    Dim dondeScalar As SortedList(Of String, Integer) = Nothing
+    '    Dim dondevectr3 As SortedList(Of String, Integer) = Nothing
+    '    Dim dondevectr As SortedList(Of String, Integer) = Nothing
+    '    Select Case obj.Type
+    '        Case BG3_Enum_VisualBank_Type.CharacterVisualBank
+    '            If obj.NodeLSLIB.Children.ContainsKey("MaterialOverrides") Then
+    '                nod = obj.NodeLSLIB.Children("MaterialOverrides").First
+    '                dondeScalar = ScalarParametersCharacterBank
+    '                dondevectr3 = Vector3ParametersCharacterBank
+    '                dondevectr = VectorParametersCharacterBank
+    '                Name = "Parameter"
+    '            End If
+    '        Case BG3_Enum_VisualBank_Type.MaterialBank
+    '            dondeScalar = ScalarParametersMaterialBank
+    '            dondevectr3 = Vector3ParametersMaterialBank
+    '            dondevectr = VectorParametersMaterialBank
+    '            nod = obj.NodeLSLIB
+    '            Name = "ParameterName"
+    '    End Select
+    '    If Not IsNothing(nod) Then
+    '        SyncLock dondeScalar
+    '            SyncLock dondevectr
+    '                SyncLock dondevectr3
+    '                    If nod.Children.ContainsKey("ScalarParameters") Then
+    '                        For Each child In nod.Children("ScalarParameters")
+    '                            Dim att As LSLib.LS.NodeAttribute = Nothing
+    '                            If child.Attributes.TryGetValue(Name, att) Then
+    '                                Dim valor As String = att.AsString(Funciones.Guid_to_string)
+    '                                If dondeScalar.TryAdd(valor, 1) = False Then
+    '                                    dondeScalar(valor) = dondeScalar(valor) + 1
+    '                                End If
+    '                            End If
+    '                        Next
+    '                    End If
+    '                    If nod.Children.ContainsKey("Vector3Parameters") Then
+    '                        For Each child In nod.Children("Vector3Parameters")
+    '                            Dim att As LSLib.LS.NodeAttribute = Nothing
+    '                            If child.Attributes.TryGetValue(Name, att) Then
+    '                                Dim valor As String = att.AsString(Funciones.Guid_to_string)
+    '                                If dondevectr3.TryAdd(valor, 1) = False Then
+    '                                    dondevectr3(valor) = dondevectr3(valor) + 1
+    '                                End If
+    '                            End If
+    '                        Next
+    '                    End If
+    '                    If nod.Children.ContainsKey("VectorParameters") Then
+    '                        For Each child In nod.Children("VectorParameters")
+    '                            Dim att As LSLib.LS.NodeAttribute = Nothing
+    '                            If child.Attributes.TryGetValue(Name, att) Then
+    '                                Dim valor As String = att.AsString(Funciones.Guid_to_string)
+    '                                If dondevectr.TryAdd(valor, 1) = False Then
+    '                                    dondevectr(valor) = dondevectr(valor) + 1
+    '                                End If
+    '                            End If
+    '                        Next
+    '                    End If
+
+    '                End SyncLock
+    '            End SyncLock
+    '        End SyncLock
+    '    End If
+    'End Sub
+
 
     Private Sub SaveAttributesListNode(Node As LSLib.LS.Node, type As String, prefix As String)
         If prefix = "" Then prefix = Node.Name

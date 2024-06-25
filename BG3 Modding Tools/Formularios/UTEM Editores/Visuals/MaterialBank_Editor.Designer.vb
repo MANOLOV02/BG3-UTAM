@@ -56,6 +56,9 @@ Partial Class MaterialBank_Editor
         TabPageDyes = New TabPage()
         GroupBox6 = New GroupBox()
         BG3Editor_Complex_Dyecolor1 = New BG3Editor_Complex_Dyecolor()
+        TabPageScalars = New TabPage()
+        GroupBoxScalars = New GroupBox()
+        BG3Editor_Complex_ScalarsandVectors1 = New BG3Editor_Complex_ScalarsandVectors()
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -66,6 +69,8 @@ Partial Class MaterialBank_Editor
         GroupBoxMsk.SuspendLayout()
         TabPageDyes.SuspendLayout()
         GroupBox6.SuspendLayout()
+        TabPageScalars.SuspendLayout()
+        GroupBoxScalars.SuspendLayout()
         SuspendLayout()
         ' 
         ' BG3Selector_Visuals1
@@ -83,6 +88,8 @@ Partial Class MaterialBank_Editor
         ' TabControl1
         ' 
         TabControl1.Controls.Add(TabPageDyes)
+        TabControl1.Controls.Add(TabPageScalars)
+        TabControl1.Controls.SetChildIndex(TabPageScalars, 0)
         TabControl1.Controls.SetChildIndex(TabPageDyes, 0)
         TabControl1.Controls.SetChildIndex(TabPage1, 0)
         ' 
@@ -481,6 +488,33 @@ Partial Class MaterialBank_Editor
         BG3Editor_Complex_Dyecolor1.Size = New Size(801, 450)
         BG3Editor_Complex_Dyecolor1.TabIndex = 0
         ' 
+        ' TabPageScalars
+        ' 
+        TabPageScalars.Controls.Add(GroupBoxScalars)
+        TabPageScalars.Location = New Point(4, 27)
+        TabPageScalars.Name = "TabPageScalars"
+        TabPageScalars.Size = New Size(807, 472)
+        TabPageScalars.TabIndex = 8
+        TabPageScalars.Text = "Scalars and vectors"
+        ' 
+        ' GroupBoxScalars
+        ' 
+        GroupBoxScalars.Controls.Add(BG3Editor_Complex_ScalarsandVectors1)
+        GroupBoxScalars.Dock = DockStyle.Fill
+        GroupBoxScalars.Location = New Point(0, 0)
+        GroupBoxScalars.Name = "GroupBoxScalars"
+        GroupBoxScalars.Size = New Size(807, 472)
+        GroupBoxScalars.TabIndex = 1
+        GroupBoxScalars.TabStop = False
+        ' 
+        ' BG3Editor_Complex_ScalarsandVectors1
+        ' 
+        BG3Editor_Complex_ScalarsandVectors1.Dock = DockStyle.Fill
+        BG3Editor_Complex_ScalarsandVectors1.Location = New Point(3, 19)
+        BG3Editor_Complex_ScalarsandVectors1.Name = "BG3Editor_Complex_ScalarsandVectors1"
+        BG3Editor_Complex_ScalarsandVectors1.Size = New Size(801, 450)
+        BG3Editor_Complex_ScalarsandVectors1.TabIndex = 0
+        ' 
         ' MaterialBank_Editor
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -498,6 +532,8 @@ Partial Class MaterialBank_Editor
         GroupBoxMsk.ResumeLayout(False)
         TabPageDyes.ResumeLayout(False)
         GroupBox6.ResumeLayout(False)
+        TabPageScalars.ResumeLayout(False)
+        GroupBoxScalars.ResumeLayout(False)
         ResumeLayout(False)
     End Sub
 
@@ -535,4 +571,7 @@ Partial Class MaterialBank_Editor
     Friend WithEvents TabPageDyes As TabPage
     Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents BG3Editor_Complex_Dyecolor1 As BG3Editor_Complex_Dyecolor
+    Friend Protected WithEvents TabPageScalars As TabPage
+    Friend Protected WithEvents GroupBoxScalars As GroupBox
+    Friend WithEvents BG3Editor_Complex_ScalarsandVectors1 As BG3Editor_Complex_ScalarsandVectors
 End Class

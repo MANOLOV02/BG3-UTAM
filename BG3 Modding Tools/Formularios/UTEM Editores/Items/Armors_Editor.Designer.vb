@@ -40,8 +40,8 @@ Partial Class Armors_Editor
         GroupBoxArmorsS = New GroupBox()
         BG3Editor_Complex_StatusList1 = New BG3Editor_Complex_StatusList()
         TabPageEquipment = New TabPage()
-        BG3Editor_Complex_ArmorEquipment1 = New BG3Editor_Complex_ArmorEquipment()
         GroupBoxEquipment = New GroupBox()
+        BG3Editor_Complex_ArmorEquipment1 = New BG3Editor_Complex_ArmorEquipment()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -147,12 +147,12 @@ Partial Class Armors_Editor
         ' 
         BG3Editor_Stat_Slots_Armor1.EditorType = BG3_Editor_Type.Combobox
         BG3Editor_Stat_Slots_Armor1.Label = "Slot"
-        BG3Editor_Stat_Slots_Armor1.Location = New Point(6, 111)
+        BG3Editor_Stat_Slots_Armor1.Location = New Point(3, 111)
         BG3Editor_Stat_Slots_Armor1.Margin = New Padding(0)
         BG3Editor_Stat_Slots_Armor1.MaximumSize = New Size(3000, 23)
         BG3Editor_Stat_Slots_Armor1.MinimumSize = New Size(100, 23)
         BG3Editor_Stat_Slots_Armor1.Name = "BG3Editor_Stat_Slots_Armor1"
-        BG3Editor_Stat_Slots_Armor1.Size = New Size(392, 23)
+        BG3Editor_Stat_Slots_Armor1.Size = New Size(395, 23)
         BG3Editor_Stat_Slots_Armor1.Slot_Type = BG3Editor_Stats_Slots_Armor.Item_type_Enum.Armor
         BG3Editor_Stat_Slots_Armor1.SplitterDistance = 100
         BG3Editor_Stat_Slots_Armor1.TabIndex = 7
@@ -359,15 +359,6 @@ Partial Class Armors_Editor
         TabPageEquipment.Text = "Equipment"
         TabPageEquipment.UseVisualStyleBackColor = True
         ' 
-        ' BG3Editor_Complex_ArmorEquipment1
-        ' 
-        BG3Editor_Complex_ArmorEquipment1.Dock = DockStyle.Fill
-        BG3Editor_Complex_ArmorEquipment1.Location = New Point(3, 19)
-        BG3Editor_Complex_ArmorEquipment1.Name = "BG3Editor_Complex_ArmorEquipment1"
-        BG3Editor_Complex_ArmorEquipment1.Readonly = False
-        BG3Editor_Complex_ArmorEquipment1.Size = New Size(801, 450)
-        BG3Editor_Complex_ArmorEquipment1.TabIndex = 0
-        ' 
         ' GroupBoxEquipment
         ' 
         GroupBoxEquipment.Controls.Add(BG3Editor_Complex_ArmorEquipment1)
@@ -378,6 +369,14 @@ Partial Class Armors_Editor
         GroupBoxEquipment.Size = New Size(807, 472)
         GroupBoxEquipment.TabIndex = 1
         GroupBoxEquipment.TabStop = False
+        ' 
+        ' BG3Editor_Complex_ArmorEquipment1
+        ' 
+        BG3Editor_Complex_ArmorEquipment1.Dock = DockStyle.Fill
+        BG3Editor_Complex_ArmorEquipment1.Location = New Point(3, 19)
+        BG3Editor_Complex_ArmorEquipment1.Name = "BG3Editor_Complex_ArmorEquipment1"
+        BG3Editor_Complex_ArmorEquipment1.Size = New Size(801, 450)
+        BG3Editor_Complex_ArmorEquipment1.TabIndex = 0
         ' 
         ' Armors_Editor
         ' 

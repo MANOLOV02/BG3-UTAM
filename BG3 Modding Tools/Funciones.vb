@@ -1076,6 +1076,8 @@ Public Class Funciones
             Case ".gamescript", ".itemscript", ".patch", ".psocache", ".khn"
             Case ".bshd"
                 GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
+            Case ".dae"
+
             Case ".gr2", ".gtp", ".gts"
                 GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".js", ".json"
@@ -1162,7 +1164,9 @@ Public Class Funciones
                                          Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(GameEngine.Settings.GameDataFolder, fil), False)
                                      Catch ex As Exception
                                          Debugger.Break()
-                                         result = False
+                                         If MsgBox("Error reading loose file: " + fil.ToString + ". It could cause unexpected issues in using the tool ¿Do you want to continue anyway?", vbCritical + vbYesNo, "Error reading file") = MsgBoxResult.No Then
+                                             result = False
+                                         End If
                                      End Try
 
                                      SyncLock (Progreso)
@@ -1170,9 +1174,31 @@ Public Class Funciones
                                          Worker.ReportProgress(1, Progreso)
                                      End SyncLock
                                  End Sub)
+        FinishedProcessing()
         Return result
     End Function
+    Public Shared Sub FinishedProcessing()
+        'Dim que As SortedList(Of String, Integer) = Nothing
+        'Dim name As String = ""
+        'Debugger.Break()
+        'For x = 0 To 5
+        '    If x = 0 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.ScalarParametersCharacterBank : name = "Characters_Scalars"
+        '    If x = 1 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.ScalarParametersMaterialBank : name = "Material_Scalars"
+        '    If x = 2 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Vector3ParametersCharacterBank : name = "Characters_Vec3"
+        '    If x = 3 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Vector3ParametersMaterialBank : name = "Material_Vec3"
+        '    If x = 4 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.VectorParametersCharacterBank : name = "Characters_Vec4"
+        '    If x = 5 Then que = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.VectorParametersMaterialBank : name = "Material_Vec4"
+        '    Dim str = "Public Shared " + name + " As New List(Of String) From {"
+        '    For Each entrt In que
+        '        If str.EndsWith("{"c) = False Then str += ","
+        '        str += Chr(34) + entrt.Key + Chr(34) '+ " (# " + entrt.Value.ToString + ")"
+        '    Next
+        '    str += "}"
+        '    Debugger.Break()
+        'Next
+        Debugger.Break()
 
+    End Sub
     Public Shared Function Clear_Current_Mod_Loaded() As Boolean
         GameEngine.UtamTemplates.Clear()
         GameEngine.UtamVisuals.Clear()
@@ -1199,7 +1225,7 @@ Public Class Funciones
                                          Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(path, fil, BG3_Enum_Package_Type.UTAM_Mod), ReadFromLsx)
                                      Catch ex As Exception
                                          Debugger.Break()
-                                         MsgBox("Error reading " + fil.ToString + ". It will be skipped and can cause loss of data if you save the mode", vbCritical + vbOK, "Error reading file")
+                                         MsgBox("Error reading " + fil.ToString + ". It will be skipped and can cause loss of data if you save the mod!", vbCritical + vbOK, "Error reading file")
                                      End Try
 
                                      SyncLock (Progreso)
@@ -1207,6 +1233,7 @@ Public Class Funciones
                                          Worker.ReportProgress(1, Progreso)
                                      End SyncLock
                                  End Sub)
+        FinishedProcessing()
         Return result
     End Function
 
@@ -1237,7 +1264,9 @@ Public Class Funciones
                                                                  Lee_Resource_From_Source(New BG3_Pak_SourceOfResource_Class(pack, fil), False)
                                                              Catch ex As Exception
                                                                  Debugger.Break()
-                                                                 result = False
+                                                                 If MsgBox("Error reading file: " + fil.ToString + " in the pak: " + pack.PackFileName + ". It could cause unexpected issues in using the tool ¿Do you want to continue anyway?", vbCritical + vbYesNo, "Error reading file") = MsgBoxResult.No Then
+                                                                     result = False
+                                                                 End If
                                                              End Try
 
                                                              SyncLock (Progreso)
@@ -1255,6 +1284,7 @@ Public Class Funciones
             Next
 
             'Debugger.Break()
+            FinishedProcessing()
             Return result
         Catch ex As Exception
             Debugger.Break()

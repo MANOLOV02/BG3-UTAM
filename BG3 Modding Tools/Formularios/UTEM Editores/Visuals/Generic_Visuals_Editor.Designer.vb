@@ -45,6 +45,8 @@ Partial Class Generic_Visuals_Editor
         BG3Selector_Visuals1.Dock = DockStyle.Fill
         BG3Selector_Visuals1.Location = New Point(0, 0)
         BG3Selector_Visuals1.Name = "BG3Selector_Visuals1"
+        BG3Selector_Visuals1.NameField = "Name"
+        BG3Selector_Visuals1.NameType = "Attribute"
         BG3Selector_Visuals1.Selection = BG3_Enum_UTAM_Type.Texture
         BG3Selector_Visuals1.Size = New Size(350, 596)
         BG3Selector_Visuals1.Stat_MustDescend_From = New String() {"None"}
@@ -56,7 +58,7 @@ Partial Class Generic_Visuals_Editor
         TabPage1.Controls.Add(GroupBox9)
         TabPage1.Location = New Point(4, 27)
         TabPage1.Name = "TabPage1"
-        TabPage1.Size = New Size(807, 472)
+        TabPage1.Size = New Size(807, 562)
         TabPage1.TabIndex = 0
         TabPage1.Text = "Main"
         ' 
@@ -65,7 +67,7 @@ Partial Class Generic_Visuals_Editor
         GroupBox9.Dock = DockStyle.Fill
         GroupBox9.Location = New Point(0, 0)
         GroupBox9.Name = "GroupBox9"
-        GroupBox9.Size = New Size(807, 472)
+        GroupBox9.Size = New Size(807, 562)
         GroupBox9.TabIndex = 4
         GroupBox9.TabStop = False
         ' 
@@ -78,7 +80,7 @@ Partial Class Generic_Visuals_Editor
         TabControl1.Location = New Point(0, 0)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
-        TabControl1.Size = New Size(815, 503)
+        TabControl1.Size = New Size(815, 593)
         TabControl1.SizeMode = TabSizeMode.FillToRight
         TabControl1.TabIndex = 31
         ' 
