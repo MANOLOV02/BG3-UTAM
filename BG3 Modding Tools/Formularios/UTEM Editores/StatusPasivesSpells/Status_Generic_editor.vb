@@ -203,6 +203,7 @@ Public Class Status_Generic_editor
                 Create_Initial(Clone_NuevoStat)
                 Clone_NuevoStat.Using = obj.Mapkey_WithoutOverride
                 Capture_Clone_specific(obj, tipo)
+                Editor_Stats_Generic.Replace_Generic("Name", obj.Name + "_Inherited", Clone_NuevoStat)
             Case BG3Cloner.Clonetype.Clone
                 Clone_NuevoStat.Data = obj.CloneData
                 Clone_NuevoStat.Using = obj.Using
