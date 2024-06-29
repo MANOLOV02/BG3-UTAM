@@ -429,6 +429,8 @@ Public Class BG3Cloner
         Select Case Me.ParentForm.GetType
             Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Generic_Item_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor)
                 If Obj.GetType = GetType(BG3_Obj_Template_Class) Or Obj.GetType = GetType(BG3_Obj_Stats_Class) Then Return True
+            Case GetType(Generic_Character_Editor)
+                If (Obj.GetType = GetType(BG3_Obj_Template_Class) AndAlso CType(Obj, BG3_Obj_Template_Class).Type = BG3_Enum_Templates_Type.character) Or (Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.Character) Then Return True
             Case GetType(Tags_Editor)
                 If Obj.GetType = GetType(BG3_Obj_FlagsAndTags_Class) AndAlso CType(Obj, BG3_Obj_FlagsAndTags_Class).Type = BG3_Enum_FlagsandTagsType.Tags Then Return True
             Case GetType(ActionResource_Editor)

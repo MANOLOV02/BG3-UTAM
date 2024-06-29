@@ -10,7 +10,7 @@ Imports LSLib.Granny.Model
 Imports LSLib.LS
 Imports LSLib.LS.Story
 
-Public Class Generic_Item_Editor
+Public Class Generic_Character_Editor
     Sub New()
         MyBase.New
         ' Esta llamada es exigida por el diseñador.
@@ -28,11 +28,11 @@ Public Class Generic_Item_Editor
     Protected Overridable Property SelectedTmp As BG3_Obj_Template_Class
     Protected Overridable Property SelectedStat As BG3_Obj_Stats_Class
 
-    Protected Overridable ReadOnly Property Prefix As String = "UTAM_XXXX_"
-    Protected Overridable ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Container
-    Protected Overridable ReadOnly Property DefaulStatUsing As String = ""
-    Protected Overridable ReadOnly Property DefaulParent As String = ""
-    Protected Overridable ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Object
+    Protected Overridable ReadOnly Property Prefix As String = "UTAM_Character_"
+    Protected Overridable ReadOnly Property UtamType As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Character
+    Protected Overridable ReadOnly Property DefaulStatUsing As String = "_Base"
+    Protected Overridable ReadOnly Property DefaulParent As String = "295fdec1-7c6c-4323-bac2-76026ef95710"
+    Protected Overridable ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Character
     Protected Overridable Property Template_guid As String = Funciones.NewGUID(False)
     Public Sub New(ByRef MdiParent As Main, Source As BG3_Pak_SourceOfResource_Class)
         MyBase.New(MdiParent)
@@ -170,7 +170,6 @@ Public Class Generic_Item_Editor
         BG3Editor_Complex_Advanced_Attributes1.ReadOnly = Not Edicion
         BG3Selector_Template1.BG3Cloner1.Enabled = Not Edicion
         BG3Editor_Complex_Localization1.DataGridView1.Enabled = Edicion
-        BG3Editor_Complex_WorldInjection1.Enabled = Edicion
         Habilita_Edicion_Botones_Specific(Edicion)
         Process_Selection_Change()
         If DefaulStat_Type <> BG3_Enum_StatType.Object Then BG3Editor_Stats_GameSize1.Enabled = False : BG3Editor_Stats_GameSize1.AllowEdit = False
@@ -392,8 +391,6 @@ Public Class Generic_Item_Editor
 
     Private Sub Process_delete()
         If MsgBox("Deleting records is a known recipe for bricking savegames!. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Exit Sub
-        BG3Editor_Complex_WorldInjection1.Borra_All()
-        BG3Editor_Complex_WorldInjection1.Write_Data(SelectedStat)
         If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp)) = True Then
             FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp))
         End If
@@ -434,7 +431,7 @@ Public Class Generic_Item_Editor
     Private Sub Create_Initial(ByRef nuevonod As LSLib.LS.Node)
         BG3Editor_Template_Mapkey1.Create_Attribute(nuevonod, Template_guid)
         BG3Editor_Template_Name1.Create_Attribute(nuevonod, Prefix + Template_guid)
-        BG3Editor_Template_Type1.Create_Attribute(nuevonod, "item")
+        BG3Editor_Template_Type1.Create_Attribute(nuevonod, "character")
         BG3Editor_Template_Parent1.Create_Attribute(nuevonod, DefaulParent)
         BG3Editor_Template_Stats1.Create_Attribute(nuevonod, Stat_Default_Name)
         BG3Editor_Template_StoryItem1.Create_Attribute(nuevonod, "False")
@@ -501,7 +498,6 @@ Public Class Generic_Item_Editor
             Process_Selection_Change_specific()
             BG3Editor_Complex_Advanced_Attributes1.Read(SelectedTmp)
             BG3Editor_Complex_Advanced_Stats1.Read(SelectedStat)
-            BG3Editor_Complex_WorldInjection1.Read_Data(SelectedStat)
             BG3Editor_Complex_Tags1.Read(SelectedTmp)
         Else
             BG3Editor_Complex_Localization1.Clear()
@@ -537,7 +533,6 @@ Public Class Generic_Item_Editor
             Process_Selection_Change_specific()
             BG3Editor_Complex_Advanced_Attributes1.Clear()
             BG3Editor_Complex_Advanced_Stats1.Clear()
-            BG3Editor_Complex_WorldInjection1.Clear()
             BG3Editor_Complex_Tags1.Clear()
         End If
     End Sub
@@ -593,7 +588,6 @@ Public Class Generic_Item_Editor
         SelectedStat.Write_Data()
         Process_Save_Objetos_Specifics()
         BG3Editor_Complex_Localization1.Write_Data()
-        BG3Editor_Complex_WorldInjection1.Write_Data(SelectedStat)
     End Sub
     Private Sub Process_Save_Final()
         BG3Selector_Template1.Edit_Ended(SelectedTmp)
@@ -794,22 +788,6 @@ Public Class Generic_Item_Editor
         Next
 
         BG3Editor_Complex_Tags1.Read(Template)
-        BG3Selector_Template1.Edit_Ended(Template)
-    End Sub
-    Private Sub Transfer_WorldInjection(Template As BG3_Obj_Template_Class, nods As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)) Handles BG3Selector_Template1.Transfer_WorldInject
-        For Each nod As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) In nods.Nodes
-            Dim obj As BG3_Obj_Template_Class = nod.Objeto
-            If obj IsNot Template Then
-                ' Borra nuevo
-                BG3Editor_Complex_WorldInjection1.Read_Data(obj.AssociatedStats)
-                BG3Editor_Complex_WorldInjection1.Borra_All()
-                ' Copia viejo
-                BG3Editor_Complex_WorldInjection1.Read_Data(Template.AssociatedStats)
-                ' Escribe nuevo
-                BG3Editor_Complex_WorldInjection1.Write_Data(obj.AssociatedStats)
-            End If
-        Next
-        BG3Editor_Complex_WorldInjection1.Read_Data(Template.AssociatedStats)
         BG3Selector_Template1.Edit_Ended(Template)
     End Sub
 

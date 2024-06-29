@@ -391,6 +391,12 @@ Public Class Funciones
                             Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.EquipmentRaces))
                         Next
                     Next
+                Case "Races"
+                    For Each Nod In reg.Value.Children
+                        For Each child In Nod.Value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.Races))
+                        Next
+                    Next
                 Case "EquipmentSlots"
                     For Each Nod In reg.Value.Children("EquipmentSlots").First.Children
                         For Each child In Nod.Value
@@ -554,7 +560,7 @@ Public Class Funciones
                 Case "UnifiedTutorials"
                 Case "LimbsMapping"
                 Case "ModalTutorials"
-                Case "Races"
+
                 Case "ItemWallTemplates"
                 Case "ClassDescriptions"
                 Case "AiPathSettings"

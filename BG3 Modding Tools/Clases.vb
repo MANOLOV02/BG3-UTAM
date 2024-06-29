@@ -501,7 +501,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.4
+    Public ReadOnly Property CacheVersion As Double = 5.45
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -2831,6 +2831,7 @@ Public Enum BG3_Enum_UTAM_Type
     Scrolls
     Arrows
     CharacterBank
+    Character
 End Enum
 
 <Serializable>
@@ -3083,6 +3084,7 @@ Public Enum BG3_Enum_FlagsandTagsType
     SkillList
     ActionResource
     MultieffectInfo
+    Races
 End Enum
 
 
@@ -3139,6 +3141,7 @@ Public Class BG3_Obj_FlagsAndTags_Class
             If Me.IsOverrided Then Return Me.Mapkey_WithoutOverride
             If Me.Type = BG3_Enum_FlagsandTagsType.GoldValues Then Return ReadAttribute_Or_Empty("ParentUUID")
             If Me.Type = BG3_Enum_FlagsandTagsType.EquipmentRaces Then Return ReadAttribute_Or_Empty("DefaultParent")
+            If Me.Type = BG3_Enum_FlagsandTagsType.Races Then Return ReadAttribute_Or_Empty("ParentGuid")
 
             Return MyBase.ParentKey_Or_Empty
         End Get
@@ -3180,6 +3183,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
                     Return ReadAttribute_Or_Nothing("Comment")
                 Case BG3_Enum_FlagsandTagsType.MultieffectInfo
                     Return ReadAttribute_Or_Nothing("Name")
+                Case BG3_Enum_FlagsandTagsType.Races
+                    Return ReadAttribute_Or_Nothing("Name")
                 Case Else
                     Debugger.Break()
                     Return ""
@@ -3203,6 +3208,11 @@ Public Class BG3_Obj_FlagsAndTags_Class
                     Return str
                 Case BG3_Enum_FlagsandTagsType.EquipmentSlots
                     Return ReadAttribute_Or_Nothing("MapValue")
+                Case BG3_Enum_FlagsandTagsType.Races
+                    If IsNothing(ReadAttribute_Or_Nothing("Description")) Then Return Description
+                    Dim str = GameEngine.ProcessedLocalizationList.Localize(ReadAttribute_Or_Nothing("Description"))
+                    If IsNothing(str) Or str = "" Then Return Description
+                    Return str
                 Case Else
                     Return ReadAttribute_Or_Nothing("Description")
             End Select
@@ -3244,6 +3254,8 @@ Public Class BG3_Obj_FlagsAndTags_Class
         ReadAttribute_Or_Nothing("Name")
         ReadAttribute_Or_Nothing("Description")
         If Me.Type = BG3_Enum_FlagsandTagsType.SpellList Then ReadAttribute_Or_Nothing("Comment")
+        If Me.Type = BG3_Enum_FlagsandTagsType.Races Then ReadAttribute_Or_Nothing("ParentGuid")
+
         ReadAttribute_Or_Nothing("DisplayName")
         ReadAttribute_Or_Nothing("DisplayDescription")
     End Sub

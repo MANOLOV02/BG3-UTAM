@@ -97,6 +97,8 @@ Partial Class Main
         DyesToolStripMenuItem = New ToolStripMenuItem()
         ScrollsToolStripMenuItem = New ToolStripMenuItem()
         WeaponsToolStripMenuItem = New ToolStripMenuItem()
+        CharacterToolStripMenuItem = New ToolStripMenuItem()
+        CharacterEditorToolStripMenuItem = New ToolStripMenuItem()
         FlagsAndTagsToolStripMenuItem = New ToolStripMenuItem()
         ActionResourcesToolStripMenuItem = New ToolStripMenuItem()
         TagsToolStripMenuItem1 = New ToolStripMenuItem()
@@ -529,7 +531,7 @@ Partial Class Main
         ' 
         ' ToolsToolStripMenuItem1
         ' 
-        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ItemsTemplatesToolStripMenuItem, FlagsAndTagsToolStripMenuItem, StatsToolStripMenuItem, VisualsToolStripMenuItem, ConfigKeysToolStripMenuItem})
+        ToolsToolStripMenuItem1.DropDownItems.AddRange(New ToolStripItem() {ItemsTemplatesToolStripMenuItem, CharacterToolStripMenuItem, FlagsAndTagsToolStripMenuItem, StatsToolStripMenuItem, VisualsToolStripMenuItem, ConfigKeysToolStripMenuItem})
         ToolsToolStripMenuItem1.Enabled = False
         ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
         ToolsToolStripMenuItem1.Size = New Size(97, 20)
@@ -539,7 +541,7 @@ Partial Class Main
         ' 
         ItemsTemplatesToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ArmorsToolStripMenuItem, ArrowsToolStripMenuItem, BooksToolStripMenuItem, ContainersToolStripMenuItem, ConsumablesToolStripMenuItem, DyesToolStripMenuItem, ScrollsToolStripMenuItem, WeaponsToolStripMenuItem})
         ItemsTemplatesToolStripMenuItem.Name = "ItemsTemplatesToolStripMenuItem"
-        ItemsTemplatesToolStripMenuItem.Size = New Size(175, 22)
+        ItemsTemplatesToolStripMenuItem.Size = New Size(180, 22)
         ItemsTemplatesToolStripMenuItem.Text = "Items templates"
         ' 
         ' ArmorsToolStripMenuItem
@@ -590,11 +592,25 @@ Partial Class Main
         WeaponsToolStripMenuItem.Size = New Size(146, 22)
         WeaponsToolStripMenuItem.Text = "Weapons"
         ' 
+        ' CharacterToolStripMenuItem
+        ' 
+        CharacterToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {CharacterEditorToolStripMenuItem})
+        CharacterToolStripMenuItem.Name = "CharacterToolStripMenuItem"
+        CharacterToolStripMenuItem.Size = New Size(180, 22)
+        CharacterToolStripMenuItem.Text = "Character templates"
+        ' 
+        ' CharacterEditorToolStripMenuItem
+        ' 
+        CharacterEditorToolStripMenuItem.Enabled = False
+        CharacterEditorToolStripMenuItem.Name = "CharacterEditorToolStripMenuItem"
+        CharacterEditorToolStripMenuItem.Size = New Size(197, 22)
+        CharacterEditorToolStripMenuItem.Text = "Character editor (WIP!!)"
+        ' 
         ' FlagsAndTagsToolStripMenuItem
         ' 
         FlagsAndTagsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {ActionResourcesToolStripMenuItem, TagsToolStripMenuItem1})
         FlagsAndTagsToolStripMenuItem.Name = "FlagsAndTagsToolStripMenuItem"
-        FlagsAndTagsToolStripMenuItem.Size = New Size(175, 22)
+        FlagsAndTagsToolStripMenuItem.Size = New Size(180, 22)
         FlagsAndTagsToolStripMenuItem.Text = "Flags, tags and lists"
         ' 
         ' ActionResourcesToolStripMenuItem
@@ -613,7 +629,7 @@ Partial Class Main
         ' 
         StatsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {InterruptsToolStripMenuItem, PassivesToolStripMenuItem, SpellsToolStripMenuItem1, StatusToolStripMenuItem1})
         StatsToolStripMenuItem.Name = "StatsToolStripMenuItem"
-        StatsToolStripMenuItem.Size = New Size(175, 22)
+        StatsToolStripMenuItem.Size = New Size(180, 22)
         StatsToolStripMenuItem.Text = "Stats"
         ' 
         ' InterruptsToolStripMenuItem
@@ -644,7 +660,7 @@ Partial Class Main
         ' 
         VisualsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {TexturesToolStripMenuItem1, MaterialBankToolStripMenuItem, ToolStripSeparator14, VisualBankToolStripMenuItem1, CharacterBankToolStripMenuItem})
         VisualsToolStripMenuItem.Name = "VisualsToolStripMenuItem"
-        VisualsToolStripMenuItem.Size = New Size(175, 22)
+        VisualsToolStripMenuItem.Size = New Size(180, 22)
         VisualsToolStripMenuItem.Text = "Visuals"
         ' 
         ' TexturesToolStripMenuItem1
@@ -679,7 +695,7 @@ Partial Class Main
         ' ConfigKeysToolStripMenuItem
         ' 
         ConfigKeysToolStripMenuItem.Name = "ConfigKeysToolStripMenuItem"
-        ConfigKeysToolStripMenuItem.Size = New Size(175, 22)
+        ConfigKeysToolStripMenuItem.Size = New Size(180, 22)
         ConfigKeysToolStripMenuItem.Text = "Config keys"
         ' 
         ' FoldersToolStripMenuItem
@@ -975,4 +991,6 @@ Partial Class Main
     Friend WithEvents CharacterBankToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator14 As ToolStripSeparator
     Friend WithEvents SupportbuyMeACoffeeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CharacterToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents CharacterEditorToolStripMenuItem As ToolStripMenuItem
 End Class
