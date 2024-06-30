@@ -137,11 +137,11 @@ Public Class BG3Editor_Complex_Advanced_Attributes
 
         Select Case _Last_OBJ.GetType
             Case GetType(BG3_Obj_Template_Class)
-                filtro = FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_Template_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
+                filtro = FuncionesHelpers.GameEngine.ProcessedGameObjectList.Attributes_Stats_List.Where(Function(pf) (ParentHandledList.Contains(pf.Value) = False OrElse esparentnode = False) AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_Template_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
             Case GetType(BG3_Obj_FlagsAndTags_Class)
-                filtro = FuncionesHelpers.GameEngine.ProcessedFlagsAndTags.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_FlagsAndTags_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
+                filtro = FuncionesHelpers.GameEngine.ProcessedFlagsAndTags.Attributes_Stats_List.Where(Function(pf) (ParentHandledList.Contains(pf.Value) = False OrElse esparentnode = False) AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_FlagsAndTags_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
             Case GetType(BG3_Obj_VisualBank_Class)
-                filtro = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Attributes_Stats_List.Where(Function(pf) ParentHandledList.Contains(pf.Value) = False AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_VisualBank_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
+                filtro = FuncionesHelpers.GameEngine.ProcessedVisualBanksList.Attributes_Stats_List.Where(Function(pf) (ParentHandledList.Contains(pf.Value) = False OrElse esparentnode = False) AndAlso pf.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) AndAlso pf.Key.EndsWith(";" + CType(_Last_OBJ, BG3_Obj_VisualBank_Class).Type.ToString, StringComparison.OrdinalIgnoreCase) = True).Select(Function(pf) pf).Distinct
             Case Else
                 filtro = Nothing
                 Debugger.Break()
@@ -155,9 +155,9 @@ Public Class BG3Editor_Complex_Advanced_Attributes
             If idx.Text = last_pos Then idx.Selected = True
         Next
 
-        CustomList = _Last_read.Attributes.Where(Function(pf) DefaultList.Contains(pf.Key) = False AndAlso ParentHandledList.Contains(pf.Key) = False).Select(Function(pf) pf.Key).ToList
+        CustomList = _Last_read.Attributes.Where(Function(pf) DefaultList.Contains(pf.Key) = False AndAlso (ParentHandledList.Contains(pf.Key) = False OrElse esparentnode = False)).Select(Function(pf) pf.Key).ToList
         ' Las que no estan
-        For Each stat2 In _Last_read.Attributes.Where(Function(pf) DefaultList.Contains(pf.Key) = False AndAlso ParentHandledList.Contains(pf.Key) = False)
+        For Each stat2 In _Last_read.Attributes.Where(Function(pf) DefaultList.Contains(pf.Key) = False AndAlso (ParentHandledList.Contains(pf.Key) = False OrElse esparentnode = False))
             Dim att As LSLib.LS.NodeAttribute = Nothing
             _Last_read.Attributes.TryGetValue(stat2.Key, att)
             idx = Agrega_Item(stat2.Key, att.Type.ToString)

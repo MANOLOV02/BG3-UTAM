@@ -44,6 +44,7 @@ Public Class MaterialBank_Editor
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=normalmap")
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=physicalmap")
         HandledNodes.Add("Resource\Texture2DParameters;ParameterName=basecolor")
+        HandledNodes.Add("Resource\Texture2DParameters;ParameterName=Glowmap")
         HandledNodes.Add("Resource\Vector3Parameters")
         HandledNodes.Add("Resource\VectorParameters")
         HandledNodes.Add("Resource\ScalarParameters")
@@ -78,6 +79,7 @@ Public Class MaterialBank_Editor
             BG3Editor_Visuals_MaskTexture1.Read(SelectedTmp)
             BG3Editor_Visuals_PhisicalMap1.Read(SelectedTmp)
             BG3Editor_Visuals_VertexColor_msk1.Read(SelectedTmp)
+            BG3Editor_Visuals_Glow_msk1.Read(SelectedTmp)
             BG3Editor_Visuals_msKcloth1.Read(SelectedTmp)
             BG3Editor_Complex_ScalarsandVectors1.Read_Data(SelectedTmp)
 
@@ -94,6 +96,7 @@ Public Class MaterialBank_Editor
             BG3Editor_Visuals_MaskTexture1.Clear()
             BG3Editor_Visuals_PhisicalMap1.Clear()
             BG3Editor_Visuals_VertexColor_msk1.Clear()
+            BG3Editor_Visuals_Glow_msk1.Clear()
             BG3Editor_Visuals_msKcloth1.Clear()
             BG3Editor_Complex_ScalarsandVectors1.Clear()
         End If
@@ -111,6 +114,7 @@ Public Class MaterialBank_Editor
         BG3Editor_Visuals_MaskTexture1.Write(SelectedTmp)
         BG3Editor_Visuals_PhisicalMap1.Write(SelectedTmp)
         BG3Editor_Visuals_VertexColor_msk1.Write(SelectedTmp)
+        BG3Editor_Visuals_Glow_msk1.Write(SelectedTmp)
         BG3Editor_Visuals_msKcloth1.Write(SelectedTmp)
     End Sub
     Protected Overrides Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
@@ -124,6 +128,7 @@ Public Class MaterialBank_Editor
             New ToolStripMenuItem("Textures|Phycial map|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Phisicalmap"}},
             New ToolStripMenuItem("Textures|Color mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Colormask"}},
             New ToolStripMenuItem("Textures|Vertex color mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Clothmask"}},
+            New ToolStripMenuItem("Textures|Glow mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Glowmap"}},
             New ToolStripMenuItem("Textures|Cloth mask|False|Custom", Nothing, AddressOf BG3Selector_Visuals1.TransferSibligsClick) With {.Tag = {"Vertexmask"}}
             })
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
@@ -158,7 +163,9 @@ Public Class MaterialBank_Editor
                 Case "Vertexmask"
                     BG3Editor_Visuals_VertexColor_msk1.Read(Template)
                     BG3Editor_Visuals_VertexColor_msk1.Write(SelectedTmp)
-
+                Case "Glowmap"
+                    BG3Editor_Visuals_Glow_msk1.Read(Template)
+                    BG3Editor_Visuals_Glow_msk1.Write(SelectedTmp)
             End Select
         Next
     End Sub
@@ -196,12 +203,17 @@ Public Class MaterialBank_Editor
         st = Nothing
         FuncionesHelpers.GameEngine.ProcessedVisualBanksList.TryGetValue(BG3Editor_Visuals_VertexColor_msk1.TextBox1.Text, st)
         If IsNothing(st) Then LabelVertexMSK.Text = "(None)" Else LabelVertexMSK.Text = "(" + st.Name + ")"
+        st = Nothing
+        FuncionesHelpers.GameEngine.ProcessedVisualBanksList.TryGetValue(BG3Editor_Visuals_Glow_msk1.TextBox1.Text, st)
+        If IsNothing(st) Then LabelGM.Text = "(None)" Else LabelGM.Text = "(" + st.Name + ")"
     End Sub
 
     Private Sub ButtonVT_Click(sender As Object, e As EventArgs) Handles ButtonVT.Click
         BG3Editor_Visuals_VirtualTexture1.TextBox1.Text = ""
     End Sub
-
+    Private Sub ButtonGM_Click(sender As Object, e As EventArgs) Handles ButtonGM.Click
+        BG3Editor_Visuals_Glow_msk1.TextBox1.Text = ""
+    End Sub
     Private Sub ButtonBM_Click(sender As Object, e As EventArgs) Handles ButtonBM.Click
         BG3Editor_Visuals_BasecolorMap1.TextBox1.Text = ""
     End Sub

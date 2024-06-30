@@ -67,7 +67,7 @@ Partial Class Generic_Item_Editor
         BG3Editor_Stats_GameSize1 = New BG3Editor_Stats_GameSize()
         BG3Editor_Stats_ObjectCategory1 = New BG3Editor_Stats_ObjectCategory()
         BG3Editor_Stats_MinLevel1 = New BG3Editor_Stats_MinLevel()
-        BG3Editor_Template_Stats1 = New BG3Editor_Template_Stats()
+        BG3Editor_Stats_Stats1 = New BG3Editor_Stats_Name()
         BG3Editor_Stat_Unique1 = New BG3Editor_Stat_Unique()
         BG3Editor_Stat_Rarity1 = New BG3Editor_Stats_Rarity()
         BG3Editor_Stat_Type1 = New BG3Editor_Stats_Type()
@@ -605,7 +605,7 @@ Partial Class Generic_Item_Editor
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_GameSize1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_ObjectCategory1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_MinLevel1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Template_Stats1)
+        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_Stats1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Unique1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Rarity1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Type1)
@@ -656,17 +656,17 @@ Partial Class Generic_Item_Editor
         ' 
         ' BG3Editor_Template_Stats1
         ' 
-        BG3Editor_Template_Stats1.AllowEdit = False
-        BG3Editor_Template_Stats1.EditIsConditional = False
-        BG3Editor_Template_Stats1.Label = "Stat name"
-        BG3Editor_Template_Stats1.Location = New Point(3, 19)
-        BG3Editor_Template_Stats1.Margin = New Padding(0)
-        BG3Editor_Template_Stats1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Template_Stats1.MinimumSize = New Size(0, 23)
-        BG3Editor_Template_Stats1.Name = "BG3Editor_Template_Stats1"
-        BG3Editor_Template_Stats1.Size = New Size(395, 23)
-        BG3Editor_Template_Stats1.SplitterDistance = 100
-        BG3Editor_Template_Stats1.TabIndex = 0
+        BG3Editor_Stats_Stats1.AllowEdit = False
+        BG3Editor_Stats_Stats1.EditIsConditional = False
+        BG3Editor_Stats_Stats1.Label = "Stat name"
+        BG3Editor_Stats_Stats1.Location = New Point(3, 19)
+        BG3Editor_Stats_Stats1.Margin = New Padding(0)
+        BG3Editor_Stats_Stats1.MaximumSize = New Size(2000, 23)
+        BG3Editor_Stats_Stats1.MinimumSize = New Size(0, 23)
+        BG3Editor_Stats_Stats1.Name = "BG3Editor_Template_Stats1"
+        BG3Editor_Stats_Stats1.Size = New Size(395, 23)
+        BG3Editor_Stats_Stats1.SplitterDistance = 100
+        BG3Editor_Stats_Stats1.TabIndex = 0
         ' 
         ' BG3Editor_Stat_Unique1
         ' 
@@ -822,7 +822,7 @@ Partial Class Generic_Item_Editor
         ' 
         ' Generic_Item_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Controls.Add(SplitContainer1)
@@ -885,7 +885,7 @@ Partial Class Generic_Item_Editor
     Protected Friend WithEvents BG3Editor_Template_Icon1 As BG3Editor_Template_Icon
     Protected Friend WithEvents BG3Editor_Template_VisualTemplate1 As BG3Editor_Template_VisualTemplate
     Protected Friend WithEvents GroupBoxBasicStats As GroupBox
-    Protected Friend WithEvents BG3Editor_Template_Stats1 As BG3Editor_Template_Stats
+    Protected Friend WithEvents BG3Editor_Stats_Stats1 As BG3Editor_Stats_Name
     Protected Friend WithEvents BG3Editor_Stat_Unique1 As BG3Editor_Stat_Unique
     Protected Friend WithEvents BG3Editor_Stat_ValueOverride1 As BG3Editor_Stats_ValueOverride
     Protected Friend WithEvents BG3Editor_Stat_Rarity1 As BG3Editor_Stats_Rarity
@@ -893,7 +893,7 @@ Partial Class Generic_Item_Editor
     Protected Friend WithEvents BG3Editor_Stat_Weight1 As BG3Editor_Stats_Weight
     Protected Friend WithEvents BG3Editor_Stat_Using1 As BG3Editor_Stat_Using
     Protected Friend WithEvents TabControl1 As TabControl
-    Friend Protected WithEvents BG3Editor_Template_Type1 As BG3Editor_Template_Type
+    Protected Friend WithEvents BG3Editor_Template_Type1 As BG3Editor_Template_Type
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents BG3Editor_Complex_Advanced_Stats1 As BG3Editor_Complex_Advanced_Stats

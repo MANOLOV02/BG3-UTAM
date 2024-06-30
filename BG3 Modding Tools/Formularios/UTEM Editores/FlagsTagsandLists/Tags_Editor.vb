@@ -47,7 +47,8 @@ Public Class Tags_Editor
         BG3Selector_FlagsandTags1.TagsToolStripMenuItem.Visible = False
         BG3Selector_FlagsandTags1.TagsToolStripMenuItem1.Visible = False
         BG3Selector_FlagsandTags1.LocalizationToolStripMenuItem.Visible = False
-
+        BG3Selector_FlagsandTags1.BG3Cloner1.CheckBoxCopyLeveled.Enabled = False
+        BG3Selector_FlagsandTags1.BG3Cloner1.CheckBoxSkipGarbage.Enabled = False
     End Sub
 
     Public ReadOnly Property LocationtoNameForm As Point

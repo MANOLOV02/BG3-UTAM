@@ -174,5 +174,121 @@ Public Class BG3Editor_Stats_ArmorClassAbility
         Reload_Combo()
     End Sub
 End Class
-
+Public Class BG3Editor_Stats_AcidResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("AcidResistance")
+        Label = "Acid resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_BludgeoningResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("BludgeoningResistance")
+        Label = "Bludgeoning resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_ColdResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ColdResistance")
+        Label = "Cold resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_FireResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("FireResistance")
+        Label = "Fire resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_ForceResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ForceResistance")
+        Label = "Force resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_LightningResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("LightningResistance")
+        Label = "Lightning resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_NecroticResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("NecroticResistance")
+        Label = "Nectrotic resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_PiercingResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("PiercingResistance")
+        Label = "Piercing resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_PoisonResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("PoisonResistance")
+        Label = "Poison resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_PsychicResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("PsychicResistance")
+        Label = "Psychic resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_RadiantResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("RadiantResistance")
+        Label = "Radiant resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_ThunderResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ThunderResistance")
+        Label = "Thunder resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
+Public Class BG3Editor_Stats_SlashingResistance
+    Inherits Combobox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("SlashingResistance")
+        Label = "Slashing resistance"
+        ComboItems = FuncionesHelpers.ResistanceFlags
+        Reload_Combo()
+    End Sub
+End Class
 

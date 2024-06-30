@@ -411,7 +411,6 @@ Public Class BG3Cloner
     End Function
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_Template_Class) As Boolean
         If CheckType(obj) = False Then Return False
-        If obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" AndAlso obj.ReadAttribute_Or_Empty("TemplateName") <> "" Then Return False
         If IsNothing(Template_MustDescend_From) Then Return True
         If Template_MustDescend_From.Length = 1 AndAlso Template_MustDescend_From(0) = "None" Then Return True
         If Not IsNothing(obj) Then Return CheckDescendant_Generic(obj, Template_MustDescend_From)
@@ -534,8 +533,22 @@ Public Class BG3Cloner
         End If
         If Copychilds = True Then Recursive_Drop_OBJ(obj, tipo)
         For Each obj2 In Child_Temp
-            RaiseEvent Clone_Template(obj2, tipo, obj2.ClonableStats)
-            If Not IsNothing(obj2.ClonableStats) Then RaiseEvent Clone_Stat(obj2.ClonableStats, tipo)
+            If obj2.ReadAttribute_Or_Empty("LevelName") <> "" Then
+                If CheckBoxCopyLeveled.Checked = True Then
+                    Dim obj3 As New BG3_Obj_Template_Class(obj2.NodeLSLIB.CloneNode, obj2.SourceOfResorce)
+                    If obj3.NodeLSLIB.Attributes.TryAdd("ParentTemplateId", New LSLib.LS.NodeAttribute(LSLib.LS.AttributeType.FixedString) With {.Value = obj3.ReadAttribute_Or_Empty("TemplateName")}) = False Then
+                        obj3.NodeLSLIB.Attributes("ParentTemplateId").Value = obj3.ReadAttribute_Or_Empty("TemplateName")
+                    End If
+                    Dim tipo2 As Clonetype = tipo
+                    If tipo = Clonetype.Inherit Then tipo2 = Clonetype.Clone
+                    RaiseEvent Clone_Template(obj3, tipo2, obj3.ClonableStats)
+                    If Not IsNothing(obj3.ClonableStats) Then RaiseEvent Clone_Stat(obj3.ClonableStats, tipo2)
+                End If
+            Else
+                RaiseEvent Clone_Template(obj2, tipo, obj2.ClonableStats)
+                If Not IsNothing(obj2.ClonableStats) Then RaiseEvent Clone_Stat(obj2.ClonableStats, tipo)
+            End If
+
         Next
         RaiseEvent Clone_Finished()
     End Sub
@@ -569,10 +582,8 @@ Public Class BG3Cloner
                     If obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.UTAM_Mod OrElse obj2.SourceOfResorce.Pak_Or_Folder <> ModSource.Pak_Or_Folder Then
                         If obj2.IsOverrided = False Then
                             If CheckDescendant_Generic(obj2, Template_MustDescend_From) Then
-                                If (obj2.Name.StartsWith("BASE_") = False AndAlso obj2.Name.StartsWith("CINE_") = False AndAlso obj2.Name.StartsWith("TimelineTemplate_") = False) OrElse obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.BaseGame Then
-                                    If obj2.ReadAttribute_Or_Empty("ParentTemplateId") <> "" Then
-                                        Child_Temp.Add(obj2)
-                                    End If
+                                If (obj2.Name.StartsWith("BASE_") = False AndAlso obj2.Name.StartsWith("CINE_") = False AndAlso obj2.Name.StartsWith("TimelineTemplate_") = False) OrElse CheckBoxSkipGarbage.Checked = False OrElse obj2.SourceOfResorce.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+                                    Child_Temp.Add(obj2)
                                 End If
                             End If
                         End If

@@ -35,7 +35,7 @@ Class FuncionesHelpers
     Public Shared ColorMaterialsNames2 As New List(Of String) From {"Color1", "Color2", "Color3", "Color4", "Color5"}
 
     ' Lists from ValueList.txt
-    Public Shared Ability As New List(Of String) From {"None", "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"}
+    Public Shared Ability As New List(Of String) From {"None", "Charisma", "Constitution", "Strength", "Dexterity", "Intelligence", "Wisdom"}
     Public Shared Act As New List(Of String) From {"1"}
     Public Shared Action_Type As New List(Of String) From {"Regular", "Bonus"}
     Public Shared AIFlags As New List(Of String) From {"CanNotUse", "IgnoreSelf", "IgnoreDebuff", "IgnoreBuff", "StatusIsSecondary", "IgnoreControl", "CanNotTargetFrozen", "GrantsResources", "UseAsSupportingActionOnly", "UseAsSeekActionOnly"}

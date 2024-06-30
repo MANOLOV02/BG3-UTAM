@@ -46,7 +46,8 @@ Public Class Status_Generic_editor
         BG3Selector_Stat1.TagsToolStripMenuItem1.Visible = False
         BG3Selector_Stat1.LocalizationToolStripMenuItem.Visible = False
         BG3Selector_Stat1.RenameToolStripMenuItem.Visible = False
-
+        BG3Selector_Stat1.BG3Cloner1.CheckBoxCopyLeveled.Enabled = False
+        BG3Selector_Stat1.BG3Cloner1.CheckBoxSkipGarbage.Enabled = False
     End Sub
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Current = Cursors.WaitCursor
@@ -181,7 +182,7 @@ Public Class Status_Generic_editor
     Private Sub Capture_Name_Changed(quien As BG3_Obj_Stats_Class, OldName As String, NewName As String) Handles BG3Editor_Stat_Name1.WritedNewName
         Dim nod = CType(BG3Selector_Stat1.TreeView1.SelectedNode, BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class))
         nod.Name = NewName
-        SelectedTmp.Process_Name_Change(NewName)
+        SelectedTmp.Process_Name_Change(OldName, NewName)
 
     End Sub
     Protected Overridable Sub Capture_Clone_specific(obj As BG3_Obj_Stats_Class, tipo As BG3Cloner.Clonetype)

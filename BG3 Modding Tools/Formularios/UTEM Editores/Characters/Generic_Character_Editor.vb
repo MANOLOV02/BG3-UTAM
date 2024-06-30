@@ -103,45 +103,59 @@ Public Class Generic_Character_Editor
         Create_Stat_Transfers()
         Habilita_Edicion_Botones(False)
         PictureBox3.AllowDrop = True
-        BG3Editor_Complex_Localization1.Link_Controls({BG3Editor_Template_DisplayName1, BG3Editor_Template_Description1, BG3Editor_Template_TechnicalDescription1})
+        BG3Editor_Complex_Localization1.Link_Controls({BG3Editor_Template_DisplayName1})
         HandledStats.Add("Type")
         HandledStats.Add("Using")
+        HandledStats.Add("Class")
+        HandledStats.Add("Level")
+        HandledStats.Add("Armor")
+        HandledStats.Add("ArmorType")
         HandledStats.Add("Weight")
-        HandledStats.Add("Unique")
-        HandledStats.Add("ValueOverride")
-        HandledStats.Add("ValueScale")
-        HandledStats.Add("ValueUUID")
-        HandledStats.Add("ValueRounding")
-        HandledStats.Add("ValueLevel")
-        HandledStats.Add("Rarity")
-        HandledStats.Add("RootTemplate")
-        HandledStats.Add("MinLevel")
-        HandledStats.Add("MinAmount")
-        HandledStats.Add("MaxAmount")
-        HandledStats.Add("InventoryTab")
-        HandledStats.Add("ObjectCategory")
-        HandledStats.Add("GameSize")
-
+        HandledStats.Add("Charisma")
+        HandledStats.Add("Constitution")
+        HandledStats.Add("Dexterity")
+        HandledStats.Add("Intelligence")
+        HandledStats.Add("Strength")
+        HandledStats.Add("Vitality")
+        HandledStats.Add("Wisdom")
+        HandledStats.Add("Passives")
+        HandledStats.Add("DefaultBoosts")
+        HandledStats.Add("DifficultyStatuses")
+        HandledStats.Add("Proficiency Group")
+        HandledStats.Add("ProficiencyBonus")
+        HandledStats.Add("ActionResources")
+        HandledStats.Add("ThunderResistance")
+        HandledStats.Add("RadiantResistance")
+        HandledStats.Add("PsychicResistance")
+        HandledStats.Add("PoisonResistance")
+        HandledStats.Add("PiercingResistance")
+        HandledStats.Add("NecroticResistance")
+        HandledStats.Add("LightningResistance")
+        HandledStats.Add("ForceResistance")
+        HandledStats.Add("FireResistance")
+        HandledStats.Add("ColdResistance")
+        HandledStats.Add("BludgeoningResistance")
+        HandledStats.Add("AcidResistance")
+        HandledStats.Add("SlashingResistance")
 
 
         HandledAttributes.Add("MapKey")
         HandledAttributes.Add("ParentTemplateId")
         HandledAttributes.Add("VisualTemplate")
+        HandledAttributes.Add("CharacterVisualResourceID")
+        HandledAttributes.Add("EquipmentRace")
+        HandledAttributes.Add("Race")
         HandledAttributes.Add("Icon")
         HandledAttributes.Add("UTAM_h1")
-        HandledAttributes.Add("UTAM_h2")
-        HandledAttributes.Add("UTAM_h3")
         HandledAttributes.Add("UTAM_Type")
         HandledAttributes.Add("UTAM_Group")
         HandledAttributes.Add("DisplayName")
         HandledAttributes.Add("Name")
         HandledAttributes.Add("Stats")
-        HandledAttributes.Add("StoryItem")
-        HandledAttributes.Add("Description")
-        HandledAttributes.Add("TechnicalDescription")
+        HandledAttributes.Add("Equipment")
+        HandledAttributes.Add("LevelOverride")
         HandledAttributes.Add("Type")
         HandledAttributes.Add("_OriginalFileVersion_")
-        HandledAttributes.Add("maxStackAmount")
 
         HandledNodes.Add("GameObjects\Tags")
 
@@ -149,7 +163,7 @@ Public Class Generic_Character_Editor
     End Sub
 
     Protected Overridable Sub Initialize_Specifics()
-        Debugger.Break()
+
     End Sub
 
     ' Procesos Comunes Editores
@@ -163,19 +177,20 @@ Public Class Generic_Character_Editor
         GroupBoxBasicTemplates.Enabled = Edicion
         GroupBoxVisuals.Enabled = Edicion
         GroupBoxBasicStats.Enabled = Edicion
-        GroupBoxTrade.Enabled = Edicion
         GroupBox10.Enabled = Edicion
-        GroupBoxInventory.Enabled = Edicion
         BG3Editor_Complex_Advanced_Stats1.ReadOnly = Not Edicion
         BG3Editor_Complex_Advanced_Attributes1.ReadOnly = Not Edicion
         BG3Selector_Template1.BG3Cloner1.Enabled = Not Edicion
         BG3Editor_Complex_Localization1.DataGridView1.Enabled = Edicion
+        GroupBoxAbilities.Enabled = Edicion
+        GroupBoxResist.Enabled = Edicion
+        GroupBoxBoosts.Enabled = Edicion
+        GroupBoxStatus.Enabled = Edicion
         Habilita_Edicion_Botones_Specific(Edicion)
         Process_Selection_Change()
-        If DefaulStat_Type <> BG3_Enum_StatType.Object Then BG3Editor_Stats_GameSize1.Enabled = False : BG3Editor_Stats_GameSize1.AllowEdit = False
     End Sub
     Protected Overridable Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
-        Debugger.Break()
+
     End Sub
 
     Private Sub PictureBox3_DragEnter(sender As Object, e As DragEventArgs) Handles PictureBox3.DragEnter
@@ -198,8 +213,8 @@ Public Class Generic_Character_Editor
     Private Sub Capture_Names_Changed(sender As Object) Handles BG3Selector_Template1.Change_Selected, BG3Editor_Complex_Localization1.LocaTextChanged
         If Not IsNothing(SelectedTmp) Then
             LabelInfoName.Text = "Name: " + BG3Editor_Complex_Localization1.Get_Localization(BG3Editor_Template_DisplayName1, SelectedTmp, FuncionesHelpers.GameEngine.Settings.SelectedLocalization)
-            LabelInfoDescription.Text = "Description: " + BG3Editor_Complex_Localization1.Get_Localization(BG3Editor_Template_Description1, SelectedTmp, FuncionesHelpers.GameEngine.Settings.SelectedLocalization)
-            LabelTechnical.Text = "Technical: " + BG3Editor_Complex_Localization1.Get_Localization(BG3Editor_Template_TechnicalDescription1, SelectedTmp, FuncionesHelpers.GameEngine.Settings.SelectedLocalization)
+            LabelInfoDescription.Text = "Description: " '+ BG3Editor_Complex_Localization1.Get_Localization(BG3Editor_Template_Description1, SelectedTmp, FuncionesHelpers.GameEngine.Settings.SelectedLocalization)
+            LabelTechnical.Text = "Technical: " '+ BG3Editor_Complex_Localization1.Get_Localization(BG3Editor_Template_TechnicalDescription1, SelectedTmp, FuncionesHelpers.GameEngine.Settings.SelectedLocalization)
         Else
             If Not IsNothing(BG3Selector_Template1.Current_Nod) Then
                 LabelInfoName.Text = "Group name: " + BG3Selector_Template1.Current_Group
@@ -249,7 +264,9 @@ Public Class Generic_Character_Editor
             End If
         End If
     End Sub
-
+    Private Sub Capture_Name_Changed(quien As BG3_Obj_Stats_Class, OldName As String, NewName As String) Handles BG3Editor_Stats_Stats1.WritedNewName
+        SelectedStat.Process_Name_Change(OldName, NewName)
+    End Sub
     Protected Overridable Sub Capture_Clone_specific(obj As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype)
 
     End Sub
@@ -270,6 +287,7 @@ Public Class Generic_Character_Editor
             Case BG3Cloner.Clonetype.None
                 Create_Initial(Clone_Nuevonod)
                 Capture_Clone_specific(obj, tipo)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
             Case BG3Cloner.Clonetype.Inherit
                 Create_Initial(Clone_Nuevonod)
                 BG3Editor_Template_Parent1.Replace_Attribute(Clone_Nuevonod, obj.MapKey)
@@ -279,32 +297,26 @@ Public Class Generic_Character_Editor
             Case BG3Cloner.Clonetype.Clone
                 Clone_Nuevonod = obj.NodeLSLIB.CloneNode
                 Clone_Nuevonod.Attributes.Remove("UTAM_h1")
-                Clone_Nuevonod.Attributes.Remove("UTAM_h2")
-                Clone_Nuevonod.Attributes.Remove("UTAM_h3")
                 Create_Initial(Clone_Nuevonod)
                 Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_Group", BG3Selector_Template1.Current_Group, AttributeType.FixedString)
                 BG3Editor_Template_Mapkey1.Replace_Attribute(Clone_Nuevonod, Template_guid)
                 BG3Editor_Template_Name1.Replace_Attribute(Clone_Nuevonod, obj.Name + "_Cloned")
                 If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
-                BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 Capture_Clone_specific(obj, tipo)
             Case BG3Cloner.Clonetype.Override
                 Template_guid = obj.MapKey
                 Clone_Nuevonod = obj.NodeLSLIB.CloneNode
                 Clone_Nuevonod.Attributes.Remove("UTAM_h1")
-                Clone_Nuevonod.Attributes.Remove("UTAM_h2")
-                Clone_Nuevonod.Attributes.Remove("UTAM_h3")
                 Create_Initial(Clone_Nuevonod)
                 Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_Group", BG3Selector_Template1.Current_Group, AttributeType.FixedString)
                 BG3Editor_Template_Mapkey1.Replace_Attribute(Clone_Nuevonod, obj.MapKey)
                 BG3Editor_Template_Name1.Replace_Attribute(Clone_Nuevonod, obj.Name + "_Overrided")
                 If obj.NodeLSLIB.TryGetOrEmpty("DisplayName") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h1", obj.NodeLSLIB.TryGetOrEmpty("DisplayName"), AttributeType.TranslatedString)
-                If obj.NodeLSLIB.TryGetOrEmpty("Description") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h2", obj.NodeLSLIB.TryGetOrEmpty("Description"), AttributeType.TranslatedString)
-                If obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h3", obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription"), AttributeType.TranslatedString)
-                If IsNothing(tempstat) Then BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                If IsNothing(tempstat) Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 If Not IsNothing(tempstat) Then Clone_Stat_Name = tempstat.Name
                 If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
-                BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 Capture_Clone_specific(obj, tipo)
             Case Else
                 Debugger.Break()
@@ -316,9 +328,9 @@ Public Class Generic_Character_Editor
         ' Stat Clone
         Select Case tipo
             Case BG3Cloner.Clonetype.None, BG3Cloner.Clonetype.Inherit
-                Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
+                'Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
             Case BG3Cloner.Clonetype.Clone, BG3Cloner.Clonetype.Override
-                Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
+                'Editor_Stats_Generic.Create_Generic("RootTemplate", Template_guid, SelectedStat)
                 If Not IsNothing(tempstat) Then
                     For Each dat In tempstat.Data
                         SelectedStat.Data.TryAdd(dat.Key, dat.Value)
@@ -333,8 +345,6 @@ Public Class Generic_Character_Editor
             Case BG3Cloner.Clonetype.None
             Case BG3Cloner.Clonetype.Clone, BG3Cloner.Clonetype.Inherit, BG3Cloner.Clonetype.Override
                 CLone_Loca(obj.NodeLSLIB.TryGetOrEmpty("DisplayName"), SelectedTmp.NodeLSLIB.TryGetOrEmpty("UTAM_h1"))
-                CLone_Loca(obj.NodeLSLIB.TryGetOrEmpty("Description"), SelectedTmp.NodeLSLIB.TryGetOrEmpty("UTAM_h2"))
-                CLone_Loca(obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription"), SelectedTmp.NodeLSLIB.TryGetOrEmpty("UTAM_h3"))
             Case Else
                 Debugger.Break()
         End Select
@@ -385,20 +395,12 @@ Public Class Generic_Character_Editor
         Process_delete()
     End Sub
     Protected Overridable Sub Process_Delete_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
     End Sub
 
     Private Sub Process_delete()
         If MsgBox("Deleting records is a known recipe for bricking savegames!. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Exit Sub
         If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp)) = True Then
             FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_DisplayName1.Get_Utam_Handle(SelectedTmp))
-        End If
-        If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_Description1.Get_Utam_Handle(SelectedTmp)) = True Then
-            FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_Description1.Get_Utam_Handle(SelectedTmp))
-        End If
-        If FuncionesHelpers.GameEngine.ProcessedLocalizationList.ContainsKey(BG3Editor_Template_TechnicalDescription1.Get_Utam_Handle(SelectedTmp)) = True Then
-            FuncionesHelpers.GameEngine.ProcessedLocalizationList.Remove(BG3Editor_Template_TechnicalDescription1.Get_Utam_Handle(SelectedTmp))
         End If
         FuncionesHelpers.GameEngine.UtamTemplates.Remove(SelectedTmp)
         FuncionesHelpers.GameEngine.Utamstats.Remove(SelectedStat)
@@ -413,8 +415,7 @@ Public Class Generic_Character_Editor
     End Sub
 
     Protected Overridable Sub Select_Objects_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
     Private Sub Select_Objects(Template As BG3_Obj_Template_Class)
         If Not IsNothing(Template) AndAlso Not IsNothing(Template.AssociatedStats) Then
@@ -433,11 +434,7 @@ Public Class Generic_Character_Editor
         BG3Editor_Template_Name1.Create_Attribute(nuevonod, Prefix + Template_guid)
         BG3Editor_Template_Type1.Create_Attribute(nuevonod, "character")
         BG3Editor_Template_Parent1.Create_Attribute(nuevonod, DefaulParent)
-        BG3Editor_Template_Stats1.Create_Attribute(nuevonod, Stat_Default_Name)
-        BG3Editor_Template_StoryItem1.Create_Attribute(nuevonod, "False")
         BG3Editor_Template_DisplayName1.Create_Attribute(nuevonod, Funciones.NewGUID(True) + ";1")
-        BG3Editor_Template_Description1.Create_Attribute(nuevonod, Funciones.NewGUID(True) + ";1")
-        BG3Editor_Template_TechnicalDescription1.Create_Attribute(nuevonod, Funciones.NewGUID(True) + ";1")
         Create_Initial_Specific(nuevonod)
         Add_UTAM_Attribute(nuevonod)
     End Sub
@@ -448,18 +445,15 @@ Public Class Generic_Character_Editor
     End Sub
 
     Protected Overridable Sub Add_UTAM_Attribute_Specific(ByRef nuevonod As LSLib.LS.Node)
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
 
     Protected Overridable Sub Create_Initial_Specific(ByRef nuevonod As LSLib.LS.Node)
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
 
     Protected Overridable Sub Process_Selection_Change_specific()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
 
     Private Sub Process_Selection_Change()
@@ -471,30 +465,51 @@ Public Class Generic_Character_Editor
             BG3Selector_Template1.BG3Editor_Template_UtamGroup1.Read(SelectedTmp)
             BG3Editor_Template_Parent1.Read(SelectedTmp)
             BG3Editor_Template_Type1.Read(SelectedTmp)
-            BG3Editor_Template_StoryItem1.Read(SelectedTmp)
             BG3Editor_Template_VisualTemplate1.Read(SelectedTmp)
+            BG3Editor_Template_CharacterTemplate1.Read(SelectedTmp)
+            BG3Editor_Template_EquipmentRace1.Read(SelectedTmp)
+            BG3Editor_Template_Race1.Read(SelectedTmp)
             BG3Editor_Template_Icon1.Read(SelectedTmp)
             BG3Editor_Template_DisplayName1.Read(SelectedTmp)
-            BG3Editor_Template_Description1.Read(SelectedTmp)
-            BG3Editor_Template_TechnicalDescription1.Read(SelectedTmp)
-            BG3Editor_Template_Stats1.Read(SelectedTmp)
-            BG3Editor_Template_maxStackAmount1.Read(SelectedTmp)
+            BG3Editor_Template_Equipment1.Read(SelectedTmp)
+            BG3Editor_Template_LevelOverride1.Read(SelectedTmp)
+            BG3Editor_Complex_StatusList1.Read(SelectedTmp)
+
+            BG3Editor_Stats_Stats1.Read(SelectedStat)
             BG3Editor_Stat_Type1.Read(SelectedStat)
-            BG3Editor_Stat_Rarity1.Read(SelectedStat)
-            BG3Editor_Stat_Weight1.Read(SelectedStat)
             BG3Editor_Stat_Using1.Read(SelectedStat)
-            BG3Editor_Stat_Unique1.Read(SelectedStat)
-            BG3Editor_Stats_Valueuuid1.Read(SelectedStat)
-            BG3Editor_Stats_ValueScale1.Read(SelectedStat)
-            BG3Editor_Stats_ValueLevel1.Read(SelectedStat)
-            BG3Editor_Stat_ValueOverride1.Read(SelectedStat)
-            BG3Editor_Stats_ValueRounding1.Read(SelectedStat)
-            BG3Editor_Stats_MinLevel1.Read(SelectedStat)
-            BG3Editor_Stats_MinAmount1.Read(SelectedStat)
-            BG3Editor_Stats_MaxAmount1.Read(SelectedStat)
-            BG3Editor_Stats_InventoryTab1.Read(SelectedStat)
-            BG3Editor_Stats_ObjectCategory1.Read(SelectedStat)
-            BG3Editor_Stats_GameSize1.Read(SelectedStat)
+            BG3Editor_Stats_Class1.Read(SelectedStat)
+            BG3Editor_Stats_Armor1.Read(SelectedStat)
+            BG3Editor_Stats_ArmorType1.Read(SelectedStat)
+            BG3Editor_Stats_Weight1.Read(SelectedStat)
+            BG3Editor_Stats_Charisma1.Read(SelectedStat)
+            BG3Editor_Stats_Constitution1.Read(SelectedStat)
+            BG3Editor_Stats_Dexterity1.Read(SelectedStat)
+            BG3Editor_Stats_Intelligence1.Read(SelectedStat)
+            BG3Editor_Stats_Strength1.Read(SelectedStat)
+            BG3Editor_Stats_Wisdom1.Read(SelectedStat)
+            BG3Editor_Stats_Vitality1.Read(SelectedStat)
+            BG3Editor_Stats_Level1.Read(SelectedStat)
+            BG3Editor_Stats_DefaultBoosts1.Read(SelectedStat)
+            BG3Editor_Stats_Passives1.Read(SelectedStat)
+            BG3Editor_Stats_DifficultyStatuses1.Read(SelectedStat)
+            BG3Editor_Stats_ActionResources1.Read(SelectedStat)
+            BG3Editor_Stats_ProficiencyGroupText1.Read(SelectedStat)
+            BG3Editor_Stats_ProficiencyBonus1.Read(SelectedStat)
+            BG3Editor_Stats_AcidResistance1.Read(SelectedStat)
+            BG3Editor_Stats_BludgeoningResistance1.Read(SelectedStat)
+            BG3Editor_Stats_ColdResistance1.Read(SelectedStat)
+            BG3Editor_Stats_FireResistance1.Read(SelectedStat)
+            BG3Editor_Stats_ForceResistance1.Read(SelectedStat)
+            BG3Editor_Stats_LightningResistance1.Read(SelectedStat)
+            BG3Editor_Stats_NecroticResistance1.Read(SelectedStat)
+            BG3Editor_Stats_PiercingResistance1.Read(SelectedStat)
+            BG3Editor_Stats_PoisonResistance1.Read(SelectedStat)
+            BG3Editor_Stats_PsychicResistance1.Read(SelectedStat)
+            BG3Editor_Stats_RadiantResistance1.Read(SelectedStat)
+            BG3Editor_Stats_ThunderResistance1.Read(SelectedStat)
+            BG3Editor_Stats_SlashingResistance1.Read(SelectedStat)
+
             Process_Selection_Change_specific()
             BG3Editor_Complex_Advanced_Attributes1.Read(SelectedTmp)
             BG3Editor_Complex_Advanced_Stats1.Read(SelectedStat)
@@ -506,30 +521,51 @@ Public Class Generic_Character_Editor
             BG3Selector_Template1.BG3Editor_Template_UtamGroup1.Clear()
             BG3Editor_Template_Parent1.Clear()
             BG3Editor_Template_Type1.Clear()
-            BG3Editor_Template_StoryItem1.Clear()
             BG3Editor_Template_VisualTemplate1.Clear()
+            BG3Editor_Template_CharacterTemplate1.Clear()
+            BG3Editor_Template_EquipmentRace1.Clear()
+            BG3Editor_Template_Race1.Clear()
             BG3Editor_Template_Icon1.Clear()
             BG3Editor_Template_DisplayName1.Clear()
-            BG3Editor_Template_Description1.Clear()
-            BG3Editor_Template_TechnicalDescription1.Clear()
-            BG3Editor_Template_maxStackAmount1.Clear()
-            BG3Editor_Template_Stats1.Clear()
+            BG3Editor_Stats_Stats1.Clear()
+            BG3Editor_Template_Equipment1.Clear()
+            BG3Editor_Template_LevelOverride1.Clear()
+            BG3Editor_Complex_StatusList1.Clear()
+
             BG3Editor_Stat_Type1.Clear()
-            BG3Editor_Stat_Rarity1.Clear()
-            BG3Editor_Stat_Weight1.Clear()
             BG3Editor_Stat_Using1.Clear()
-            BG3Editor_Stats_Valueuuid1.Clear()
-            BG3Editor_Stats_ValueScale1.Clear()
-            BG3Editor_Stats_ValueLevel1.Clear()
-            BG3Editor_Stat_ValueOverride1.Clear()
-            BG3Editor_Stats_ValueRounding1.Clear()
-            BG3Editor_Stats_MinLevel1.Clear()
-            BG3Editor_Stat_Unique1.Clear()
-            BG3Editor_Stats_MinAmount1.Clear()
-            BG3Editor_Stats_MaxAmount1.Clear()
-            BG3Editor_Stats_InventoryTab1.Clear()
-            BG3Editor_Stats_ObjectCategory1.Clear()
-            BG3Editor_Stats_GameSize1.Clear()
+            BG3Editor_Stats_Class1.Clear()
+            BG3Editor_Stats_Armor1.Clear()
+            BG3Editor_Stats_ArmorType1.Clear()
+            BG3Editor_Stats_Weight1.Clear()
+            BG3Editor_Stats_Charisma1.Clear()
+            BG3Editor_Stats_Constitution1.Clear()
+            BG3Editor_Stats_Dexterity1.Clear()
+            BG3Editor_Stats_Intelligence1.Clear()
+            BG3Editor_Stats_Strength1.Clear()
+            BG3Editor_Stats_Wisdom1.Clear()
+            BG3Editor_Stats_Vitality1.Clear()
+            BG3Editor_Stats_Level1.Clear()
+            BG3Editor_Stats_DefaultBoosts1.Clear()
+            BG3Editor_Stats_Passives1.Clear()
+            BG3Editor_Stats_DifficultyStatuses1.Clear()
+            BG3Editor_Stats_ActionResources1.Clear()
+            BG3Editor_Stats_ProficiencyGroupText1.Clear()
+            BG3Editor_Stats_ProficiencyBonus1.Clear()
+            BG3Editor_Stats_AcidResistance1.Clear()
+            BG3Editor_Stats_BludgeoningResistance1.Clear()
+            BG3Editor_Stats_ColdResistance1.Clear()
+            BG3Editor_Stats_FireResistance1.Clear()
+            BG3Editor_Stats_ForceResistance1.Clear()
+            BG3Editor_Stats_LightningResistance1.Clear()
+            BG3Editor_Stats_NecroticResistance1.Clear()
+            BG3Editor_Stats_PiercingResistance1.Clear()
+            BG3Editor_Stats_PoisonResistance1.Clear()
+            BG3Editor_Stats_PsychicResistance1.Clear()
+            BG3Editor_Stats_RadiantResistance1.Clear()
+            BG3Editor_Stats_ThunderResistance1.Clear()
+            BG3Editor_Stats_SlashingResistance1.Clear()
+
             Process_Selection_Change_specific()
             BG3Editor_Complex_Advanced_Attributes1.Clear()
             BG3Editor_Complex_Advanced_Stats1.Clear()
@@ -537,8 +573,7 @@ Public Class Generic_Character_Editor
         End If
     End Sub
     Protected Overridable Sub Process_Save_Edits_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
 
     Private Sub Process_Save_Edits()
@@ -547,31 +582,54 @@ Public Class Generic_Character_Editor
         BG3Selector_Template1.BG3Editor_Template_UtamGroup1.Write(SelectedTmp)
         BG3Editor_Template_Parent1.Write(SelectedTmp)
         BG3Editor_Template_Type1.Write(SelectedTmp)
-        BG3Editor_Template_StoryItem1.Write(SelectedTmp)
         BG3Editor_Template_VisualTemplate1.Write(SelectedTmp)
+        BG3Editor_Template_CharacterTemplate1.Write(SelectedTmp)
+        BG3Editor_Template_EquipmentRace1.Write(SelectedTmp)
+        BG3Editor_Template_Race1.Write(SelectedTmp)
         BG3Editor_Template_Icon1.Write(SelectedTmp)
         BG3Editor_Template_DisplayName1.Write(SelectedTmp)
-        BG3Editor_Template_Description1.Write(SelectedTmp)
-        BG3Editor_Template_TechnicalDescription1.Write(SelectedTmp)
-        BG3Editor_Template_Stats1.Write(SelectedTmp)
-        BG3Editor_Template_maxStackAmount1.Write(SelectedTmp)
+        BG3Editor_Template_Equipment1.Write(SelectedTmp)
+        BG3Editor_Template_LevelOverride1.Write(SelectedTmp)
+        BG3Editor_Complex_StatusList1.Write(SelectedTmp)
+
         BG3Editor_Stat_Type1.Write(SelectedStat)
-        BG3Editor_Stat_Rarity1.Write(SelectedStat)
-        BG3Editor_Stat_Unique1.Write(SelectedStat)
-        BG3Editor_Stat_Weight1.Write(SelectedStat)
-        BG3Editor_Stat_ValueOverride1.Write(SelectedStat)
         BG3Editor_Stat_Using1.Write(SelectedStat)
-        BG3Editor_Stats_Valueuuid1.Write(SelectedStat)
-        BG3Editor_Stats_ValueScale1.Write(SelectedStat)
-        BG3Editor_Stats_ValueLevel1.Write(SelectedStat)
-        BG3Editor_Stat_ValueOverride1.Write(SelectedStat)
-        BG3Editor_Stats_ValueRounding1.Write(SelectedStat)
-        BG3Editor_Stats_MinLevel1.Write(SelectedStat)
-        BG3Editor_Stats_MinAmount1.Write(SelectedStat)
-        BG3Editor_Stats_MaxAmount1.Write(SelectedStat)
-        BG3Editor_Stats_InventoryTab1.Write(SelectedStat)
-        BG3Editor_Stats_ObjectCategory1.Write(SelectedStat)
-        BG3Editor_Stats_GameSize1.Write(SelectedStat)
+        BG3Editor_Stats_Class1.Write(SelectedStat)
+        BG3Editor_Stats_Armor1.Write(SelectedStat)
+        BG3Editor_Stats_ArmorType1.Write(SelectedStat)
+        BG3Editor_Stats_Weight1.Write(SelectedStat)
+        BG3Editor_Stats_Charisma1.Write(SelectedStat)
+        BG3Editor_Stats_Constitution1.Write(SelectedStat)
+        BG3Editor_Stats_Dexterity1.Write(SelectedStat)
+        BG3Editor_Stats_Intelligence1.Write(SelectedStat)
+        BG3Editor_Stats_Strength1.Write(SelectedStat)
+        BG3Editor_Stats_Wisdom1.Write(SelectedStat)
+        BG3Editor_Stats_Vitality1.Write(SelectedStat)
+        BG3Editor_Stats_Level1.Write(SelectedStat)
+        BG3Editor_Stats_DefaultBoosts1.Write(SelectedStat)
+        BG3Editor_Stats_Passives1.Write(SelectedStat)
+        BG3Editor_Stats_DifficultyStatuses1.Write(SelectedStat)
+        BG3Editor_Stats_ActionResources1.Write(SelectedStat)
+        BG3Editor_Stats_ProficiencyGroupText1.Write(SelectedStat)
+        BG3Editor_Stats_ProficiencyBonus1.Write(SelectedStat)
+        BG3Editor_Stats_AcidResistance1.Write(SelectedStat)
+        BG3Editor_Stats_BludgeoningResistance1.Write(SelectedStat)
+        BG3Editor_Stats_ColdResistance1.Write(SelectedStat)
+        BG3Editor_Stats_FireResistance1.Write(SelectedStat)
+        BG3Editor_Stats_ForceResistance1.Write(SelectedStat)
+        BG3Editor_Stats_LightningResistance1.Write(SelectedStat)
+        BG3Editor_Stats_NecroticResistance1.Write(SelectedStat)
+        BG3Editor_Stats_PiercingResistance1.Write(SelectedStat)
+        BG3Editor_Stats_PoisonResistance1.Write(SelectedStat)
+        BG3Editor_Stats_PsychicResistance1.Write(SelectedStat)
+        BG3Editor_Stats_RadiantResistance1.Write(SelectedStat)
+        BG3Editor_Stats_ThunderResistance1.Write(SelectedStat)
+        BG3Editor_Stats_SlashingResistance1.Write(SelectedStat)
+        BG3Editor_Stats_Stats1.Write(SelectedStat)
+
+
+
+        Editor_Generic_GenericAttribute.Replace_Attribute_Generic(SelectedTmp.NodeLSLIB, "Stats", SelectedStat.Name, AttributeType.FixedString)
         BG3Editor_Complex_Tags1.Write(SelectedTmp)
         Process_Save_Edits_Specifics()
         Process_Save_Objetos()
@@ -580,8 +638,8 @@ Public Class Generic_Character_Editor
     End Sub
 
     Protected Overridable Sub Process_Save_Objetos_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
+
     End Sub
     Private Sub Process_Save_Objetos()
         SelectedTmp.Write_Data()
@@ -594,8 +652,7 @@ Public Class Generic_Character_Editor
     End Sub
 
     Protected Overridable Sub Process_Edit_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
 
     End Sub
 
@@ -606,8 +663,7 @@ Public Class Generic_Character_Editor
         Habilita_Edicion_Botones(True)
     End Sub
     Protected Overridable Sub Process_Cancel_Specifics()
-        Debug.Print(Me.Text)
-        Debugger.Break()
+
     End Sub
 
     Private Sub Process_Cancel()
@@ -621,17 +677,8 @@ Public Class Generic_Character_Editor
     Private Sub Create_Stat_Transfers()
 #Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Dim lista As New List(Of ToolStripMenuItem) From {
-           New ToolStripMenuItem("Stats|Rarity|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Rarity"}},
-           New ToolStripMenuItem("Stats|Unique|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Unique"}},
-           New ToolStripMenuItem("Template|Story item|True|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"StoryItem"}},
            New ToolStripMenuItem("Template|Icon|False|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Icon"}},
-           New ToolStripMenuItem("Stats|Trade settings|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Trade"}},
-           New ToolStripMenuItem("Stats|Object category|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"ObjectCategory"}},
-           New ToolStripMenuItem("Stats|Minimum level|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"MinLevel"}},
-           New ToolStripMenuItem("Stats|Inventory settings|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Inventory"}},
-            New ToolStripMenuItem("Stats|Game size|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"GameSize"}},
            New ToolStripMenuItem("Stats|Using|True|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Using"}},
-           New ToolStripMenuItem("Stats|Value override|False|Data", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"Valueoverride"}},
            New ToolStripMenuItem("Template|Visual template|False|Attribute", Nothing, AddressOf BG3Selector_Template1.TransferSibligsClick) With {.Tag = {"VisualTemplate"}}
         }
 #Enable Warning CA1861 ' Evitar matrices constantes como argumentos
@@ -659,13 +706,7 @@ Public Class Generic_Character_Editor
         Next
     End Sub
     Protected Overridable Sub Create_Stat_Transfers_Specific(ByRef Lista As List(Of ToolStripMenuItem))
-        Debug.Print(Me.Text)
-        Debugger.Break()
-#Disable Warning IDE0079 ' Quitar supresión innecesaria
-#Disable Warning CA1861 ' Evitar matrices constantes como argumentos
         Lista.AddRange(Array.Empty(Of ToolStripMenuItem))
-#Enable Warning CA1861 ' Evitar matrices constantes como argumentos
-#Enable Warning IDE0079 ' Quitar supresión innecesaria
     End Sub
     Protected Overridable Sub Transfer_stats_specifics(Template As BG3_Obj_Template_Class, statsList() As String)
         Debug.Print(Me.Text)
@@ -696,49 +737,10 @@ Public Class Generic_Character_Editor
                         Case "Icon"
                             BG3Editor_Template_Icon1.Read(Template)
                             BG3Editor_Template_Icon1.Write(obj)
-                        Case "Storyitem"
-                            BG3Editor_Template_StoryItem1.Read(Template)
-                            BG3Editor_Template_StoryItem1.Write(obj)
-                        Case "Unique"
-                            BG3Editor_Stat_Unique1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Unique1.Write(SelectedStat)
-                        Case "Rarity"
-                            BG3Editor_Stat_Rarity1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Rarity1.Write(SelectedStat)
-                        Case "Trade"
-                            BG3Editor_Stat_ValueOverride1.Read(Transfer_Stat)
-                            BG3Editor_Stat_ValueOverride1.Write(SelectedStat)
-                            BG3Editor_Stats_Valueuuid1.Read(Transfer_Stat)
-                            BG3Editor_Stats_Valueuuid1.Write(SelectedStat)
-                            BG3Editor_Stats_ValueScale1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ValueScale1.Write(SelectedStat)
-                            BG3Editor_Stats_ValueRounding1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ValueRounding1.Write(SelectedStat)
-                            BG3Editor_Stats_ValueLevel1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ValueLevel1.Write(SelectedStat)
                         Case "Using"
                             BG3Editor_Stat_Using1.Read(Transfer_Stat)
                             BG3Editor_Stat_Using1.Write(SelectedStat)
-                        Case "ObjectCategory"
-                            BG3Editor_Stats_ObjectCategory1.Read(Transfer_Stat)
-                            BG3Editor_Stats_ObjectCategory1.Write(SelectedStat)
-                        Case "MinLevel"
-                            BG3Editor_Stats_MinLevel1.Read(Transfer_Stat)
-                            BG3Editor_Stats_MinLevel1.Write(SelectedStat)
-                        Case "GameSize"
-                            BG3Editor_Stats_GameSize1.Read(Transfer_Stat)
-                            BG3Editor_Stats_GameSize1.Write(SelectedStat)
-                        Case "Inventory"
-                            BG3Editor_Stat_Weight1.Read(Transfer_Stat)
-                            BG3Editor_Stat_Weight1.Write(SelectedStat)
-                            BG3Editor_Stats_InventoryTab1.Read(Transfer_Stat)
-                            BG3Editor_Stats_InventoryTab1.Write(SelectedStat)
-                            BG3Editor_Stats_MaxAmount1.Read(Transfer_Stat)
-                            BG3Editor_Stats_MaxAmount1.Write(SelectedStat)
-                            BG3Editor_Stats_MinAmount1.Read(Transfer_Stat)
-                            BG3Editor_Stats_MinAmount1.Write(SelectedStat)
-                            BG3Editor_Template_maxStackAmount1.Read(Template)
-                            BG3Editor_Template_maxStackAmount1.Write(obj)
+
                         Case Else
                             Transfer_stats_specifics(Template, statsList)
                     End Select
@@ -808,27 +810,7 @@ Public Class Generic_Character_Editor
     Protected Overridable Sub FillSplit_specific(ByVal Attr_or_data As String, ByRef selectedtmp As BG3_Obj_Template_Class, ByRef selectedstat As BG3_Obj_Stats_Class, ByRef suffix As String)
 
     End Sub
-    Private Sub BG3Cloner1_Load(sender As Object, e As EventArgs)
 
-    End Sub
 
-    Private Sub TabPageAttributes_Click(sender As Object, e As EventArgs) Handles TabPageAttributes.Click
 
-    End Sub
-
-    'Private Sub ButtonUsingClone_Click(sender As Object, e As EventArgs)
-    '    If MsgBox("This will change stats inheritance and can not be undone once saved. Do you want to continue?", MsgBoxStyle.Exclamation + vbOKCancel, "Warning") = MsgBoxResult.Cancel Then Exit Sub
-    '    If Not IsNothing(SelectedStat) AndAlso Not IsNothing(SelectedTmp) Then
-    '        If Not IsNothing(SelectedTmp.Parent) AndAlso Not IsNothing(SelectedTmp.Parent.AssociatedStats) Then
-    '            SelectedStat.Data.Clear()
-
-    '            For Each dat In SelectedTmp.Parent.AssociatedStats.Data
-    '                SelectedStat.Data.TryAdd(dat.Key, dat.Value)
-    '            Next
-    '            SelectedStat.Using = SelectedTmp.Parent.AssociatedStats.Using
-    '        End If
-    '    End If
-    '    ButtonUsingClone.Enabled = False
-    '    Process_Selection_Change()
-    'End Sub
 End Class

@@ -1202,7 +1202,7 @@ Public Class Funciones
         '    str += "}"
         '    Debugger.Break()
         'Next
-        Debugger.Break()
+        'Debugger.Break()
 
     End Sub
     Public Shared Function Clear_Current_Mod_Loaded() As Boolean

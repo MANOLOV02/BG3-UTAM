@@ -36,37 +36,63 @@ Partial Class Generic_Character_Editor
         BG3Editor_Complex_Localization1 = New BG3Editor_Complex_Localization()
         TabPage1 = New TabPage()
         GroupBox9 = New GroupBox()
-        GroupBoxInventory = New GroupBox()
-        BG3Editor_Template_maxStackAmount1 = New BG3Editor_Template_maxStackAmount()
-        BG3Editor_Stats_MaxAmount1 = New BG3Editor_Stats_MaxAmount()
-        BG3Editor_Stats_MinAmount1 = New BG3Editor_Stats_MinAmount()
-        BG3Editor_Stats_InventoryTab1 = New BG3Editor_Stats_InventoryTab()
-        BG3Editor_Stat_Weight1 = New BG3Editor_Stats_Weight()
-        GroupBoxTrade = New GroupBox()
-        BG3Editor_Stats_ValueRounding1 = New BG3Editor_Stats_ValueRounding()
-        BG3Editor_Stats_ValueScale1 = New BG3Editor_Stats_ValueScale()
-        BG3Editor_Stats_Valueuuid1 = New BG3Editor_Stats_ValueUUID()
-        BG3Editor_Stat_ValueOverride1 = New BG3Editor_Stats_ValueOverride()
-        BG3Editor_Stats_ValueLevel1 = New BG3Editor_Stats_ValueLevel()
+        TabControlCharacter = New TabControl()
+        TabPageCharAbils = New TabPage()
+        GroupBoxAbilities = New GroupBox()
+        BG3Editor_Stats_ActionResources1 = New BG3Editor_Stats_ActionResources()
+        BG3Editor_Template_LevelOverride1 = New BG3Editor_Template_LevelOverride()
+        BG3Editor_Stats_Vitality1 = New BG3Editor_Stats_Vitality()
+        BG3Editor_Stats_Wisdom1 = New BG3Editor_Stats_Wisdom()
+        BG3Editor_Stats_Strength1 = New BG3Editor_Stats_Strength()
+        BG3Editor_Stats_Intelligence1 = New BG3Editor_Stats_Intelligence()
+        BG3Editor_Stats_Dexterity1 = New BG3Editor_Stats_Dexterity()
+        BG3Editor_Stats_Constitution1 = New BG3Editor_Stats_Constitution()
+        BG3Editor_Stats_Charisma1 = New BG3Editor_Stats_Charisma()
+        TabPageCharresists = New TabPage()
+        GroupBoxResist = New GroupBox()
+        BG3Editor_Stats_SlashingResistance1 = New BG3Editor_Stats_SlashingResistance()
+        BG3Editor_Stats_ThunderResistance1 = New BG3Editor_Stats_ThunderResistance()
+        BG3Editor_Stats_RadiantResistance1 = New BG3Editor_Stats_RadiantResistance()
+        BG3Editor_Stats_PsychicResistance1 = New BG3Editor_Stats_PsychicResistance()
+        BG3Editor_Stats_PoisonResistance1 = New BG3Editor_Stats_PoisonResistance()
+        BG3Editor_Stats_PiercingResistance1 = New BG3Editor_Stats_PiercingResistance()
+        BG3Editor_Stats_NecroticResistance1 = New BG3Editor_Stats_NecroticResistance()
+        BG3Editor_Stats_LightningResistance1 = New BG3Editor_Stats_LightningResistance()
+        BG3Editor_Stats_ForceResistance1 = New BG3Editor_Stats_ForceResistance()
+        BG3Editor_Stats_FireResistance1 = New BG3Editor_Stats_FireResistance()
+        BG3Editor_Stats_ColdResistance1 = New BG3Editor_Stats_ColdResistance()
+        BG3Editor_Stats_BludgeoningResistance1 = New BG3Editor_Stats_BludgeoningResistance()
+        BG3Editor_Stats_AcidResistance1 = New BG3Editor_Stats_AcidResistance()
+        BG3Editor_Stats_Armor1 = New BG3Editor_Stats_Armor()
+        BG3Editor_Stats_ArmorType1 = New BG3Editor_Stats_ArmorType()
+        TabPageCharBoosts = New TabPage()
+        GroupBoxBoosts = New GroupBox()
+        BG3Editor_Stats_ProficiencyBonus1 = New BG3Editor_Stats_ProficiencyBonus()
+        BG3Editor_Stats_ProficiencyGroupText1 = New BG3Editor_Stats_ProficiencyGroupText()
+        BG3Editor_Stats_DifficultyStatuses1 = New BG3Editor_Stats_DifficultyStatuses()
+        BG3Editor_Stats_DefaultBoosts1 = New BG3Editor_Stats_DefaultBoosts()
+        BG3Editor_Stats_Passives1 = New BG3Editor_Stats_Passives()
+        TabPageStatus = New TabPage()
+        GroupBoxStatus = New GroupBox()
+        BG3Editor_Complex_StatusList1 = New BG3Editor_Complex_StatusList()
         GroupBoxBasicTemplates = New GroupBox()
-        BG3Editor_Template_StoryItem1 = New BG3Editor_Template_StoryItem()
+        BG3Editor_Template_Equipment1 = New BG3Editor_Template_Equipment()
         BG3Editor_Template_Name1 = New BG3Editor_Template_Name()
         BG3Editor_Template_Type1 = New BG3Editor_Template_Type()
         BG3Editor_Template_Mapkey1 = New BG3Editor_Template_Mapkey()
         BG3Editor_Template_Parent1 = New BG3Editor_Template_ParentId()
+        BG3Editor_Stats_Weight1 = New BG3Editor_Stats_Weight()
         GroupBoxVisuals = New GroupBox()
-        BG3Editor_Template_TechnicalDescription1 = New BG3Editor_Template_TechnicalDescription()
-        BG3Editor_Template_Description1 = New BG3Editor_Template_Description()
+        BG3Editor_Template_Race1 = New BG3Editor_Template_Race()
+        BG3Editor_Template_EquipmentRace1 = New BG3Editor_Template_EquipmentRace()
+        BG3Editor_Template_CharacterTemplate1 = New BG3Editor_Template_CharacterVisualResourceID()
         BG3Editor_Template_DisplayName1 = New BG3Editor_Template_DisplayName()
         BG3Editor_Template_Icon1 = New BG3Editor_Template_Icon()
         BG3Editor_Template_VisualTemplate1 = New BG3Editor_Template_VisualTemplate()
         GroupBoxBasicStats = New GroupBox()
-        BG3Editor_Stats_GameSize1 = New BG3Editor_Stats_GameSize()
-        BG3Editor_Stats_ObjectCategory1 = New BG3Editor_Stats_ObjectCategory()
-        BG3Editor_Stats_MinLevel1 = New BG3Editor_Stats_MinLevel()
-        BG3Editor_Template_Stats1 = New BG3Editor_Template_Stats()
-        BG3Editor_Stat_Unique1 = New BG3Editor_Stat_Unique()
-        BG3Editor_Stat_Rarity1 = New BG3Editor_Stats_Rarity()
+        BG3Editor_Stats_Level1 = New BG3Editor_Stats_Level()
+        BG3Editor_Stats_Class1 = New BG3Editor_Stats_Class()
+        BG3Editor_Stats_Stats1 = New BG3Editor_Stats_Name()
         BG3Editor_Stat_Type1 = New BG3Editor_Stats_Type()
         BG3Editor_Stat_Using1 = New BG3Editor_Stat_Using()
         TabControl1 = New TabControl()
@@ -85,8 +111,15 @@ Partial Class Generic_Character_Editor
         GroupBox7.SuspendLayout()
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
-        GroupBoxInventory.SuspendLayout()
-        GroupBoxTrade.SuspendLayout()
+        TabControlCharacter.SuspendLayout()
+        TabPageCharAbils.SuspendLayout()
+        GroupBoxAbilities.SuspendLayout()
+        TabPageCharresists.SuspendLayout()
+        GroupBoxResist.SuspendLayout()
+        TabPageCharBoosts.SuspendLayout()
+        GroupBoxBoosts.SuspendLayout()
+        TabPageStatus.SuspendLayout()
+        GroupBoxStatus.SuspendLayout()
         GroupBoxBasicTemplates.SuspendLayout()
         GroupBoxVisuals.SuspendLayout()
         GroupBoxBasicStats.SuspendLayout()
@@ -232,8 +265,7 @@ Partial Class Generic_Character_Editor
         ' 
         ' GroupBox9
         ' 
-        GroupBox9.Controls.Add(GroupBoxInventory)
-        GroupBox9.Controls.Add(GroupBoxTrade)
+        GroupBox9.Controls.Add(TabControlCharacter)
         GroupBox9.Controls.Add(GroupBoxBasicTemplates)
         GroupBox9.Controls.Add(GroupBoxVisuals)
         GroupBox9.Controls.Add(GroupBoxBasicStats)
@@ -244,169 +276,494 @@ Partial Class Generic_Character_Editor
         GroupBox9.TabIndex = 4
         GroupBox9.TabStop = False
         ' 
-        ' GroupBoxInventory
+        ' TabControlCharacter
         ' 
-        GroupBoxInventory.Controls.Add(BG3Editor_Template_maxStackAmount1)
-        GroupBoxInventory.Controls.Add(BG3Editor_Stats_MaxAmount1)
-        GroupBoxInventory.Controls.Add(BG3Editor_Stats_MinAmount1)
-        GroupBoxInventory.Controls.Add(BG3Editor_Stats_InventoryTab1)
-        GroupBoxInventory.Controls.Add(BG3Editor_Stat_Weight1)
-        GroupBoxInventory.Location = New Point(416, 270)
-        GroupBoxInventory.Name = "GroupBoxInventory"
-        GroupBoxInventory.Size = New Size(385, 91)
-        GroupBoxInventory.TabIndex = 4
-        GroupBoxInventory.TabStop = False
-        GroupBoxInventory.Text = "Inventory"
+        TabControlCharacter.Appearance = TabAppearance.FlatButtons
+        TabControlCharacter.Controls.Add(TabPageCharAbils)
+        TabControlCharacter.Controls.Add(TabPageCharresists)
+        TabControlCharacter.Controls.Add(TabPageCharBoosts)
+        TabControlCharacter.Controls.Add(TabPageStatus)
+        TabControlCharacter.Location = New Point(413, 19)
+        TabControlCharacter.Margin = New Padding(0)
+        TabControlCharacter.Name = "TabControlCharacter"
+        TabControlCharacter.SelectedIndex = 0
+        TabControlCharacter.Size = New Size(392, 450)
+        TabControlCharacter.TabIndex = 9
         ' 
-        ' BG3Editor_Template_maxStackAmount1
+        ' TabPageCharAbils
         ' 
-        BG3Editor_Template_maxStackAmount1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Template_maxStackAmount1.Label = "Max stack"
-        BG3Editor_Template_maxStackAmount1.Location = New Point(205, 42)
-        BG3Editor_Template_maxStackAmount1.Margin = New Padding(0)
-        BG3Editor_Template_maxStackAmount1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Template_maxStackAmount1.MinimumSize = New Size(100, 23)
-        BG3Editor_Template_maxStackAmount1.Name = "BG3Editor_Template_maxStackAmount1"
-        BG3Editor_Template_maxStackAmount1.Size = New Size(176, 23)
-        BG3Editor_Template_maxStackAmount1.SplitterDistance = 77
-        BG3Editor_Template_maxStackAmount1.TabIndex = 8
+        TabPageCharAbils.Controls.Add(GroupBoxAbilities)
+        TabPageCharAbils.Location = New Point(4, 27)
+        TabPageCharAbils.Name = "TabPageCharAbils"
+        TabPageCharAbils.Size = New Size(384, 419)
+        TabPageCharAbils.TabIndex = 4
+        TabPageCharAbils.Text = "Abilities"
+        TabPageCharAbils.UseVisualStyleBackColor = True
         ' 
-        ' BG3Editor_Stats_MaxAmount1
+        ' GroupBoxAbilities
         ' 
-        BG3Editor_Stats_MaxAmount1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_MaxAmount1.Label = "Max amount"
-        BG3Editor_Stats_MaxAmount1.Location = New Point(205, 65)
-        BG3Editor_Stats_MaxAmount1.Margin = New Padding(0)
-        BG3Editor_Stats_MaxAmount1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_MaxAmount1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_MaxAmount1.Name = "BG3Editor_Stats_MaxAmount1"
-        BG3Editor_Stats_MaxAmount1.Size = New Size(176, 23)
-        BG3Editor_Stats_MaxAmount1.SplitterDistance = 77
-        BG3Editor_Stats_MaxAmount1.TabIndex = 7
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_ActionResources1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Template_LevelOverride1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Vitality1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Wisdom1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Strength1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Intelligence1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Dexterity1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Constitution1)
+        GroupBoxAbilities.Controls.Add(BG3Editor_Stats_Charisma1)
+        GroupBoxAbilities.Dock = DockStyle.Fill
+        GroupBoxAbilities.Location = New Point(0, 0)
+        GroupBoxAbilities.Margin = New Padding(0)
+        GroupBoxAbilities.Name = "GroupBoxAbilities"
+        GroupBoxAbilities.Size = New Size(384, 419)
+        GroupBoxAbilities.TabIndex = 1
+        GroupBoxAbilities.TabStop = False
         ' 
-        ' BG3Editor_Stats_MinAmount1
+        ' BG3Editor_Stats_ActionResources1
         ' 
-        BG3Editor_Stats_MinAmount1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_MinAmount1.Label = "Min amount"
-        BG3Editor_Stats_MinAmount1.Location = New Point(3, 65)
-        BG3Editor_Stats_MinAmount1.Margin = New Padding(0)
-        BG3Editor_Stats_MinAmount1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_MinAmount1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_MinAmount1.Name = "BG3Editor_Stats_MinAmount1"
-        BG3Editor_Stats_MinAmount1.Size = New Size(199, 23)
-        BG3Editor_Stats_MinAmount1.TabIndex = 6
+        BG3Editor_Stats_ActionResources1.Label = "Action resources"
+        BG3Editor_Stats_ActionResources1.Location = New Point(3, 203)
+        BG3Editor_Stats_ActionResources1.Margin = New Padding(0)
+        BG3Editor_Stats_ActionResources1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ActionResources1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ActionResources1.Name = "BG3Editor_Stats_ActionResources1"
+        BG3Editor_Stats_ActionResources1.Size = New Size(377, 23)
+        BG3Editor_Stats_ActionResources1.TabIndex = 8
         ' 
-        ' BG3Editor_Stats_InventoryTab1
+        ' BG3Editor_Template_LevelOverride1
         ' 
-        BG3Editor_Stats_InventoryTab1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_InventoryTab1.Label = "InventoryTab"
-        BG3Editor_Stats_InventoryTab1.Location = New Point(3, 19)
-        BG3Editor_Stats_InventoryTab1.Margin = New Padding(0)
-        BG3Editor_Stats_InventoryTab1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_InventoryTab1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_InventoryTab1.Name = "BG3Editor_Stats_InventoryTab1"
-        BG3Editor_Stats_InventoryTab1.Size = New Size(378, 23)
-        BG3Editor_Stats_InventoryTab1.TabIndex = 5
+        BG3Editor_Template_LevelOverride1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Template_LevelOverride1.Label = "Level override"
+        BG3Editor_Template_LevelOverride1.Location = New Point(3, 180)
+        BG3Editor_Template_LevelOverride1.Margin = New Padding(0)
+        BG3Editor_Template_LevelOverride1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_LevelOverride1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_LevelOverride1.Name = "BG3Editor_Template_LevelOverride1"
+        BG3Editor_Template_LevelOverride1.Size = New Size(232, 23)
+        BG3Editor_Template_LevelOverride1.TabIndex = 7
         ' 
-        ' BG3Editor_Stat_Weight1
+        ' BG3Editor_Stats_Vitality1
         ' 
-        BG3Editor_Stat_Weight1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stat_Weight1.Label = "Weight"
-        BG3Editor_Stat_Weight1.Location = New Point(3, 42)
-        BG3Editor_Stat_Weight1.Margin = New Padding(0)
-        BG3Editor_Stat_Weight1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Stat_Weight1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stat_Weight1.Name = "BG3Editor_Stat_Weight1"
-        BG3Editor_Stat_Weight1.Size = New Size(199, 23)
-        BG3Editor_Stat_Weight1.SplitterDistance = 100
-        BG3Editor_Stat_Weight1.TabIndex = 4
+        BG3Editor_Stats_Vitality1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Vitality1.Label = "Vitality"
+        BG3Editor_Stats_Vitality1.Location = New Point(3, 157)
+        BG3Editor_Stats_Vitality1.Margin = New Padding(0)
+        BG3Editor_Stats_Vitality1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Vitality1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Vitality1.Name = "BG3Editor_Stats_Vitality1"
+        BG3Editor_Stats_Vitality1.Size = New Size(232, 23)
+        BG3Editor_Stats_Vitality1.TabIndex = 6
         ' 
-        ' GroupBoxTrade
+        ' BG3Editor_Stats_Wisdom1
         ' 
-        GroupBoxTrade.Controls.Add(BG3Editor_Stats_ValueRounding1)
-        GroupBoxTrade.Controls.Add(BG3Editor_Stats_ValueScale1)
-        GroupBoxTrade.Controls.Add(BG3Editor_Stats_Valueuuid1)
-        GroupBoxTrade.Controls.Add(BG3Editor_Stat_ValueOverride1)
-        GroupBoxTrade.Controls.Add(BG3Editor_Stats_ValueLevel1)
-        GroupBoxTrade.Location = New Point(416, 367)
-        GroupBoxTrade.Name = "GroupBoxTrade"
-        GroupBoxTrade.Size = New Size(385, 96)
-        GroupBoxTrade.TabIndex = 3
-        GroupBoxTrade.TabStop = False
-        GroupBoxTrade.Text = "Trade"
+        BG3Editor_Stats_Wisdom1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Wisdom1.Label = "Wisdom"
+        BG3Editor_Stats_Wisdom1.Location = New Point(3, 134)
+        BG3Editor_Stats_Wisdom1.Margin = New Padding(0)
+        BG3Editor_Stats_Wisdom1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Wisdom1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Wisdom1.Name = "BG3Editor_Stats_Wisdom1"
+        BG3Editor_Stats_Wisdom1.Size = New Size(232, 23)
+        BG3Editor_Stats_Wisdom1.TabIndex = 5
         ' 
-        ' BG3Editor_Stats_ValueRounding1
+        ' BG3Editor_Stats_Strength1
         ' 
-        BG3Editor_Stats_ValueRounding1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_ValueRounding1.Label = "Rounding"
-        BG3Editor_Stats_ValueRounding1.Location = New Point(205, 65)
-        BG3Editor_Stats_ValueRounding1.Margin = New Padding(0)
-        BG3Editor_Stats_ValueRounding1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ValueRounding1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ValueRounding1.Name = "BG3Editor_Stats_ValueRounding1"
-        BG3Editor_Stats_ValueRounding1.Size = New Size(176, 23)
-        BG3Editor_Stats_ValueRounding1.SplitterDistance = 77
-        BG3Editor_Stats_ValueRounding1.TabIndex = 3
+        BG3Editor_Stats_Strength1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Strength1.Label = "Strength"
+        BG3Editor_Stats_Strength1.Location = New Point(3, 111)
+        BG3Editor_Stats_Strength1.Margin = New Padding(0)
+        BG3Editor_Stats_Strength1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Strength1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Strength1.Name = "BG3Editor_Stats_Strength1"
+        BG3Editor_Stats_Strength1.Size = New Size(232, 23)
+        BG3Editor_Stats_Strength1.TabIndex = 4
         ' 
-        ' BG3Editor_Stats_ValueScale1
+        ' BG3Editor_Stats_Intelligence1
         ' 
-        BG3Editor_Stats_ValueScale1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_ValueScale1.Label = "Value scale"
-        BG3Editor_Stats_ValueScale1.Location = New Point(3, 42)
-        BG3Editor_Stats_ValueScale1.Margin = New Padding(0)
-        BG3Editor_Stats_ValueScale1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ValueScale1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ValueScale1.Name = "BG3Editor_Stats_ValueScale1"
-        BG3Editor_Stats_ValueScale1.Size = New Size(199, 23)
-        BG3Editor_Stats_ValueScale1.TabIndex = 2
+        BG3Editor_Stats_Intelligence1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Intelligence1.Label = "Intelligence"
+        BG3Editor_Stats_Intelligence1.Location = New Point(3, 88)
+        BG3Editor_Stats_Intelligence1.Margin = New Padding(0)
+        BG3Editor_Stats_Intelligence1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Intelligence1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Intelligence1.Name = "BG3Editor_Stats_Intelligence1"
+        BG3Editor_Stats_Intelligence1.Size = New Size(232, 23)
+        BG3Editor_Stats_Intelligence1.TabIndex = 3
         ' 
-        ' BG3Editor_Stats_Valueuuid1
+        ' BG3Editor_Stats_Dexterity1
         ' 
-        BG3Editor_Stats_Valueuuid1.DropIcon = True
-        BG3Editor_Stats_Valueuuid1.Label = "Value UUID"
-        BG3Editor_Stats_Valueuuid1.Location = New Point(3, 19)
-        BG3Editor_Stats_Valueuuid1.Margin = New Padding(0)
-        BG3Editor_Stats_Valueuuid1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_Valueuuid1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_Valueuuid1.Name = "BG3Editor_Stats_Valueuuid1"
-        BG3Editor_Stats_Valueuuid1.ReadOnly = True
-        BG3Editor_Stats_Valueuuid1.Size = New Size(378, 23)
-        BG3Editor_Stats_Valueuuid1.SplitterDistance = 80
-        BG3Editor_Stats_Valueuuid1.TabIndex = 1
+        BG3Editor_Stats_Dexterity1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Dexterity1.Label = "Dexterity"
+        BG3Editor_Stats_Dexterity1.Location = New Point(3, 65)
+        BG3Editor_Stats_Dexterity1.Margin = New Padding(0)
+        BG3Editor_Stats_Dexterity1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Dexterity1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Dexterity1.Name = "BG3Editor_Stats_Dexterity1"
+        BG3Editor_Stats_Dexterity1.Size = New Size(232, 23)
+        BG3Editor_Stats_Dexterity1.TabIndex = 2
         ' 
-        ' BG3Editor_Stat_ValueOverride1
+        ' BG3Editor_Stats_Constitution1
         ' 
-        BG3Editor_Stat_ValueOverride1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stat_ValueOverride1.Label = "Value override"
-        BG3Editor_Stat_ValueOverride1.Location = New Point(3, 65)
-        BG3Editor_Stat_ValueOverride1.Margin = New Padding(0)
-        BG3Editor_Stat_ValueOverride1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Stat_ValueOverride1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stat_ValueOverride1.Name = "BG3Editor_Stat_ValueOverride1"
-        BG3Editor_Stat_ValueOverride1.Size = New Size(199, 23)
-        BG3Editor_Stat_ValueOverride1.SplitterDistance = 100
-        BG3Editor_Stat_ValueOverride1.TabIndex = 5
+        BG3Editor_Stats_Constitution1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Constitution1.Label = "Constitution"
+        BG3Editor_Stats_Constitution1.Location = New Point(3, 42)
+        BG3Editor_Stats_Constitution1.Margin = New Padding(0)
+        BG3Editor_Stats_Constitution1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Constitution1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Constitution1.Name = "BG3Editor_Stats_Constitution1"
+        BG3Editor_Stats_Constitution1.Size = New Size(232, 23)
+        BG3Editor_Stats_Constitution1.TabIndex = 1
         ' 
-        ' BG3Editor_Stats_ValueLevel1
+        ' BG3Editor_Stats_Charisma1
         ' 
-        BG3Editor_Stats_ValueLevel1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_ValueLevel1.Label = "Value level"
-        BG3Editor_Stats_ValueLevel1.Location = New Point(205, 42)
-        BG3Editor_Stats_ValueLevel1.Margin = New Padding(0)
-        BG3Editor_Stats_ValueLevel1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ValueLevel1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ValueLevel1.Name = "BG3Editor_Stats_ValueLevel1"
-        BG3Editor_Stats_ValueLevel1.Size = New Size(176, 23)
-        BG3Editor_Stats_ValueLevel1.SplitterDistance = 77
-        BG3Editor_Stats_ValueLevel1.TabIndex = 0
+        BG3Editor_Stats_Charisma1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Charisma1.Label = "Charisma"
+        BG3Editor_Stats_Charisma1.Location = New Point(3, 19)
+        BG3Editor_Stats_Charisma1.Margin = New Padding(0)
+        BG3Editor_Stats_Charisma1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Charisma1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Charisma1.Name = "BG3Editor_Stats_Charisma1"
+        BG3Editor_Stats_Charisma1.Size = New Size(232, 23)
+        BG3Editor_Stats_Charisma1.TabIndex = 0
+        ' 
+        ' TabPageCharresists
+        ' 
+        TabPageCharresists.Controls.Add(GroupBoxResist)
+        TabPageCharresists.Location = New Point(4, 27)
+        TabPageCharresists.Name = "TabPageCharresists"
+        TabPageCharresists.Size = New Size(384, 419)
+        TabPageCharresists.TabIndex = 2
+        TabPageCharresists.Text = "Resistances"
+        TabPageCharresists.UseVisualStyleBackColor = True
+        ' 
+        ' GroupBoxResist
+        ' 
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_SlashingResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_ThunderResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_RadiantResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_PsychicResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_PoisonResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_PiercingResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_NecroticResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_LightningResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_ForceResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_FireResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_ColdResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_BludgeoningResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_AcidResistance1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_Armor1)
+        GroupBoxResist.Controls.Add(BG3Editor_Stats_ArmorType1)
+        GroupBoxResist.Dock = DockStyle.Fill
+        GroupBoxResist.Location = New Point(0, 0)
+        GroupBoxResist.Margin = New Padding(0)
+        GroupBoxResist.Name = "GroupBoxResist"
+        GroupBoxResist.Size = New Size(384, 419)
+        GroupBoxResist.TabIndex = 0
+        GroupBoxResist.TabStop = False
+        ' 
+        ' BG3Editor_Stats_SlashingResistance1
+        ' 
+        BG3Editor_Stats_SlashingResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_SlashingResistance1.Label = "Slashing"
+        BG3Editor_Stats_SlashingResistance1.Location = New Point(3, 314)
+        BG3Editor_Stats_SlashingResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_SlashingResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_SlashingResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_SlashingResistance1.Name = "BG3Editor_Stats_SlashingResistance1"
+        BG3Editor_Stats_SlashingResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_SlashingResistance1.TabIndex = 19
+        ' 
+        ' BG3Editor_Stats_ThunderResistance1
+        ' 
+        BG3Editor_Stats_ThunderResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ThunderResistance1.Label = "Thunder"
+        BG3Editor_Stats_ThunderResistance1.Location = New Point(3, 337)
+        BG3Editor_Stats_ThunderResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_ThunderResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ThunderResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ThunderResistance1.Name = "BG3Editor_Stats_ThunderResistance1"
+        BG3Editor_Stats_ThunderResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_ThunderResistance1.TabIndex = 18
+        ' 
+        ' BG3Editor_Stats_RadiantResistance1
+        ' 
+        BG3Editor_Stats_RadiantResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_RadiantResistance1.Label = "Radiant"
+        BG3Editor_Stats_RadiantResistance1.Location = New Point(3, 291)
+        BG3Editor_Stats_RadiantResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_RadiantResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_RadiantResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_RadiantResistance1.Name = "BG3Editor_Stats_RadiantResistance1"
+        BG3Editor_Stats_RadiantResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_RadiantResistance1.TabIndex = 17
+        ' 
+        ' BG3Editor_Stats_PsychicResistance1
+        ' 
+        BG3Editor_Stats_PsychicResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_PsychicResistance1.Label = "Psychic"
+        BG3Editor_Stats_PsychicResistance1.Location = New Point(3, 268)
+        BG3Editor_Stats_PsychicResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_PsychicResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_PsychicResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_PsychicResistance1.Name = "BG3Editor_Stats_PsychicResistance1"
+        BG3Editor_Stats_PsychicResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_PsychicResistance1.TabIndex = 16
+        ' 
+        ' BG3Editor_Stats_PoisonResistance1
+        ' 
+        BG3Editor_Stats_PoisonResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_PoisonResistance1.Label = "Poison"
+        BG3Editor_Stats_PoisonResistance1.Location = New Point(3, 245)
+        BG3Editor_Stats_PoisonResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_PoisonResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_PoisonResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_PoisonResistance1.Name = "BG3Editor_Stats_PoisonResistance1"
+        BG3Editor_Stats_PoisonResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_PoisonResistance1.TabIndex = 15
+        ' 
+        ' BG3Editor_Stats_PiercingResistance1
+        ' 
+        BG3Editor_Stats_PiercingResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_PiercingResistance1.Label = "Piercing"
+        BG3Editor_Stats_PiercingResistance1.Location = New Point(3, 222)
+        BG3Editor_Stats_PiercingResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_PiercingResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_PiercingResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_PiercingResistance1.Name = "BG3Editor_Stats_PiercingResistance1"
+        BG3Editor_Stats_PiercingResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_PiercingResistance1.TabIndex = 14
+        ' 
+        ' BG3Editor_Stats_NecroticResistance1
+        ' 
+        BG3Editor_Stats_NecroticResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_NecroticResistance1.Label = "Nectrotic"
+        BG3Editor_Stats_NecroticResistance1.Location = New Point(3, 199)
+        BG3Editor_Stats_NecroticResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_NecroticResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_NecroticResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_NecroticResistance1.Name = "BG3Editor_Stats_NecroticResistance1"
+        BG3Editor_Stats_NecroticResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_NecroticResistance1.TabIndex = 13
+        ' 
+        ' BG3Editor_Stats_LightningResistance1
+        ' 
+        BG3Editor_Stats_LightningResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_LightningResistance1.Label = "Lightning"
+        BG3Editor_Stats_LightningResistance1.Location = New Point(3, 176)
+        BG3Editor_Stats_LightningResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_LightningResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_LightningResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_LightningResistance1.Name = "BG3Editor_Stats_LightningResistance1"
+        BG3Editor_Stats_LightningResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_LightningResistance1.TabIndex = 12
+        ' 
+        ' BG3Editor_Stats_ForceResistance1
+        ' 
+        BG3Editor_Stats_ForceResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ForceResistance1.Label = "Force"
+        BG3Editor_Stats_ForceResistance1.Location = New Point(3, 153)
+        BG3Editor_Stats_ForceResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_ForceResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ForceResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ForceResistance1.Name = "BG3Editor_Stats_ForceResistance1"
+        BG3Editor_Stats_ForceResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_ForceResistance1.TabIndex = 11
+        ' 
+        ' BG3Editor_Stats_FireResistance1
+        ' 
+        BG3Editor_Stats_FireResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_FireResistance1.Label = "Fire"
+        BG3Editor_Stats_FireResistance1.Location = New Point(3, 130)
+        BG3Editor_Stats_FireResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_FireResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_FireResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_FireResistance1.Name = "BG3Editor_Stats_FireResistance1"
+        BG3Editor_Stats_FireResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_FireResistance1.TabIndex = 10
+        ' 
+        ' BG3Editor_Stats_ColdResistance1
+        ' 
+        BG3Editor_Stats_ColdResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ColdResistance1.Label = "Cold"
+        BG3Editor_Stats_ColdResistance1.Location = New Point(3, 107)
+        BG3Editor_Stats_ColdResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_ColdResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ColdResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ColdResistance1.Name = "BG3Editor_Stats_ColdResistance1"
+        BG3Editor_Stats_ColdResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_ColdResistance1.TabIndex = 9
+        ' 
+        ' BG3Editor_Stats_BludgeoningResistance1
+        ' 
+        BG3Editor_Stats_BludgeoningResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_BludgeoningResistance1.Label = "Bludgeoning"
+        BG3Editor_Stats_BludgeoningResistance1.Location = New Point(3, 84)
+        BG3Editor_Stats_BludgeoningResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_BludgeoningResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_BludgeoningResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_BludgeoningResistance1.Name = "BG3Editor_Stats_BludgeoningResistance1"
+        BG3Editor_Stats_BludgeoningResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_BludgeoningResistance1.TabIndex = 8
+        ' 
+        ' BG3Editor_Stats_AcidResistance1
+        ' 
+        BG3Editor_Stats_AcidResistance1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_AcidResistance1.Label = "Acid"
+        BG3Editor_Stats_AcidResistance1.Location = New Point(3, 61)
+        BG3Editor_Stats_AcidResistance1.Margin = New Padding(0)
+        BG3Editor_Stats_AcidResistance1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_AcidResistance1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_AcidResistance1.Name = "BG3Editor_Stats_AcidResistance1"
+        BG3Editor_Stats_AcidResistance1.Size = New Size(260, 23)
+        BG3Editor_Stats_AcidResistance1.TabIndex = 7
+        ' 
+        ' BG3Editor_Stats_Armor1
+        ' 
+        BG3Editor_Stats_Armor1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Armor1.Label = "Armor"
+        BG3Editor_Stats_Armor1.Location = New Point(3, 38)
+        BG3Editor_Stats_Armor1.Margin = New Padding(0)
+        BG3Editor_Stats_Armor1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Armor1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Armor1.Name = "BG3Editor_Stats_Armor1"
+        BG3Editor_Stats_Armor1.Size = New Size(260, 23)
+        BG3Editor_Stats_Armor1.SplitterDistance = 100
+        BG3Editor_Stats_Armor1.TabIndex = 5
+        ' 
+        ' BG3Editor_Stats_ArmorType1
+        ' 
+        BG3Editor_Stats_ArmorType1.EditorType = BG3_Editor_Type.Combobox
+        BG3Editor_Stats_ArmorType1.Label = "Armor type"
+        BG3Editor_Stats_ArmorType1.Location = New Point(3, 15)
+        BG3Editor_Stats_ArmorType1.Margin = New Padding(0)
+        BG3Editor_Stats_ArmorType1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ArmorType1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ArmorType1.Name = "BG3Editor_Stats_ArmorType1"
+        BG3Editor_Stats_ArmorType1.Size = New Size(375, 23)
+        BG3Editor_Stats_ArmorType1.SplitterDistance = 100
+        BG3Editor_Stats_ArmorType1.TabIndex = 2
+        ' 
+        ' TabPageCharBoosts
+        ' 
+        TabPageCharBoosts.Controls.Add(GroupBoxBoosts)
+        TabPageCharBoosts.Location = New Point(4, 27)
+        TabPageCharBoosts.Margin = New Padding(0)
+        TabPageCharBoosts.Name = "TabPageCharBoosts"
+        TabPageCharBoosts.Size = New Size(384, 419)
+        TabPageCharBoosts.TabIndex = 0
+        TabPageCharBoosts.Text = "Boost and pasives"
+        TabPageCharBoosts.UseVisualStyleBackColor = True
+        ' 
+        ' GroupBoxBoosts
+        ' 
+        GroupBoxBoosts.Controls.Add(BG3Editor_Stats_ProficiencyBonus1)
+        GroupBoxBoosts.Controls.Add(BG3Editor_Stats_ProficiencyGroupText1)
+        GroupBoxBoosts.Controls.Add(BG3Editor_Stats_DifficultyStatuses1)
+        GroupBoxBoosts.Controls.Add(BG3Editor_Stats_DefaultBoosts1)
+        GroupBoxBoosts.Controls.Add(BG3Editor_Stats_Passives1)
+        GroupBoxBoosts.Dock = DockStyle.Fill
+        GroupBoxBoosts.Enabled = False
+        GroupBoxBoosts.Location = New Point(0, 0)
+        GroupBoxBoosts.Margin = New Padding(0)
+        GroupBoxBoosts.Name = "GroupBoxBoosts"
+        GroupBoxBoosts.Size = New Size(384, 419)
+        GroupBoxBoosts.TabIndex = 6
+        GroupBoxBoosts.TabStop = False
+        ' 
+        ' BG3Editor_Stats_ProficiencyBonus1
+        ' 
+        BG3Editor_Stats_ProficiencyBonus1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_ProficiencyBonus1.Label = "Profic.  bonus"
+        BG3Editor_Stats_ProficiencyBonus1.Location = New Point(3, 113)
+        BG3Editor_Stats_ProficiencyBonus1.Margin = New Padding(0)
+        BG3Editor_Stats_ProficiencyBonus1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ProficiencyBonus1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ProficiencyBonus1.Name = "BG3Editor_Stats_ProficiencyBonus1"
+        BG3Editor_Stats_ProficiencyBonus1.Size = New Size(247, 23)
+        BG3Editor_Stats_ProficiencyBonus1.TabIndex = 10
+        ' 
+        ' BG3Editor_Stats_ProficiencyGroupText1
+        ' 
+        BG3Editor_Stats_ProficiencyGroupText1.Label = "Proficiencies"
+        BG3Editor_Stats_ProficiencyGroupText1.Location = New Point(3, 86)
+        BG3Editor_Stats_ProficiencyGroupText1.Margin = New Padding(0)
+        BG3Editor_Stats_ProficiencyGroupText1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_ProficiencyGroupText1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_ProficiencyGroupText1.Name = "BG3Editor_Stats_ProficiencyGroupText1"
+        BG3Editor_Stats_ProficiencyGroupText1.Size = New Size(377, 23)
+        BG3Editor_Stats_ProficiencyGroupText1.TabIndex = 9
+        ' 
+        ' BG3Editor_Stats_DifficultyStatuses1
+        ' 
+        BG3Editor_Stats_DifficultyStatuses1.Label = "Difficulty Status"
+        BG3Editor_Stats_DifficultyStatuses1.Location = New Point(3, 61)
+        BG3Editor_Stats_DifficultyStatuses1.Margin = New Padding(0)
+        BG3Editor_Stats_DifficultyStatuses1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_DifficultyStatuses1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_DifficultyStatuses1.Name = "BG3Editor_Stats_DifficultyStatuses1"
+        BG3Editor_Stats_DifficultyStatuses1.Size = New Size(378, 23)
+        BG3Editor_Stats_DifficultyStatuses1.TabIndex = 8
+        ' 
+        ' BG3Editor_Stats_DefaultBoosts1
+        ' 
+        BG3Editor_Stats_DefaultBoosts1.Label = "Default boosts"
+        BG3Editor_Stats_DefaultBoosts1.Location = New Point(3, 38)
+        BG3Editor_Stats_DefaultBoosts1.Margin = New Padding(0)
+        BG3Editor_Stats_DefaultBoosts1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_DefaultBoosts1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_DefaultBoosts1.Name = "BG3Editor_Stats_DefaultBoosts1"
+        BG3Editor_Stats_DefaultBoosts1.Size = New Size(378, 23)
+        BG3Editor_Stats_DefaultBoosts1.TabIndex = 7
+        ' 
+        ' BG3Editor_Stats_Passives1
+        ' 
+        BG3Editor_Stats_Passives1.Label = "Passives"
+        BG3Editor_Stats_Passives1.Location = New Point(3, 15)
+        BG3Editor_Stats_Passives1.Margin = New Padding(0)
+        BG3Editor_Stats_Passives1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Passives1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Passives1.Name = "BG3Editor_Stats_Passives1"
+        BG3Editor_Stats_Passives1.Size = New Size(378, 23)
+        BG3Editor_Stats_Passives1.SplitterDistance = 100
+        BG3Editor_Stats_Passives1.TabIndex = 0
+        ' 
+        ' TabPageStatus
+        ' 
+        TabPageStatus.Controls.Add(GroupBoxStatus)
+        TabPageStatus.Location = New Point(4, 27)
+        TabPageStatus.Name = "TabPageStatus"
+        TabPageStatus.Size = New Size(384, 419)
+        TabPageStatus.TabIndex = 3
+        TabPageStatus.Text = "Status list"
+        TabPageStatus.UseVisualStyleBackColor = True
+        ' 
+        ' GroupBoxStatus
+        ' 
+        GroupBoxStatus.Controls.Add(BG3Editor_Complex_StatusList1)
+        GroupBoxStatus.Dock = DockStyle.Fill
+        GroupBoxStatus.Location = New Point(0, 0)
+        GroupBoxStatus.Margin = New Padding(0)
+        GroupBoxStatus.Name = "GroupBoxStatus"
+        GroupBoxStatus.Size = New Size(384, 419)
+        GroupBoxStatus.TabIndex = 1
+        GroupBoxStatus.TabStop = False
+        ' 
+        ' BG3Editor_Complex_StatusList1
+        ' 
+        BG3Editor_Complex_StatusList1.Dock = DockStyle.Fill
+        BG3Editor_Complex_StatusList1.Location = New Point(3, 19)
+        BG3Editor_Complex_StatusList1.Name = "BG3Editor_Complex_StatusList1"
+        BG3Editor_Complex_StatusList1.Size = New Size(378, 397)
+        BG3Editor_Complex_StatusList1.TabIndex = 0
         ' 
         ' GroupBoxBasicTemplates
         ' 
-        GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_StoryItem1)
+        GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Equipment1)
         GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Name1)
         GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Type1)
         GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Mapkey1)
         GroupBoxBasicTemplates.Controls.Add(BG3Editor_Template_Parent1)
+        GroupBoxBasicTemplates.Controls.Add(BG3Editor_Stats_Weight1)
         GroupBoxBasicTemplates.Location = New Point(6, 10)
         GroupBoxBasicTemplates.Name = "GroupBoxBasicTemplates"
         GroupBoxBasicTemplates.Size = New Size(404, 145)
@@ -414,20 +771,16 @@ Partial Class Generic_Character_Editor
         GroupBoxBasicTemplates.TabStop = False
         GroupBoxBasicTemplates.Text = "Template"
         ' 
-        ' BG3Editor_Template_StoryItem1
+        ' BG3Editor_Template_Equipment1
         ' 
-        BG3Editor_Template_StoryItem1.EditIsConditional = False
-        BG3Editor_Template_StoryItem1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Template_StoryItem1.Label = "Story item"
-        BG3Editor_Template_StoryItem1.Location = New Point(244, 88)
-        BG3Editor_Template_StoryItem1.Margin = New Padding(0)
-        BG3Editor_Template_StoryItem1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Template_StoryItem1.MinimumSize = New Size(100, 23)
-        BG3Editor_Template_StoryItem1.Name = "BG3Editor_Template_StoryItem1"
-        BG3Editor_Template_StoryItem1.ShowConditional = False
-        BG3Editor_Template_StoryItem1.Size = New Size(154, 23)
-        BG3Editor_Template_StoryItem1.SplitterDistance = 77
-        BG3Editor_Template_StoryItem1.TabIndex = 5
+        BG3Editor_Template_Equipment1.Label = "Equipment"
+        BG3Editor_Template_Equipment1.Location = New Point(3, 111)
+        BG3Editor_Template_Equipment1.Margin = New Padding(0)
+        BG3Editor_Template_Equipment1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_Equipment1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_Equipment1.Name = "BG3Editor_Template_Equipment1"
+        BG3Editor_Template_Equipment1.Size = New Size(395, 23)
+        BG3Editor_Template_Equipment1.TabIndex = 4
         ' 
         ' BG3Editor_Template_Name1
         ' 
@@ -454,7 +807,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Type1.MaximumSize = New Size(2000, 23)
         BG3Editor_Template_Type1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_Type1.Name = "BG3Editor_Template_Type1"
-        BG3Editor_Template_Type1.Size = New Size(238, 23)
+        BG3Editor_Template_Type1.Size = New Size(223, 23)
         BG3Editor_Template_Type1.SplitterDistance = 100
         BG3Editor_Template_Type1.TabIndex = 3
         ' 
@@ -490,43 +843,72 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Parent1.SplitterDistance = 80
         BG3Editor_Template_Parent1.TabIndex = 2
         ' 
+        ' BG3Editor_Stats_Weight1
+        ' 
+        BG3Editor_Stats_Weight1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Weight1.Label = "Weight"
+        BG3Editor_Stats_Weight1.Location = New Point(241, 88)
+        BG3Editor_Stats_Weight1.Margin = New Padding(0)
+        BG3Editor_Stats_Weight1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Weight1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Weight1.Name = "BG3Editor_Stats_Weight1"
+        BG3Editor_Stats_Weight1.Size = New Size(157, 23)
+        BG3Editor_Stats_Weight1.SplitterDistance = 50
+        BG3Editor_Stats_Weight1.TabIndex = 6
+        ' 
         ' GroupBoxVisuals
         ' 
-        GroupBoxVisuals.Controls.Add(BG3Editor_Template_TechnicalDescription1)
-        GroupBoxVisuals.Controls.Add(BG3Editor_Template_Description1)
+        GroupBoxVisuals.Controls.Add(BG3Editor_Template_Race1)
+        GroupBoxVisuals.Controls.Add(BG3Editor_Template_EquipmentRace1)
+        GroupBoxVisuals.Controls.Add(BG3Editor_Template_CharacterTemplate1)
         GroupBoxVisuals.Controls.Add(BG3Editor_Template_DisplayName1)
         GroupBoxVisuals.Controls.Add(BG3Editor_Template_Icon1)
         GroupBoxVisuals.Controls.Add(BG3Editor_Template_VisualTemplate1)
         GroupBoxVisuals.Location = New Point(6, 159)
         GroupBoxVisuals.Name = "GroupBoxVisuals"
-        GroupBoxVisuals.Size = New Size(404, 142)
+        GroupBoxVisuals.Size = New Size(404, 162)
         GroupBoxVisuals.TabIndex = 1
         GroupBoxVisuals.TabStop = False
         GroupBoxVisuals.Text = "Visuals"
         ' 
-        ' BG3Editor_Template_TechnicalDescription1
+        ' BG3Editor_Template_Race1
         ' 
-        BG3Editor_Template_TechnicalDescription1.Label = "Technical"
-        BG3Editor_Template_TechnicalDescription1.Location = New Point(3, 65)
-        BG3Editor_Template_TechnicalDescription1.Margin = New Padding(0)
-        BG3Editor_Template_TechnicalDescription1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Template_TechnicalDescription1.MinimumSize = New Size(0, 23)
-        BG3Editor_Template_TechnicalDescription1.Name = "BG3Editor_Template_TechnicalDescription1"
-        BG3Editor_Template_TechnicalDescription1.Size = New Size(395, 23)
-        BG3Editor_Template_TechnicalDescription1.SplitterDistance = 100
-        BG3Editor_Template_TechnicalDescription1.TabIndex = 2
+        BG3Editor_Template_Race1.DropIcon = True
+        BG3Editor_Template_Race1.Label = "Race"
+        BG3Editor_Template_Race1.Location = New Point(3, 134)
+        BG3Editor_Template_Race1.Margin = New Padding(0)
+        BG3Editor_Template_Race1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_Race1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_Race1.Name = "BG3Editor_Template_Race1"
+        BG3Editor_Template_Race1.Size = New Size(395, 23)
+        BG3Editor_Template_Race1.SplitterDistance = 80
+        BG3Editor_Template_Race1.TabIndex = 6
         ' 
-        ' BG3Editor_Template_Description1
+        ' BG3Editor_Template_EquipmentRace1
         ' 
-        BG3Editor_Template_Description1.Label = "Description"
-        BG3Editor_Template_Description1.Location = New Point(3, 42)
-        BG3Editor_Template_Description1.Margin = New Padding(0)
-        BG3Editor_Template_Description1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Template_Description1.MinimumSize = New Size(0, 23)
-        BG3Editor_Template_Description1.Name = "BG3Editor_Template_Description1"
-        BG3Editor_Template_Description1.Size = New Size(395, 23)
-        BG3Editor_Template_Description1.SplitterDistance = 100
-        BG3Editor_Template_Description1.TabIndex = 1
+        BG3Editor_Template_EquipmentRace1.DropIcon = True
+        BG3Editor_Template_EquipmentRace1.Label = "Equipm. race"
+        BG3Editor_Template_EquipmentRace1.Location = New Point(3, 111)
+        BG3Editor_Template_EquipmentRace1.Margin = New Padding(0)
+        BG3Editor_Template_EquipmentRace1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_EquipmentRace1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_EquipmentRace1.Name = "BG3Editor_Template_EquipmentRace1"
+        BG3Editor_Template_EquipmentRace1.Size = New Size(395, 23)
+        BG3Editor_Template_EquipmentRace1.SplitterDistance = 80
+        BG3Editor_Template_EquipmentRace1.TabIndex = 6
+        ' 
+        ' BG3Editor_Template_CharacterTemplate1
+        ' 
+        BG3Editor_Template_CharacterTemplate1.DropIcon = True
+        BG3Editor_Template_CharacterTemplate1.Label = "Charac.visual"
+        BG3Editor_Template_CharacterTemplate1.Location = New Point(3, 88)
+        BG3Editor_Template_CharacterTemplate1.Margin = New Padding(0)
+        BG3Editor_Template_CharacterTemplate1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_CharacterTemplate1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_CharacterTemplate1.Name = "BG3Editor_Template_CharacterTemplate1"
+        BG3Editor_Template_CharacterTemplate1.Size = New Size(395, 23)
+        BG3Editor_Template_CharacterTemplate1.SplitterDistance = 80
+        BG3Editor_Template_CharacterTemplate1.TabIndex = 5
         ' 
         ' BG3Editor_Template_DisplayName1
         ' 
@@ -545,7 +927,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Icon1.AllowDrop = True
         BG3Editor_Template_Icon1.DropIcon = True
         BG3Editor_Template_Icon1.Label = "Icon"
-        BG3Editor_Template_Icon1.Location = New Point(3, 88)
+        BG3Editor_Template_Icon1.Location = New Point(3, 42)
         BG3Editor_Template_Icon1.Margin = New Padding(0)
         BG3Editor_Template_Icon1.MaximumSize = New Size(2000, 23)
         BG3Editor_Template_Icon1.MinimumSize = New Size(0, 23)
@@ -559,7 +941,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_VisualTemplate1.AllowDrop = True
         BG3Editor_Template_VisualTemplate1.DropIcon = True
         BG3Editor_Template_VisualTemplate1.Label = "Visual temp."
-        BG3Editor_Template_VisualTemplate1.Location = New Point(3, 111)
+        BG3Editor_Template_VisualTemplate1.Location = New Point(3, 65)
         BG3Editor_Template_VisualTemplate1.Margin = New Padding(0)
         BG3Editor_Template_VisualTemplate1.MaximumSize = New Size(2000, 23)
         BG3Editor_Template_VisualTemplate1.MinimumSize = New Size(0, 23)
@@ -570,97 +952,54 @@ Partial Class Generic_Character_Editor
         ' 
         ' GroupBoxBasicStats
         ' 
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_GameSize1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_ObjectCategory1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_MinLevel1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Template_Stats1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Unique1)
-        GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Rarity1)
+        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_Level1)
+        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_Class1)
+        GroupBoxBasicStats.Controls.Add(BG3Editor_Stats_Stats1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Type1)
         GroupBoxBasicStats.Controls.Add(BG3Editor_Stat_Using1)
-        GroupBoxBasicStats.Location = New Point(6, 302)
+        GroupBoxBasicStats.Location = New Point(6, 327)
         GroupBoxBasicStats.Name = "GroupBoxBasicStats"
-        GroupBoxBasicStats.Size = New Size(404, 161)
+        GroupBoxBasicStats.Size = New Size(404, 139)
         GroupBoxBasicStats.TabIndex = 2
         GroupBoxBasicStats.TabStop = False
         GroupBoxBasicStats.Text = "Stat attributes"
         ' 
-        ' BG3Editor_Stats_GameSize1
+        ' BG3Editor_Stats_Level1
         ' 
-        BG3Editor_Stats_GameSize1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stats_GameSize1.Label = "Size"
-        BG3Editor_Stats_GameSize1.Location = New Point(244, 111)
-        BG3Editor_Stats_GameSize1.Margin = New Padding(0)
-        BG3Editor_Stats_GameSize1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_GameSize1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_GameSize1.Name = "BG3Editor_Stats_GameSize1"
-        BG3Editor_Stats_GameSize1.Size = New Size(154, 23)
-        BG3Editor_Stats_GameSize1.SplitterDistance = 57
-        BG3Editor_Stats_GameSize1.TabIndex = 9
+        BG3Editor_Stats_Level1.EditorType = BG3_Editor_Type.NumericUpDown
+        BG3Editor_Stats_Level1.Label = "Level"
+        BG3Editor_Stats_Level1.Location = New Point(3, 111)
+        BG3Editor_Stats_Level1.Margin = New Padding(0)
+        BG3Editor_Stats_Level1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Level1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Level1.Name = "BG3Editor_Stats_Level1"
+        BG3Editor_Stats_Level1.Size = New Size(223, 23)
+        BG3Editor_Stats_Level1.TabIndex = 5
         ' 
-        ' BG3Editor_Stats_ObjectCategory1
+        ' BG3Editor_Stats_Class1
         ' 
-        BG3Editor_Stats_ObjectCategory1.Label = "Object category"
-        BG3Editor_Stats_ObjectCategory1.Location = New Point(3, 134)
-        BG3Editor_Stats_ObjectCategory1.Margin = New Padding(0)
-        BG3Editor_Stats_ObjectCategory1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_ObjectCategory1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_ObjectCategory1.Name = "BG3Editor_Stats_ObjectCategory1"
-        BG3Editor_Stats_ObjectCategory1.Size = New Size(395, 23)
-        BG3Editor_Stats_ObjectCategory1.SplitterDistance = 100
-        BG3Editor_Stats_ObjectCategory1.TabIndex = 6
-        ' 
-        ' BG3Editor_Stats_MinLevel1
-        ' 
-        BG3Editor_Stats_MinLevel1.EditorType = BG3_Editor_Type.NumericUpDown
-        BG3Editor_Stats_MinLevel1.Label = "Minimum level"
-        BG3Editor_Stats_MinLevel1.Location = New Point(3, 111)
-        BG3Editor_Stats_MinLevel1.Margin = New Padding(0)
-        BG3Editor_Stats_MinLevel1.MaximumSize = New Size(3000, 23)
-        BG3Editor_Stats_MinLevel1.MinimumSize = New Size(100, 23)
-        BG3Editor_Stats_MinLevel1.Name = "BG3Editor_Stats_MinLevel1"
-        BG3Editor_Stats_MinLevel1.Size = New Size(238, 23)
-        BG3Editor_Stats_MinLevel1.TabIndex = 8
+        BG3Editor_Stats_Class1.Label = "Class"
+        BG3Editor_Stats_Class1.Location = New Point(3, 88)
+        BG3Editor_Stats_Class1.Margin = New Padding(0)
+        BG3Editor_Stats_Class1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Stats_Class1.MinimumSize = New Size(100, 23)
+        BG3Editor_Stats_Class1.Name = "BG3Editor_Stats_Class1"
+        BG3Editor_Stats_Class1.Size = New Size(395, 23)
+        BG3Editor_Stats_Class1.TabIndex = 4
         ' 
         ' BG3Editor_Template_Stats1
         ' 
-        BG3Editor_Template_Stats1.AllowEdit = False
-        BG3Editor_Template_Stats1.EditIsConditional = False
-        BG3Editor_Template_Stats1.Label = "Stat name"
-        BG3Editor_Template_Stats1.Location = New Point(3, 19)
-        BG3Editor_Template_Stats1.Margin = New Padding(0)
-        BG3Editor_Template_Stats1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Template_Stats1.MinimumSize = New Size(0, 23)
-        BG3Editor_Template_Stats1.Name = "BG3Editor_Template_Stats1"
-        BG3Editor_Template_Stats1.Size = New Size(395, 23)
-        BG3Editor_Template_Stats1.SplitterDistance = 100
-        BG3Editor_Template_Stats1.TabIndex = 0
-        ' 
-        ' BG3Editor_Stat_Unique1
-        ' 
-        BG3Editor_Stat_Unique1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stat_Unique1.Label = "Unique"
-        BG3Editor_Stat_Unique1.Location = New Point(244, 42)
-        BG3Editor_Stat_Unique1.Margin = New Padding(0)
-        BG3Editor_Stat_Unique1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Stat_Unique1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stat_Unique1.Name = "BG3Editor_Stat_Unique1"
-        BG3Editor_Stat_Unique1.Size = New Size(154, 23)
-        BG3Editor_Stat_Unique1.SplitterDistance = 57
-        BG3Editor_Stat_Unique1.TabIndex = 6
-        ' 
-        ' BG3Editor_Stat_Rarity1
-        ' 
-        BG3Editor_Stat_Rarity1.EditorType = BG3_Editor_Type.Combobox
-        BG3Editor_Stat_Rarity1.Label = "Rarity"
-        BG3Editor_Stat_Rarity1.Location = New Point(3, 65)
-        BG3Editor_Stat_Rarity1.Margin = New Padding(0)
-        BG3Editor_Stat_Rarity1.MaximumSize = New Size(2000, 23)
-        BG3Editor_Stat_Rarity1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stat_Rarity1.Name = "BG3Editor_Stat_Rarity1"
-        BG3Editor_Stat_Rarity1.Size = New Size(395, 23)
-        BG3Editor_Stat_Rarity1.SplitterDistance = 100
-        BG3Editor_Stat_Rarity1.TabIndex = 2
+        BG3Editor_Stats_Stats1.DropIcon = True
+        BG3Editor_Stats_Stats1.EditIsConditional = False
+        BG3Editor_Stats_Stats1.Label = "Stat name"
+        BG3Editor_Stats_Stats1.Location = New Point(3, 19)
+        BG3Editor_Stats_Stats1.Margin = New Padding(0)
+        BG3Editor_Stats_Stats1.MaximumSize = New Size(2000, 23)
+        BG3Editor_Stats_Stats1.MinimumSize = New Size(0, 23)
+        BG3Editor_Stats_Stats1.Name = "BG3Editor_Template_Stats1"
+        BG3Editor_Stats_Stats1.Size = New Size(395, 23)
+        BG3Editor_Stats_Stats1.SplitterDistance = 80
+        BG3Editor_Stats_Stats1.TabIndex = 0
         ' 
         ' BG3Editor_Stat_Type1
         ' 
@@ -673,7 +1012,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stat_Type1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stat_Type1.MinimumSize = New Size(0, 23)
         BG3Editor_Stat_Type1.Name = "BG3Editor_Stat_Type1"
-        BG3Editor_Stat_Type1.Size = New Size(238, 23)
+        BG3Editor_Stat_Type1.Size = New Size(395, 23)
         BG3Editor_Stat_Type1.SplitterDistance = 100
         BG3Editor_Stat_Type1.TabIndex = 1
         ' 
@@ -682,7 +1021,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stat_Using1.DropIcon = True
         BG3Editor_Stat_Using1.EditIsConditional = False
         BG3Editor_Stat_Using1.Label = "Using"
-        BG3Editor_Stat_Using1.Location = New Point(3, 88)
+        BG3Editor_Stat_Using1.Location = New Point(3, 65)
         BG3Editor_Stat_Using1.Margin = New Padding(0)
         BG3Editor_Stat_Using1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stat_Using1.MinimumSize = New Size(0, 23)
@@ -805,8 +1144,15 @@ Partial Class Generic_Character_Editor
         GroupBox7.ResumeLayout(False)
         TabPage1.ResumeLayout(False)
         GroupBox9.ResumeLayout(False)
-        GroupBoxInventory.ResumeLayout(False)
-        GroupBoxTrade.ResumeLayout(False)
+        TabControlCharacter.ResumeLayout(False)
+        TabPageCharAbils.ResumeLayout(False)
+        GroupBoxAbilities.ResumeLayout(False)
+        TabPageCharresists.ResumeLayout(False)
+        GroupBoxResist.ResumeLayout(False)
+        TabPageCharBoosts.ResumeLayout(False)
+        GroupBoxBoosts.ResumeLayout(False)
+        TabPageStatus.ResumeLayout(False)
+        GroupBoxStatus.ResumeLayout(False)
         GroupBoxBasicTemplates.ResumeLayout(False)
         GroupBoxVisuals.ResumeLayout(False)
         GroupBoxBasicStats.ResumeLayout(False)
@@ -836,44 +1182,70 @@ Partial Class Generic_Character_Editor
     Protected Friend WithEvents TabPage1 As TabPage
     Protected Friend WithEvents GroupBox9 As GroupBox
     Protected Friend WithEvents GroupBoxBasicTemplates As GroupBox
-    Protected Friend WithEvents BG3Editor_Template_StoryItem1 As BG3Editor_Template_StoryItem
     Protected Friend WithEvents BG3Editor_Template_Name1 As BG3Editor_Template_Name
     Protected Friend WithEvents BG3Editor_Template_Mapkey1 As BG3Editor_Template_Mapkey
     Protected Friend WithEvents BG3Editor_Template_Parent1 As BG3Editor_Template_ParentId
     Protected Friend WithEvents GroupBoxVisuals As GroupBox
-    Protected Friend WithEvents BG3Editor_Template_TechnicalDescription1 As BG3Editor_Template_TechnicalDescription
-    Protected Friend WithEvents BG3Editor_Template_Description1 As BG3Editor_Template_Description
     Protected Friend WithEvents BG3Editor_Template_DisplayName1 As BG3Editor_Template_DisplayName
     Protected Friend WithEvents BG3Editor_Template_Icon1 As BG3Editor_Template_Icon
     Protected Friend WithEvents BG3Editor_Template_VisualTemplate1 As BG3Editor_Template_VisualTemplate
     Protected Friend WithEvents GroupBoxBasicStats As GroupBox
-    Protected Friend WithEvents BG3Editor_Template_Stats1 As BG3Editor_Template_Stats
-    Protected Friend WithEvents BG3Editor_Stat_Unique1 As BG3Editor_Stat_Unique
-    Protected Friend WithEvents BG3Editor_Stat_ValueOverride1 As BG3Editor_Stats_ValueOverride
-    Protected Friend WithEvents BG3Editor_Stat_Rarity1 As BG3Editor_Stats_Rarity
+    Protected Friend WithEvents BG3Editor_Stats_Stats1 As BG3Editor_Stats_Name
     Protected Friend WithEvents BG3Editor_Stat_Type1 As BG3Editor_Stats_Type
-    Protected Friend WithEvents BG3Editor_Stat_Weight1 As BG3Editor_Stats_Weight
     Protected Friend WithEvents BG3Editor_Stat_Using1 As BG3Editor_Stat_Using
     Protected Friend WithEvents TabControl1 As TabControl
     Protected Friend WithEvents BG3Editor_Template_Type1 As BG3Editor_Template_Type
     Friend WithEvents SplitContainer1 As SplitContainer
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents BG3Editor_Complex_Advanced_Stats1 As BG3Editor_Complex_Advanced_Stats
-    Friend WithEvents GroupBoxTrade As GroupBox
-    Friend WithEvents BG3Editor_Stats_ValueRounding1 As BG3Editor_Stats_ValueRounding
-    Friend WithEvents BG3Editor_Stats_ValueScale1 As BG3Editor_Stats_ValueScale
-    Friend WithEvents BG3Editor_Stats_Valueuuid1 As BG3Editor_Stats_ValueUUID
-    Friend WithEvents BG3Editor_Stats_ValueLevel1 As BG3Editor_Stats_ValueLevel
     Friend WithEvents GroupBoxStats As GroupBox
-    Friend WithEvents GroupBoxInventory As GroupBox
-    Friend WithEvents BG3Editor_Stats_MinLevel1 As BG3Editor_Stats_MinLevel
     Friend WithEvents TabPageAttributes As TabPage
     Friend WithEvents GroupBoxAttributes As GroupBox
     Friend WithEvents BG3Editor_Complex_Advanced_Attributes1 As BG3Editor_Complex_Advanced_Attributes
-    Friend WithEvents BG3Editor_Stats_InventoryTab1 As BG3Editor_Stats_InventoryTab
-    Friend WithEvents BG3Editor_Stats_ObjectCategory1 As BG3Editor_Stats_ObjectCategory
-    Friend WithEvents BG3Editor_Template_maxStackAmount1 As BG3Editor_Template_maxStackAmount
-    Friend WithEvents BG3Editor_Stats_MaxAmount1 As BG3Editor_Stats_MaxAmount
-    Friend WithEvents BG3Editor_Stats_MinAmount1 As BG3Editor_Stats_MinAmount
-    Friend WithEvents BG3Editor_Stats_GameSize1 As BG3Editor_Stats_GameSize
+    Friend WithEvents BG3Editor_Template_Race1 As BG3Editor_Template_Race
+    Friend WithEvents BG3Editor_Template_EquipmentRace1 As BG3Editor_Template_EquipmentRace
+    Friend WithEvents BG3Editor_Template_CharacterTemplate1 As BG3Editor_Template_CharacterVisualResourceID
+    Friend WithEvents BG3Editor_Template_Equipment1 As BG3Editor_Template_Equipment
+    Friend WithEvents BG3Editor_Stats_Class1 As BG3Editor_Stats_Class
+    Friend WithEvents TabControlCharacter As TabControl
+    Friend WithEvents TabPageCharresists As TabPage
+    Friend WithEvents GroupBoxResist As GroupBox
+    Friend WithEvents BG3Editor_Stats_ArmorType1 As BG3Editor_Stats_ArmorType
+    Friend WithEvents TabPageCharAbils As TabPage
+    Friend WithEvents TabPageCharBoosts As TabPage
+    Friend WithEvents GroupBoxBoosts As GroupBox
+    Friend WithEvents BG3Editor_Stats_DefaultBoosts1 As BG3Editor_Stats_DefaultBoosts
+    Friend WithEvents BG3Editor_Stats_Passives1 As BG3Editor_Stats_Passives
+    Friend WithEvents TabPageStatus As TabPage
+    Friend WithEvents GroupBoxStatus As GroupBox
+    Friend WithEvents BG3Editor_Complex_StatusList1 As BG3Editor_Complex_StatusList
+    Friend WithEvents BG3Editor_Stats_Armor1 As BG3Editor_Stats_Armor
+    Friend WithEvents BG3Editor_Stats_Weight1 As BG3Editor_Stats_Weight
+    Friend WithEvents GroupBoxAbilities As GroupBox
+    Friend WithEvents BG3Editor_Stats_Dexterity1 As BG3Editor_Stats_Dexterity
+    Friend WithEvents BG3Editor_Stats_Constitution1 As BG3Editor_Stats_Constitution
+    Friend WithEvents BG3Editor_Stats_Charisma1 As BG3Editor_Stats_Charisma
+    Friend WithEvents BG3Editor_Stats_Wisdom1 As BG3Editor_Stats_Wisdom
+    Friend WithEvents BG3Editor_Stats_Strength1 As BG3Editor_Stats_Strength
+    Friend WithEvents BG3Editor_Stats_Intelligence1 As BG3Editor_Stats_Intelligence
+    Friend WithEvents BG3Editor_Stats_Vitality1 As BG3Editor_Stats_Vitality
+    Friend WithEvents BG3Editor_Stats_Level1 As BG3Editor_Stats_Level
+    Friend WithEvents BG3Editor_Template_LevelOverride1 As BG3Editor_Template_LevelOverride
+    Friend WithEvents BG3Editor_Stats_DifficultyStatuses1 As BG3Editor_Stats_DifficultyStatuses
+    Friend WithEvents BG3Editor_Stats_ProficiencyBonus1 As BG3Editor_Stats_ProficiencyBonus
+    Friend WithEvents BG3Editor_Stats_ProficiencyGroupText1 As BG3Editor_Stats_ProficiencyGroupText
+    Friend WithEvents BG3Editor_Stats_ActionResources1 As BG3Editor_Stats_ActionResources
+    Friend WithEvents BG3Editor_Stats_ThunderResistance1 As BG3Editor_Stats_ThunderResistance
+    Friend WithEvents BG3Editor_Stats_RadiantResistance1 As BG3Editor_Stats_RadiantResistance
+    Friend WithEvents BG3Editor_Stats_PsychicResistance1 As BG3Editor_Stats_PsychicResistance
+    Friend WithEvents BG3Editor_Stats_PoisonResistance1 As BG3Editor_Stats_PoisonResistance
+    Friend WithEvents BG3Editor_Stats_PiercingResistance1 As BG3Editor_Stats_PiercingResistance
+    Friend WithEvents BG3Editor_Stats_NecroticResistance1 As BG3Editor_Stats_NecroticResistance
+    Friend WithEvents BG3Editor_Stats_LightningResistance1 As BG3Editor_Stats_LightningResistance
+    Friend WithEvents BG3Editor_Stats_ForceResistance1 As BG3Editor_Stats_ForceResistance
+    Friend WithEvents BG3Editor_Stats_FireResistance1 As BG3Editor_Stats_FireResistance
+    Friend WithEvents BG3Editor_Stats_ColdResistance1 As BG3Editor_Stats_ColdResistance
+    Friend WithEvents BG3Editor_Stats_BludgeoningResistance1 As BG3Editor_Stats_BludgeoningResistance
+    Friend WithEvents BG3Editor_Stats_AcidResistance1 As BG3Editor_Stats_AcidResistance
+    Friend WithEvents BG3Editor_Stats_SlashingResistance1 As BG3Editor_Stats_SlashingResistance
 End Class

@@ -250,6 +250,9 @@ Public Class Generic_Item_Editor
             End If
         End If
     End Sub
+    Private Sub Capture_Name_Changed(quien As BG3_Obj_Stats_Class, OldName As String, NewName As String) Handles BG3Editor_Stats_Stats1.WritedNewName
+        SelectedStat.Process_Name_Change(OldName, NewName)
+    End Sub
 
     Protected Overridable Sub Capture_Clone_specific(obj As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype)
 
@@ -271,6 +274,7 @@ Public Class Generic_Item_Editor
             Case BG3Cloner.Clonetype.None
                 Create_Initial(Clone_Nuevonod)
                 Capture_Clone_specific(obj, tipo)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
             Case BG3Cloner.Clonetype.Inherit
                 Create_Initial(Clone_Nuevonod)
                 BG3Editor_Template_Parent1.Replace_Attribute(Clone_Nuevonod, obj.MapKey)
@@ -287,7 +291,7 @@ Public Class Generic_Item_Editor
                 BG3Editor_Template_Mapkey1.Replace_Attribute(Clone_Nuevonod, Template_guid)
                 BG3Editor_Template_Name1.Replace_Attribute(Clone_Nuevonod, obj.Name + "_Cloned")
                 If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
-                BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 Capture_Clone_specific(obj, tipo)
             Case BG3Cloner.Clonetype.Override
                 Template_guid = obj.MapKey
@@ -302,10 +306,10 @@ Public Class Generic_Item_Editor
                 If obj.NodeLSLIB.TryGetOrEmpty("DisplayName") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h1", obj.NodeLSLIB.TryGetOrEmpty("DisplayName"), AttributeType.TranslatedString)
                 If obj.NodeLSLIB.TryGetOrEmpty("Description") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h2", obj.NodeLSLIB.TryGetOrEmpty("Description"), AttributeType.TranslatedString)
                 If obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription") <> "" Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "UTAM_h3", obj.NodeLSLIB.TryGetOrEmpty("TechnicalDescription"), AttributeType.TranslatedString)
-                If IsNothing(tempstat) Then BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                If IsNothing(tempstat) Then Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 If Not IsNothing(tempstat) Then Clone_Stat_Name = tempstat.Name
                 If Not IsNothing(tempstat) Then Clone_Stat_Using = tempstat.Using
-                BG3Editor_Template_Stats1.Replace_Attribute(Clone_Nuevonod, Clone_Stat_Name)
+                Editor_Generic_GenericAttribute.Replace_Attribute_Generic(Clone_Nuevonod, "Stats", Clone_Stat_Name, AttributeType.FixedString)
                 Capture_Clone_specific(obj, tipo)
             Case Else
                 Debugger.Break()
@@ -436,7 +440,6 @@ Public Class Generic_Item_Editor
         BG3Editor_Template_Name1.Create_Attribute(nuevonod, Prefix + Template_guid)
         BG3Editor_Template_Type1.Create_Attribute(nuevonod, "item")
         BG3Editor_Template_Parent1.Create_Attribute(nuevonod, DefaulParent)
-        BG3Editor_Template_Stats1.Create_Attribute(nuevonod, Stat_Default_Name)
         BG3Editor_Template_StoryItem1.Create_Attribute(nuevonod, "False")
         BG3Editor_Template_DisplayName1.Create_Attribute(nuevonod, Funciones.NewGUID(True) + ";1")
         BG3Editor_Template_Description1.Create_Attribute(nuevonod, Funciones.NewGUID(True) + ";1")
@@ -480,8 +483,9 @@ Public Class Generic_Item_Editor
             BG3Editor_Template_DisplayName1.Read(SelectedTmp)
             BG3Editor_Template_Description1.Read(SelectedTmp)
             BG3Editor_Template_TechnicalDescription1.Read(SelectedTmp)
-            BG3Editor_Template_Stats1.Read(SelectedTmp)
             BG3Editor_Template_maxStackAmount1.Read(SelectedTmp)
+
+            BG3Editor_Stats_Stats1.Read(SelectedStat)
             BG3Editor_Stat_Type1.Read(SelectedStat)
             BG3Editor_Stat_Rarity1.Read(SelectedStat)
             BG3Editor_Stat_Weight1.Read(SelectedStat)
@@ -517,7 +521,7 @@ Public Class Generic_Item_Editor
             BG3Editor_Template_Description1.Clear()
             BG3Editor_Template_TechnicalDescription1.Clear()
             BG3Editor_Template_maxStackAmount1.Clear()
-            BG3Editor_Template_Stats1.Clear()
+            BG3Editor_Stats_Stats1.Clear()
             BG3Editor_Stat_Type1.Clear()
             BG3Editor_Stat_Rarity1.Clear()
             BG3Editor_Stat_Weight1.Clear()
@@ -558,7 +562,6 @@ Public Class Generic_Item_Editor
         BG3Editor_Template_DisplayName1.Write(SelectedTmp)
         BG3Editor_Template_Description1.Write(SelectedTmp)
         BG3Editor_Template_TechnicalDescription1.Write(SelectedTmp)
-        BG3Editor_Template_Stats1.Write(SelectedTmp)
         BG3Editor_Template_maxStackAmount1.Write(SelectedTmp)
         BG3Editor_Stat_Type1.Write(SelectedStat)
         BG3Editor_Stat_Rarity1.Write(SelectedStat)
@@ -577,7 +580,12 @@ Public Class Generic_Item_Editor
         BG3Editor_Stats_InventoryTab1.Write(SelectedStat)
         BG3Editor_Stats_ObjectCategory1.Write(SelectedStat)
         BG3Editor_Stats_GameSize1.Write(SelectedStat)
+        BG3Editor_Stats_Stats1.Write(SelectedStat)
+
         BG3Editor_Complex_Tags1.Write(SelectedTmp)
+
+
+        Editor_Generic_GenericAttribute.Replace_Attribute_Generic(SelectedTmp.NodeLSLIB, "Stats", SelectedStat.Name, AttributeType.FixedString)
         Process_Save_Edits_Specifics()
         Process_Save_Objetos()
         Process_Save_Final()

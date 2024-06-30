@@ -44,6 +44,9 @@ Partial Class MaterialBank_Editor
         BG3Editor_Visuals_NormalMap1 = New BG3Editor_Visuals_NormalMap()
         BG3Editor_Visuals_BasecolorMap1 = New BG3Editor_Visuals_BasecolorMap()
         GroupBoxMsk = New GroupBox()
+        ButtonGM = New Button()
+        LabelGM = New Label()
+        BG3Editor_Visuals_Glow_msk1 = New BG3Editor_Visuals_VertexColor_MSK()
         ButtonVertexMsk = New Button()
         LabelVertexMSK = New Label()
         ButtonMSKClt = New Button()
@@ -345,6 +348,9 @@ Partial Class MaterialBank_Editor
         ' 
         ' GroupBoxMsk
         ' 
+        GroupBoxMsk.Controls.Add(ButtonGM)
+        GroupBoxMsk.Controls.Add(LabelGM)
+        GroupBoxMsk.Controls.Add(BG3Editor_Visuals_Glow_msk1)
         GroupBoxMsk.Controls.Add(ButtonVertexMsk)
         GroupBoxMsk.Controls.Add(LabelVertexMSK)
         GroupBoxMsk.Controls.Add(ButtonMSKClt)
@@ -356,10 +362,43 @@ Partial Class MaterialBank_Editor
         GroupBoxMsk.Controls.Add(BG3Editor_Visuals_MaskTexture1)
         GroupBoxMsk.Location = New Point(6, 344)
         GroupBoxMsk.Name = "GroupBoxMsk"
-        GroupBoxMsk.Size = New Size(795, 94)
+        GroupBoxMsk.Size = New Size(795, 117)
         GroupBoxMsk.TabIndex = 14
         GroupBoxMsk.TabStop = False
         GroupBoxMsk.Text = "Mask textures"
+        ' 
+        ' ButtonGM
+        ' 
+        ButtonGM.Location = New Point(377, 86)
+        ButtonGM.Name = "ButtonGM"
+        ButtonGM.Size = New Size(24, 23)
+        ButtonGM.TabIndex = 12
+        ButtonGM.Text = "X"
+        ButtonGM.UseVisualStyleBackColor = True
+        ' 
+        ' LabelGM
+        ' 
+        LabelGM.Location = New Point(407, 86)
+        LabelGM.Name = "LabelGM"
+        LabelGM.Size = New Size(382, 23)
+        LabelGM.TabIndex = 11
+        LabelGM.Text = "(None)"
+        LabelGM.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' BG3Editor_Visuals_Glow_msk1
+        ' 
+        BG3Editor_Visuals_Glow_msk1.DropIcon = True
+        BG3Editor_Visuals_Glow_msk1.EditIsConditional = False
+        BG3Editor_Visuals_Glow_msk1.Label = "Glow msk"
+        BG3Editor_Visuals_Glow_msk1.Location = New Point(3, 86)
+        BG3Editor_Visuals_Glow_msk1.Margin = New Padding(0)
+        BG3Editor_Visuals_Glow_msk1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Visuals_Glow_msk1.MinimumSize = New Size(100, 23)
+        BG3Editor_Visuals_Glow_msk1.Name = "BG3Editor_Visuals_Glow_msk1"
+        BG3Editor_Visuals_Glow_msk1.ReadOnly = True
+        BG3Editor_Visuals_Glow_msk1.Size = New Size(371, 23)
+        BG3Editor_Visuals_Glow_msk1.SplitterDistance = 100
+        BG3Editor_Visuals_Glow_msk1.TabIndex = 10
         ' 
         ' ButtonVertexMsk
         ' 
@@ -401,7 +440,7 @@ Partial Class MaterialBank_Editor
         ' 
         BG3Editor_Visuals_msKcloth1.DropIcon = True
         BG3Editor_Visuals_msKcloth1.EditIsConditional = False
-        BG3Editor_Visuals_msKcloth1.Label = "Cloth"
+        BG3Editor_Visuals_msKcloth1.Label = "Cloth msk"
         BG3Editor_Visuals_msKcloth1.Location = New Point(3, 40)
         BG3Editor_Visuals_msKcloth1.Margin = New Padding(0)
         BG3Editor_Visuals_msKcloth1.MaximumSize = New Size(3000, 23)
@@ -416,7 +455,7 @@ Partial Class MaterialBank_Editor
         ' 
         BG3Editor_Visuals_VertexColor_msk1.DropIcon = True
         BG3Editor_Visuals_VertexColor_msk1.EditIsConditional = False
-        BG3Editor_Visuals_VertexColor_msk1.Label = "Vertex color"
+        BG3Editor_Visuals_VertexColor_msk1.Label = "Vertex color msk"
         BG3Editor_Visuals_VertexColor_msk1.Location = New Point(3, 63)
         BG3Editor_Visuals_VertexColor_msk1.Margin = New Padding(0)
         BG3Editor_Visuals_VertexColor_msk1.MaximumSize = New Size(3000, 23)
@@ -449,7 +488,7 @@ Partial Class MaterialBank_Editor
         ' 
         BG3Editor_Visuals_MaskTexture1.DropIcon = True
         BG3Editor_Visuals_MaskTexture1.EditIsConditional = False
-        BG3Editor_Visuals_MaskTexture1.Label = "Color"
+        BG3Editor_Visuals_MaskTexture1.Label = "Color msk"
         BG3Editor_Visuals_MaskTexture1.Location = New Point(3, 17)
         BG3Editor_Visuals_MaskTexture1.Margin = New Padding(0)
         BG3Editor_Visuals_MaskTexture1.MaximumSize = New Size(3000, 23)
@@ -465,7 +504,7 @@ Partial Class MaterialBank_Editor
         TabPageDyes.Controls.Add(GroupBox6)
         TabPageDyes.Location = New Point(4, 27)
         TabPageDyes.Name = "TabPageDyes"
-        TabPageDyes.Size = New Size(807, 472)
+        TabPageDyes.Size = New Size(807, 562)
         TabPageDyes.TabIndex = 7
         TabPageDyes.Text = "Colors definitions"
         ' 
@@ -475,7 +514,7 @@ Partial Class MaterialBank_Editor
         GroupBox6.Dock = DockStyle.Fill
         GroupBox6.Location = New Point(0, 0)
         GroupBox6.Name = "GroupBox6"
-        GroupBox6.Size = New Size(807, 472)
+        GroupBox6.Size = New Size(807, 562)
         GroupBox6.TabIndex = 2
         GroupBox6.TabStop = False
         ' 
@@ -485,7 +524,7 @@ Partial Class MaterialBank_Editor
         BG3Editor_Complex_Dyecolor1.Enabled = False
         BG3Editor_Complex_Dyecolor1.Location = New Point(3, 19)
         BG3Editor_Complex_Dyecolor1.Name = "BG3Editor_Complex_Dyecolor1"
-        BG3Editor_Complex_Dyecolor1.Size = New Size(801, 450)
+        BG3Editor_Complex_Dyecolor1.Size = New Size(801, 540)
         BG3Editor_Complex_Dyecolor1.TabIndex = 0
         ' 
         ' TabPageScalars
@@ -493,7 +532,7 @@ Partial Class MaterialBank_Editor
         TabPageScalars.Controls.Add(GroupBoxScalars)
         TabPageScalars.Location = New Point(4, 27)
         TabPageScalars.Name = "TabPageScalars"
-        TabPageScalars.Size = New Size(807, 472)
+        TabPageScalars.Size = New Size(807, 562)
         TabPageScalars.TabIndex = 8
         TabPageScalars.Text = "Scalars and vectors"
         ' 
@@ -503,7 +542,7 @@ Partial Class MaterialBank_Editor
         GroupBoxScalars.Dock = DockStyle.Fill
         GroupBoxScalars.Location = New Point(0, 0)
         GroupBoxScalars.Name = "GroupBoxScalars"
-        GroupBoxScalars.Size = New Size(807, 472)
+        GroupBoxScalars.Size = New Size(807, 562)
         GroupBoxScalars.TabIndex = 1
         GroupBoxScalars.TabStop = False
         ' 
@@ -512,7 +551,7 @@ Partial Class MaterialBank_Editor
         BG3Editor_Complex_ScalarsandVectors1.Dock = DockStyle.Fill
         BG3Editor_Complex_ScalarsandVectors1.Location = New Point(3, 19)
         BG3Editor_Complex_ScalarsandVectors1.Name = "BG3Editor_Complex_ScalarsandVectors1"
-        BG3Editor_Complex_ScalarsandVectors1.Size = New Size(801, 450)
+        BG3Editor_Complex_ScalarsandVectors1.Size = New Size(801, 540)
         BG3Editor_Complex_ScalarsandVectors1.TabIndex = 0
         ' 
         ' MaterialBank_Editor
@@ -574,4 +613,7 @@ Partial Class MaterialBank_Editor
     Friend Protected WithEvents TabPageScalars As TabPage
     Friend Protected WithEvents GroupBoxScalars As GroupBox
     Friend WithEvents BG3Editor_Complex_ScalarsandVectors1 As BG3Editor_Complex_ScalarsandVectors
+    Friend WithEvents ButtonGM As Button
+    Friend WithEvents LabelGM As Label
+    Friend WithEvents BG3Editor_Visuals_Glow_msk1 As BG3Editor_Visuals_VertexColor_MSK
 End Class

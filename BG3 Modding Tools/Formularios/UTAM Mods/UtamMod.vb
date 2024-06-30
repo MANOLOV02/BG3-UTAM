@@ -238,9 +238,24 @@ Public Class UtamMod
         ArchivoSTat.Flush()
         ArchivoSTat.Close()
 
+        ' Genera Stats File (Characters)
+        Dim Archivochar As New IO.StreamWriter(CurrentMod.StatsCharacterFilePath, False)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type = BG3_Enum_StatType.Character)
+            Archivochar.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
+            Archivochar.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
+            If stat.Using <> "" Then Archivochar.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
+            For Each dat In stat.Data
+                Archivochar.WriteLine("data " + Chr(34) + dat.Key + Chr(34) + " " + Chr(34) + dat.Value + Chr(34) + "")
+            Next
+            Archivochar.WriteLine("")
+        Next
+        Archivochar.Flush()
+        Archivochar.Close()
+
+
         ' Genera Stats File (Objects)
         Dim ArchivoST As New IO.StreamWriter(CurrentMod.StatsObjectsFilePath, False)
-        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination AndAlso pf.Type <> BG3_Enum_StatType.ConfigKeys AndAlso pf.Type <> BG3_Enum_StatType.PassiveData AndAlso pf.Type <> BG3_Enum_StatType.SpellData AndAlso pf.Type <> BG3_Enum_StatType.StatusData)
+        For Each stat In FuncionesHelpers.GameEngine.Utamstats.Where(Function(pf) pf.Type <> BG3_Enum_StatType.ItemCombination AndAlso pf.Type <> BG3_Enum_StatType.ConfigKeys AndAlso pf.Type <> BG3_Enum_StatType.PassiveData AndAlso pf.Type <> BG3_Enum_StatType.SpellData AndAlso pf.Type <> BG3_Enum_StatType.StatusData AndAlso pf.Type <> BG3_Enum_StatType.Character)
             ArchivoST.WriteLine("new entry " + Chr(34) + stat.Name + Chr(34) + "")
             ArchivoST.WriteLine("type " + Chr(34) + stat.Type.ToString + Chr(34) + "")
             If stat.Using <> "" Then ArchivoST.WriteLine("using " + Chr(34) + stat.Using + Chr(34) + "")
@@ -487,7 +502,37 @@ Public Class UtamMod
         End If
         LSLib.LS.ResourceUtils.SaveResource(RootV, CurrentMod.VisualBanksFilePath, Funciones.ConversionParams_LSLIB)
 
-        ' Genera RootTemplate
+
+        For Each Lev In FuncionesHelpers.GameEngine.UtamTemplates.Where(Function(pf) pf.ReadAttribute_Or_Empty("LevelName") <> "").Select(Function(PF) PF.ReadAttribute_Or_Empty("LevelName")).Distinct
+            Dim type As BG3_Enum_Templates_Type
+            For z = 0 To 1
+                If z = 0 Then type = BG3_Enum_Templates_Type.character
+                If z = 1 Then type = BG3_Enum_Templates_Type.item
+                Dim RootLT As New LSLib.LS.Resource
+                RootLT.Metadata.MajorVersion = Funciones.Default_LS_Version_Major
+                RootLT.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
+                RootLT.Metadata.Revision = Funciones.Default_LS_Version_Revision
+                RootLT.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
+                Dim ConfigR2 As New LSLib.LS.Region With {.Name = "Templates", .RegionName = "Templates"}
+                RootLT.Regions.Add("Templates", ConfigR2)
+                For Each temp In FuncionesHelpers.GameEngine.UtamTemplates.Where(Function(pf) pf.ReadAttribute_Or_Empty("LevelName") = Lev And pf.Type = type)
+                    Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
+                    Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
+                    'temp.NodeLSLIB.Attributes.TryAdd("id", "GameObjects")
+                    nod.Name = "GameObjects"
+                    nod.Parent = ConfigR2
+                    ConfigR2.AppendChild(nod)
+                Next
+                If CheckBoxmultitoolcomp.Checked Then
+                    LSLib.LS.ResourceUtils.SaveResource(RootLT, CurrentMod.LevelTemplateFilePath(Lev, type) + ".lsx", Funciones.ConversionParams_LSLIB)
+                Else
+                    If IO.File.Exists(CurrentMod.LevelTemplateFilePath(Lev, type) + ".lsx") Then IO.File.Delete(CurrentMod.LevelTemplateFilePath(Lev, type) + ".lsx")
+                End If
+                LSLib.LS.ResourceUtils.SaveResource(RootLT, CurrentMod.LevelTemplateFilePath(Lev, type), Funciones.ConversionParams_LSLIB)
+            Next
+        Next
+
+        ' Genera RootTemplate (No LEVELNAME)
         Dim RootT As New LSLib.LS.Resource
         RootT.Metadata.MajorVersion = Funciones.Default_LS_Version_Major
         RootT.Metadata.MinorVersion = Funciones.Default_LS_Version_Minor
@@ -495,7 +540,7 @@ Public Class UtamMod
         RootT.Metadata.BuildNumber = Funciones.Default_LS_Version_Build
         Dim ConfigR As New LSLib.LS.Region With {.Name = "Templates", .RegionName = "Templates"}
         RootT.Regions.Add("Templates", ConfigR)
-        For Each temp In FuncionesHelpers.GameEngine.UtamTemplates
+        For Each temp In FuncionesHelpers.GameEngine.UtamTemplates.Where(Function(pf) pf.ReadAttribute_Or_Empty("LevelName") = "")
             Dim nodeclone As String = temp.NodeLSLIB.To_XML.To_UTAMXML
             Dim nod As LSLib.LS.Node = ResourceUtils.LoadResource(New MemoryStream(Encoding.UTF8.GetBytes(nodeclone)), Enums.ResourceFormat.LSX, Funciones.LoadParams_LSLIB).Regions(Funciones.ManoloRegion).Children.First.Value.First
             'temp.NodeLSLIB.Attributes.TryAdd("id", "GameObjects")

@@ -31,6 +31,8 @@ Public Class BG3Editor_Stats_DisplayName
         Label = "Display name"
     End Sub
 End Class
+
+
 Public Class BG3Editor_Stats_Description
     Inherits BG3Editor_Stat_LocalizationBase
     Sub New()
@@ -53,22 +55,72 @@ Public Class BG3Editor_Stats_Name
         MyBase.New("Name")
         Label = "Stat name"
     End Sub
+
+    Public Property MustDescendFrom As String() = {"None"}
+    Private oldname As String = Nothing
+    Public Overrides Function Read(Que As BG3_Obj_Stats_Class) As Boolean
+        oldname = Que.Name_Write
+        Last_read = Que
+        Return MyBase.Read(Que)
+    End Function
     Public Overrides Function Write(Que As BG3_Obj_Stats_Class) As Boolean
         ' Can not change mapker
         If Me.AllowEdit = True Then
-            Dim oldname As String = Que.Name_Write
+            Last_read = Que
+            oldname = Que.Name_Write
             If oldname <> TextBox1.Text Then
                 Que.Name_Write = TextBox1.Text
-                RaiseEvent WritedNewName(Que, oldname, Que.Name_Write)
+                RaiseEvent WritedNewName(Last_read, oldname, TextBox1.Text)
             End If
+
             'Throw New Exception : Return False
         End If
         Return True
     End Function
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
+        If IsNothing(Obj.MapKey) Then Return False
+        If BG3Cloner.CheckDescendant_Generic(Obj, MustDescendFrom) = False Then Return False
+        Return Me.AllowEdit
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Stats_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
+        If oldname <> TextBox1.Text Then
+            Last_read.Name_Write = TextBox1.Text
+            RaiseEvent WritedNewName(Last_read, oldname, TextBox1.Text)
+        End If
+    End Sub
+    Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
+        If IsNothing(Obj.AssociatedStats) Then Return False
+        If BG3Cloner.CheckDescendant_Generic(Obj, MustDescendFrom) = False Then Return False
+        Return Me.AllowEdit
+    End Function
+    Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
+        If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+        Me.TextBox1.Text = Obj.AssociatedStats.Mapkey_WithoutOverride
+        If oldname <> TextBox1.Text Then
+            Last_read.Name_Write = TextBox1.Text
+            RaiseEvent WritedNewName(Last_read, oldname, TextBox1.Text)
+        End If
+    End Sub
 
     Public Event WritedNewName(Quien As BG3_Obj_Stats_Class, Oldname As String, newname As String)
 End Class
 
+Public Class BG3Editor_Stats_ProficiencyGroupText
+    Inherits TextBox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("Proficiency Group")
+        Label = "Proficiencies"
+    End Sub
+End Class
+Public Class BG3Editor_Stats_ActionResources
+    Inherits TextBox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("ActionResources")
+        Label = "Action resources"
+    End Sub
+End Class
 Public Class BG3Editor_Stats_PassivesOnEquip
     Inherits TextBox_Editor_Stats_GenericAttribute
     Sub New()
@@ -84,6 +136,20 @@ Public Class BG3Editor_Stats_PassivesOnEquip_MainHand
     Sub New()
         MyBase.New("PassivesMainHand")
         Label = "On equip main hand"
+    End Sub
+End Class
+Public Class BG3Editor_Stats_Passives
+    Inherits BG3Editor_Stats_PassivesOnEquip
+    Sub New()
+        MyBase.New("Passives")
+        Label = "Passives"
+    End Sub
+End Class
+Public Class BG3Editor_Stats_DifficultyStatuses
+    Inherits BG3Editor_Stats_PassivesOnEquip
+    Sub New()
+        MyBase.New("DifficultyStatuses")
+        Label = "Difficulty Status"
     End Sub
 End Class
 Public Class BG3Editor_Stats_PassivesOnEquip_OffHand
@@ -183,6 +249,14 @@ Public Class BG3Editor_Stats_ObjectCategory
         Label = "Object category"
     End Sub
 End Class
+Public Class BG3Editor_Stats_Class
+    Inherits TextBox_Editor_Stats_GenericAttribute
+    Sub New()
+        MyBase.New("Class")
+        Label = "Class"
+    End Sub
+End Class
+
 Public Class BG3Editor_Stats_ValueUUID
     Inherits TextBox_Editor_Stats_GenericAttribute
     Sub New()

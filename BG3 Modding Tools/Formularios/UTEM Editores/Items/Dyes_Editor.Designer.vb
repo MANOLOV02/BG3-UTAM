@@ -123,7 +123,7 @@ Partial Class Dyes_Editor
         ' 
         ' BG3Editor_Template_Stats1
         ' 
-        BG3Editor_Template_Stats1.EditorType = BG3_Editor_Type.Textbox
+        BG3Editor_Stats_Stats1.EditorType = BG3_Editor_Type.Textbox
         ' 
         ' BG3Editor_Stat_Using1
         ' 

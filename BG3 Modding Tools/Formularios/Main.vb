@@ -687,7 +687,7 @@ Public Class Main
     End Sub
 
     Private Sub RacesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem.Click
-        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Races explorer", BG3_Enum_FlagsandTagsType.EquipmentRaces)
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Equipment races explorer", BG3_Enum_FlagsandTagsType.EquipmentRaces)
     End Sub
 
     Private Sub GoldValuesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GoldValuesToolStripMenuItem.Click
@@ -938,5 +938,9 @@ Public Class Main
     Private Sub CharacterEditorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CharacterEditorToolStripMenuItem.Click
         GenerateChildForm(GetType(Generic_Character_Editor), "")
 
+    End Sub
+
+    Private Sub RacesToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem1.Click
+        GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Racers explorer", BG3_Enum_FlagsandTagsType.Races)
     End Sub
 End Class

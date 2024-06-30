@@ -95,7 +95,8 @@ Public Class Generic_Visuals_Editor
         BG3Selector_Visuals1.TagsToolStripMenuItem.Visible = False
         BG3Selector_Visuals1.TagsToolStripMenuItem1.Visible = False
         BG3Selector_Visuals1.LocalizationToolStripMenuItem.Visible = False
-
+        BG3Selector_Visuals1.BG3Cloner1.CheckBoxCopyLeveled.Enabled = False
+        BG3Selector_Visuals1.BG3Cloner1.CheckBoxSkipGarbage.Enabled = False
 
         Me.MinimumSize = New Size(Me.Width, Me.Height)
         Me.MaximumSize = New Size(2000, Me.Height)

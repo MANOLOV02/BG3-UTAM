@@ -138,6 +138,7 @@ Partial Class Main
         AssetsCount = New ToolStripStatusLabel()
         LabelNumTraslations = New ToolStripStatusLabel()
         LocalizationButton = New ToolStripDropDownButton()
+        RacesToolStripMenuItem1 = New ToolStripMenuItem()
         MenuStrip1.SuspendLayout()
         StatusStrip1.SuspendLayout()
         SuspendLayout()
@@ -265,76 +266,76 @@ Partial Class Main
         ' StatsExplorerToolStripMenuItem
         ' 
         StatsExplorerToolStripMenuItem.Name = "StatsExplorerToolStripMenuItem"
-        StatsExplorerToolStripMenuItem.Size = New Size(136, 22)
+        StatsExplorerToolStripMenuItem.Size = New Size(180, 22)
         StatsExplorerToolStripMenuItem.Text = "All stats"
         ' 
         ' ToolStripSeparator6
         ' 
         ToolStripSeparator6.Name = "ToolStripSeparator6"
-        ToolStripSeparator6.Size = New Size(133, 6)
+        ToolStripSeparator6.Size = New Size(177, 6)
         ' 
         ' ArmorsToolStripMenuItem1
         ' 
         ArmorsToolStripMenuItem1.Name = "ArmorsToolStripMenuItem1"
-        ArmorsToolStripMenuItem1.Size = New Size(136, 22)
+        ArmorsToolStripMenuItem1.Size = New Size(180, 22)
         ArmorsToolStripMenuItem1.Text = "Armors"
         ' 
         ' CharactersToolStripMenuItem
         ' 
         CharactersToolStripMenuItem.Name = "CharactersToolStripMenuItem"
-        CharactersToolStripMenuItem.Size = New Size(136, 22)
+        CharactersToolStripMenuItem.Size = New Size(180, 22)
         CharactersToolStripMenuItem.Text = "Characters"
         ' 
         ' ObjectsToolStripMenuItem
         ' 
         ObjectsToolStripMenuItem.Name = "ObjectsToolStripMenuItem"
-        ObjectsToolStripMenuItem.Size = New Size(136, 22)
+        ObjectsToolStripMenuItem.Size = New Size(180, 22)
         ObjectsToolStripMenuItem.Text = "Objects"
         ' 
         ' WeaponsToolStripMenuItem1
         ' 
         WeaponsToolStripMenuItem1.Name = "WeaponsToolStripMenuItem1"
-        WeaponsToolStripMenuItem1.Size = New Size(136, 22)
+        WeaponsToolStripMenuItem1.Size = New Size(180, 22)
         WeaponsToolStripMenuItem1.Text = "Weapons"
         ' 
         ' ToolStripSeparator7
         ' 
         ToolStripSeparator7.Name = "ToolStripSeparator7"
-        ToolStripSeparator7.Size = New Size(133, 6)
+        ToolStripSeparator7.Size = New Size(177, 6)
         ' 
         ' InterruptsToolStripMenuItem1
         ' 
         InterruptsToolStripMenuItem1.Name = "InterruptsToolStripMenuItem1"
-        InterruptsToolStripMenuItem1.Size = New Size(136, 22)
+        InterruptsToolStripMenuItem1.Size = New Size(180, 22)
         InterruptsToolStripMenuItem1.Text = "Interrupts"
         ' 
         ' PasivesToolStripMenuItem
         ' 
         PasivesToolStripMenuItem.Name = "PasivesToolStripMenuItem"
-        PasivesToolStripMenuItem.Size = New Size(136, 22)
+        PasivesToolStripMenuItem.Size = New Size(180, 22)
         PasivesToolStripMenuItem.Text = "Pasives"
         ' 
         ' SpellsToolStripMenuItem
         ' 
         SpellsToolStripMenuItem.Name = "SpellsToolStripMenuItem"
-        SpellsToolStripMenuItem.Size = New Size(136, 22)
+        SpellsToolStripMenuItem.Size = New Size(180, 22)
         SpellsToolStripMenuItem.Text = "Spells"
         ' 
         ' StatusToolStripMenuItem
         ' 
         StatusToolStripMenuItem.Name = "StatusToolStripMenuItem"
-        StatusToolStripMenuItem.Size = New Size(136, 22)
+        StatusToolStripMenuItem.Size = New Size(180, 22)
         StatusToolStripMenuItem.Text = "Status"
         ' 
         ' ToolStripSeparator12
         ' 
         ToolStripSeparator12.Name = "ToolStripSeparator12"
-        ToolStripSeparator12.Size = New Size(133, 6)
+        ToolStripSeparator12.Size = New Size(177, 6)
         ' 
         ' ConfigKeysToolStripMenuItem1
         ' 
         ConfigKeysToolStripMenuItem1.Name = "ConfigKeysToolStripMenuItem1"
-        ConfigKeysToolStripMenuItem1.Size = New Size(136, 22)
+        ConfigKeysToolStripMenuItem1.Size = New Size(180, 22)
         ConfigKeysToolStripMenuItem1.Text = "Config keys"
         ' 
         ' VisualsExplorerToolStripMenuItem
@@ -420,7 +421,7 @@ Partial Class Main
         ' 
         ' FlagsTagsAndListsToolStripMenuItem
         ' 
-        FlagsTagsAndListsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {FlagsExplorerToolStripMenuItem, ToolStripSeparator11, ActionResourcesToolStripMenuItem1, FlagstoolstripMenuItem, TagsToolStripMenuItem, RacesToolStripMenuItem, GoldValuesToolStripMenuItem, EquipmentTypesToolStripMenuItem, EquipmentSlotsToolStripMenuItem, MultiEffectInfoToolStripMenuItem})
+        FlagsTagsAndListsToolStripMenuItem.DropDownItems.AddRange(New ToolStripItem() {FlagsExplorerToolStripMenuItem, ToolStripSeparator11, ActionResourcesToolStripMenuItem1, FlagstoolstripMenuItem, TagsToolStripMenuItem, GoldValuesToolStripMenuItem, EquipmentTypesToolStripMenuItem, EquipmentSlotsToolStripMenuItem, RacesToolStripMenuItem, MultiEffectInfoToolStripMenuItem, RacesToolStripMenuItem1})
         FlagsTagsAndListsToolStripMenuItem.Name = "FlagsTagsAndListsToolStripMenuItem"
         FlagsTagsAndListsToolStripMenuItem.Size = New Size(216, 22)
         FlagsTagsAndListsToolStripMenuItem.Text = "Flags, tags and lists"
@@ -458,7 +459,7 @@ Partial Class Main
         ' 
         RacesToolStripMenuItem.Name = "RacesToolStripMenuItem"
         RacesToolStripMenuItem.Size = New Size(190, 22)
-        RacesToolStripMenuItem.Text = "Races"
+        RacesToolStripMenuItem.Text = "Equpiment races"
         ' 
         ' GoldValuesToolStripMenuItem
         ' 
@@ -601,10 +602,9 @@ Partial Class Main
         ' 
         ' CharacterEditorToolStripMenuItem
         ' 
-        CharacterEditorToolStripMenuItem.Enabled = False
         CharacterEditorToolStripMenuItem.Name = "CharacterEditorToolStripMenuItem"
-        CharacterEditorToolStripMenuItem.Size = New Size(197, 22)
-        CharacterEditorToolStripMenuItem.Text = "Character editor (WIP!!)"
+        CharacterEditorToolStripMenuItem.Size = New Size(159, 22)
+        CharacterEditorToolStripMenuItem.Text = "Character editor"
         ' 
         ' FlagsAndTagsToolStripMenuItem
         ' 
@@ -856,6 +856,12 @@ Partial Class Main
         LocalizationButton.Size = New Size(83, 22)
         LocalizationButton.Text = "Localization"
         ' 
+        ' RacesToolStripMenuItem1
+        ' 
+        RacesToolStripMenuItem1.Name = "RacesToolStripMenuItem1"
+        RacesToolStripMenuItem1.Size = New Size(190, 22)
+        RacesToolStripMenuItem1.Text = "Races"
+        ' 
         ' Main
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -993,4 +999,5 @@ Partial Class Main
     Friend WithEvents SupportbuyMeACoffeeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CharacterToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CharacterEditorToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RacesToolStripMenuItem1 As ToolStripMenuItem
 End Class

@@ -501,7 +501,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.45
+    Public ReadOnly Property CacheVersion As Double = 5.5
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -1265,6 +1265,11 @@ Public Class Utam_CurrentModClass
             Return IO.Path.Combine(IO.Path.Combine(IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Mods")), ModLsx.Folder), "meta.lsx")
         End Get
     End Property
+    Public ReadOnly Property LevelsFolderPath As String
+        Get
+            Return IO.Path.Combine(IO.Path.Combine(IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Mods")), ModLsx.Folder), "Levels")
+        End Get
+    End Property
     Public ReadOnly Property LocalizationLanguagePath(language As Bg3_Enum_Languages) As String
         Get
             Return IO.Path.Combine(IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Localization")), language.ToString)
@@ -1309,6 +1314,27 @@ Public Class Utam_CurrentModClass
     Public ReadOnly Property RootTemplateFilePath As String
         Get
             Return IO.Path.Combine(RootTemplatePath, ModLsx.Folder + ".lsf")
+        End Get
+    End Property
+    Public ReadOnly Property LevelsFolderPathWithLevel(level As String, type As BG3_Enum_Templates_Type) As String
+        Get
+            Dim fol As String = IO.Path.Combine(LevelsFolderPath, level)
+            Select Case type
+                Case BG3_Enum_Templates_Type.character
+                    fol = IO.Path.Combine(fol, "Characters")
+                Case BG3_Enum_Templates_Type.item
+                    fol = IO.Path.Combine(fol, "Items")
+                Case Else
+                    Debugger.Break()
+            End Select
+            If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+            Return fol
+        End Get
+    End Property
+
+    Public ReadOnly Property LevelTemplateFilePath(Level As String, type As BG3_Enum_Templates_Type) As String
+        Get
+            Return IO.Path.Combine(LevelsFolderPathWithLevel(Level, type), ModLsx.Folder + ".lsf")
         End Get
     End Property
     Public ReadOnly Property ActionResourcPath As String
@@ -1373,6 +1399,11 @@ Public Class Utam_CurrentModClass
             Return IO.Path.Combine(StatsGeneratedDataPath, "Object.txt")
         End Get
     End Property
+    Public ReadOnly Property StatsCharacterFilePath As String
+        Get
+            Return IO.Path.Combine(StatsGeneratedDataPath, "Character.txt")
+        End Get
+    End Property
     Public ReadOnly Property StatsStatusFilePath As String
         Get
             Return IO.Path.Combine(StatsGeneratedDataPath, "Status.txt")
@@ -1418,6 +1449,8 @@ Public Class Utam_CurrentModClass
         fol = MaterialsPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
         fol = ActionResourcPath
+        If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
+        fol = LevelsFolderPath
         If IO.Directory.Exists(fol) = False Then IO.Directory.CreateDirectory(fol)
     End Sub
 
@@ -2488,14 +2521,37 @@ Public Class BG3_Obj_Stats_Class
         FuncionesHelpers.GameEngine.ProcessedStatList.AddHyerarchy(Me)
     End Sub
 
-    Public Sub Process_Name_Change(NewName As String)
-        If NewName = Me.MapKey Then Exit Sub
+    Public Sub Process_Name_Change(oldname As String, newname As String)
+        Me.Name_Write = oldname
         FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
-        Me.Name_Write = NewName
+        Me.Name_Write = newname
         FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(Me)
+        Dim lista As List(Of String) = Nothing
+        If Me.IsOverrided = False AndAlso FuncionesHelpers.GameEngine.ProcessedStatList.Hierarchy_Helper.TryGetValue(oldname, Lista) Then
+            Dim Orden As Integer = -1
+            Dim sucesor As BG3_Obj_Stats_Class = Nothing
+            For Each child In Lista
+                If child.StartsWith(oldname + "ov_") Then
+                    Dim candidato As BG3_Obj_Stats_Class = Nothing
+                    If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(child, candidato) Then
+                        If candidato.OverrideNumber > Orden Then sucesor = candidato
+                        Orden = candidato.OverrideNumber
+                    End If
+                End If
+            Next
+            If Not IsNothing(sucesor) Then
+                FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(sucesor)
+                FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
+                sucesor.OverrideNumber = 0
+                FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
+                FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(sucesor)
+
+            End If
+        End If
+
     End Sub
 
-        <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
     Public Overrides ReadOnly Property DisplayName As String
         Get
             If Get_Data_Or_Inherited_or_Empty("DisplayName") = "" Then
@@ -3441,6 +3497,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
 
     End Sub
 
+
     'Public ScalarParametersMaterialBank As New SortedList(Of String, Integer)
     'Public ScalarParametersCharacterBank As New SortedList(Of String, Integer)
 
@@ -3563,6 +3620,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 If Elements.TryGetValue(obj.MapKey, ov) = True Then
                     If obj Is ov Then
                         ' En el caso que sea el mismo....
+                        AddHyerarchy(obj)
                         Return obj
                     End If
                     RemoveHyerarchy(ov)
@@ -3663,14 +3721,14 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
             If quien.ParentKey_Or_Empty <> "" AndAlso quien.ParentKey_Or_Empty <> quien.MapKey Then
                 SyncLock Hierarchy_Helper
                     Dim nuevo As Boolean = Hierarchy_Helper.TryAdd(quien.ParentKey_Or_Empty, New List(Of String) From {quien.MapKey})
-                    If nuevo = False Then Hierarchy_Helper(quien.ParentKey_Or_Empty).Add(quien.MapKey)
+                    If nuevo = False AndAlso Hierarchy_Helper(quien.ParentKey_Or_Empty).Contains(quien.MapKey) = False Then Hierarchy_Helper(quien.ParentKey_Or_Empty).Add(quien.MapKey)
                 End SyncLock
             End If
         Else
             If quien.Mapkey_WithoutOverride <> "" AndAlso quien.Mapkey_WithoutOverride <> quien.MapKey Then
                 SyncLock Hierarchy_Helper
                     Dim nuevo As Boolean = Hierarchy_Helper.TryAdd(quien.Mapkey_WithoutOverride, New List(Of String) From {quien.MapKey})
-                    If nuevo = False Then Hierarchy_Helper(quien.Mapkey_WithoutOverride).Add(quien.MapKey)
+                    If nuevo = False AndAlso Hierarchy_Helper(quien.Mapkey_WithoutOverride).Contains(quien.MapKey) = False Then Hierarchy_Helper(quien.Mapkey_WithoutOverride).Add(quien.MapKey)
                 End SyncLock
             End If
         End If
