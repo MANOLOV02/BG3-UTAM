@@ -68,7 +68,6 @@ Partial Class BG3Cloner
         ' 
         ' TableLayoutPanel3
         ' 
-        TableLayoutPanel3.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel3.ColumnCount = 2
         TableLayoutPanel3.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
         TableLayoutPanel3.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 50F))
@@ -87,10 +86,10 @@ Partial Class BG3Cloner
         ' 
         CheckBoxCopyLeveled.AutoSize = True
         CheckBoxCopyLeveled.Dock = DockStyle.Fill
-        CheckBoxCopyLeveled.Location = New Point(3, 3)
+        CheckBoxCopyLeveled.Location = New Point(2, 2)
         CheckBoxCopyLeveled.Margin = New Padding(2)
         CheckBoxCopyLeveled.Name = "CheckBoxCopyLeveled"
-        CheckBoxCopyLeveled.Size = New Size(234, 19)
+        CheckBoxCopyLeveled.Size = New Size(235, 19)
         CheckBoxCopyLeveled.TabIndex = 0
         CheckBoxCopyLeveled.Text = "Include levels objects"
         CheckBoxCopyLeveled.UseVisualStyleBackColor = True
@@ -101,17 +100,16 @@ Partial Class BG3Cloner
         CheckBoxSkipGarbage.Checked = True
         CheckBoxSkipGarbage.CheckState = CheckState.Checked
         CheckBoxSkipGarbage.Dock = DockStyle.Fill
-        CheckBoxSkipGarbage.Location = New Point(242, 3)
+        CheckBoxSkipGarbage.Location = New Point(241, 2)
         CheckBoxSkipGarbage.Margin = New Padding(2)
         CheckBoxSkipGarbage.Name = "CheckBoxSkipGarbage"
-        CheckBoxSkipGarbage.Size = New Size(234, 19)
+        CheckBoxSkipGarbage.Size = New Size(236, 19)
         CheckBoxSkipGarbage.TabIndex = 1
         CheckBoxSkipGarbage.Text = "Skip basegame ""garbage"""
         CheckBoxSkipGarbage.UseVisualStyleBackColor = True
         ' 
         ' TableLayoutPanel2
         ' 
-        TableLayoutPanel2.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel2.ColumnCount = 3
         TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.33333F))
         TableLayoutPanel2.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333359F))
@@ -134,10 +132,10 @@ Partial Class BG3Cloner
         RadioButtonItemOnly.AutoEllipsis = True
         RadioButtonItemOnly.Checked = True
         RadioButtonItemOnly.Dock = DockStyle.Fill
-        RadioButtonItemOnly.Location = New Point(3, 3)
+        RadioButtonItemOnly.Location = New Point(2, 2)
         RadioButtonItemOnly.Margin = New Padding(2)
         RadioButtonItemOnly.Name = "RadioButtonItemOnly"
-        RadioButtonItemOnly.Size = New Size(154, 19)
+        RadioButtonItemOnly.Size = New Size(155, 19)
         RadioButtonItemOnly.TabIndex = 6
         RadioButtonItemOnly.TabStop = True
         RadioButtonItemOnly.Text = "Single item"
@@ -147,10 +145,10 @@ Partial Class BG3Cloner
         ' 
         RadioButtonItemAndChilds.AutoEllipsis = True
         RadioButtonItemAndChilds.Dock = DockStyle.Fill
-        RadioButtonItemAndChilds.Location = New Point(162, 3)
+        RadioButtonItemAndChilds.Location = New Point(161, 2)
         RadioButtonItemAndChilds.Margin = New Padding(2)
         RadioButtonItemAndChilds.Name = "RadioButtonItemAndChilds"
-        RadioButtonItemAndChilds.Size = New Size(154, 19)
+        RadioButtonItemAndChilds.Size = New Size(155, 19)
         RadioButtonItemAndChilds.TabIndex = 5
         RadioButtonItemAndChilds.Text = "Item and childs"
         RadioButtonItemAndChilds.UseVisualStyleBackColor = True
@@ -159,17 +157,16 @@ Partial Class BG3Cloner
         ' 
         RadioButtonOnlyChilds.AutoEllipsis = True
         RadioButtonOnlyChilds.Dock = DockStyle.Fill
-        RadioButtonOnlyChilds.Location = New Point(321, 3)
+        RadioButtonOnlyChilds.Location = New Point(320, 2)
         RadioButtonOnlyChilds.Margin = New Padding(2)
         RadioButtonOnlyChilds.Name = "RadioButtonOnlyChilds"
-        RadioButtonOnlyChilds.Size = New Size(155, 19)
+        RadioButtonOnlyChilds.Size = New Size(157, 19)
         RadioButtonOnlyChilds.TabIndex = 4
         RadioButtonOnlyChilds.Text = "Only childs"
         RadioButtonOnlyChilds.UseVisualStyleBackColor = True
         ' 
         ' TableLayoutPanel1
         ' 
-        TableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
         TableLayoutPanel1.ColumnCount = 3
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.33333F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 33.3333359F))
@@ -191,10 +188,10 @@ Partial Class BG3Cloner
         ' 
         RadioButtonOverride.AutoEllipsis = True
         RadioButtonOverride.Dock = DockStyle.Fill
-        RadioButtonOverride.Location = New Point(321, 3)
+        RadioButtonOverride.Location = New Point(320, 2)
         RadioButtonOverride.Margin = New Padding(2)
         RadioButtonOverride.Name = "RadioButtonOverride"
-        RadioButtonOverride.Size = New Size(155, 19)
+        RadioButtonOverride.Size = New Size(157, 19)
         RadioButtonOverride.TabIndex = 3
         RadioButtonOverride.Text = "Override"
         RadioButtonOverride.UseVisualStyleBackColor = True
@@ -203,10 +200,10 @@ Partial Class BG3Cloner
         ' 
         RadioButtonClone.AutoEllipsis = True
         RadioButtonClone.Dock = DockStyle.Fill
-        RadioButtonClone.Location = New Point(162, 3)
+        RadioButtonClone.Location = New Point(161, 2)
         RadioButtonClone.Margin = New Padding(2)
         RadioButtonClone.Name = "RadioButtonClone"
-        RadioButtonClone.Size = New Size(154, 19)
+        RadioButtonClone.Size = New Size(155, 19)
         RadioButtonClone.TabIndex = 2
         RadioButtonClone.Text = "Clone"
         RadioButtonClone.UseVisualStyleBackColor = True
@@ -216,10 +213,10 @@ Partial Class BG3Cloner
         RadioButtonInherit.AutoEllipsis = True
         RadioButtonInherit.Checked = True
         RadioButtonInherit.Dock = DockStyle.Fill
-        RadioButtonInherit.Location = New Point(3, 3)
+        RadioButtonInherit.Location = New Point(2, 2)
         RadioButtonInherit.Margin = New Padding(2)
         RadioButtonInherit.Name = "RadioButtonInherit"
-        RadioButtonInherit.Size = New Size(154, 19)
+        RadioButtonInherit.Size = New Size(155, 19)
         RadioButtonInherit.TabIndex = 1
         RadioButtonInherit.TabStop = True
         RadioButtonInherit.Text = "Inherit"

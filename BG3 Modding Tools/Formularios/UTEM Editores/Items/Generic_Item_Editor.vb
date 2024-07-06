@@ -142,6 +142,7 @@ Public Class Generic_Item_Editor
         HandledAttributes.Add("Type")
         HandledAttributes.Add("_OriginalFileVersion_")
         HandledAttributes.Add("maxStackAmount")
+        HandledAttributes.Add("TemplateName")
 
         HandledNodes.Add("GameObjects\Tags")
 
@@ -549,6 +550,25 @@ Public Class Generic_Item_Editor
         Debug.Print(Me.Text)
         Debugger.Break()
     End Sub
+    Private Sub Process_Save_LevelObject(Quien As BG3_Obj_Template_Class)
+        Dim att As LSLib.LS.NodeAttribute = Nothing
+        Dim eslevel = False
+        If Quien.NodeLSLIB.Attributes.TryGetValue("LevelName", att) Then
+            If att.Value.ToString <> "" Then eslevel = True
+        End If
+
+        att = New LSLib.LS.NodeAttribute(AttributeType.FixedString)
+        Dim par As String = Quien.NodeLSLIB.Attributes("ParentTemplateId").Value.ToString
+        att.FromString(par, Funciones.Guid_to_string)
+        If eslevel Then
+            If Quien.NodeLSLIB.Attributes.TryAdd("TemplateName", att) = False Then
+                att.Value = par
+            End If
+        Else
+            Quien.NodeLSLIB.Attributes.Remove("TemplateName")
+        End If
+    End Sub
+
 
     Private Sub Process_Save_Edits()
         BG3Editor_Template_Mapkey1.Write(SelectedTmp)
@@ -586,6 +606,7 @@ Public Class Generic_Item_Editor
 
 
         Editor_Generic_GenericAttribute.Replace_Attribute_Generic(SelectedTmp.NodeLSLIB, "Stats", SelectedStat.Name, AttributeType.FixedString)
+        Process_Save_LevelObject(SelectedTmp)
         Process_Save_Edits_Specifics()
         Process_Save_Objetos()
         Process_Save_Final()

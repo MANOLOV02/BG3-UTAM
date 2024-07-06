@@ -27,7 +27,7 @@ Public Class BG3Editor_Complex_WorldInjection
                 If Subt.Source.Pak_Or_Folder = ModSource.Pak_Or_Folder Then
                     For Each lis In Subt.Lista
                         If lis.Item.Contains(nam, StringComparison.OrdinalIgnoreCase) Then
-                            Dim lis2 As New BG3_Obj_TreasureTable_TableItem_Class(lis.Item, lis.Conditions)
+                            Dim lis2 As New BG3_Obj_TreasureTable_TableItem_Class(lis.Item, lis.WriteDefinition)
                             Dim Ite As New BG3_Custom_ComboboxItem With {.Value = lis2, .Text = tabl.Mapkey_WithoutOverride}
                             ListBox1.Items.Add(Ite)
                             tabesta = True
@@ -56,14 +56,14 @@ Public Class BG3Editor_Complex_WorldInjection
             If tabl.Subtables.Where(Function(pf) pf.HasItem(nam, ModSource)).Any = False Then
                 Dim subt As New BG3_Obj_TreasureTable_Subtable_Class(ModSource, "1,1")
                 Dim lis2 As BG3_Obj_TreasureTable_TableItem_Class = it.value
-                subt.Lista.Add(New BG3_Obj_TreasureTable_TableItem_Class(nam, lis2.Conditions))
+                subt.Lista.Add(New BG3_Obj_TreasureTable_TableItem_Class(nam, lis2.WriteDefinition))
                 tabl.Subtables.Add(subt)
             End If
             For Each Subt In tabl.Subtables.Where(Function(pf) pf.HasItem(nam, ModSource))
                 Dim lis2 As BG3_Obj_TreasureTable_TableItem_Class = it.value
                 For Each lis In Subt.Lista
                     If lis.Item.Contains(nam, StringComparison.OrdinalIgnoreCase) Then
-                        lis.Conditions = lis2.Conditions
+                        lis.ConditionArray = lis2.ConditionArray.ToList
                         tabesta = True
                         Exit For
                     End If
@@ -164,7 +164,7 @@ Public Class BG3Editor_Complex_WorldInjection
             If ListBox1.Items(x).text = obj.Mapkey_WithoutOverride Then idx = x : Exit For
         Next
         If idx = -1 Then
-            Dim lis As New BG3_Obj_TreasureTable_TableItem_Class("I_" + Last_Objeto.Name, "," + NumericUpDown1.Value.ToString + ",0,0,0,0,0,0,0")
+            Dim lis As New BG3_Obj_TreasureTable_TableItem_Class("I_" + Last_Objeto.Name, ",1,0,0,0,0,0,0,0")
             Dim Ite As New BG3_Custom_ComboboxItem With {.Value = lis, .Text = obj.Mapkey_WithoutOverride}
             idx = ListBox1.Items.Add(Ite)
         End If
@@ -197,13 +197,8 @@ Public Class BG3Editor_Complex_WorldInjection
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
         If ListBox1.SelectedIndex <> -1 Then
             Button1.Enabled = True
-            NumericUpDown1.Enabled = True
-            Dim lis As BG3_Obj_TreasureTable_TableItem_Class = ListBox1.Items(ListBox1.SelectedIndex).value
-            NumericUpDown1.Value = lis.Conditions.Split(",")(1)
         Else
             Button1.Enabled = False
-            NumericUpDown1.Value = 1
-            NumericUpDown1.Enabled = False
         End If
 
     End Sub
@@ -243,10 +238,9 @@ Public Class BG3Editor_Complex_WorldInjection
         End If
     End Sub
 
-    Private Sub NumericUpDown1_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown1.ValueChanged
+    Private Sub NumericUpDown1_ValueChanged(sender As Object, e As EventArgs)
         If ListBox1.SelectedIndex <> -1 Then
             Dim lis As BG3_Obj_TreasureTable_TableItem_Class = ListBox1.Items(ListBox1.SelectedIndex).value
-            lis.Conditions = "," + NumericUpDown1.Value.ToString + ",0,0,0,0,0,0,0"
         End If
     End Sub
 End Class

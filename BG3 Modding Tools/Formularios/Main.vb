@@ -438,7 +438,7 @@ Public Class Main
                 TtablesExplorerForms(ind) = Nothing
                 TtablesExplorerForms.Remove(TtablesExplorerForms(ind))
             Case GetType(Containers_Editor), GetType(Dyes_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor), GetType(Status_Editor), GetType(Spell_Editor), GetType(Pasives_Editor),
-                 GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor), GetType(Generic_Character_Editor)
+                 GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor), GetType(Generic_Character_Editor), GetType(Treasure_table_editor)
                 Dim ind As Integer = ToolsOpened.IndexOf(sender)
                 ToolsOpened(ind).Dispose()
                 ToolsOpened(ind) = Nothing
@@ -571,7 +571,7 @@ Public Class Main
                 form.ObjectsTree.Reload_Arbol(False)
                 Return form
             Case GetType(Dyes_Editor), GetType(Containers_Editor), GetType(Armors_Editor), GetType(Weapons_Editor), GetType(Consumables_Editor), GetType(Tags_Editor), GetType(Textures_Editor), GetType(MaterialBank_Editor), GetType(VisualBank_Editor), GetType(Config_Editor), GetType(ActionResource_Editor), GetType(Status_Editor), GetType(Spell_Editor), GetType(Pasives_Editor),
-                GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor), GetType(Generic_Character_Editor)
+                GetType(Interrupt_Editor), GetType(Books_Editor), GetType(Scrolls_Editor), GetType(Arrows_Editor), GetType(CharacterBank_Editor), GetType(Generic_Character_Editor), GetType(Treasure_table_editor)
                 Dim form As System.Windows.Forms.Form = Nothing
                 If ToolsOpened.Where(Function(pf) Not IsNothing(pf) AndAlso pf.GetType = T).Any Then
                     form = ToolsOpened.Where(Function(pf) pf.GetType = T).First
@@ -942,5 +942,10 @@ Public Class Main
 
     Private Sub RacesToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RacesToolStripMenuItem1.Click
         GenerateChildForm(GetType(Explorer_Form_Flags_and_Tags), "Racers explorer", BG3_Enum_FlagsandTagsType.Races)
+    End Sub
+
+    Private Sub TreasureTableEditorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TreasureTableEditorToolStripMenuItem.Click
+        GenerateChildForm(GetType(Treasure_table_editor), "")
+
     End Sub
 End Class

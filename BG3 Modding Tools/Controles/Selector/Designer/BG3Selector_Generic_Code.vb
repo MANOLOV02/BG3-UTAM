@@ -585,7 +585,9 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
             RaiseEvent Cancel_Click()
         End If
     End Sub
-
+    Private Sub CLone_Treasure_Capture(objeto As BG3_Obj_TreasureTable_Class, tipo As BG3Cloner.Clonetype) Handles BG3Cloner1.Clone_Treasure
+        RaiseEvent Clone_Treasure(objeto, tipo)
+    End Sub
     Private Sub CLone_Stat_Capture(objeto As BG3_Obj_Stats_Class, tipo As BG3Cloner.Clonetype) Handles BG3Cloner1.Clone_Stat
         RaiseEvent Clone_Stat(objeto, tipo)
     End Sub
@@ -642,6 +644,7 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Public Event Clone_Visual(objeto As BG3_Obj_VisualBank_Class, tipo As BG3Cloner.Clonetype)
     Public Event Clone_tag(objeto As BG3_Obj_FlagsAndTags_Class, tipo As BG3Cloner.Clonetype)
     Public Event Clone_Stat(objeto As BG3_Obj_Stats_Class, tipo As BG3Cloner.Clonetype)
+    Public Event Clone_Treasure(objeto As BG3_Obj_TreasureTable_Class, tipo As BG3Cloner.Clonetype)
     Public Event Clone_Template(objeto As BG3_Obj_Template_Class, tipo As BG3Cloner.Clonetype, Stat As BG3_Obj_Stats_Class)
     Public Event Add_New_Click(Current_Group As String)
     Public Event Edit_Click(Template As T)

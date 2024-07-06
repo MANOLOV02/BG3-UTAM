@@ -28,6 +28,11 @@ Imports System.Net
 Imports System.Net.NetworkInformation
 Imports System.DirectoryServices.ActiveDirectory
 Imports System.ComponentModel.DataAnnotations
+Imports System.Diagnostics.Metrics
+Imports System.Threading.Channels
+Imports System.CodeDom
+
+
 
 
 
@@ -2147,31 +2152,62 @@ Public Class BG3_Obj_TreasureTable_TableItem_Class
     Public Property Item As String
 
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
-    <JsonPropertyName("SC")>
-    Public Property Conditions As String
+    Public Property ConditionArray() As New List(Of Integer)
     Sub New()
 
     End Sub
     Sub New(linea As String)
         Dim it1 As String = linea.Substring(0, linea.IndexOf(","c) - 1).Replace(Chr(34), "")
-        Dim it2 As String = linea.Substring(linea.IndexOf(","c))
+        Dim it2 As String = linea.Substring(linea.IndexOf(","c) + 1)
         Me.Item = it1
-        Me.Conditions = it2
+        ConditionArray = ParseConditions(it2)
     End Sub
     Sub New(Item As String, Conditions As String)
         Me.Item = Item
-        Me.Conditions = Conditions
+        If Conditions.StartsWith(","c) Then Conditions = Conditions.Substring(1)
+        ConditionArray = ParseConditions(Conditions)
     End Sub
+    Public Function WriteDefinition() As String
+        Dim st As New StringBuilder
+        For x = 0 To ConditionArray.Count - 1
+            st.Append(","c)
+            st.Append(ConditionArray(x))
+        Next
+        Return st.ToString
+    End Function
+    Public Shared Function ParseConditions(conditiononly As String) As List(Of Integer)
+        Dim arr As New List(Of Integer)
+        For Each sp In conditiononly.Split(","c)
+            arr.Add(CInt(sp))
+        Next
+        Return arr
+    End Function
+    Private _cachedef As String = Nothing
+    Private _cacheIt As String = Nothing
+
+    Protected Sub Clear_Cached_Data()
+        _cachedef = Nothing
+        _cacheIt = Nothing
+    End Sub
+    Public Sub Cancel_Edit()
+        Me.Item = _cacheIt
+        ConditionArray = ParseConditions(_cachedef)
+    End Sub
+    Public Sub Edit_start()
+        _cacheIt = Item
+        _cachedef = Me.WriteDefinition.Substring(1)
+    End Sub
+
+    Public Sub Write_Data()
+        Clear_Cached_Data()
+    End Sub
+
 End Class
 
 <Serializable>
 Public Class BG3_Obj_TreasureTable_Subtable_Class
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
     Public Property Source As BG3_Pak_SourceOfResource_Class
-    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
-    <JsonPropertyName("SD")>
-    Public Property Definition As String
-
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.WhenWritingDefault)>
     <DefaultValue(0)>
     Public Property MaxLevel As String = ""
@@ -2186,8 +2222,63 @@ Public Class BG3_Obj_TreasureTable_Subtable_Class
     End Sub
     Sub New(source As BG3_Pak_SourceOfResource_Class, Definition As String)
         Me.Source = source
-        Me.Definition = Definition
+        Dim ret As Tuple(Of List(Of Integer), List(Of Integer))
+        ret = Parsedefinitions(Definition)
+        Counts = ret.Item1
+        Chances = ret.Item2
+        If Definition.Replace("; ", ";") <> WriteDefinition() Then
+            Debugger.Break()
+        End If
     End Sub
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property Counts() As New List(Of Integer)
+    <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
+    Public Property Chances() As New List(Of Integer)
+
+    Public Function WriteDefinition() As String
+        Dim st As New StringBuilder
+        For x = 0 To Counts.Count - 1
+            If st.Length <> 0 Then st.Append(";"c)
+            If Counts(x) < 0 Then
+                st.Append(Counts(x))
+            Else
+                st.Append(Counts(x).ToString + "," + Chances(x).ToString)
+            End If
+        Next
+        Return st.ToString
+    End Function
+
+    Public Shared Function Parsedefinitions(Definitions As String) As Tuple(Of List(Of Integer), List(Of Integer))
+        Dim l1 As New List(Of Integer)
+        Dim l2 As New List(Of Integer)
+        Dim ret As Tuple(Of Integer, Integer)
+        If Definitions.Contains(";"c) = False Then
+            ret = Addcount(Definitions)
+            l1.Add(ret.Item1)
+            l2.Add(ret.Item2)
+        Else
+            Dim spl = Definitions.Split(";")
+            For Each sp In spl
+                ret = Addcount(sp)
+                l1.Add(ret.Item1)
+                l2.Add(ret.Item2)
+            Next
+        End If
+        Return New Tuple(Of List(Of Integer), List(Of Integer))(l1, l2)
+    End Function
+    Private Shared Function Addcount(CountDefinition As String) As Tuple(Of Integer, Integer)
+        Dim count As Integer
+        Dim chance As Integer
+        If CountDefinition.Contains(","c) = True Then
+            count = CInt(CountDefinition.Split(",")(0))
+            chance = CInt(CountDefinition.Split(",")(1))
+        Else
+            count = CInt(CountDefinition)
+            chance = 1
+        End If
+        Return New Tuple(Of Integer, Integer)(count, chance)
+
+    End Function
     Public ReadOnly Property HasItem(que As String, modsource As BG3_Pak_SourceOfResource_Class) As Boolean
         Get
             If IsNothing(modsource) Then Return Me.Lista.Where(Function(pq) pq.Item.Contains(que, StringComparison.OrdinalIgnoreCase)).Any
@@ -2195,6 +2286,33 @@ Public Class BG3_Obj_TreasureTable_Subtable_Class
             Return False
         End Get
     End Property
+
+    Private _CacheSubitems As New List(Of BG3_Obj_TreasureTable_TableItem_Class)
+    Private _cachedef As String = Nothing
+    Protected Sub Clear_Cached_Data()
+        _CacheSubitems.Clear()
+        _cachedef = Nothing
+    End Sub
+    Public Sub Cancel_Edit()
+        Lista.Clear()
+        _CacheSubitems.ToList.ForEach(Sub(pf) Lista.Add(pf))
+        _CacheSubitems.ToList.ForEach(Sub(pf) pf.Cancel_Edit)
+        Dim ret = Parsedefinitions(_cachedef)
+        Counts = ret.Item1
+        Chances = ret.Item2
+    End Sub
+    Public Sub Edit_start()
+        _CacheSubitems.Clear()
+        Lista.ToList.ForEach(Sub(pf) _CacheSubitems.Add(pf))
+        Lista.ToList.ForEach(Sub(pf) pf.edit_Start)
+        _cachedef = Me.WriteDefinition
+    End Sub
+
+    Public Sub Write_Data()
+        Lista.ToList.ForEach(Sub(pf) pf.Write_Data())
+        Clear_Cached_Data()
+    End Sub
+
 End Class
 <Serializable>
 Public Class BG3_Obj_TreasureTable_Class
@@ -2246,6 +2364,84 @@ Public Class BG3_Obj_TreasureTable_Class
             Return Name_Write_ToMapkey()
         End Get
     End Property
+
+    Private _CacheSubtables As New List(Of BG3_Obj_TreasureTable_Subtable_Class)
+    Private _cache_TT_Name As String = ""
+    Private _cache_CanMerge As Boolean = False
+    Private _cache_Type As BG3_Enum_TreasureTables = BG3_Enum_TreasureTables.Alchemy
+
+    Protected Overrides Sub Clear_Cached_Data()
+        _CacheSubtables.Clear()
+        _cache_TT_Name = Nothing
+        _cache_Type = Nothing
+        _cache_CanMerge = True
+        MyBase.Clear_Cached_Data()
+    End Sub
+    Public Overrides Sub Cancel_Edit()
+        GameEngine.ProcessedTTables.RemoveHyerarchy(Me)
+        Subtables.Clear()
+        _CacheSubtables.ToList.ForEach(Sub(pf) Subtables.Add(pf))
+        _CacheSubtables.ToList.ForEach(Sub(pf) pf.Cancel_Edit())
+        If _cache_TT_Name <> "" Then
+            Me.CanMerge = _cache_CanMerge
+            Me.Name_Write = _cache_TT_Name
+            Me.Type = _cache_Type
+        End If
+        GameEngine.ProcessedTTables.AddHyerarchy(Me)
+        MyBase.Cancel_Edit()
+    End Sub
+    Public Overrides Sub Edit_start()
+        _CacheSubtables.Clear()
+        Subtables.ToList.ForEach(Sub(pf) _CacheSubtables.Add(pf))
+        Subtables.ToList.ForEach(Sub(pf) pf.Edit_start())
+        _cache_CanMerge = Me.CanMerge
+        _cache_TT_Name = Me.Name_Write
+        _cache_Type = Me.Type
+        MyBase.Edit_start()
+    End Sub
+
+    Public Overrides Sub Write_Data()
+        _CacheSubtables.ToList.ForEach(Sub(pf) pf.Write_Data())
+        Clear_Cached_Data()
+    End Sub
+    Public Sub Process_Name_Change(oldname As String, newname As String)
+        If oldname = "" And newname = "" Then
+            oldname = Me.Name_Write
+            newname = Me.Name_Write
+        End If
+        Me.Name_Write = oldname
+        FuncionesHelpers.GameEngine.ProcessedTTables.RemoveHyerarchy(Me)
+        FuncionesHelpers.GameEngine.ProcessedTTables.Elements.Remove(Me.MapKey)
+        Dim lista As List(Of String) = Nothing
+        Dim reprocesesar As New List(Of BG3_Obj_TreasureTable_Class)
+        If Me.IsOverrided = False AndAlso FuncionesHelpers.GameEngine.ProcessedTTables.Hierarchy_Helper.TryGetValue(oldname, lista) Then
+            Dim Orden As Integer = -1
+            Dim sucesor As BG3_Obj_TreasureTable_Class = Nothing
+            For Each child In lista
+                If child.StartsWith(oldname + "ov_") Then
+                    Dim candidato As BG3_Obj_TreasureTable_Class = Nothing
+                    If FuncionesHelpers.GameEngine.ProcessedTTables.TryGetValue(child, candidato) Then
+                        reprocesesar.Add(candidato)
+                    End If
+                End If
+            Next
+            If reprocesesar.Count > 0 Then
+                For Each rep In reprocesesar.OrderBy(Function(pf) pf.OverrideNumber).ToList
+                    FuncionesHelpers.GameEngine.ProcessedTTables.RemoveHyerarchy(rep)
+                    FuncionesHelpers.GameEngine.ProcessedTTables.Elements.Remove(rep.MapKey)
+                    rep.OverrideNumber = 0
+                    rep.Type = Clasifica()
+                    FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(rep)
+                Next
+            End If
+            reprocesesar = Nothing
+        End If
+        Me.Name_Write = newname
+        Me.OverrideNumber = 0
+        Me.Type = Clasifica()
+        FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(Me)
+    End Sub
+
     Public Overrides ReadOnly Property ParentKey_Or_Empty As String
         Get
             If Me.IsOverrided Then
@@ -2401,9 +2597,7 @@ Public Class BG3_Obj_TreasureTable_Class
     Sub New()
     End Sub
 
-    Public Overrides Sub Write_Data()
-        Clear_Cached_Data()
-    End Sub
+
     Public Function Get_txt() As String
         Dim Builder As New StringBuilder
         Dim tabs = 0
@@ -2414,13 +2608,13 @@ Public Class BG3_Obj_TreasureTable_Class
         End If
         tabs += 1
         For Each st In Me.Subtables
-            Builder.Append("".PadLeft(tabs, vbTab) + "new subtable" + ManoloSep + " " + ManoloSep + Chr(34) + st.Definition + Chr(34) + vbCrLf)
+            Builder.Append("".PadLeft(tabs, vbTab) + "new subtable" + ManoloSep + " " + ManoloSep + Chr(34) + st.WriteDefinition + Chr(34) + vbCrLf)
             If st.MinLevel <> "" Then Builder.Append("".PadLeft(tabs, vbTab) + "StartLevel" + ManoloSep + " " + Chr(34) + st.MinLevel + Chr(34) + ManoloSep + vbCrLf)
             If st.MaxLevel <> "" Then Builder.Append("".PadLeft(tabs, vbTab) + "EndLevel" + ManoloSep + " " + Chr(34) + st.MaxLevel + Chr(34) + ManoloSep + vbCrLf)
             tabs += 1
             For Each it In st.Lista
 
-                Builder.Append("".PadLeft(tabs, vbTab) + "object category" + ManoloSep + " " + Chr(34) + it.Item + Chr(34) + ManoloSep + it.Conditions + vbCrLf)
+                Builder.Append("".PadLeft(tabs, vbTab) + "object category" + ManoloSep + " " + Chr(34) + it.Item + Chr(34) + ManoloSep + it.WriteDefinition + vbCrLf)
             Next
             tabs += -1
         Next
@@ -2524,31 +2718,51 @@ Public Class BG3_Obj_Stats_Class
     Public Sub Process_Name_Change(oldname As String, newname As String)
         Me.Name_Write = oldname
         FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
-        Me.Name_Write = newname
-        FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(Me)
+        FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(Me.MapKey)
         Dim lista As List(Of String) = Nothing
-        If Me.IsOverrided = False AndAlso FuncionesHelpers.GameEngine.ProcessedStatList.Hierarchy_Helper.TryGetValue(oldname, Lista) Then
+        Dim reprocesesar As New List(Of BG3_Obj_Stats_Class)
+        If Me.IsOverrided = False AndAlso FuncionesHelpers.GameEngine.ProcessedStatList.Hierarchy_Helper.TryGetValue(oldname, lista) Then
             Dim Orden As Integer = -1
             Dim sucesor As BG3_Obj_Stats_Class = Nothing
-            For Each child In Lista
+            For Each child In lista
                 If child.StartsWith(oldname + "ov_") Then
                     Dim candidato As BG3_Obj_Stats_Class = Nothing
                     If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(child, candidato) Then
-                        If candidato.OverrideNumber > Orden Then sucesor = candidato
-                        Orden = candidato.OverrideNumber
+                        reprocesesar.Add(candidato)
                     End If
                 End If
             Next
-            If Not IsNothing(sucesor) Then
-                FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(sucesor)
-                FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
-                sucesor.OverrideNumber = 0
-                FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
-                FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(sucesor)
-
+            If reprocesesar.Count > 0 Then
+                For Each rep In reprocesesar.OrderBy(Function(pf) pf.OverrideNumber).ToList
+                    FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(rep)
+                    FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(rep.MapKey)
+                    rep.OverrideNumber = 0
+                    FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(rep)
+                Next
             End If
+            reprocesesar = Nothing
         End If
 
+        'For Each child In lista
+        '    If child.StartsWith(oldname + "ov_") Then
+        '        Dim candidato As BG3_Obj_Stats_Class = Nothing
+        '        If FuncionesHelpers.GameEngine.ProcessedStatList.TryGetValue(child, candidato) Then
+        '            If candidato.OverrideNumber > Orden Then sucesor = candidato
+        '            Orden = candidato.OverrideNumber
+        '        End If
+        '    End If
+        'Next
+        'If Not IsNothing(sucesor) Then
+        '    FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(sucesor)
+        '    FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
+        '    sucesor.OverrideNumber = 0
+        '    FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(sucesor.MapKey)
+        '    FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(sucesor)
+
+        'End If
+        Me.Name_Write = newname
+        Me.OverrideNumber = 0
+        FuncionesHelpers.GameEngine.ProcessedStatList.Manage_Overrides(Me)
     End Sub
 
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Always)>
@@ -2674,7 +2888,7 @@ Public Class BG3_Obj_Stats_Class
         _Cache_Data.Clear()
         Data.ToList.ForEach(Function(pf) _Cache_Data.TryAdd(pf.Key, pf.Value))
         _Cache_Using = Me.Using
-        _Cache_Stat_Name = Me.Name
+        _Cache_Stat_Name = Me.Name_Write
         _Cache_Type = Me.Type
         MyBase.Edit_start()
     End Sub
@@ -2888,6 +3102,7 @@ Public Enum BG3_Enum_UTAM_Type
     Arrows
     CharacterBank
     Character
+    Treasure
 End Enum
 
 <Serializable>
@@ -3705,7 +3920,7 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                 If obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return False
                 If ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return True
                 Debugger.Break()
-                    Else
+            Else
                         Return True
             End If
         End If
@@ -3858,6 +4073,9 @@ Public MustInherit Class BG3_Obj_Generic_Class
                     Dim valor = CType(Me, BG3_Obj_Stats_Class).Get_Data_or_Empty("UTAM_Group")
                     If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
                     Return valor
+                Case GetType(BG3_Obj_TreasureTable_Class)
+                    Dim valor = "Treasure Tables"
+                    Return valor
                 Case Else
                     Dim valor = ReadAttribute_Or_Nothing("UTAM_Group")
                     If IsNothing(valor) OrElse valor = "" Then Return "(Default)"
@@ -3875,6 +4093,8 @@ Public MustInherit Class BG3_Obj_Generic_Class
                     Dim resultado As BG3_Enum_UTAM_Type
                     If [Enum].TryParse(Of BG3_Enum_UTAM_Type)(valor, resultado) = True Then Return resultado
                     Return -1
+                Case GetType(BG3_Obj_TreasureTable_Class)
+                    Return BG3_Enum_UTAM_Type.Treasure
                 Case Else
                     Dim valor = ReadAttribute_Or_Nothing("UTAM_Type")
                     If IsNothing(valor) Then Return -1

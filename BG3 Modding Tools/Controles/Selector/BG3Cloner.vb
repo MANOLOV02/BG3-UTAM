@@ -396,6 +396,8 @@ Public Class BG3Cloner
     Public Event Clone_Tag(Objeto As BG3_Obj_FlagsAndTags_Class, Tipo As Clonetype)
     Public Event Clone_Visual(Objeto As BG3_Obj_VisualBank_Class, Tipo As Clonetype)
     Public Event Clone_Stat(Objeto As BG3_Obj_Stats_Class, Tipo As Clonetype)
+    Public Event Clone_Treasure(Objeto As BG3_Obj_TreasureTable_Class, Tipo As Clonetype)
+
     Public Enum Clonetype
         Inherit
         Clone
@@ -421,6 +423,10 @@ Public Class BG3Cloner
         Return True
     End Function
     Public Function Drop_Verify_OBJ(obj As BG3_Obj_VisualBank_Class) As Boolean
+        If CheckType(obj) = False Then Return False
+        Return True
+    End Function
+    Public Function Drop_Verify_OBJ(obj As BG3_Obj_TreasureTable_Class) As Boolean
         If CheckType(obj) = False Then Return False
         Return True
     End Function
@@ -450,6 +456,8 @@ Public Class BG3Cloner
                 If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.SpellData Then Return True
             Case GetType(Interrupt_Editor)
                 If Obj.GetType = GetType(BG3_Obj_Stats_Class) AndAlso CType(Obj, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.InterruptData Then Return True
+            Case GetType(Treasure_table_editor)
+                If Obj.GetType = GetType(BG3_Obj_TreasureTable_Class) Then Return True
             Case Else
                 Return False
         End Select
@@ -465,6 +473,12 @@ Public Class BG3Cloner
         End If
         Return False
     End Function
+    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_TreasureTable_Class)
+        Dim Tipo As Clonetype = Clonetype.Inherit
+        If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
+        If RadioButtonOverride.Checked = True Then Tipo = Clonetype.Override
+        Do_Clone_OBJ(Obj, Tipo, Not RadioButtonOnlyChilds.Checked, Not RadioButtonItemOnly.Checked)
+    End Sub
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_FlagsAndTags_Class)
         Dim Tipo As Clonetype = Clonetype.Inherit
         If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
@@ -498,7 +512,15 @@ Public Class BG3Cloner
         Next
         RaiseEvent Clone_Finished()
     End Sub
-
+    Public Sub Do_Clone_OBJ(obj As BG3_Obj_TreasureTable_Class, tipo As Clonetype, Copyself As Boolean, Copychilds As Boolean)
+        RaiseEvent Clone_Started()
+        If Copyself = True Then
+            If obj.IsOverrided = False Then
+                RaiseEvent Clone_Treasure(obj, tipo)
+            End If
+        End If
+        RaiseEvent Clone_Finished()
+    End Sub
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         Dim Tipo As Clonetype = Clonetype.Inherit
         If RadioButtonClone.Checked = True Then Tipo = Clonetype.Clone
@@ -616,9 +638,6 @@ Public Class BG3Cloner
         Debugger.Break()
     End Sub
 
-    Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_TreasureTable_Class)
-        Debugger.Break()
-    End Sub
     Public Overridable Sub Drop_OBJ(Obj As BG3_Obj_TreasureTable_Subtable_Class)
         Debugger.Break()
     End Sub
@@ -636,9 +655,6 @@ Public Class BG3Cloner
         Return False
     End Function
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_IconAtlass_Class) As Boolean
-        Return False
-    End Function
-    Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_TreasureTable_Class) As Boolean
         Return False
     End Function
     Public Overridable Function Drop_Verify_OBJ(Obj As BG3_Obj_TreasureTable_Subtable_Class) As Boolean

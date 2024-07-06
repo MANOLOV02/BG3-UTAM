@@ -201,11 +201,11 @@ Public Class UtamMod
             ArchivoTT.WriteLine("new treasuretable " + Chr(34) + tt.Mapkey_WithoutOverride + Chr(34) + "")
             If tt.CanMerge = True Then ArchivoTT.WriteLine("CanMerge 1")
             For Each subt In tt.Subtables.Where(Function(pf) pf.Source.Pak_Or_Folder = CurrentMod.ModLsx.SourceOfResource.Pak_Or_Folder)
-                ArchivoTT.WriteLine("new subtable " + Chr(34) + subt.Definition + Chr(34) + "")
+                ArchivoTT.WriteLine("new subtable " + Chr(34) + subt.WriteDefinition + Chr(34) + "")
                 If subt.MinLevel <> "" Then ArchivoTT.WriteLine("StartLevel " + Chr(34) + subt.MinLevel + Chr(34) + "")
                 If subt.MaxLevel <> "" Then ArchivoTT.WriteLine("EndLevel " + Chr(34) + subt.MaxLevel + Chr(34) + "")
                 For Each lis In subt.Lista
-                    ArchivoTT.WriteLine("object category " + Chr(34) + lis.Item + Chr(34) + lis.Conditions)
+                    ArchivoTT.WriteLine("object category " + Chr(34) + lis.Item + Chr(34) + lis.WriteDefinition)
                 Next
             Next
             ArchivoTT.WriteLine("")

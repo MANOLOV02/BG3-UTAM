@@ -194,6 +194,8 @@ Public Class CharacterBank_Editor
             BG3Editor_Visuals_VisualResource1.Write(objNode)
             BG3Editor_Visuals_Slot1.Write(objNode)
             ListBoxSlots.Items(ListBoxSlots.SelectedIndex).text = BG3Editor_Visuals_Slot1.TextBox1.Text
+            ListBoxSlots.Items(ListBoxSlots.SelectedIndex) = ListBoxSlots.Items(ListBoxSlots.SelectedIndex)
+
         End If
     End Sub
 

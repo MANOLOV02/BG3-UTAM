@@ -76,6 +76,9 @@
     <Compile Update="Controles\Explorers\BG3Explorer_Icons.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controles\Selector\BG3Selector_Treasures.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Controles\Selector\BG3Selector_Stat.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -133,6 +136,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Formularios\UTEM Editores\StatusPasivesSpells\Status_Generic_editor.vb" />
+    <Compile Update="Formularios\UTEM Editores\TreasureTable\Treasure_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Visuals\Generic_Visuals_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\FlagsTagsandLists\ActionResource_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\FlagsTagsandLists\Tags_Editor.vb" />

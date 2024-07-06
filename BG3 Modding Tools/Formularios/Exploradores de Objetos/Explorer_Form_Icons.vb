@@ -29,6 +29,7 @@
         pict3.Width = Math.Min(ObjectsTree.DetailsVisiblesOrNot.Width, ObjectsTree.DetailsVisiblesOrNot.Height)
         pict3.Height = Math.Min(ObjectsTree.DetailsVisiblesOrNot.Width, ObjectsTree.DetailsVisiblesOrNot.Height)
         pict3.SizeMode = PictureBoxSizeMode.StretchImage
+        pict3.Anchor = AnchorStyles.Right Or AnchorStyles.Top
         pict3.BringToFront()
     End Sub
 
