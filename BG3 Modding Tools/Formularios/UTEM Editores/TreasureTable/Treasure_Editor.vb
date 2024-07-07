@@ -50,6 +50,7 @@ Public Class Treasure_table_editor
         BG3Selector_Treasure1.BG3Cloner1.RadioButtonOnlyChilds.Enabled = False
         BG3Selector_Treasure1.BG3Cloner1.CheckBoxCopyLeveled.Enabled = False
         BG3Selector_Treasure1.BG3Cloner1.CheckBoxSkipGarbage.Enabled = False
+        BG3Selector_Treasure1.ContextMenuStrip = Nothing
     End Sub
     Private Sub Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Cursor.Current = Cursors.WaitCursor
@@ -135,7 +136,6 @@ Public Class Treasure_table_editor
     Private Sub Capture_Clone(obj As BG3_Obj_TreasureTable_Class, tipo As BG3Cloner.Clonetype) Handles BG3Selector_Treasure1.Clone_Treasure
         Clone_NuevoStat = New BG3_Obj_TreasureTable_Class(ActiveModSource, NameNod) With {.CanMerge = True}
         BG3Selector_Treasure1.Habilita_Edicion_Botones(True)
-        Debugger.Break()
         'template Clone
         Select Case tipo
             Case BG3Cloner.Clonetype.None
@@ -144,21 +144,23 @@ Public Class Treasure_table_editor
             Case BG3Cloner.Clonetype.Inherit
                 Create_Initial(Clone_NuevoStat)
                 Capture_Clone_specific(obj, tipo)
-                SelectedTT.Name_Write = obj.Name
+                Clone_NuevoStat.Name_Write = obj.Name
             Case BG3Cloner.Clonetype.Clone
                 Create_Initial(Clone_NuevoStat)
-                SelectedTT.Name_Write = obj.Name + "_Cloned"
+                Clone_NuevoStat.Name_Write = obj.Name + "_Cloned"
                 Capture_Clone_specific(obj, tipo)
             Case BG3Cloner.Clonetype.Override
                 Create_Initial(Clone_NuevoStat)
-                SelectedTT.Name_Write = obj.Name
-                SelectedTT.CanMerge = False
+                Clone_NuevoStat.Name_Write = obj.Name
+                Clone_NuevoStat.CanMerge = False
                 Capture_Clone_specific(obj, tipo)
             Case Else
                 Debugger.Break()
         End Select
 
-        SelectedTT = FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(Clone_NuevoStat)
+        SelectedTT = Clone_NuevoStat ' THIS Is ONLY FOR TT
+        Clone_NuevoStat = FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(Clone_NuevoStat)
+
         ' Localization Clone
         Select Case tipo
             Case BG3Cloner.Clonetype.None
@@ -500,7 +502,7 @@ Public Class Treasure_table_editor
         If e.Data.GetDataPresent(GetType(BG3_Obj_Stats_Class)) Then
             Dim obj As BG3_Obj_Stats_Class = e.Data.GetData(GetType(BG3_Obj_Stats_Class))
             If Not IsNothing(obj) Then
-                If obj.Type = BG3_Enum_StatType.Object Then
+                If obj.Type = BG3_Enum_StatType.Object Or obj.Type = BG3_Enum_StatType.Weapon Or obj.Type = BG3_Enum_StatType.Armor Then
                     e.Effect = DragDropEffects.Copy
                     Exit Sub
                 End If
@@ -509,7 +511,7 @@ Public Class Treasure_table_editor
         If e.Data.GetDataPresent(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class))) Then
             Dim obj As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class) = e.Data.GetData(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Stats_Class)))
             If Not IsNothing(obj.Objeto) Then
-                If CType(obj.Objeto, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.Object Then
+                If CType(obj.Objeto, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.Object Or CType(obj.Objeto, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.Weapon Or CType(obj.Objeto, BG3_Obj_Stats_Class).Type = BG3_Enum_StatType.Armor Then
                     e.Effect = DragDropEffects.Copy
                     Exit Sub
                 End If
@@ -520,7 +522,7 @@ Public Class Treasure_table_editor
             Dim obj As BG3_Obj_Template_Class = e.Data.GetData(GetType(BG3_Obj_Template_Class))
             If Not IsNothing(obj) Then
                 If Not IsNothing(obj.AssociatedStats) Then
-                    If obj.AssociatedStats.Type = BG3_Enum_StatType.Object Then
+                    If obj.AssociatedStats.Type = BG3_Enum_StatType.Object Or obj.AssociatedStats.Type = BG3_Enum_StatType.Weapon Or obj.AssociatedStats.Type = BG3_Enum_StatType.Armor Then
                         e.Effect = DragDropEffects.Copy
                         Exit Sub
                     End If
@@ -532,7 +534,7 @@ Public Class Treasure_table_editor
             Dim obj As BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class) = e.Data.GetData(GetType(BG3_Custom_TreeNode_Linked_Class(Of BG3_Obj_Template_Class)))
             If Not IsNothing(obj.Objeto) Then
                 If Not IsNothing(CType(obj.Objeto, BG3_Obj_Template_Class).AssociatedStats) Then
-                    If CType(obj.Objeto, BG3_Obj_Template_Class).AssociatedStats.Type = BG3_Enum_StatType.Object Then
+                    If CType(obj.Objeto, BG3_Obj_Template_Class).AssociatedStats.Type = BG3_Enum_StatType.Object Or CType(obj.Objeto, BG3_Obj_Template_Class).AssociatedStats.Type = BG3_Enum_StatType.Weapon Or CType(obj.Objeto, BG3_Obj_Template_Class).AssociatedStats.Type = BG3_Enum_StatType.Armor Then
                         e.Effect = DragDropEffects.Copy
                         Exit Sub
                     End If

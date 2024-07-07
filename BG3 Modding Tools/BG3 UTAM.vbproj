@@ -114,6 +114,7 @@
     <Compile Update="Formularios\Exploradores de Objetos\Information_Form_TreasureTables.vb" />
     <Compile Update="Formularios\Otros\AddAKey.vb" />
     <Compile Update="Formularios\Otros\AddAttribute.vb" />
+    <Compile Update="Formularios\Otros\TextExpand.vb" />
     <Compile Update="Formularios\UTEM Editores\Characters\Generic_Character_Editor.vb" />
     <Compile Update="Formularios\UTEM Editores\Items\Arrows_Editor.vb">
       <SubType>Form</SubType>

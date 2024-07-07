@@ -627,7 +627,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_Armor1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_Armor1.Name = "BG3Editor_Stats_Armor1"
         BG3Editor_Stats_Armor1.Size = New Size(260, 23)
-        BG3Editor_Stats_Armor1.SplitterDistance = 100
         BG3Editor_Stats_Armor1.TabIndex = 5
         ' 
         ' BG3Editor_Stats_ArmorType1
@@ -640,7 +639,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_ArmorType1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_ArmorType1.Name = "BG3Editor_Stats_ArmorType1"
         BG3Editor_Stats_ArmorType1.Size = New Size(375, 23)
-        BG3Editor_Stats_ArmorType1.SplitterDistance = 100
         BG3Editor_Stats_ArmorType1.TabIndex = 2
         ' 
         ' TabPageCharBoosts
@@ -692,6 +690,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_ProficiencyGroupText1.Name = "BG3Editor_Stats_ProficiencyGroupText1"
         BG3Editor_Stats_ProficiencyGroupText1.Size = New Size(377, 23)
         BG3Editor_Stats_ProficiencyGroupText1.TabIndex = 9
+        BG3Editor_Stats_ProficiencyGroupText1.TextExpander = True
         ' 
         ' BG3Editor_Stats_DifficultyStatuses1
         ' 
@@ -703,6 +702,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_DifficultyStatuses1.Name = "BG3Editor_Stats_DifficultyStatuses1"
         BG3Editor_Stats_DifficultyStatuses1.Size = New Size(378, 23)
         BG3Editor_Stats_DifficultyStatuses1.TabIndex = 8
+        BG3Editor_Stats_DifficultyStatuses1.TextExpander = True
         ' 
         ' BG3Editor_Stats_DefaultBoosts1
         ' 
@@ -714,6 +714,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_DefaultBoosts1.Name = "BG3Editor_Stats_DefaultBoosts1"
         BG3Editor_Stats_DefaultBoosts1.Size = New Size(378, 23)
         BG3Editor_Stats_DefaultBoosts1.TabIndex = 7
+        BG3Editor_Stats_DefaultBoosts1.TextExpander = True
         ' 
         ' BG3Editor_Stats_Passives1
         ' 
@@ -724,8 +725,8 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_Passives1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_Passives1.Name = "BG3Editor_Stats_Passives1"
         BG3Editor_Stats_Passives1.Size = New Size(378, 23)
-        BG3Editor_Stats_Passives1.SplitterDistance = 100
         BG3Editor_Stats_Passives1.TabIndex = 0
+        BG3Editor_Stats_Passives1.TextExpander = True
         ' 
         ' TabPageStatus
         ' 
@@ -793,7 +794,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Name1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_Name1.Name = "BG3Editor_Template_Name1"
         BG3Editor_Template_Name1.Size = New Size(395, 23)
-        BG3Editor_Template_Name1.SplitterDistance = 100
         BG3Editor_Template_Name1.TabIndex = 0
         ' 
         ' BG3Editor_Template_Type1
@@ -808,7 +808,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Type1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_Type1.Name = "BG3Editor_Template_Type1"
         BG3Editor_Template_Type1.Size = New Size(223, 23)
-        BG3Editor_Template_Type1.SplitterDistance = 100
         BG3Editor_Template_Type1.TabIndex = 3
         ' 
         ' BG3Editor_Template_Mapkey1
@@ -823,7 +822,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_Mapkey1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_Mapkey1.Name = "BG3Editor_Template_Mapkey1"
         BG3Editor_Template_Mapkey1.Size = New Size(395, 23)
-        BG3Editor_Template_Mapkey1.SplitterDistance = 100
         BG3Editor_Template_Mapkey1.TabIndex = 1
         ' 
         ' BG3Editor_Template_Parent1
@@ -919,7 +917,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Template_DisplayName1.MinimumSize = New Size(0, 23)
         BG3Editor_Template_DisplayName1.Name = "BG3Editor_Template_DisplayName1"
         BG3Editor_Template_DisplayName1.Size = New Size(395, 23)
-        BG3Editor_Template_DisplayName1.SplitterDistance = 100
         BG3Editor_Template_DisplayName1.TabIndex = 0
         ' 
         ' BG3Editor_Template_Icon1
@@ -987,7 +984,7 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_Class1.Size = New Size(395, 23)
         BG3Editor_Stats_Class1.TabIndex = 4
         ' 
-        ' BG3Editor_Template_Stats1
+        ' BG3Editor_Stats_Stats1
         ' 
         BG3Editor_Stats_Stats1.DropIcon = True
         BG3Editor_Stats_Stats1.EditIsConditional = False
@@ -996,7 +993,8 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stats_Stats1.Margin = New Padding(0)
         BG3Editor_Stats_Stats1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stats_Stats1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stats_Stats1.Name = "BG3Editor_Template_Stats1"
+        BG3Editor_Stats_Stats1.MustDescendFrom = New String() {"None"}
+        BG3Editor_Stats_Stats1.Name = "BG3Editor_Stats_Stats1"
         BG3Editor_Stats_Stats1.Size = New Size(395, 23)
         BG3Editor_Stats_Stats1.SplitterDistance = 80
         BG3Editor_Stats_Stats1.TabIndex = 0
@@ -1013,7 +1011,6 @@ Partial Class Generic_Character_Editor
         BG3Editor_Stat_Type1.MinimumSize = New Size(0, 23)
         BG3Editor_Stat_Type1.Name = "BG3Editor_Stat_Type1"
         BG3Editor_Stat_Type1.Size = New Size(395, 23)
-        BG3Editor_Stat_Type1.SplitterDistance = 100
         BG3Editor_Stat_Type1.TabIndex = 1
         ' 
         ' BG3Editor_Stat_Using1
@@ -1128,7 +1125,7 @@ Partial Class Generic_Character_Editor
         ' 
         ' Generic_Character_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Controls.Add(SplitContainer1)

@@ -654,16 +654,16 @@ Partial Class Generic_Item_Editor
         BG3Editor_Stats_MinLevel1.Size = New Size(238, 23)
         BG3Editor_Stats_MinLevel1.TabIndex = 8
         ' 
-        ' BG3Editor_Template_Stats1
+        ' BG3Editor_Stats_Stats1
         ' 
-        BG3Editor_Stats_Stats1.AllowEdit = False
         BG3Editor_Stats_Stats1.EditIsConditional = False
         BG3Editor_Stats_Stats1.Label = "Stat name"
         BG3Editor_Stats_Stats1.Location = New Point(3, 19)
         BG3Editor_Stats_Stats1.Margin = New Padding(0)
         BG3Editor_Stats_Stats1.MaximumSize = New Size(2000, 23)
         BG3Editor_Stats_Stats1.MinimumSize = New Size(0, 23)
-        BG3Editor_Stats_Stats1.Name = "BG3Editor_Template_Stats1"
+        BG3Editor_Stats_Stats1.MustDescendFrom = New String() {"None"}
+        BG3Editor_Stats_Stats1.Name = "BG3Editor_Stats_Stats1"
         BG3Editor_Stats_Stats1.Size = New Size(395, 23)
         BG3Editor_Stats_Stats1.SplitterDistance = 100
         BG3Editor_Stats_Stats1.TabIndex = 0
@@ -822,7 +822,7 @@ Partial Class Generic_Item_Editor
         ' 
         ' Generic_Item_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Controls.Add(SplitContainer1)

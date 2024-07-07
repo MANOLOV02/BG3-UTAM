@@ -9,7 +9,7 @@ Public Class Containers_Editor
     Protected Overrides ReadOnly Property DefaulStatUsing As String = "OBJ_Bag"
     Protected Overrides ReadOnly Property DefaulParent As String = "3e6aac21-333b-4812-a554-376c2d157ba9"
     Protected Overrides ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Object
-
+    Private TTSavedname As String = ""
 
 
     Sub New(ByRef MdiParent As Main, Source As BG3_Pak_SourceOfResource_Class)
@@ -63,8 +63,10 @@ Public Class Containers_Editor
         End If
     End Sub
     Protected Overrides Sub Process_Selection_Change_specific()
+        TTSavedname = ""
         If Not IsNothing(SelectedTmp) Then
             BG3Editor_Template_Container_tt1.Read(SelectedTmp)
+            TTSavedname = BG3Editor_Template_Container_tt1.TextBox1.Text
             BG3Editor_Template_ContainerContentFilterCondition1.Read(SelectedTmp)
             BG3Editor_Template_ContainerAutoAddOnPickup1.Read(SelectedTmp)
         Else
@@ -77,7 +79,7 @@ Public Class Containers_Editor
 
     End Sub
     Protected Overrides Sub Process_Delete_Specifics()
-        RemoveTT()
+        RemoveTT(TTsavedname)
     End Sub
     Protected Overrides Sub Process_Edit_Specifics()
 
@@ -119,17 +121,18 @@ Public Class Containers_Editor
     ' Subs Especificos Containers
 
     Public Sub SaveTT()
-        Dim ttname As String = "UTAM_Container_Treasure_" + SelectedTmp.MapKey
+        Dim ttname As String = BG3Editor_Template_Container_tt1.TextBox1.Text
+        If ttname <> TTSavedname Then RemoveTT(TTSavedname)
         If FuncionesHelpers.GameEngine.UtamTreasures.Where(Function(pf) pf.Mapkey_WithoutOverride = ttname).Any = False Then
             Dim TT As New BG3_Obj_TreasureTable_Class(ActiveModSource, ttname) With {.CanMerge = False}
             TT.Subtables.Add(New BG3_Obj_TreasureTable_Subtable_Class(ActiveModSource, "1,1"))
             FuncionesHelpers.GameEngine.ProcessedTTables.Manage_Overrides(TT)
         End If
     End Sub
-    Public Sub RemoveTT()
-        Dim ttname As String = "UTAM_Container_Treasure_" + SelectedTmp.MapKey
+    Public Sub RemoveTT(Name As String)
+        Dim ttname As String = Name
         Dim TT As BG3_Obj_TreasureTable_Class = Nothing
-        If FuncionesHelpers.GameEngine.ProcessedTTables.TryGetValue(ttname, tt) Then
+        If FuncionesHelpers.GameEngine.ProcessedTTables.TryGetValue(ttname, TT) Then
             FuncionesHelpers.GameEngine.UtamTreasures.Remove(TT)
             FuncionesHelpers.GameEngine.ProcessedTTables.Remove(TT)
         End If

@@ -106,7 +106,7 @@ Partial Class Containers_Editor
         ' 
         BG3Editor_Template_VisualTemplate1.EditorType = BG3_Editor_Type.Textbox
         ' 
-        ' BG3Editor_Template_Stats1
+        ' BG3Editor_Stats_Stats1
         ' 
         BG3Editor_Stats_Stats1.EditorType = BG3_Editor_Type.Textbox
         ' 
@@ -117,7 +117,6 @@ Partial Class Containers_Editor
         ' 
         ' BG3Editor_Template_Container_tt1
         ' 
-        BG3Editor_Template_Container_tt1.AllowEdit = False
         BG3Editor_Template_Container_tt1.EditIsConditional = False
         BG3Editor_Template_Container_tt1.Label = "Treasure table"
         BG3Editor_Template_Container_tt1.Location = New Point(3, 111)
@@ -229,7 +228,7 @@ Partial Class Containers_Editor
         ' 
         ' Containers_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Name = "Containers_Editor"

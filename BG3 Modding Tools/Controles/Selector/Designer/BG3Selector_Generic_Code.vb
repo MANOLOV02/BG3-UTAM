@@ -13,7 +13,7 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
     Public Property Selection As BG3_Enum_UTAM_Type = BG3_Enum_UTAM_Type.Dyes
     Public Property NameField As String = "Name"
     Public Property NameType As String = "Attribute"
-
+    Protected Overridable Property DefaultGroup As String = "(Default)"
 
     Private WithEvents SelectorWorker As New BackgroundWorker With {.WorkerReportsProgress = True, .WorkerSupportsCancellation = True}
     Private ReadOnly filter As New BG3_CustomFilter_Class(Of T)(SelectorWorker, Nothing)
@@ -163,7 +163,7 @@ Public MustInherit Class BG3Selector_Generic_Code(Of T As BG3_Obj_Generic_Class)
         For Each nod In TreeView1.Nodes
             nod.ResortNod()
         Next
-        If TreeView1.Nodes.Count = 0 Then Agrega_grupo("(Default)")
+        If TreeView1.Nodes.Count = 0 Then Agrega_grupo(DefaultGroup)
         TreeView1.EndUpdate()
         Isclonning_or_transfering = False
         Habilita_Edicion_Botones(False)

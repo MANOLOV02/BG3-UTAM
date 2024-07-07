@@ -9,6 +9,7 @@ Imports LSLib.Granny
 
 Public Class BG3Selector_Treasures
     Inherits BG3Selector_Generic_Code(Of BG3_Obj_TreasureTable_Class)
+    Protected Overrides Property DefaultGroup As String = "Treasure tables"
 
     Public Overrides Sub SplitGroup(sender As Object, e As EventArgs)
         Dim spl() As String = sender.tag

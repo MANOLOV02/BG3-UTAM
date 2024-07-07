@@ -51,8 +51,8 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_DamageRange1 = New BG3Editor_Stats_DamageRange()
         BG3Editor_Stats_WeaponRange1 = New BG3Editor_Stats_WeaponRange()
         TabPageWeaponsS = New TabPage()
-        BG3Editor_Complex_StatusList1 = New BG3Editor_Complex_StatusList()
         GroupBoxWeaponsS = New GroupBox()
+        BG3Editor_Complex_StatusList1 = New BG3Editor_Complex_StatusList()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -136,7 +136,7 @@ Partial Class Weapons_Editor
         ' 
         BG3Editor_Template_VisualTemplate1.EditorType = BG3_Editor_Type.Textbox
         ' 
-        ' BG3Editor_Template_Stats1
+        ' BG3Editor_Stats_Stats1
         ' 
         BG3Editor_Stats_Stats1.EditorType = BG3_Editor_Type.Textbox
         ' 
@@ -156,7 +156,6 @@ Partial Class Weapons_Editor
         BG3Editor_Stat_Slots_Armor1.Name = "BG3Editor_Stat_Slots_Armor1"
         BG3Editor_Stat_Slots_Armor1.Size = New Size(392, 23)
         BG3Editor_Stat_Slots_Armor1.Slot_Type = BG3Editor_Stats_Slots_Armor.Item_type_Enum.Weapons
-        BG3Editor_Stat_Slots_Armor1.SplitterDistance = 100
         BG3Editor_Stat_Slots_Armor1.TabIndex = 7
         ' 
         ' GroupBoxWeapons1
@@ -189,6 +188,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_WeaponFunctors1.Name = "BG3Editor_Stats_WeaponFunctors1"
         BG3Editor_Stats_WeaponFunctors1.Size = New Size(378, 23)
         BG3Editor_Stats_WeaponFunctors1.TabIndex = 12
+        BG3Editor_Stats_WeaponFunctors1.TextExpander = True
         ' 
         ' BG3Editor_Stats_DefaultBoosts1
         ' 
@@ -200,6 +200,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_DefaultBoosts1.Name = "BG3Editor_Stats_DefaultBoosts1"
         BG3Editor_Stats_DefaultBoosts1.Size = New Size(378, 23)
         BG3Editor_Stats_DefaultBoosts1.TabIndex = 11
+        BG3Editor_Stats_DefaultBoosts1.TextExpander = True
         ' 
         ' BG3Editor_Stats_BoostsOnEquipOffHand1
         ' 
@@ -211,6 +212,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_BoostsOnEquipOffHand1.Name = "BG3Editor_Stats_BoostsOnEquipOffHand1"
         BG3Editor_Stats_BoostsOnEquipOffHand1.Size = New Size(378, 23)
         BG3Editor_Stats_BoostsOnEquipOffHand1.TabIndex = 10
+        BG3Editor_Stats_BoostsOnEquipOffHand1.TextExpander = True
         ' 
         ' BG3Editor_Stats_BoostsOnEquipMainHand1
         ' 
@@ -222,6 +224,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_BoostsOnEquipMainHand1.Name = "BG3Editor_Stats_BoostsOnEquipMainHand1"
         BG3Editor_Stats_BoostsOnEquipMainHand1.Size = New Size(378, 23)
         BG3Editor_Stats_BoostsOnEquipMainHand1.TabIndex = 9
+        BG3Editor_Stats_BoostsOnEquipMainHand1.TextExpander = True
         ' 
         ' BG3Editor_Stats_PassivesOnEquip_OffHand1
         ' 
@@ -233,6 +236,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_PassivesOnEquip_OffHand1.Name = "BG3Editor_Stats_PassivesOnEquip_OffHand1"
         BG3Editor_Stats_PassivesOnEquip_OffHand1.Size = New Size(378, 23)
         BG3Editor_Stats_PassivesOnEquip_OffHand1.TabIndex = 8
+        BG3Editor_Stats_PassivesOnEquip_OffHand1.TextExpander = True
         ' 
         ' BG3Editor_Stats_PassivesOnEquip_MainHand1
         ' 
@@ -244,6 +248,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_PassivesOnEquip_MainHand1.Name = "BG3Editor_Stats_PassivesOnEquip_MainHand1"
         BG3Editor_Stats_PassivesOnEquip_MainHand1.Size = New Size(378, 23)
         BG3Editor_Stats_PassivesOnEquip_MainHand1.TabIndex = 7
+        BG3Editor_Stats_PassivesOnEquip_MainHand1.TextExpander = True
         ' 
         ' BG3Editor_Stats_StatusOnEquip1
         ' 
@@ -254,8 +259,8 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_StatusOnEquip1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_StatusOnEquip1.Name = "BG3Editor_Stats_StatusOnEquip1"
         BG3Editor_Stats_StatusOnEquip1.Size = New Size(378, 23)
-        BG3Editor_Stats_StatusOnEquip1.SplitterDistance = 100
         BG3Editor_Stats_StatusOnEquip1.TabIndex = 3
+        BG3Editor_Stats_StatusOnEquip1.TextExpander = True
         ' 
         ' BG3Editor_Stats_Boosts1
         ' 
@@ -266,8 +271,8 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_Boosts1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_Boosts1.Name = "BG3Editor_Stats_Boosts1"
         BG3Editor_Stats_Boosts1.Size = New Size(378, 23)
-        BG3Editor_Stats_Boosts1.SplitterDistance = 100
         BG3Editor_Stats_Boosts1.TabIndex = 1
+        BG3Editor_Stats_Boosts1.TextExpander = True
         ' 
         ' BG3Editor_Stats_PassivesOnEquip1
         ' 
@@ -278,8 +283,8 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_PassivesOnEquip1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_PassivesOnEquip1.Name = "BG3Editor_Stats_PassivesOnEquip1"
         BG3Editor_Stats_PassivesOnEquip1.Size = New Size(378, 23)
-        BG3Editor_Stats_PassivesOnEquip1.SplitterDistance = 100
         BG3Editor_Stats_PassivesOnEquip1.TabIndex = 0
+        BG3Editor_Stats_PassivesOnEquip1.TextExpander = True
         ' 
         ' BG3Editor_Stats_WeaponsProficiencyGroup1
         ' 
@@ -290,8 +295,8 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_WeaponsProficiencyGroup1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_WeaponsProficiencyGroup1.Name = "BG3Editor_Stats_WeaponsProficiencyGroup1"
         BG3Editor_Stats_WeaponsProficiencyGroup1.Size = New Size(378, 23)
-        BG3Editor_Stats_WeaponsProficiencyGroup1.SplitterDistance = 100
         BG3Editor_Stats_WeaponsProficiencyGroup1.TabIndex = 6
+        BG3Editor_Stats_WeaponsProficiencyGroup1.TextExpander = True
         ' 
         ' TabControl2
         ' 
@@ -374,6 +379,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_WeaponProperties1.Name = "BG3Editor_Stats_WeaponProperties1"
         BG3Editor_Stats_WeaponProperties1.Size = New Size(378, 23)
         BG3Editor_Stats_WeaponProperties1.TabIndex = 8
+        BG3Editor_Stats_WeaponProperties1.TextExpander = True
         ' 
         ' BG3Editor_Stats_WeaponGroup1
         ' 
@@ -434,6 +440,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_VersatileDamage1.Name = "BG3Editor_Stats_VersatileDamage1"
         BG3Editor_Stats_VersatileDamage1.Size = New Size(377, 23)
         BG3Editor_Stats_VersatileDamage1.TabIndex = 4
+        BG3Editor_Stats_VersatileDamage1.TextExpander = True
         ' 
         ' BG3Editor_Stats_Damage1
         ' 
@@ -445,6 +452,7 @@ Partial Class Weapons_Editor
         BG3Editor_Stats_Damage1.Name = "BG3Editor_Stats_Damage1"
         BG3Editor_Stats_Damage1.Size = New Size(377, 23)
         BG3Editor_Stats_Damage1.TabIndex = 3
+        BG3Editor_Stats_Damage1.TextExpander = True
         ' 
         ' BG3Editor_Stats_Damage_Type1
         ' 
@@ -492,14 +500,6 @@ Partial Class Weapons_Editor
         TabPageWeaponsS.Text = "Status list"
         TabPageWeaponsS.UseVisualStyleBackColor = True
         ' 
-        ' BG3Editor_Complex_StatusList1
-        ' 
-        BG3Editor_Complex_StatusList1.Dock = DockStyle.Fill
-        BG3Editor_Complex_StatusList1.Location = New Point(3, 19)
-        BG3Editor_Complex_StatusList1.Name = "BG3Editor_Complex_StatusList1"
-        BG3Editor_Complex_StatusList1.Size = New Size(378, 207)
-        BG3Editor_Complex_StatusList1.TabIndex = 0
-        ' 
         ' GroupBoxWeaponsS
         ' 
         GroupBoxWeaponsS.Controls.Add(BG3Editor_Complex_StatusList1)
@@ -510,6 +510,14 @@ Partial Class Weapons_Editor
         GroupBoxWeaponsS.Size = New Size(384, 229)
         GroupBoxWeaponsS.TabIndex = 1
         GroupBoxWeaponsS.TabStop = False
+        ' 
+        ' BG3Editor_Complex_StatusList1
+        ' 
+        BG3Editor_Complex_StatusList1.Dock = DockStyle.Fill
+        BG3Editor_Complex_StatusList1.Location = New Point(3, 19)
+        BG3Editor_Complex_StatusList1.Name = "BG3Editor_Complex_StatusList1"
+        BG3Editor_Complex_StatusList1.Size = New Size(378, 207)
+        BG3Editor_Complex_StatusList1.TabIndex = 0
         ' 
         ' Weapons_Editor
         ' 

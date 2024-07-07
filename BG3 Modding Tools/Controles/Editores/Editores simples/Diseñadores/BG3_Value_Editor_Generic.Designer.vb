@@ -27,9 +27,10 @@ Partial MustInherit Class BG3_Value_Editor_Generic
         Label1 = New Label()
         PictureBox1 = New PictureBox()
         Panel1 = New Panel()
-        NumericUpDown1 = New NumericUpDown()
         ComboBox1 = New ComboBox()
+        NumericUpDown1 = New NumericUpDown()
         TableLayoutPanel1 = New TableLayoutPanel()
+        Button1 = New Button()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         Panel1.SuspendLayout()
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).BeginInit()
@@ -55,7 +56,7 @@ Partial MustInherit Class BG3_Value_Editor_Generic
         TextBox1.Margin = New Padding(0)
         TextBox1.Name = "TextBox1"
         TextBox1.ReadOnly = True
-        TextBox1.Size = New Size(795, 23)
+        TextBox1.Size = New Size(770, 23)
         TextBox1.TabIndex = 2
         ' 
         ' Label1
@@ -84,27 +85,15 @@ Partial MustInherit Class BG3_Value_Editor_Generic
         ' 
         ' Panel1
         ' 
+        Panel1.Controls.Add(ComboBox1)
         Panel1.Controls.Add(NumericUpDown1)
         Panel1.Controls.Add(TextBox1)
-        Panel1.Controls.Add(ComboBox1)
         Panel1.Dock = DockStyle.Fill
         Panel1.Location = New Point(140, 0)
         Panel1.Margin = New Padding(0)
         Panel1.Name = "Panel1"
-        Panel1.Size = New Size(795, 23)
+        Panel1.Size = New Size(770, 23)
         Panel1.TabIndex = 5
-        ' 
-        ' NumericUpDown1
-        ' 
-        NumericUpDown1.Dock = DockStyle.Fill
-        NumericUpDown1.Location = New Point(0, 0)
-        NumericUpDown1.Margin = New Padding(0)
-        NumericUpDown1.Name = "NumericUpDown1"
-        NumericUpDown1.ReadOnly = True
-        NumericUpDown1.Size = New Size(795, 23)
-        NumericUpDown1.TabIndex = 4
-        NumericUpDown1.TextAlign = HorizontalAlignment.Right
-        NumericUpDown1.Visible = False
         ' 
         ' ComboBox1
         ' 
@@ -115,21 +104,35 @@ Partial MustInherit Class BG3_Value_Editor_Generic
         ComboBox1.Location = New Point(0, 0)
         ComboBox1.Margin = New Padding(0)
         ComboBox1.Name = "ComboBox1"
-        ComboBox1.Size = New Size(795, 23)
+        ComboBox1.Size = New Size(770, 23)
         ComboBox1.TabIndex = 3
         ComboBox1.Visible = False
         ' 
+        ' NumericUpDown1
+        ' 
+        NumericUpDown1.Dock = DockStyle.Fill
+        NumericUpDown1.Location = New Point(0, 0)
+        NumericUpDown1.Margin = New Padding(0)
+        NumericUpDown1.Name = "NumericUpDown1"
+        NumericUpDown1.ReadOnly = True
+        NumericUpDown1.Size = New Size(770, 23)
+        NumericUpDown1.TabIndex = 4
+        NumericUpDown1.TextAlign = HorizontalAlignment.Right
+        NumericUpDown1.Visible = False
+        ' 
         ' TableLayoutPanel1
         ' 
-        TableLayoutPanel1.ColumnCount = 4
+        TableLayoutPanel1.ColumnCount = 5
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 100F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 20F))
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Absolute, 25F))
         TableLayoutPanel1.Controls.Add(Panel1, 3, 0)
         TableLayoutPanel1.Controls.Add(Label1, 0, 0)
         TableLayoutPanel1.Controls.Add(CheckBox1, 2, 0)
         TableLayoutPanel1.Controls.Add(PictureBox1, 1, 0)
+        TableLayoutPanel1.Controls.Add(Button1, 4, 0)
         TableLayoutPanel1.Dock = DockStyle.Fill
         TableLayoutPanel1.Location = New Point(0, 0)
         TableLayoutPanel1.Margin = New Padding(0)
@@ -138,6 +141,17 @@ Partial MustInherit Class BG3_Value_Editor_Generic
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         TableLayoutPanel1.Size = New Size(935, 23)
         TableLayoutPanel1.TabIndex = 3
+        ' 
+        ' Button1
+        ' 
+        Button1.Dock = DockStyle.Fill
+        Button1.Location = New Point(910, 0)
+        Button1.Margin = New Padding(0)
+        Button1.Name = "Button1"
+        Button1.Size = New Size(25, 23)
+        Button1.TabIndex = 6
+        Button1.Text = "..."
+        Button1.UseVisualStyleBackColor = True
         ' 
         ' BG3_Value_Editor_Generic
         ' 
@@ -165,5 +179,6 @@ Partial MustInherit Class BG3_Value_Editor_Generic
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Friend WithEvents Button1 As Button
 
 End Class

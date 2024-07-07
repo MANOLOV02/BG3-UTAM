@@ -14,6 +14,7 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         ' Esta llamada es exigida por el diseñador.
         InitializeComponent()
         TableLayoutPanel1.ColumnStyles(1).Width = 0
+        TableLayoutPanel1.ColumnStyles(4).Width = 0
 
         ' Agregue cualquier inicialización después de la llamada a InitializeComponent().
     End Sub
@@ -49,7 +50,23 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         End Set
     End Property
 
+    Private _Textexpand As Boolean = False
 
+    <DefaultValue(False)>
+    Public Property TextExpander As Boolean
+        Get
+            Return _Textexpand
+        End Get
+        Set(value As Boolean)
+            _Textexpand = value
+            If value = True Then
+                TableLayoutPanel1.ColumnStyles(4).Width = 25
+            Else
+                TableLayoutPanel1.ColumnStyles(4).Width = 0
+            End If
+
+        End Set
+    End Property
     <DefaultValue(BG3_Editor_Type.Textbox)>
     Public Property EditorType As BG3_Editor_Type
         Get
@@ -118,8 +135,8 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         End Set
     End Property
 
-    Private _SplitterDistance As Integer = 120
-    <DefaultValue(120)>
+    Private _SplitterDistance As Integer = 100
+    <DefaultValue(100)>
     Public Property SplitterDistance As Integer
         Get
             Return _SplitterDistance
@@ -430,7 +447,7 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         e.Effect = DragDropEffects.None
     End Sub
 
-    Public  Sub Control_DragDrop(sender As Object, e As DragEventArgs) Handles TextBox1.DragDrop
+    Public Sub Control_DragDrop(sender As Object, e As DragEventArgs) Handles TextBox1.DragDrop
 
         If e.Data.GetDataPresent(GetType(BG3_Obj_IconUV_Class)) Then
             Dim obj As BG3_Obj_IconUV_Class = e.Data.GetData(GetType(BG3_Obj_IconUV_Class))
@@ -1075,7 +1092,17 @@ Partial Public MustInherit Class BG3_Value_Editor_Generic
         Control_DragEnter(sender, e)
     End Sub
 
-
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If Me.AllowEdit = False Or Me.ReadOnly = True Or Me.Enabled = False Then Exit Sub
+        Dim TextForm As New TextExpand
+        TextForm.StartPosition = FormStartPosition.Manual
+        TextForm.Location = Me.TextBox1.PointToScreen(New Point(-7, 0))
+        TextForm.TextBox1.Text = Me.TextBox1.Text
+        If TextForm.ShowDialog = DialogResult.OK Then
+            If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
+            Me.TextBox1.Text = TextForm.TextBox1.Text.Replace(Chr(34), "'").Replace(vbCrLf, "")
+        End If
+    End Sub
 
     Public Event Inside_NumericUpDown_Changed(sender As Object)
     Public Event Inside_Combobox_Changed(sender As Object)

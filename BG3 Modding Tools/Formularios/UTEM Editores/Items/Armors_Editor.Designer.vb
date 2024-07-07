@@ -125,7 +125,7 @@ Partial Class Armors_Editor
         ' 
         BG3Editor_Template_VisualTemplate1.EditorType = BG3_Editor_Type.Textbox
         ' 
-        ' BG3Editor_Template_Stats1
+        ' BG3Editor_Stats_Stats1
         ' 
         BG3Editor_Stats_Stats1.EditorType = BG3_Editor_Type.Textbox
         ' 
@@ -154,7 +154,6 @@ Partial Class Armors_Editor
         BG3Editor_Stat_Slots_Armor1.Name = "BG3Editor_Stat_Slots_Armor1"
         BG3Editor_Stat_Slots_Armor1.Size = New Size(395, 23)
         BG3Editor_Stat_Slots_Armor1.Slot_Type = BG3Editor_Stats_Slots_Armor.Item_type_Enum.Armor
-        BG3Editor_Stat_Slots_Armor1.SplitterDistance = 100
         BG3Editor_Stat_Slots_Armor1.TabIndex = 7
         ' 
         ' BG3Editor_Stats_DefaultBoosts1
@@ -167,6 +166,7 @@ Partial Class Armors_Editor
         BG3Editor_Stats_DefaultBoosts1.Name = "BG3Editor_Stats_DefaultBoosts1"
         BG3Editor_Stats_DefaultBoosts1.Size = New Size(378, 23)
         BG3Editor_Stats_DefaultBoosts1.TabIndex = 7
+        BG3Editor_Stats_DefaultBoosts1.TextExpander = True
         ' 
         ' BG3Editor_Stats_ProficiencyGroup1
         ' 
@@ -179,7 +179,6 @@ Partial Class Armors_Editor
         BG3Editor_Stats_ProficiencyGroup1.Name = "BG3Editor_Stats_ProficiencyGroup1"
         BG3Editor_Stats_ProficiencyGroup1.Size = New Size(375, 23)
         BG3Editor_Stats_ProficiencyGroup1.Slot_Type = BG3Editor_Stats_ProficiencyGroup.Item_type_Enum.Armor
-        BG3Editor_Stats_ProficiencyGroup1.SplitterDistance = 100
         BG3Editor_Stats_ProficiencyGroup1.TabIndex = 6
         ' 
         ' BG3Editor_Stats_ArmorClass1
@@ -192,7 +191,6 @@ Partial Class Armors_Editor
         BG3Editor_Stats_ArmorClass1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_ArmorClass1.Name = "BG3Editor_Stats_ArmorClass1"
         BG3Editor_Stats_ArmorClass1.Size = New Size(260, 23)
-        BG3Editor_Stats_ArmorClass1.SplitterDistance = 100
         BG3Editor_Stats_ArmorClass1.TabIndex = 5
         ' 
         ' BG3Editor_Stats_ArmorClassAbility1
@@ -205,7 +203,6 @@ Partial Class Armors_Editor
         BG3Editor_Stats_ArmorClassAbility1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_ArmorClassAbility1.Name = "BG3Editor_Stats_ArmorClassAbility1"
         BG3Editor_Stats_ArmorClassAbility1.Size = New Size(375, 23)
-        BG3Editor_Stats_ArmorClassAbility1.SplitterDistance = 100
         BG3Editor_Stats_ArmorClassAbility1.TabIndex = 4
         ' 
         ' BG3Editor_Stats_StatusOnEquip1
@@ -217,8 +214,8 @@ Partial Class Armors_Editor
         BG3Editor_Stats_StatusOnEquip1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_StatusOnEquip1.Name = "BG3Editor_Stats_StatusOnEquip1"
         BG3Editor_Stats_StatusOnEquip1.Size = New Size(378, 23)
-        BG3Editor_Stats_StatusOnEquip1.SplitterDistance = 100
         BG3Editor_Stats_StatusOnEquip1.TabIndex = 3
+        BG3Editor_Stats_StatusOnEquip1.TextExpander = True
         ' 
         ' BG3Editor_Stats_ArmorType1
         ' 
@@ -230,7 +227,6 @@ Partial Class Armors_Editor
         BG3Editor_Stats_ArmorType1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_ArmorType1.Name = "BG3Editor_Stats_ArmorType1"
         BG3Editor_Stats_ArmorType1.Size = New Size(375, 23)
-        BG3Editor_Stats_ArmorType1.SplitterDistance = 100
         BG3Editor_Stats_ArmorType1.TabIndex = 2
         ' 
         ' BG3Editor_Stats_Boosts1
@@ -242,8 +238,8 @@ Partial Class Armors_Editor
         BG3Editor_Stats_Boosts1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_Boosts1.Name = "BG3Editor_Stats_Boosts1"
         BG3Editor_Stats_Boosts1.Size = New Size(378, 23)
-        BG3Editor_Stats_Boosts1.SplitterDistance = 100
         BG3Editor_Stats_Boosts1.TabIndex = 1
+        BG3Editor_Stats_Boosts1.TextExpander = True
         ' 
         ' BG3Editor_Stats_PassivesOnEquip1
         ' 
@@ -254,8 +250,8 @@ Partial Class Armors_Editor
         BG3Editor_Stats_PassivesOnEquip1.MinimumSize = New Size(100, 23)
         BG3Editor_Stats_PassivesOnEquip1.Name = "BG3Editor_Stats_PassivesOnEquip1"
         BG3Editor_Stats_PassivesOnEquip1.Size = New Size(378, 23)
-        BG3Editor_Stats_PassivesOnEquip1.SplitterDistance = 100
         BG3Editor_Stats_PassivesOnEquip1.TabIndex = 0
+        BG3Editor_Stats_PassivesOnEquip1.TextExpander = True
         ' 
         ' TabControl2
         ' 
