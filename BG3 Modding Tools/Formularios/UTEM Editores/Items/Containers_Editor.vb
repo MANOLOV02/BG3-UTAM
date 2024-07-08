@@ -43,13 +43,16 @@ Public Class Containers_Editor
         Select Case tipo
             Case BG3Cloner.Clonetype.None
                 BG3Editor_Template_Container_tt1.Replace_Attribute(Clone_Nuevonod, Prefix + "Treasure_" + Template_guid)
+                TTSavedname = Prefix + "Treasure_" + Template_guid
             Case BG3Cloner.Clonetype.Clone
                 BG3Editor_Template_Container_tt1.Replace_Attribute(Clone_Nuevonod, Prefix + "Treasure_" + Template_guid)
+                TTSavedname = Prefix + "Treasure_" + Template_guid
             Case BG3Cloner.Clonetype.Inherit
                 BG3Editor_Template_Container_tt1.Replace_Attribute(Clone_Nuevonod, Prefix + "Treasure_" + Template_guid)
+                TTSavedname = Prefix + "Treasure_" + Template_guid
             Case BG3Cloner.Clonetype.Override
                 BG3Editor_Template_Container_tt1.Replace_Attribute(Clone_Nuevonod, Prefix + "Treasure_" + Template_guid)
-
+                TTSavedname = Prefix + "Treasure_" + Template_guid
             Case Else
                 Debugger.Break()
         End Select
@@ -121,6 +124,7 @@ Public Class Containers_Editor
     ' Subs Especificos Containers
 
     Public Sub SaveTT()
+        BG3Editor_Template_Container_tt1.Read(SelectedTmp)
         Dim ttname As String = BG3Editor_Template_Container_tt1.TextBox1.Text
         If ttname <> TTSavedname Then RemoveTT(TTSavedname)
         If FuncionesHelpers.GameEngine.UtamTreasures.Where(Function(pf) pf.Mapkey_WithoutOverride = ttname).Any = False Then

@@ -28,6 +28,8 @@ Partial Class Treasure_table_editor
         GroupBoxContent = New GroupBox()
         ListBox2 = New ListBox()
         GroupBox3 = New GroupBox()
+        RadioButton2 = New RadioButton()
+        RadioButton1 = New RadioButton()
         Label11 = New Label()
         Label10 = New Label()
         Label9 = New Label()
@@ -133,11 +135,13 @@ Partial Class Treasure_table_editor
         ListBox2.ItemHeight = 15
         ListBox2.Location = New Point(223, 22)
         ListBox2.Name = "ListBox2"
-        ListBox2.Size = New Size(565, 319)
+        ListBox2.Size = New Size(565, 274)
         ListBox2.TabIndex = 4
         ' 
         ' GroupBox3
         ' 
+        GroupBox3.Controls.Add(RadioButton2)
+        GroupBox3.Controls.Add(RadioButton1)
         GroupBox3.Controls.Add(Label11)
         GroupBox3.Controls.Add(Label10)
         GroupBox3.Controls.Add(Label9)
@@ -159,16 +163,38 @@ Partial Class Treasure_table_editor
         GroupBox3.Controls.Add(BG3Editor_Treasure_SubItemDefinition1)
         GroupBox3.Controls.Add(Label1)
         GroupBox3.Controls.Add(Button3)
-        GroupBox3.Location = New Point(223, 340)
+        GroupBox3.Location = New Point(223, 305)
         GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(565, 124)
+        GroupBox3.Size = New Size(565, 159)
         GroupBox3.TabIndex = 3
         GroupBox3.TabStop = False
         GroupBox3.Text = "Item"
         ' 
+        ' RadioButton2
+        ' 
+        RadioButton2.AutoSize = True
+        RadioButton2.Location = New Point(238, 53)
+        RadioButton2.Name = "RadioButton2"
+        RadioButton2.Size = New Size(201, 19)
+        RadioButton2.TabIndex = 26
+        RadioButton2.Text = "Use item category when available"
+        RadioButton2.UseVisualStyleBackColor = True
+        ' 
+        ' RadioButton1
+        ' 
+        RadioButton1.AutoSize = True
+        RadioButton1.Checked = True
+        RadioButton1.Location = New Point(88, 53)
+        RadioButton1.Name = "RadioButton1"
+        RadioButton1.Size = New Size(114, 19)
+        RadioButton1.TabIndex = 25
+        RadioButton1.TabStop = True
+        RadioButton1.Text = "Use specific item"
+        RadioButton1.UseVisualStyleBackColor = True
+        ' 
         ' Label11
         ' 
-        Label11.Location = New Point(10, 49)
+        Label11.Location = New Point(10, 83)
         Label11.Name = "Label11"
         Label11.Size = New Size(69, 25)
         Label11.TabIndex = 24
@@ -178,7 +204,7 @@ Partial Class Treasure_table_editor
         ' Label10
         ' 
         Label10.BorderStyle = BorderStyle.FixedSingle
-        Label10.Location = New Point(505, 49)
+        Label10.Location = New Point(505, 83)
         Label10.Name = "Label10"
         Label10.Size = New Size(54, 18)
         Label10.TabIndex = 23
@@ -188,7 +214,7 @@ Partial Class Treasure_table_editor
         ' Label9
         ' 
         Label9.BorderStyle = BorderStyle.FixedSingle
-        Label9.Location = New Point(445, 49)
+        Label9.Location = New Point(445, 83)
         Label9.Name = "Label9"
         Label9.Size = New Size(54, 18)
         Label9.TabIndex = 22
@@ -198,7 +224,7 @@ Partial Class Treasure_table_editor
         ' Label8
         ' 
         Label8.BorderStyle = BorderStyle.FixedSingle
-        Label8.Location = New Point(385, 49)
+        Label8.Location = New Point(385, 83)
         Label8.Name = "Label8"
         Label8.Size = New Size(54, 18)
         Label8.TabIndex = 21
@@ -208,7 +234,7 @@ Partial Class Treasure_table_editor
         ' Label7
         ' 
         Label7.BorderStyle = BorderStyle.FixedSingle
-        Label7.Location = New Point(325, 49)
+        Label7.Location = New Point(325, 83)
         Label7.Name = "Label7"
         Label7.Size = New Size(54, 18)
         Label7.TabIndex = 20
@@ -218,7 +244,7 @@ Partial Class Treasure_table_editor
         ' Label6
         ' 
         Label6.BorderStyle = BorderStyle.FixedSingle
-        Label6.Location = New Point(265, 49)
+        Label6.Location = New Point(265, 83)
         Label6.Name = "Label6"
         Label6.Size = New Size(54, 18)
         Label6.TabIndex = 19
@@ -228,7 +254,7 @@ Partial Class Treasure_table_editor
         ' Label5
         ' 
         Label5.BorderStyle = BorderStyle.FixedSingle
-        Label5.Location = New Point(205, 49)
+        Label5.Location = New Point(205, 83)
         Label5.Name = "Label5"
         Label5.Size = New Size(54, 18)
         Label5.TabIndex = 18
@@ -238,7 +264,7 @@ Partial Class Treasure_table_editor
         ' Label4
         ' 
         Label4.BorderStyle = BorderStyle.FixedSingle
-        Label4.Location = New Point(145, 49)
+        Label4.Location = New Point(145, 83)
         Label4.Name = "Label4"
         Label4.Size = New Size(54, 18)
         Label4.TabIndex = 17
@@ -248,7 +274,7 @@ Partial Class Treasure_table_editor
         ' Label3
         ' 
         Label3.BorderStyle = BorderStyle.FixedSingle
-        Label3.Location = New Point(85, 49)
+        Label3.Location = New Point(85, 83)
         Label3.Name = "Label3"
         Label3.Size = New Size(54, 18)
         Label3.TabIndex = 16
@@ -257,7 +283,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown8
         ' 
-        NumericUpDown8.Location = New Point(505, 67)
+        NumericUpDown8.Location = New Point(505, 101)
         NumericUpDown8.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown8.Name = "NumericUpDown8"
         NumericUpDown8.Size = New Size(54, 23)
@@ -266,7 +292,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown7
         ' 
-        NumericUpDown7.Location = New Point(445, 67)
+        NumericUpDown7.Location = New Point(445, 101)
         NumericUpDown7.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown7.Name = "NumericUpDown7"
         NumericUpDown7.Size = New Size(54, 23)
@@ -275,7 +301,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown6
         ' 
-        NumericUpDown6.Location = New Point(385, 67)
+        NumericUpDown6.Location = New Point(385, 101)
         NumericUpDown6.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown6.Name = "NumericUpDown6"
         NumericUpDown6.Size = New Size(54, 23)
@@ -284,7 +310,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown5
         ' 
-        NumericUpDown5.Location = New Point(325, 67)
+        NumericUpDown5.Location = New Point(325, 101)
         NumericUpDown5.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown5.Name = "NumericUpDown5"
         NumericUpDown5.Size = New Size(54, 23)
@@ -293,7 +319,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown4
         ' 
-        NumericUpDown4.Location = New Point(265, 67)
+        NumericUpDown4.Location = New Point(265, 101)
         NumericUpDown4.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown4.Name = "NumericUpDown4"
         NumericUpDown4.Size = New Size(54, 23)
@@ -302,7 +328,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown3
         ' 
-        NumericUpDown3.Location = New Point(205, 67)
+        NumericUpDown3.Location = New Point(205, 101)
         NumericUpDown3.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown3.Name = "NumericUpDown3"
         NumericUpDown3.Size = New Size(54, 23)
@@ -311,7 +337,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown2
         ' 
-        NumericUpDown2.Location = New Point(145, 67)
+        NumericUpDown2.Location = New Point(145, 101)
         NumericUpDown2.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown2.Name = "NumericUpDown2"
         NumericUpDown2.Size = New Size(54, 23)
@@ -320,7 +346,7 @@ Partial Class Treasure_table_editor
         ' 
         ' NumericUpDown1
         ' 
-        NumericUpDown1.Location = New Point(85, 67)
+        NumericUpDown1.Location = New Point(85, 101)
         NumericUpDown1.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
         NumericUpDown1.Name = "NumericUpDown1"
         NumericUpDown1.Size = New Size(54, 23)
@@ -340,7 +366,7 @@ Partial Class Treasure_table_editor
         ' 
         BG3Editor_Treasure_SubItemDefinition1.EditIsConditional = False
         BG3Editor_Treasure_SubItemDefinition1.Label = "Text"
-        BG3Editor_Treasure_SubItemDefinition1.Location = New Point(10, 93)
+        BG3Editor_Treasure_SubItemDefinition1.Location = New Point(10, 127)
         BG3Editor_Treasure_SubItemDefinition1.Margin = New Padding(0)
         BG3Editor_Treasure_SubItemDefinition1.MaximumSize = New Size(3000, 23)
         BG3Editor_Treasure_SubItemDefinition1.MinimumSize = New Size(100, 23)
@@ -506,6 +532,7 @@ Partial Class Treasure_table_editor
         GroupBox9.ResumeLayout(False)
         GroupBoxContent.ResumeLayout(False)
         GroupBox3.ResumeLayout(False)
+        GroupBox3.PerformLayout()
         CType(NumericUpDown8, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown7, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown6, ComponentModel.ISupportInitialize).EndInit()
@@ -560,4 +587,6 @@ Partial Class Treasure_table_editor
     Friend WithEvents Label11 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents Label9 As Label
+    Friend WithEvents RadioButton2 As RadioButton
+    Friend WithEvents RadioButton1 As RadioButton
 End Class

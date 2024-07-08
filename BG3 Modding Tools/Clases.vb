@@ -2410,6 +2410,7 @@ Public Class BG3_Obj_TreasureTable_Class
             newname = Me.Name_Write
         End If
         Me.Name_Write = oldname
+        FuncionesHelpers.GameEngine.UtamTreasures.Remove(Me)
         FuncionesHelpers.GameEngine.ProcessedTTables.RemoveHyerarchy(Me)
         FuncionesHelpers.GameEngine.ProcessedTTables.Elements.Remove(Me.MapKey)
         Dim lista As List(Of String) = Nothing
@@ -2467,7 +2468,7 @@ Public Class BG3_Obj_TreasureTable_Class
 
     Private Function Clasifica() As BG3_Enum_TreasureTables
         Dim prf As String = ""
-        If Name.IndexOf("_"c, 1) <> -1 Then
+        If Name.Length > 0 AndAlso Name.IndexOf("_"c, 1) <> -1 Then
             prf = Name.Substring(0, Name.IndexOf("_"c, 1))
             If prf.StartsWith("_"c) Then prf = prf.Substring(1)
         Else
@@ -2717,6 +2718,7 @@ Public Class BG3_Obj_Stats_Class
 
     Public Sub Process_Name_Change(oldname As String, newname As String)
         Me.Name_Write = oldname
+        FuncionesHelpers.GameEngine.Utamstats.Remove(Me)
         FuncionesHelpers.GameEngine.ProcessedStatList.RemoveHyerarchy(Me)
         FuncionesHelpers.GameEngine.ProcessedStatList.Elements.Remove(Me.MapKey)
         Dim lista As List(Of String) = Nothing

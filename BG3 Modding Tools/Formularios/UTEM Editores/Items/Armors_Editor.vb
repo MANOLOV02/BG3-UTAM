@@ -11,6 +11,7 @@ Public Class Armors_Editor
     Protected Overrides ReadOnly Property DefaulStat_Type As BG3_Enum_StatType = BG3_Enum_StatType.Armor
 
 
+    Private List_equipment As New SortedList(Of String, String)
 
     Sub New(ByRef MdiParent As Main, Source As BG3_Pak_SourceOfResource_Class)
         ' Esta llamada es exigida por el diseñador.
@@ -39,6 +40,11 @@ Public Class Armors_Editor
             HandledNodes.Add("GameObjects\Equipment\VisualSet\MaterialOverrides\Vector3Parameters;Parameter=" + col)
         Next
 
+        HandledAttributes.Add("EquipmentTypeID")
+
+        For Each it In FuncionesHelpers.GameEngine.ProcessedFlagsAndTags.ElementValues.Where(Function(pf) pf.Type = BG3_Enum_FlagsandTagsType.EquipmentTypes)
+            List_equipment.TryAdd(it.MapKey, it.Name)
+        Next
 
     End Sub
     Protected Overrides Sub Habilita_Edicion_Botones_Specific(Edicion As Boolean)
@@ -83,6 +89,7 @@ Public Class Armors_Editor
             BG3Editor_Stats_ArmorClass1.Read(SelectedStat)
             BG3Editor_Complex_StatusList1.Read(SelectedTmp)
             BG3Editor_Complex_ArmorEquipment1.Read(SelectedTmp)
+            BG3Editor_Template_EquipmenTypeId1.Read(SelectedTmp)
         Else
             BG3Editor_Stats_Boosts1.Clear()
             BG3Editor_Stats_DefaultBoosts1.Clear()
@@ -95,7 +102,7 @@ Public Class Armors_Editor
             BG3Editor_Stats_ArmorClass1.Clear()
             BG3Editor_Complex_StatusList1.Clear()
             BG3Editor_Complex_ArmorEquipment1.Clear()
-
+            BG3Editor_Template_EquipmenTypeId1.Clear()
         End If
     End Sub
     Protected Overrides Sub Process_Cancel_Specifics()
@@ -119,6 +126,7 @@ Public Class Armors_Editor
         BG3Editor_Stats_ArmorClass1.Write(SelectedStat)
         BG3Editor_Complex_StatusList1.Write(SelectedTmp)
         BG3Editor_Complex_ArmorEquipment1.Write(SelectedTmp)
+        BG3Editor_Template_EquipmenTypeId1.Write(SelectedTmp)
     End Sub
     Protected Overrides Sub Process_Save_Objetos_Specifics()
 
@@ -167,6 +175,15 @@ Public Class Armors_Editor
 
     Private Sub BG3Editor_Complex_ArmorEquipment1_Load(sender As Object, e As EventArgs) Handles BG3Editor_Complex_ArmorEquipment1.Load
 
+    End Sub
+
+    Private Sub ButtonVT_Click(sender As Object, e As EventArgs) Handles ButtonVT.Click
+        BG3Editor_Template_EquipmenTypeId1.TextBox1.Text = ""
+    End Sub
+    Private Sub EquipmentName() Handles BG3Editor_Template_EquipmenTypeId1.Inside_Text_Changed
+        Dim nam As String = "Unknown"
+        List_equipment.TryGetValue(BG3Editor_Template_EquipmenTypeId1.TextBox1.Text, nam)
+        Label1.Text = "(" + nam + ")"
     End Sub
 
     ' Subs Especificos Containers

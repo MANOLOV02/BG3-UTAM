@@ -617,7 +617,12 @@ Public Class Treasure_table_editor
         Drop_Cualquiera("T_" + que.Mapkey_WithoutOverride)
     End Sub
     Private Sub Drop_OBJ(que As BG3_Obj_Stats_Class)
-        Drop_Cualquiera("I_" + que.Mapkey_WithoutOverride)
+        If RadioButton2.Checked = True AndAlso que.Get_Data_Or_Inherited_or_Empty("ObjectCategory") <> "" Then
+            Drop_Cualquiera(que.Get_Data_Or_Inherited_or_Empty("ObjectCategory"))
+        Else
+            Drop_Cualquiera("I_" + que.Mapkey_WithoutOverride)
+        End If
+
     End Sub
     Private Sub Drop_Cualquiera(It_Name As String)
         Dim st = CType(ListBox1.Items(ListBox1.SelectedIndex).value, BG3_Obj_TreasureTable_Subtable_Class)
@@ -678,4 +683,7 @@ Public Class Treasure_table_editor
         End If
     End Sub
 
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
 End Class

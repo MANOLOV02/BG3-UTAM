@@ -24,7 +24,7 @@ Class FuncionesHelpers
     Public Shared Jsonoptions As New JsonSerializerOptions With {.IgnoreReadOnlyProperties = True, .IgnoreReadOnlyFields = True, .WriteIndented = True, .DefaultIgnoreCondition = Serialization.JsonIgnoreCondition.WhenWritingDefault}
     Public Shared Small_No_Ok As New Bitmap(My.Resources.No_Ok.ToBitmap, 16, 16)
     Public Shared Small_Ok As New Bitmap(My.Resources.Ok.ToBitmap, 16, 16)
-    Public Shared Slots_Armor As New List(Of String) From {"Breast", "Amulet", "VanityBody", "Boots", "VanityBoots", "Gloves", "Cloak", "Helmet", "Ring", "Shield (Melee Offhand Weapon)", "Underwear"} ' Shield is forced in the control
+    Public Shared Slots_Armor As New List(Of String) From {"Breast", "Amulet", "VanityBody", "Boots", "VanityBoots", "Gloves", "Cloak", "Helmet", "Ring", "Shield (Melee Offhand Weapon)", "Underwear", "MusicalInstrument"} ' Shield is forced in the control
     Public Shared Slots_Weapons As New List(Of String) From {"Melee Main Weapon", "Melee Offhand Weapon", "Ranged Main Weapon", "Ranged Offhand Weapon"}
     Public Shared Slots_Others As New List(Of String) From {"Wings", "Horns", "Overhead", "MusicalInstrument"}
     Public Shared ProficiencyGroup_Armor As New List(Of String) From {"None", "LightArmor", "MediumArmor", "HeavyArmor", "MusicalInstrument"}

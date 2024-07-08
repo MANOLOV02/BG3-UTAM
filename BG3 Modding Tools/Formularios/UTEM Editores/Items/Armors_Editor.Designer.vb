@@ -34,6 +34,9 @@ Partial Class Armors_Editor
         TabControl2 = New TabControl()
         TabPageArmorsG = New TabPage()
         GroupBoxArmorsG = New GroupBox()
+        Label2 = New Label()
+        Label1 = New Label()
+        BG3Editor_Template_EquipmenTypeId1 = New BG3Editor_Template_EquipmentTypeID()
         TabPageArmorsB = New TabPage()
         GroupBoxArmors1 = New GroupBox()
         TabPageArmorsS = New TabPage()
@@ -42,6 +45,7 @@ Partial Class Armors_Editor
         TabPageEquipment = New TabPage()
         GroupBoxEquipment = New GroupBox()
         BG3Editor_Complex_ArmorEquipment1 = New BG3Editor_Complex_ArmorEquipment()
+        ButtonVT = New Button()
         CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox3.SuspendLayout()
         TabPage3.SuspendLayout()
@@ -71,8 +75,8 @@ Partial Class Armors_Editor
         ' 
         BG3Selector_Template1.CloneLabel = "Drop a Stat or a Template to add from it.  It must descend from armor bases."
         BG3Selector_Template1.Selection = BG3_Enum_UTAM_Type.Armor
-        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Body"}
-        BG3Selector_Template1.Template_MustDescend_From = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6"}
+        BG3Selector_Template1.Stat_MustDescend_From = New String() {"_Body", "_Instruments"}
+        BG3Selector_Template1.Template_MustDescend_From = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6", "ddf636cb-5d3c-43dc-a33b-fc92df496e95"}
         ' 
         ' GroupBox9
         ' 
@@ -103,7 +107,7 @@ Partial Class Armors_Editor
         ' BG3Editor_Template_Parent1
         ' 
         BG3Editor_Template_Parent1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6"}
+        BG3Editor_Template_Parent1.MustDescendFrom = New String() {"a09273ba-6549-4cf9-ba47-615a962baf9f", "303990e3-5546-44a3-9c5a-f9aa1702ad51", "0af630e0-82eb-4b83-baa2-e296f97a7a4e", "77bee355-c1be-4182-bbe9-2279d3c856d6", "ddf636cb-5d3c-43dc-a33b-fc92df496e95"}
         ' 
         ' BG3Editor_Template_TechnicalDescription1
         ' 
@@ -132,7 +136,7 @@ Partial Class Armors_Editor
         ' BG3Editor_Stat_Using1
         ' 
         BG3Editor_Stat_Using1.EditorType = BG3_Editor_Type.Textbox
-        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Body"}
+        BG3Editor_Stat_Using1.MustDescendFrom = New String() {"_Body", "_Instruments"}
         ' 
         ' TabControl1
         ' 
@@ -278,6 +282,10 @@ Partial Class Armors_Editor
         ' 
         ' GroupBoxArmorsG
         ' 
+        GroupBoxArmorsG.Controls.Add(ButtonVT)
+        GroupBoxArmorsG.Controls.Add(Label2)
+        GroupBoxArmorsG.Controls.Add(Label1)
+        GroupBoxArmorsG.Controls.Add(BG3Editor_Template_EquipmenTypeId1)
         GroupBoxArmorsG.Controls.Add(BG3Editor_Stats_ArmorClass1)
         GroupBoxArmorsG.Controls.Add(BG3Editor_Stats_ProficiencyGroup1)
         GroupBoxArmorsG.Controls.Add(BG3Editor_Stats_ArmorType1)
@@ -289,6 +297,37 @@ Partial Class Armors_Editor
         GroupBoxArmorsG.Size = New Size(384, 229)
         GroupBoxArmorsG.TabIndex = 0
         GroupBoxArmorsG.TabStop = False
+        ' 
+        ' Label2
+        ' 
+        Label2.Location = New Point(3, 130)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(116, 23)
+        Label2.TabIndex = 14
+        Label2.Text = "Equipment name"
+        Label2.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' Label1
+        ' 
+        Label1.Location = New Point(125, 130)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(255, 23)
+        Label1.TabIndex = 13
+        Label1.Text = "(Unknown)"
+        Label1.TextAlign = ContentAlignment.MiddleLeft
+        ' 
+        ' BG3Editor_Template_EquipmenTypeId1
+        ' 
+        BG3Editor_Template_EquipmenTypeId1.DropIcon = True
+        BG3Editor_Template_EquipmenTypeId1.Label = "Equipment"
+        BG3Editor_Template_EquipmenTypeId1.Location = New Point(3, 107)
+        BG3Editor_Template_EquipmenTypeId1.Margin = New Padding(0)
+        BG3Editor_Template_EquipmenTypeId1.MaximumSize = New Size(3000, 23)
+        BG3Editor_Template_EquipmenTypeId1.MinimumSize = New Size(100, 23)
+        BG3Editor_Template_EquipmenTypeId1.Name = "BG3Editor_Template_EquipmenTypeId1"
+        BG3Editor_Template_EquipmenTypeId1.Size = New Size(348, 23)
+        BG3Editor_Template_EquipmenTypeId1.SplitterDistance = 80
+        BG3Editor_Template_EquipmenTypeId1.TabIndex = 12
         ' 
         ' TabPageArmorsB
         ' 
@@ -374,9 +413,18 @@ Partial Class Armors_Editor
         BG3Editor_Complex_ArmorEquipment1.Size = New Size(801, 450)
         BG3Editor_Complex_ArmorEquipment1.TabIndex = 0
         ' 
+        ' ButtonVT
+        ' 
+        ButtonVT.Location = New Point(354, 107)
+        ButtonVT.Name = "ButtonVT"
+        ButtonVT.Size = New Size(24, 23)
+        ButtonVT.TabIndex = 15
+        ButtonVT.Text = "X"
+        ButtonVT.UseVisualStyleBackColor = True
+        ' 
         ' Armors_Editor
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1169, 596)
         Name = "Armors_Editor"
@@ -426,4 +474,8 @@ Partial Class Armors_Editor
     Friend WithEvents TabPageEquipment As TabPage
     Friend WithEvents BG3Editor_Complex_ArmorEquipment1 As BG3Editor_Complex_ArmorEquipment
     Friend WithEvents GroupBoxEquipment As GroupBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label1 As Label
+    Friend WithEvents BG3Editor_Template_EquipmenTypeId1 As BG3Editor_Template_EquipmentTypeID
+    Friend WithEvents ButtonVT As Button
 End Class
