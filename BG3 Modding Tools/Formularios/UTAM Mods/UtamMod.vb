@@ -503,6 +503,12 @@ Public Class UtamMod
         LSLib.LS.ResourceUtils.SaveResource(RootV, CurrentMod.VisualBanksFilePath, Funciones.ConversionParams_LSLIB)
 
 
+
+        ' Genera RootTemplate (No LEVELNAME)
+        For Each fil In New DirectoryInfo(CurrentMod.LevelsFolderPath).GetFiles("*.ls?", SearchOption.AllDirectories)
+            fil.Delete()
+        Next
+
         For Each Lev In FuncionesHelpers.GameEngine.UtamTemplates.Where(Function(pf) pf.ReadAttribute_Or_Empty("LevelName") <> "").Select(Function(PF) PF.ReadAttribute_Or_Empty("LevelName")).Distinct
             Dim type As BG3_Enum_Templates_Type
             For z = 0 To 1

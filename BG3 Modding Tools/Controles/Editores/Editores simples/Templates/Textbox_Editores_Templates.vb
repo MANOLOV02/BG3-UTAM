@@ -64,13 +64,17 @@ Public Class BG3Editor_Template_ParentId
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Template_Class) As Boolean
         If IsNothing(Obj) Then Return False
         If Me.AllowEdit = False Then Return False
-        If Obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" Then Return False
+        If Obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" AndAlso Obj.ReadAttribute_Or_Empty("TemplateName") = "" Then Return False
         If Not IsNothing(Last_read) AndAlso Obj.Is_Descendant(CType(Last_read, BG3_Obj_Template_Class).MapKey) Then Return False
         Return BG3Cloner.CheckDescendant_Generic(Obj, MustDescendFrom)
     End Function
     Public Overrides Sub Drop_OBJ(Obj As BG3_Obj_Template_Class)
         If Me.EditIsConditional = True Then Me.CheckBox1.Checked = True
         Me.TextBox1.Text = Obj.Mapkey_WithoutOverride
+
+        If Obj.ReadAttribute_Or_Empty("ParentTemplateId") = "" Then
+            If Not IsNothing(Obj.Parent) Then Me.TextBox1.Text = Obj.Parent.Mapkey_WithoutOverride
+        End If
     End Sub
     Public Overrides Function Drop_Verify_OBJ(Obj As BG3_Obj_Stats_Class) As Boolean
         If IsNothing(Obj) Then Return False

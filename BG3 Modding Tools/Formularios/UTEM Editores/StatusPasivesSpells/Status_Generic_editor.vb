@@ -55,6 +55,9 @@ Public Class Status_Generic_editor
         BG3Selector_Stat1.Load_Templates(FuncionesHelpers.GameEngine.Utamstats)
         Cursor.Current = Cursors.Default
     End Sub
+    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        Me.Activate()
+    End Sub
     Public ReadOnly Property LocationtoNameForm As Point
         Get
             Return Me.SplitContainer1.Location

@@ -27,7 +27,7 @@ Partial Class Treasure_table_editor
         GroupBox9 = New GroupBox()
         GroupBoxContent = New GroupBox()
         ListBox2 = New ListBox()
-        GroupBox3 = New GroupBox()
+        GroupBoxItems = New GroupBox()
         RadioButton2 = New RadioButton()
         RadioButton1 = New RadioButton()
         Label11 = New Label()
@@ -51,7 +51,7 @@ Partial Class Treasure_table_editor
         BG3Editor_Treasure_SubItemDefinition1 = New BG3Editor_Treasure_SubItemDefinition()
         Label1 = New Label()
         Button3 = New Button()
-        GroupBox2 = New GroupBox()
+        GroupBoxSubtables = New GroupBox()
         BG3Editor_Treasure_SubtableDefinition1 = New BG3Editor_Treasure_SubtableDefinition()
         Button2 = New Button()
         Button1 = New Button()
@@ -64,7 +64,7 @@ Partial Class Treasure_table_editor
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
         GroupBoxContent.SuspendLayout()
-        GroupBox3.SuspendLayout()
+        GroupBoxItems.SuspendLayout()
         CType(NumericUpDown8, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown7, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown6, ComponentModel.ISupportInitialize).BeginInit()
@@ -73,7 +73,7 @@ Partial Class Treasure_table_editor
         CType(NumericUpDown3, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).BeginInit()
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).BeginInit()
-        GroupBox2.SuspendLayout()
+        GroupBoxSubtables.SuspendLayout()
         GroupBoxBasicStats.SuspendLayout()
         TabControl1.SuspendLayout()
         CType(SplitContainer1, ComponentModel.ISupportInitialize).BeginInit()
@@ -118,8 +118,8 @@ Partial Class Treasure_table_editor
         ' GroupBoxContent
         ' 
         GroupBoxContent.Controls.Add(ListBox2)
-        GroupBoxContent.Controls.Add(GroupBox3)
-        GroupBoxContent.Controls.Add(GroupBox2)
+        GroupBoxContent.Controls.Add(GroupBoxItems)
+        GroupBoxContent.Controls.Add(GroupBoxSubtables)
         GroupBoxContent.Controls.Add(ListBox1)
         GroupBoxContent.Location = New Point(6, 87)
         GroupBoxContent.Name = "GroupBoxContent"
@@ -138,37 +138,37 @@ Partial Class Treasure_table_editor
         ListBox2.Size = New Size(565, 274)
         ListBox2.TabIndex = 4
         ' 
-        ' GroupBox3
+        ' GroupBoxItems
         ' 
-        GroupBox3.Controls.Add(RadioButton2)
-        GroupBox3.Controls.Add(RadioButton1)
-        GroupBox3.Controls.Add(Label11)
-        GroupBox3.Controls.Add(Label10)
-        GroupBox3.Controls.Add(Label9)
-        GroupBox3.Controls.Add(Label8)
-        GroupBox3.Controls.Add(Label7)
-        GroupBox3.Controls.Add(Label6)
-        GroupBox3.Controls.Add(Label5)
-        GroupBox3.Controls.Add(Label4)
-        GroupBox3.Controls.Add(Label3)
-        GroupBox3.Controls.Add(NumericUpDown8)
-        GroupBox3.Controls.Add(NumericUpDown7)
-        GroupBox3.Controls.Add(NumericUpDown6)
-        GroupBox3.Controls.Add(NumericUpDown5)
-        GroupBox3.Controls.Add(NumericUpDown4)
-        GroupBox3.Controls.Add(NumericUpDown3)
-        GroupBox3.Controls.Add(NumericUpDown2)
-        GroupBox3.Controls.Add(NumericUpDown1)
-        GroupBox3.Controls.Add(Label2)
-        GroupBox3.Controls.Add(BG3Editor_Treasure_SubItemDefinition1)
-        GroupBox3.Controls.Add(Label1)
-        GroupBox3.Controls.Add(Button3)
-        GroupBox3.Location = New Point(223, 305)
-        GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(565, 159)
-        GroupBox3.TabIndex = 3
-        GroupBox3.TabStop = False
-        GroupBox3.Text = "Item"
+        GroupBoxItems.Controls.Add(RadioButton2)
+        GroupBoxItems.Controls.Add(RadioButton1)
+        GroupBoxItems.Controls.Add(Label11)
+        GroupBoxItems.Controls.Add(Label10)
+        GroupBoxItems.Controls.Add(Label9)
+        GroupBoxItems.Controls.Add(Label8)
+        GroupBoxItems.Controls.Add(Label7)
+        GroupBoxItems.Controls.Add(Label6)
+        GroupBoxItems.Controls.Add(Label5)
+        GroupBoxItems.Controls.Add(Label4)
+        GroupBoxItems.Controls.Add(Label3)
+        GroupBoxItems.Controls.Add(NumericUpDown8)
+        GroupBoxItems.Controls.Add(NumericUpDown7)
+        GroupBoxItems.Controls.Add(NumericUpDown6)
+        GroupBoxItems.Controls.Add(NumericUpDown5)
+        GroupBoxItems.Controls.Add(NumericUpDown4)
+        GroupBoxItems.Controls.Add(NumericUpDown3)
+        GroupBoxItems.Controls.Add(NumericUpDown2)
+        GroupBoxItems.Controls.Add(NumericUpDown1)
+        GroupBoxItems.Controls.Add(Label2)
+        GroupBoxItems.Controls.Add(BG3Editor_Treasure_SubItemDefinition1)
+        GroupBoxItems.Controls.Add(Label1)
+        GroupBoxItems.Controls.Add(Button3)
+        GroupBoxItems.Location = New Point(223, 305)
+        GroupBoxItems.Name = "GroupBoxItems"
+        GroupBoxItems.Size = New Size(565, 159)
+        GroupBoxItems.TabIndex = 3
+        GroupBoxItems.TabStop = False
+        GroupBoxItems.Text = "Item"
         ' 
         ' RadioButton2
         ' 
@@ -397,17 +397,17 @@ Partial Class Treasure_table_editor
         Button3.Text = "Delete"
         Button3.UseVisualStyleBackColor = True
         ' 
-        ' GroupBox2
+        ' GroupBoxSubtables
         ' 
-        GroupBox2.Controls.Add(BG3Editor_Treasure_SubtableDefinition1)
-        GroupBox2.Controls.Add(Button2)
-        GroupBox2.Controls.Add(Button1)
-        GroupBox2.Location = New Point(6, 389)
-        GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(211, 75)
-        GroupBox2.TabIndex = 2
-        GroupBox2.TabStop = False
-        GroupBox2.Text = "Subtable"
+        GroupBoxSubtables.Controls.Add(BG3Editor_Treasure_SubtableDefinition1)
+        GroupBoxSubtables.Controls.Add(Button2)
+        GroupBoxSubtables.Controls.Add(Button1)
+        GroupBoxSubtables.Location = New Point(6, 389)
+        GroupBoxSubtables.Name = "GroupBoxSubtables"
+        GroupBoxSubtables.Size = New Size(211, 75)
+        GroupBoxSubtables.TabIndex = 2
+        GroupBoxSubtables.TabStop = False
+        GroupBoxSubtables.Text = "Subtable"
         ' 
         ' BG3Editor_Treasure_SubtableDefinition1
         ' 
@@ -531,8 +531,8 @@ Partial Class Treasure_table_editor
         TabPage1.ResumeLayout(False)
         GroupBox9.ResumeLayout(False)
         GroupBoxContent.ResumeLayout(False)
-        GroupBox3.ResumeLayout(False)
-        GroupBox3.PerformLayout()
+        GroupBoxItems.ResumeLayout(False)
+        GroupBoxItems.PerformLayout()
         CType(NumericUpDown8, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown7, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown6, ComponentModel.ISupportInitialize).EndInit()
@@ -541,7 +541,7 @@ Partial Class Treasure_table_editor
         CType(NumericUpDown3, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown2, ComponentModel.ISupportInitialize).EndInit()
         CType(NumericUpDown1, ComponentModel.ISupportInitialize).EndInit()
-        GroupBox2.ResumeLayout(False)
+        GroupBoxSubtables.ResumeLayout(False)
         GroupBoxBasicStats.ResumeLayout(False)
         TabControl1.ResumeLayout(False)
         SplitContainer1.Panel1.ResumeLayout(False)
@@ -560,10 +560,10 @@ Partial Class Treasure_table_editor
     Friend WithEvents BG3Editor_Treasure_CanMerge1 As BG3Editor_Treasure_CanMerge
     Friend WithEvents GroupBoxContent As GroupBox
     Friend WithEvents ListBox1 As ListBox
-    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents GroupBoxSubtables As GroupBox
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
-    Friend WithEvents GroupBox3 As GroupBox
+    Friend WithEvents GroupBoxItems As GroupBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Button3 As Button
     Friend WithEvents BG3Editor_Treasure_SubtableDefinition1 As BG3Editor_Treasure_SubtableDefinition

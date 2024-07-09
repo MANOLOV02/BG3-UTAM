@@ -58,6 +58,10 @@ Public Class Treasure_table_editor
         BG3Selector_Treasure1.Load_Templates(FuncionesHelpers.GameEngine.UtamTreasures)
         Cursor.Current = Cursors.Default
     End Sub
+    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        Me.Activate()
+    End Sub
+
     Public ReadOnly Property LocationtoNameForm As Point
         Get
             Return Me.SplitContainer1.Location
@@ -109,7 +113,8 @@ Public Class Treasure_table_editor
     ' Procesos Comunes Editores
     Private Sub Habilita_Edicion_Botones(Edicion As Boolean)
         GroupBoxBasicStats.Enabled = Edicion
-        GroupBoxContent.Enabled = Edicion
+        GroupBoxItems.Enabled = Edicion
+        GroupBoxSubtables.Enabled = Edicion
         Habilita_Edicion_Botones_Specific(Edicion)
         Process_Selection_Change()
     End Sub
@@ -426,7 +431,7 @@ Public Class Treasure_table_editor
             Button2.Enabled = True
             Dim st = CType(ListBox1.Items(ListBox1.SelectedIndex).value, BG3_Obj_TreasureTable_Subtable_Class)
             BG3Editor_Treasure_SubtableDefinition1.AllowEdit = True
-            BG3Editor_Treasure_SubtableDefinition1.Enabled = GroupBoxContent.Enabled
+            BG3Editor_Treasure_SubtableDefinition1.Enabled = GroupBoxSubtables.Enabled
             BG3Editor_Treasure_SubtableDefinition1.Read(st)
         End If
         read_Items
@@ -479,7 +484,7 @@ Public Class Treasure_table_editor
             Dim st = CType(ListBox1.Items(ListBox1.SelectedIndex).value, BG3_Obj_TreasureTable_Subtable_Class)
             Dim it = CType(ListBox2.Items(ListBox2.SelectedIndex).value, BG3_Obj_TreasureTable_TableItem_Class)
             BG3Editor_Treasure_SubItemDefinition1.AllowEdit = True
-            BG3Editor_Treasure_SubItemDefinition1.Enabled = GroupBoxContent.Enabled
+            BG3Editor_Treasure_SubItemDefinition1.Enabled = GroupBoxItems.Enabled
             BG3Editor_Treasure_SubItemDefinition1.Read(it)
             procesa_numeros
         End If
@@ -499,6 +504,7 @@ Public Class Treasure_table_editor
 
 
     Private Sub Label1_DragEnter(sender As Object, e As DragEventArgs) Handles Label1.DragEnter, ListBox2.DragEnter
+        If GroupBoxItems.Enabled = False Then Exit Sub
         If e.Data.GetDataPresent(GetType(BG3_Obj_Stats_Class)) Then
             Dim obj As BG3_Obj_Stats_Class = e.Data.GetData(GetType(BG3_Obj_Stats_Class))
             If Not IsNothing(obj) Then
@@ -657,7 +663,7 @@ Public Class Treasure_table_editor
 
     Private Sub NumericUpDown1_ValueChanged(sender As Object, e As EventArgs) Handles NumericUpDown1.Leave, NumericUpDown2.Leave, NumericUpDown3.Leave, NumericUpDown4.Leave, NumericUpDown5.Leave, NumericUpDown6.Leave, NumericUpDown7.Leave, NumericUpDown8.Leave
         If ListBox1.SelectedIndex <> -1 And ListBox2.SelectedIndex <> -1 Then
-            If GroupBoxContent.Enabled = True Then
+            If GroupBoxItems.Enabled = True Then
                 Dim it = CType(ListBox2.Items(ListBox2.SelectedIndex).value, BG3_Obj_TreasureTable_TableItem_Class)
                 it.ConditionArray(0) = NumericUpDown1.Value
                 it.ConditionArray(1) = NumericUpDown2.Value

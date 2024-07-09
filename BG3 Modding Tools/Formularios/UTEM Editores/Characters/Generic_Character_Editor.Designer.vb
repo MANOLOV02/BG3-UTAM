@@ -1132,7 +1132,7 @@ Partial Class Generic_Character_Editor
         MinimumSize = New Size(0, 0)
         Name = "Generic_Character_Editor"
         StartPosition = FormStartPosition.CenterScreen
-        Text = "Generic Editor"
+        Text = "Characters editor"
         CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         GroupBox3.ResumeLayout(False)
         TabPage5.ResumeLayout(False)

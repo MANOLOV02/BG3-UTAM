@@ -465,7 +465,7 @@ Public Class BG3Cloner
     End Function
     Public Shared Function CheckDescendant_Generic(obj As Object, lista As String())
         If lista.Length = 0 Then Return True
-        If lista.Length = 1 AndAlso lista(0) = "None" Then Return True
+        If lista.Length = 1 AndAlso (lista(0) = "None" Or lista(0) = "") Then Return True
         If lista.Where(Function(pf) (pf.StartsWith("Not") = True AndAlso obj.Is_Descendant(pf.Substring(4)) = True)).Any Then Return False
         If lista.Where(Function(pf) (pf.StartsWith("Not") = False AndAlso obj.Is_Descendant(pf) = True)).Any Then Return True
         If My.Computer.Keyboard.CtrlKeyDown Then

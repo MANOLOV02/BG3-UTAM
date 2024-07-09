@@ -67,6 +67,9 @@ Public Class ActionResource_Editor
         BG3Selector_FlagsandTags1.Load_Templates(FuncionesHelpers.GameEngine.Utamflagsandtags)
         Cursor.Current = Cursors.Default
     End Sub
+    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        Me.Activate()
+    End Sub
     Private Sub Explore_Node_DoubleClicked(nod As Object)
         If BG3Selector_FlagsandTags1.IsEditing OrElse BG3Selector_FlagsandTags1.Isclonning_or_transfering Then Exit Sub
         Select Case nod.GetType

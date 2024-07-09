@@ -43,9 +43,6 @@ Public Class Generic_Character_Editor
         Me.DoubleBuffered = True
         Flickering.EnableDoubleBuffering(BG3Selector_Template1.TreeView1)
     End Sub
-    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
-        Me.Activate()
-    End Sub
     Public ReadOnly Property LocationtoNameForm As Point
         Get
             Return Me.SplitContainer1.Location
@@ -62,6 +59,9 @@ Public Class Generic_Character_Editor
         BG3Selector_Template1.Selection = UtamType
         BG3Selector_Template1.Load_Templates(FuncionesHelpers.GameEngine.UtamTemplates)
         Cursor.Current = Cursors.Default
+    End Sub
+    Private Sub ExploraForm_code_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        Me.Activate()
     End Sub
     Private Sub Explore_Node_DoubleClicked(nod As Object)
         If BG3Selector_Template1.IsEditing OrElse BG3Selector_Template1.Isclonning_or_transfering Then Exit Sub
@@ -588,7 +588,7 @@ Public Class Generic_Character_Editor
         att.FromString(par, Funciones.Guid_to_string)
         If eslevel Then
             If Quien.NodeLSLIB.Attributes.TryAdd("TemplateName", att) = False Then
-                att.Value = par
+                Quien.NodeLSLIB.Attributes("TemplateName").Value = par
             End If
         Else
             Quien.NodeLSLIB.Attributes.Remove("TemplateName")

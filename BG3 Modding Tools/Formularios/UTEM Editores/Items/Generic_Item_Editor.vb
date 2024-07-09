@@ -562,7 +562,7 @@ Public Class Generic_Item_Editor
         att.FromString(par, Funciones.Guid_to_string)
         If eslevel Then
             If Quien.NodeLSLIB.Attributes.TryAdd("TemplateName", att) = False Then
-                att.Value = par
+                Quien.NodeLSLIB.Attributes("TemplateName").Value = par
             End If
         Else
             Quien.NodeLSLIB.Attributes.Remove("TemplateName")
