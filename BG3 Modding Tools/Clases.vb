@@ -2796,6 +2796,7 @@ Public Class BG3_Obj_Stats_Class
         If Texto = "" Then Return True
         If Not IsNothing([Using]) AndAlso [Using].Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
         If deep Then
+            If Me.SourceOfResorce.Pak_Or_Folder.Contains(Texto, StringComparison.OrdinalIgnoreCase) Or Me.SourceOfResorce.Filename_Relative.Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
             Dim Builder As New StringBuilder
             Dim tabs = 0
             Get_txt_Single(Me, Builder, tabs, False)
@@ -4120,7 +4121,9 @@ Public MustInherit Class BG3_Obj_Generic_Class
         If Not IsNothing(DisplayName) AndAlso DisplayName.Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
         If MapKey.Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
         If deep Then
+            If Me.SourceOfResorce.Pak_Or_Folder.Contains(Texto, StringComparison.OrdinalIgnoreCase) Or Me.SourceOfResorce.Filename_Relative.Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
             If NodeXML.Contains(Texto, StringComparison.OrdinalIgnoreCase) Then Return True
+
         End If
         Return False
     End Function

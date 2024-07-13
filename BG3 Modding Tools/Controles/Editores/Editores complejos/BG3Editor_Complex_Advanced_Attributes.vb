@@ -375,8 +375,10 @@ Public Class BG3Editor_Complex_Advanced_Attributes
             _Last_read.AppendChild(child)
             Dim treenod2 As New System.Windows.Forms.TreeNode With {.Text = child.Name, .Tag = child}
             TreeView1.SelectedNode.Nodes.Add(treenod2)
+            ReadNodes(treenod2, child)
+            treenod2.ExpandAll()
             TreeView1.SelectedNode = treenod2
-            ButtonAddNode.PerformClick()
+            'ButtonAddNode.PerformClick()
         End If
     End Sub
 
