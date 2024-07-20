@@ -248,7 +248,7 @@ Public Class BG3Editor_Complex_ArmorEquipment
         nodls.Attributes.TryAdd("MapKey", value)
         Dim value2 As New NodeAttribute(AttributeType.UUID)
         value2.FromString(BG3Editor_Template_ParentRaceMapkey1.Text, Funciones.Guid_to_string)
-        nodls.Attributes.TryAdd("MapValue", value)
+        nodls.Attributes.TryAdd("MapValue", value2)
         Return nodls
     End Function
     Private Function Crea_Race_Item(VisualKey As String) As LSLib.LS.Node

@@ -180,8 +180,8 @@ Public Class VisualBank_Editor
                     BG3Editor_Visuals_MaterialType1.Write(SelectedTmp)
                 Case "VertexMaxSlot"
                     Dim values2 As List(Of LSLib.LS.Node) = Nothing
+                    SelectedTmp.NodeLSLIB.Children.Remove("VertexColorMaskSlots")
                     If Template.NodeLSLIB.Children.TryGetValue("VertexColorMaskSlots", values2) Then
-                        SelectedTmp.NodeLSLIB.Children.Remove("VertexColorMaskSlots")
                         For Each value In values2
                             SelectedTmp.NodeLSLIB.AppendChild(value.CloneNode)
                         Next

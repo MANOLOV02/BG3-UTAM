@@ -3082,7 +3082,9 @@ End Enum
 Public Enum BG3_Enum_Icon_Type
     Items
     Portraits
-    Others
+    Others_Files
+    CharacterCreation
+    Others_Atlas
 End Enum
 Public Enum BG3_Enum_UTAM_Type
     Container
@@ -3262,8 +3264,10 @@ Public Class BG3_Obj_IconUV_Class
     End Sub
     Public Overloads ReadOnly Property [Type] As BG3_Enum_Icon_Type
         Get
-            If IsNothing(FilePath) Then Return BG3_Enum_Icon_Type.Others
-            If FilePath.Contains("Portraits", StringComparison.OrdinalIgnoreCase) Then Return BG3_Enum_Icon_Type.Portraits
+            If Me.SourceOfResorce.Filename_Relative.Contains("CharacterCreation") Then Return BG3_Enum_Icon_Type.CharacterCreation
+            If Not IsNothing(FilePath) AndAlso FilePath.Contains("Portraits", StringComparison.OrdinalIgnoreCase) Then Return BG3_Enum_Icon_Type.Portraits
+            If IsNothing(AtlasMapKey) OrElse AtlasMapKey = "" Then Return BG3_Enum_Icon_Type.Others_Files
+            If IsNothing(FilePath) Then Return BG3_Enum_Icon_Type.Others_Atlas
             Return BG3_Enum_Icon_Type.Items
         End Get
     End Property
