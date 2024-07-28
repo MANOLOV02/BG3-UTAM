@@ -17,7 +17,7 @@
 	<Description />
 	<Copyright>Copyright © 2024</Copyright>
 	<Title>BG3 UTAM</Title>
-	<Version>5.6.0</Version>
+	<Version>5.7.0</Version>
   
   </PropertyGroup>
 
@@ -134,6 +134,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Formularios\UTEM Editores\StatusPasivesSpells\Pasives_Editor.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Formularios\UTEM Editores\StatusPasivesSpells\ItemCombo_Editor_TOCHANGE.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Formularios\UTEM Editores\StatusPasivesSpells\Status_Generic_editor.vb" />

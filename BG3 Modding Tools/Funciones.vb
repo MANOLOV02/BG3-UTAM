@@ -404,21 +404,41 @@ Public Class Funciones
                         Next
                     Next
                 Case "PassiveLists"
-                    For Each child In reg.Value.Children("PassiveList")
-                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.PasivesList))
-                    Next
+                    Dim value As List(Of LSLib.LS.Node) = Nothing
+                    If reg.Value.Children.TryGetValue("PassiveList", value) Then
+                        For Each child In value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.PasivesList))
+                        Next
+                    Else
+                        Debugger.Break()
+                    End If
                 Case "AbilityLists"
-                    For Each child In reg.Value.Children("AbilityList")
-                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.AbilityList))
-                    Next
+                    Dim value As List(Of LSLib.LS.Node) = Nothing
+                    If reg.Value.Children.TryGetValue("AbilityList", value) Then
+                        For Each child In value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.AbilityList))
+                        Next
+                    Else
+                        Debugger.Break()
+                    End If
                 Case "SpellLists"
-                    For Each child In reg.Value.Children("SpellList")
-                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SpellList))
-                    Next
+                    Dim value As List(Of LSLib.LS.Node) = Nothing
+                    If reg.Value.Children.TryGetValue("SpellList", value) Then
+                        For Each child In value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SpellList))
+                        Next
+                    Else
+                        Debugger.Break()
+                    End If
                 Case "SkillLists"
-                    For Each child In reg.Value.Children("SkillList")
-                        Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SkillList))
-                    Next
+                    Dim value As List(Of LSLib.LS.Node) = Nothing
+                    If reg.Value.Children.TryGetValue("SkillList", value) Then
+                        For Each child In value
+                            Dim result = GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(child, source, BG3_Enum_FlagsandTagsType.SkillList))
+                        Next
+                    Else
+                        Debugger.Break()
+                    End If
                 Case "ActionResourceDefinitions"
                     For Each Nod In reg.Value.Children
                         For Each child In Nod.Value
@@ -789,7 +809,7 @@ Public Class Funciones
                                             stobj.Data(lines(1)) = lines(2)
                                         End If
                                     Case Else
-                                        Debugger.Break()
+                                        If lines(0).StartsWith("//") = False Then Debugger.Break()
                                 End Select
                             Catch ex As Exception
                                 Debugger.Break()

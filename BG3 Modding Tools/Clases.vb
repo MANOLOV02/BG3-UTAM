@@ -506,7 +506,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.6
+    Public ReadOnly Property CacheVersion As Double = 5.7
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -3108,6 +3108,7 @@ Public Enum BG3_Enum_UTAM_Type
     CharacterBank
     Character
     Treasure
+    ItemCombo
 End Enum
 
 <Serializable>
