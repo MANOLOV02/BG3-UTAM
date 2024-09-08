@@ -453,10 +453,11 @@ Public Class Funciones
                     Next
                 Case "MultiEffectInfos"
                     GameEngine.ProcessedFlagsAndTags.Manage_Overrides(New BG3_Obj_FlagsAndTags_Class(reg.Value, source, BG3_Enum_FlagsandTagsType.MultieffectInfo))
-
+                Case "CustomDice"
                 Case "ActionResourceGroupDefinitions"
                     ' No
-
+                Case "ShortNameCategories"
+                Case "ShortNames"
                 Case "root"
                 Case "AnimationBank"
                 Case "AnimationBlueprintBank"
@@ -474,8 +475,9 @@ Public Class Funciones
                 Case "dialog"
                 Case "DialogBank"
                 Case "DiffusionProfileBank"
-
+                Case "BlueprintOverrides"
                 Case "Emotions"
+                Case "EmoteAnimations"
                 Case "EnterPhaseSoundEvents"
                 Case "EnterSoundEvents"
                 Case "ExitPhaseSoundEvents"
@@ -487,7 +489,7 @@ Public Class Funciones
                 Case "LevelData"
                 Case "LightCookieBank"
                 Case "LightingBank"
-
+                Case "LightingDetails"
                 Case "MeshProxyBank"
                 Case "PhysicsBank"
                 Case "PortalData"
@@ -521,7 +523,6 @@ Public Class Funciones
                 Case "Hints"
                 Case "TutorialInputEvents"
                 Case "Config"
-                Case "CustomDice"
                 Case "DLC"
                 Case "SceneConfig"
 
@@ -586,7 +587,7 @@ Public Class Funciones
                 Case "UnifiedTutorials"
                 Case "LimbsMapping"
                 Case "ModalTutorials"
-
+                Case "EmoteCollections"
                 Case "ItemWallTemplates"
                 Case "ClassDescriptions"
                 Case "AiPathSettings"
@@ -637,6 +638,13 @@ Public Class Funciones
                 Case "Gossips"
                 Case "OriginIntroEntities"
                 Case "LightbarSounds"
+                Case "ColourGradings"
+                Case "Stickers"
+                Case "EmotePoses"
+                Case "FaceExpressionCollections"
+                Case "DecorFrames"
+                Case "FaceExpressions"
+                Case "Vignettes"
                 Case Else
                     Debugger.Break()
             End Select
@@ -768,7 +776,7 @@ Public Class Funciones
                     Debugger.Break()
                 End Try
 
-            Case "ItemProgressionVisuals", "ItemProgressionNames", "BloodTypes", "ItemColor"
+            Case "ItemProgressionVisuals", "ItemProgressionNames", "BloodTypes", "ItemColor", "Spell_Target", "Spell_Projectile"
                 ' IGNORED
             Case Else
                 Using fileStream = New StreamReader(Source.CreateContentReader)
@@ -1109,7 +1117,7 @@ Public Class Funciones
             Case ".chroma", ".clc", ".clm", ".cln", ".cur"
             Case ".dat", ".data", ".fnt"
             Case ".gamescript", ".itemscript", ".patch", ".psocache", ".khn"
-            Case ".bshd"
+            Case ".bshd", ".shd"
                 GameEngine.ProcessedAssets.Manage_Overrides(New BG3_Obj_Assets_Class(Source))
             Case ".dae"
 
@@ -1177,6 +1185,9 @@ Public Class Funciones
             Case ".ffxanim"
             Case ".ffxactor"
             Case ".xcf"
+            Case ".metal"
+            Case ".ma"
+            Case ".bat"
             Case Else
                 Debugger.Break()
         End Select

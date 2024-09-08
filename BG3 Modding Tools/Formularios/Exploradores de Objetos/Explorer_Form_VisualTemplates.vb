@@ -256,6 +256,14 @@ Public Class Explorer_Form_VisualTemplates
                 fil.Close()
                 fil.Dispose()
             Next
+            For Each ass In BG3_Pak_Packages_List_Class.Find_Assets("", BasePath + "_ST", ".shd")
+                Dim fil As New FileStream(ass.MapKey.Replace(BasePath, NewBasePath), FileMode.Create)
+                ass.SourceOfResorce.CreateContentReader.CopyTo(fil)
+                ass.SourceOfResorce.ReleaseMem()
+                fil.Flush()
+                fil.Close()
+                fil.Dispose()
+            Next
             Save_as_Is(NewnameFull)
             Try
                 Dim utammod = CType(Me.MdiParent, Main).ActiveMod

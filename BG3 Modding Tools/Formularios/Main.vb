@@ -237,7 +237,7 @@ Public Class Main
             LoadCacheToolStripMenuItem1.Enabled = CanLoadCache
             ProcessSinglePakToolStripMenuItem.Enabled = GameEngine.Processed
             ProcesserToolStripMenu.Enabled = True
-            ModdsToolStripMenuItem.Enabled = True
+            ModdsToolStripMenuItem.Enabled = CanLoadCache
             LaunchGameToolStripMenuItem.Enabled = GameEngine.Check_folders_GameExe
             If IsNothing(ActiveMod) Then
                 ToolsToolStripMenuItem1.Enabled = False

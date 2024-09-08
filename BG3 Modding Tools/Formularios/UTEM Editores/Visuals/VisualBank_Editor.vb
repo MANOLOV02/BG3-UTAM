@@ -355,5 +355,20 @@ Public Class VisualBank_Editor
         If IsNothing(st) Then LabelMat.Text = "(None)" Else LabelMat.Text = "(" + st.Name + ")"
     End Sub
 
-
+    Private Sub ButtonReplicate_Click(sender As Object, e As EventArgs) Handles ButtonReplicate.Click
+        Dim value As LSLib.LS.Node
+        Dim values As List(Of LSLib.LS.Node) = Nothing
+        Dim mat As String = ""
+        mat = BG3Editor_Visuals_Materialid1.Text
+        If mat <> "" Then
+            If SelectedTmp.NodeLSLIB.Children.TryGetValue("Objects", values) Then
+                For Each value In values
+                    Dim value2 As NodeAttribute = Nothing
+                    If value.Attributes.TryGetValue("MaterialID", value2) Then
+                        value2.FromString(mat, Funciones.Guid_to_string)
+                    End If
+                Next
+            End If
+        End If
+    End Sub
 End Class

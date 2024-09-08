@@ -51,6 +51,7 @@ Partial Class VisualBank_Editor
         BG3Editor_Visuals_VertexMasks1 = New BG3Editor_Visuals_VertexMasks()
         ButtonDeleteMaskSlot = New Button()
         ButtonAddMaskSlot = New Button()
+        ButtonReplicate = New Button()
         TabPage1.SuspendLayout()
         GroupBox9.SuspendLayout()
         TabControl1.SuspendLayout()
@@ -164,7 +165,6 @@ Partial Class VisualBank_Editor
         BG3Editor_VisualBank_SourceFile1.Name = "BG3Editor_VisualBank_SourceFile1"
         BG3Editor_VisualBank_SourceFile1.ReadOnly = True
         BG3Editor_VisualBank_SourceFile1.Size = New Size(743, 23)
-        BG3Editor_VisualBank_SourceFile1.SplitterDistance = 100
         BG3Editor_VisualBank_SourceFile1.TabIndex = 10
         ' 
         ' GroupboxAsset
@@ -225,6 +225,7 @@ Partial Class VisualBank_Editor
         ' 
         ' GroupBoxObjects
         ' 
+        GroupBoxObjects.Controls.Add(ButtonReplicate)
         GroupBoxObjects.Controls.Add(GroupBoxObject)
         GroupBoxObjects.Controls.Add(ListBoxObjects)
         GroupBoxObjects.Controls.Add(ButtonDeleteObject)
@@ -420,6 +421,15 @@ Partial Class VisualBank_Editor
         ButtonAddMaskSlot.Text = "Add"
         ButtonAddMaskSlot.UseVisualStyleBackColor = True
         ' 
+        ' ButtonReplicate
+        ' 
+        ButtonReplicate.Location = New Point(250, 18)
+        ButtonReplicate.Name = "ButtonReplicate"
+        ButtonReplicate.Size = New Size(78, 23)
+        ButtonReplicate.TabIndex = 17
+        ButtonReplicate.Text = "Replicate"
+        ButtonReplicate.UseVisualStyleBackColor = True
+        ' 
         ' VisualBank_Editor
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -470,4 +480,5 @@ Partial Class VisualBank_Editor
     Friend WithEvents LabelMat As Label
     Friend WithEvents BG3Editor_Visuals_oBjectid2 As BG3Editor_Visuals_OBjectID
     Friend WithEvents BG3Editor_Visuals_oBjectid3 As BG3Editor_Visuals_OBjectID
+    Friend WithEvents ButtonReplicate As Button
 End Class

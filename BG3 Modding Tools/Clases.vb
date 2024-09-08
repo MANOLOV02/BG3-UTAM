@@ -1065,7 +1065,14 @@ Public Class BG3_Pak_Packages_List_Class
                 Return 22
             Case Pak = "Gustav.pak"
                 Return 23
-
+            Case Pak = "GustavX.pak"
+                Return 24
+            Case Pak = "HonourX.pak"
+                Return 25
+            Case Pak = "PhotoMode.pak"
+                Return 26
+            Case Pak = "PhotoModeX.pak"
+                Return 27
             Case Pak.StartsWith("Patch1")
                 Return 31
             Case Pak.StartsWith("Patch2")
@@ -1207,7 +1214,11 @@ Public Class Bg3_Mod_Module_List
         Dim source As BG3_Pak_SourceOfResource_Class
         Select Case type
             Case BG3_Enum_Package_Type.BaseGame, BG3_Enum_Package_Type.BaseMod
-                Dim package As BG3_Pak_PackageContainer_Class = GameEngine.ProcessedPackList.Where(Function(pf) pf.PackFileName = pak_or_path).First()
+                Dim packageQuery = GameEngine.ProcessedPackList.Where(Function(pf) pf.PackFileName = pak_or_path AndAlso pf.PackageType = type)
+                If packageQuery.Any() = False Then
+                    Debugger.Break()
+                End If
+                Dim package As BG3_Pak_PackageContainer_Class = packageQuery.First()
                 If Not IsNothing(package.Package) Then
                     For Each meta In package.Package.Files.Where(Function(pf) Path.GetFileName(pf.Name).EndsWith("meta.lsx", StringComparison.OrdinalIgnoreCase))
                         source = New BG3_Pak_SourceOfResource_Class(package, meta)
@@ -1491,7 +1502,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("UUID")
         End Get
         Set(value As String)
-            If NodeLSLIB.Attributes.TryAdd("UUID", New NodeAttribute(AttributeType.FixedString) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("UUID", New NodeAttribute(AttributeType.FixedString) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("UUID").Value = value
             End If
         End Set
@@ -1509,7 +1520,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("Name")
         End Get
         Set(value As String)
-            If NodeLSLIB.Attributes.TryAdd("Name", New NodeAttribute(AttributeType.LSString) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("Name", New NodeAttribute(AttributeType.LSString) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("Name").Value = value
             End If
         End Set
@@ -1519,7 +1530,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("Description")
         End Get
         Set(value As String)
-            If NodeLSLIB.Attributes.TryAdd("Description", New NodeAttribute(AttributeType.LSString) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("Description", New NodeAttribute(AttributeType.LSString) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("Description").Value = value
             End If
         End Set
@@ -1530,7 +1541,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("Folder")
         End Get
         Set(value As String)
-            If NodeLSLIB.Attributes.TryAdd("Folder", New NodeAttribute(AttributeType.LSString) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("Folder", New NodeAttribute(AttributeType.LSString) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("Folder").Value = value
             End If
         End Set
@@ -1540,7 +1551,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("Author")
         End Get
         Set(value As String)
-            If NodeLSLIB.Attributes.TryAdd("Author", New NodeAttribute(AttributeType.LSString) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("Author", New NodeAttribute(AttributeType.LSString) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("Author").Value = value
             End If
         End Set
@@ -1570,7 +1581,7 @@ Public Class BG3_Mod_Module_Class
             Return NodeLSLIB.TryGetOrEmpty("Version64")
         End Get
         Set(value As Long)
-            If NodeLSLIB.Attributes.TryAdd("Version64", New NodeAttribute(AttributeType.Int64) With {.Value = value}) = False Then
+            If NodeLSLIB.Attributes.TryAdd("Version64", New NodeAttribute(AttributeType.Int64) With {.value = value}) = False Then
                 NodeLSLIB.Attributes("Version64").Value = value
             End If
         End Set
@@ -1581,7 +1592,7 @@ Public Class BG3_Mod_Module_Class
         End Get
         Set(value As Long)
             If NodeLSLIB.Children.TryAdd("PublishVersion", {New LSLib.LS.Node With {.Name = "PublishVersion"}}.ToList) = False Then
-                If NodeLSLIB.Children("PublishVersion").First.Attributes.TryAdd("Version64", New NodeAttribute(AttributeType.Int64) With {.Value = value}) = False Then
+                If NodeLSLIB.Children("PublishVersion").First.Attributes.TryAdd("Version64", New NodeAttribute(AttributeType.Int64) With {.value = value}) = False Then
                     NodeLSLIB.Children("PublishVersion").First.Attributes("Version64").Value = value
                 End If
             End If
@@ -2242,7 +2253,9 @@ Public Class BG3_Obj_TreasureTable_Subtable_Class
         Counts = ret.Item1
         Chances = ret.Item2
         If Definition.Replace("; ", ";") <> WriteDefinition() Then
-            Debugger.Break()
+            If Definition <> "3,1;4,1,5,1;6,1" AndAlso source.Filename_Relative <> "Public/GustavDev/Stats/Generated/TreasureTable.txt" Then
+                Debugger.Break()
+            End If
         End If
     End Sub
     <Serialization.JsonIgnore(Condition:=JsonIgnoreCondition.Never)>
@@ -3907,54 +3920,249 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
         End Try
     End Function
 
-    Private Shared Function Check_order(obj As T, ov As T) As Boolean
+    Shared pack_or As New List(Of String)
+    Shared modf As New List(Of String)
+    'Private Shared Function Check_order(obj As T, ov As T) As Boolean
+    '    If ov.SourceOfResorce.PackageType = BG3_Enum_Package_Type.BaseGame Then
+    '        If obj.SourceOfResorce.PackageType = BG3_Enum_Package_Type.BaseGame Then
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then
+    '                If obj.SourceOfResorce.Pak_Or_Folder.ToUpper > ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return True
+    '                If obj.SourceOfResorce.Pak_Or_Folder.ToUpper < ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return False
+    '            End If
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav_Textures") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("GustavX") Then Return False
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("GustavX") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav_Textures") Then Return True
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("GustavX") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") Then Return True
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("GustavX") Then Return False
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") Then Return True
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") Then Return False
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False Then Return True
+    '            If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then Return False
+    '            If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Shared" Then Return True
+    '            If obj.SourceOfResorce.ModFolder = "Shared" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
+    '            If obj.SourceOfResorce.ModFolder = "GustavDev" And ov.SourceOfResorce.ModFolder = "Gustav" Then Return True
+    '            If obj.SourceOfResorce.ModFolder = "Gustav" And ov.SourceOfResorce.ModFolder = "GustavDev" Then Return False
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
+    '            If ov.SourceOfResorce.Filename_Relative.EndsWith(".lsf") And obj.SourceOfResorce.Filename_Relative.EndsWith(".lsx") Then
+    '                If obj.SourceOfResorce.Filename_Relative.Replace(".lsx", ".lsf") = ov.SourceOfResorce.Filename_Relative Then Return False
+    '            End If
+    '            If obj.SourceOfResorce.Filename_Relative.EndsWith(".lsf") And ov.SourceOfResorce.Filename_Relative.EndsWith(".lsx") Then
+    '                If obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative.Replace(".lsx", ".lsf") Then Return True
+    '            End If
+    '            If obj.SourceOfResorce.ModFolder = "Shared" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
+    '            If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "Shared" Then Return False
+    '            If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
+    '            If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
+    '            If obj.SourceOfResorce.ModFolder = "Honour" And ov.SourceOfResorce.ModFolder <> "Honour" Then Return False
+    '            If obj.SourceOfResorce.ModFolder <> "Honour" And ov.SourceOfResorce.ModFolder = "Honour" Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("PhotoMode") Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("PhotoMode") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("HonourX") Then Return True
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("HonourX") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
+    '            If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
+    '            If obj.SourceOfResorce.Pak_Or_Folder = ov.SourceOfResorce.Pak_Or_Folder AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder AndAlso obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.PackageType = ov.SourceOfResorce.PackageType Then Return True
+    '            If obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return False
+    '            If ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return True
+    '            If ov.SourceOfResorce.Filename_Relative = obj.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder Then Return obj.SourceOfResorce.Pak_Or_Folder > ov.SourceOfResorce.Pak_Or_Folder
 
-        If ov.SourceOfResorce.PackageType = BG3_Enum_Package_Type.BaseGame Then
-            If obj.SourceOfResorce.PackageType = BG3_Enum_Package_Type.BaseGame Then
-                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then
-                    If obj.SourceOfResorce.Pak_Or_Folder.ToUpper > ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return True
-                    If obj.SourceOfResorce.Pak_Or_Folder.ToUpper < ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return False
-                End If
-                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") Then Return True
-                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") Then Return False
-                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False Then Return True
-                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then Return False
-                If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Shared" Then Return True
-                If obj.SourceOfResorce.ModFolder = "Shared" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
-                If obj.SourceOfResorce.ModFolder = "GustavDev" And ov.SourceOfResorce.ModFolder = "Gustav" Then Return True
-                If obj.SourceOfResorce.ModFolder = "Gustav" And ov.SourceOfResorce.ModFolder = "GustavDev" Then Return False
-                If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return True
-                If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
-                If ov.SourceOfResorce.Filename_Relative.EndsWith(".lsf") And obj.SourceOfResorce.Filename_Relative.EndsWith(".lsx") Then
-                    If obj.SourceOfResorce.Filename_Relative.Replace(".lsx", ".lsf") = ov.SourceOfResorce.Filename_Relative Then Return False
-                End If
-                If obj.SourceOfResorce.Filename_Relative.EndsWith(".lsf") And ov.SourceOfResorce.Filename_Relative.EndsWith(".lsx") Then
-                    If obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative.Replace(".lsx", ".lsf") Then Return True
-                End If
-                If obj.SourceOfResorce.ModFolder = "Shared" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
-                If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "Shared" Then Return False
-                If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Engine" Then Return True
-                If obj.SourceOfResorce.ModFolder = "Engine" And ov.SourceOfResorce.ModFolder = "SharedDev" Then Return False
-                If obj.SourceOfResorce.ModFolder = "Honour" And ov.SourceOfResorce.ModFolder <> "Honour" Then Return False
-                If obj.SourceOfResorce.ModFolder <> "Honour" And ov.SourceOfResorce.ModFolder = "Honour" Then Return True
-                If obj.SourceOfResorce.ModFolder.StartsWith("Shared") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
-                If obj.SourceOfResorce.ModFolder.StartsWith("Gustav") And ov.SourceOfResorce.ModFolder.StartsWith("Game") Then Return True
-                If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Shared") Then Return False
-                If obj.SourceOfResorce.ModFolder.StartsWith("Game") And ov.SourceOfResorce.ModFolder.StartsWith("Gustav") Then Return False
-                If obj.SourceOfResorce.Pak_Or_Folder = ov.SourceOfResorce.Pak_Or_Folder AndAlso obj.SourceOfResorce.ModFolder = ov.SourceOfResorce.ModFolder AndAlso obj.SourceOfResorce.Filename_Relative = ov.SourceOfResorce.Filename_Relative AndAlso obj.SourceOfResorce.PackageType = ov.SourceOfResorce.PackageType Then Return True
-                If obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return False
-                If ov.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("Data.txt") And obj.SourceOfResorce.Filename_Relative.EndsWith("XPData.txt") = False Then Return True
-                Debugger.Break()
-            Else
-                        Return True
+    '            Debugger.Break()
+    '        Else
+    '            Return True
+    '        End If
+    '    End If
+    '    Return True
+    '    Dim lobj = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(pf) pf.SourceOfResource.ModFolder = obj.SourceOfResorce.ModFolder).First.LoadOrderd
+    '    Dim lov = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(pf) pf.SourceOfResource.ModFolder = ov.SourceOfResorce.ModFolder).First.LoadOrderd
+    '    If lobj < lov Then Return False
+    '    Debugger.Break()
+    '    Return True
+    'End Function
+    Private Shared Function Check_order(obj As T, ov As T) As Boolean
+        ' True = obj queda como principal (gana)  [según Manage_Overrides]
+
+        Dim a = obj.SourceOfResorce
+        Dim b = ov.SourceOfResorce
+
+        ' ---------------------------
+        ' 0) Validaciones mínimas
+        ' ---------------------------
+        If IsNothing(a) OrElse IsNothing(b) Then
+            Debugger.Break()
+            Return True
+        End If
+
+        ' ---------------------------
+        ' 1) Loose_Files siempre ganan
+        ' ---------------------------
+        If a.PackageType = BG3_Enum_Package_Type.Loose_Files AndAlso b.PackageType <> BG3_Enum_Package_Type.Loose_Files Then
+            Return True
+        End If
+        If b.PackageType = BG3_Enum_Package_Type.Loose_Files AndAlso a.PackageType <> BG3_Enum_Package_Type.Loose_Files Then
+            Return False
+        End If
+
+        ' ---------------------------
+        ' 2) Si uno es BaseGame y el otro no: el no-BaseGame gana (mods pisan base)
+        ' ---------------------------
+        If a.PackageType <> BG3_Enum_Package_Type.BaseGame AndAlso b.PackageType = BG3_Enum_Package_Type.BaseGame Then
+            Return True
+        End If
+        If a.PackageType = BG3_Enum_Package_Type.BaseGame AndAlso b.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+            Return False
+        End If
+
+        ' ---------------------------
+        ' 3) Ambos NO son BaseGame: ordenar por LoadOrder si existe
+        '     (arriba gana => mayor índice gana)
+        ' ---------------------------
+        If a.PackageType <> BG3_Enum_Package_Type.BaseGame AndAlso b.PackageType <> BG3_Enum_Package_Type.BaseGame Then
+            Dim la As Integer = Get_LoadOrder_For_SourceOrBreak(a)
+            Dim lb As Integer = Get_LoadOrder_For_SourceOrBreak(b)
+
+            ' Política para -1:
+            If la >= 0 AndAlso lb >= 0 Then
+                If la > lb Then Return True
+                If la < lb Then Return False
+                ' empate: desempate estable
+                Return Compare_Stable(a, b)
+            End If
+
+            If la >= 0 AndAlso lb < 0 Then Return True
+            If la < 0 AndAlso lb >= 0 Then Return False
+
+            ' ambos -1: desempate estable
+            Return Compare_Stable(a, b)
+        End If
+
+        ' ---------------------------
+        ' 4) Ambos BaseGame: usar Package.SortIndex (orden real de carga de tu engine)
+        ' ---------------------------
+        Dim pa = a.Package
+        Dim pb = b.Package
+        If IsNothing(pa) OrElse IsNothing(pb) Then
+            Debugger.Break()
+            Return Compare_Stable(a, b)
+        End If
+
+        If pa.SortIndex > pb.SortIndex Then Return True
+        If pa.SortIndex < pb.SortIndex Then Return False
+
+        ' 4.1) Misma capa/mismo pak-sort: desempatar por ModFolder rank (incluye HonourX/PhotoMode)
+        Dim ra As Integer = Rank_BaseGame_ModFolderOrBreak(a.ModFolder)
+        Dim rb As Integer = Rank_BaseGame_ModFolderOrBreak(b.ModFolder)
+
+        If ra > rb Then Return True
+        If ra < rb Then Return False
+
+        ' 4.2) Si sigue empatado: reglas de archivo (lsf vs lsx) y desempate estable
+        If IsSameLogicalPath_LsfLsx(a.Filename_Relative, b.Filename_Relative) Then
+            ' Definición: .lsf gana a .lsx
+            If a.Filename_Relative.EndsWith(".lsf", StringComparison.OrdinalIgnoreCase) AndAlso b.Filename_Relative.EndsWith(".lsx", StringComparison.OrdinalIgnoreCase) Then
+                Return True
+            End If
+            If a.Filename_Relative.EndsWith(".lsx", StringComparison.OrdinalIgnoreCase) AndAlso b.Filename_Relative.EndsWith(".lsf", StringComparison.OrdinalIgnoreCase) Then
+                Return False
             End If
         End If
+
+        ' XPData/Data regla específica (tu regla existente, pero simétrica y al final)
+        If a.Filename_Relative.EndsWith("XPData.txt", StringComparison.OrdinalIgnoreCase) AndAlso
+       b.Filename_Relative.EndsWith("Data.txt", StringComparison.OrdinalIgnoreCase) AndAlso
+       Not b.Filename_Relative.EndsWith("XPData.txt", StringComparison.OrdinalIgnoreCase) Then
+            Return True
+        End If
+        If b.Filename_Relative.EndsWith("XPData.txt", StringComparison.OrdinalIgnoreCase) AndAlso
+       a.Filename_Relative.EndsWith("Data.txt", StringComparison.OrdinalIgnoreCase) AndAlso
+       Not a.Filename_Relative.EndsWith("XPData.txt", StringComparison.OrdinalIgnoreCase) Then
+            Return False
+        End If
+
+        Return Compare_Stable(a, b)
+    End Function
+    Private Shared Function Get_LoadOrder_For_SourceOrBreak(src As BG3_Pak_SourceOfResource_Class) As Integer
+        If IsNothing(src) Then
+            Debugger.Break()
+            Return -1
+        End If
+
+        Dim mf As String = src.ModFolder
+        If String.IsNullOrWhiteSpace(mf) OrElse mf = "Unknown" Then
+            Debugger.Break()
+            Return -1
+        End If
+
+        Dim matches = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(m) String.Equals(m.Folder, mf, StringComparison.OrdinalIgnoreCase)).ToList
+        If matches.Count = 0 Then
+            Debugger.Break()
+            Return -1
+        End If
+
+        Return matches(0).LoadOrderd
+    End Function
+    Private Shared Function Rank_BaseGame_ModFolderOrBreak(modFolder As String) As Integer
+        If String.IsNullOrWhiteSpace(modFolder) OrElse modFolder = "Unknown" Then
+            Debugger.Break()
+            Return 0
+        End If
+
+        Select Case True
+            Case modFolder.Equals("Engine", StringComparison.OrdinalIgnoreCase)
+                Return 10
+            Case modFolder.Equals("Shared", StringComparison.OrdinalIgnoreCase)
+                Return 20
+            Case modFolder.Equals("SharedDev", StringComparison.OrdinalIgnoreCase)
+                Return 21
+            Case modFolder.Equals("Game", StringComparison.OrdinalIgnoreCase)
+                Return 30
+            Case modFolder.Equals("Gustav", StringComparison.OrdinalIgnoreCase)
+                Return 40
+            Case modFolder.Equals("GustavDev", StringComparison.OrdinalIgnoreCase)
+                Return 41
+            Case modFolder.Equals("GustavX", StringComparison.OrdinalIgnoreCase)
+                Return 42
+            Case modFolder.Equals("Honour", StringComparison.OrdinalIgnoreCase)
+                Return 50
+            Case modFolder.Equals("HonourX", StringComparison.OrdinalIgnoreCase)
+                Return 51
+            Case modFolder.Equals("PhotoMode", StringComparison.OrdinalIgnoreCase)
+                Return 60
+            Case modFolder.Equals("PhotoModeX", StringComparison.OrdinalIgnoreCase)
+                Return 70
+            Case Else
+                ' Pediste que corte si algo no es reconocido
+                Debugger.Break()
+                Return 0
+        End Select
+    End Function
+    Private Shared Function Compare_Stable(a As BG3_Pak_SourceOfResource_Class, b As BG3_Pak_SourceOfResource_Class) As Boolean
+        Dim c1 = String.Compare(a.Pak_Or_Folder, b.Pak_Or_Folder, StringComparison.OrdinalIgnoreCase)
+        If c1 > 0 Then Return True
+        If c1 < 0 Then Return False
+
+        Dim c2 = String.Compare(a.Filename_Relative, b.Filename_Relative, StringComparison.OrdinalIgnoreCase)
+        If c2 > 0 Then Return True
+        If c2 < 0 Then Return False
+
+        ' Total empate: no debería pasar salvo mismo recurso exacto
         Return True
-        Dim lobj = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(pf) pf.SourceOfResource.ModFolder = obj.SourceOfResorce.ModFolder).First.LoadOrderd
-        Dim lov = FuncionesHelpers.GameEngine.ProcessedModuleList.Where(Function(pf) pf.SourceOfResource.ModFolder = ov.SourceOfResorce.ModFolder).First.LoadOrderd
-        If lobj < lov Then Return False
-        Debugger.Break()
-        Return True
+    End Function
+    Private Shared Function IsSameLogicalPath_LsfLsx(p1 As String, p2 As String) As Boolean
+        If String.IsNullOrWhiteSpace(p1) OrElse String.IsNullOrWhiteSpace(p2) Then Return False
+
+        Dim a = p1.Replace("\", "/")
+        Dim b = p2.Replace("\", "/")
+
+        If a.EndsWith(".lsf", StringComparison.OrdinalIgnoreCase) AndAlso b.EndsWith(".lsx", StringComparison.OrdinalIgnoreCase) Then
+            Return String.Equals(a, b.Substring(0, b.Length - 1), StringComparison.OrdinalIgnoreCase) ' .lsx -> .lsf
+        End If
+        If a.EndsWith(".lsx", StringComparison.OrdinalIgnoreCase) AndAlso b.EndsWith(".lsf", StringComparison.OrdinalIgnoreCase) Then
+            Return String.Equals(b, a.Substring(0, a.Length - 1), StringComparison.OrdinalIgnoreCase)
+        End If
+
+        Return False
     End Function
     Public Sub AddHyerarchy(ByRef quien As T)
         If quien.IsOverrided = False Then
