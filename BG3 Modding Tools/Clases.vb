@@ -506,7 +506,7 @@ End Class
 <Serializable>
 Public Class Main_GameEngine_Class
     Public Property Settings As New Main_GameEngine_Settings_Class
-    Public ReadOnly Property CacheVersion As Double = 5.7
+    Public ReadOnly Property CacheVersion As Double = 5.8
     Public Function Save_Settings() As Boolean
         Return SerializeObjetc(IO.Path.Combine(Settings.BG3_UTAM_Folder, "BG3_Utam.cfg"), Settings)
     End Function
@@ -654,7 +654,10 @@ Public Class Main_GameEngine_Class
                     Dim modcfg As String = Path.Combine(GameEngine.Settings.GameModFolder, "..\PlayerProfiles\Public\modsettings.lsx")
                     If IO.File.Exists(modcfg) Then
                         Dim recurso = ResourceUtils.LoadResource(modcfg, ResourceFormat.LSX, ResourceLoadParameters.FromGameVersion(Game.BaldursGate3))
-                        _LoadedModOrder = recurso.Regions("ModuleSettings").Children("ModOrder").First.Children.Where(Function(pf) pf.Key = "Module").First.Value.Select(Function(pq) pq.Attributes("UUID").Value.ToString).ToList
+                        ' Cuando habia modorder
+                        '_LoadedModOrder = recurso.Regions("ModuleSettings").Children("ModOrder").First.Children.Where(Function(pf) pf.Key = "Module").First.Value.Select(Function(pq) pq.Attributes("UUID").Value.ToString).ToList
+                        ' NUEVO
+                        _LoadedModOrder = recurso.Regions("ModuleSettings").Children("Mods").First.Children.Where(Function(pf) pf.Key = "ModuleShortDesc").First.Value.Select(Function(pq) pq.Attributes("UUID").Value.ToString).ToList
                     Else
                         _LoadedModOrder = New List(Of String)
                     End If
@@ -674,7 +677,7 @@ Public Class Main_GameEngine_Class
             Dim debograbar As Boolean = False
             If IO.File.Exists(modcfg) Then
                 Dim recurso = ResourceUtils.LoadResource(modcfg, ResourceFormat.LSX, ResourceLoadParameters.FromGameVersion(Game.BaldursGate3))
-                Dim modules = recurso.Regions("ModuleSettings").Children("ModOrder").First.Children.Where(Function(pf) pf.Key = "Module").First.Value
+                'Dim modules = recurso.Regions("ModuleSettings").Children("ModOrder").First.Children.Where(Function(pf) pf.Key = "Module").First.Value
                 Dim mods = recurso.Regions("ModuleSettings").Children("Mods").First.Children.Where(Function(pf) pf.Key = "ModuleShortDesc").First.Value
 
                 If mods.Where(Function(pq) pq.Attributes("UUID").Value.ToString = uuid).Any = False Then
@@ -682,21 +685,28 @@ Public Class Main_GameEngine_Class
                     cre.Attributes.Add("Folder", New NodeAttribute(AttributeType.LSString) With {.Value = utammod.Folder})
                     cre.Attributes.Add("MD5", New NodeAttribute(AttributeType.LSString) With {.Value = ""})
                     cre.Attributes.Add("Name", New NodeAttribute(AttributeType.LSString) With {.Value = utammod.Name})
+                    cre.Attributes.Add("PublishHandle", New NodeAttribute(AttributeType.Int64) With {.Value = 0})
                     cre.Attributes.Add("UUID", New NodeAttribute(AttributeType.FixedString) With {.Value = utammod.UUID})
                     cre.Attributes.Add("Version64", New NodeAttribute(AttributeType.Int64) With {.Value = utammod.Version})
                     cre.Parent = recurso.Regions("ModuleSettings").Children("Mods").First
                     recurso.Regions("ModuleSettings").Children("Mods").First.AppendChild(cre)
                     debograbar = True
                 End If
+                ' NO HAY MAS MODORDER??
 
-                If modules.Where(Function(pq) pq.Attributes("UUID").Value.ToString = uuid).Any = False Then
-                    Dim cre As New LSLib.LS.Node With {.Name = "Module"}
-                    cre.Attributes.Add("UUID", New NodeAttribute(AttributeType.FixedString) With {.Value = utammod.UUID})
-                    cre.Parent = recurso.Regions("ModuleSettings").Children("ModOrder").First
-                    recurso.Regions("ModuleSettings").Children("ModOrder").First.AppendChild(cre)
-                    debograbar = True
+                'If modules.Where(Function(pq) pq.Attributes("UUID").Value.ToString = uuid).Any = False Then
+                '    Dim cre As New LSLib.LS.Node With {.Name = "Module"}
+                '    cre.Attributes.Add("UUID", New NodeAttribute(AttributeType.FixedString) With {.Value = utammod.UUID})
+                '    cre.Parent = recurso.Regions("ModuleSettings").Children("ModOrder").First
+                '    recurso.Regions("ModuleSettings").Children("ModOrder").First.AppendChild(cre)
+                '    debograbar = True
+                'End If
+                If debograbar Then
+                    Dim Archivodata As New IO.StreamWriter(modcfg, False)
+                    Archivodata.Write(recurso.To_XML.Replace("lslib_meta=" + Chr(34) + "v1,bswap_guids" + Chr(34), ""))
+                    Archivodata.Flush()
+                    Archivodata.Close()
                 End If
-                If debograbar Then ResourceUtils.SaveResource(recurso, modcfg, ResourceFormat.LSX, ResourceConversionParameters.FromGameVersion(Game.BaldursGate3))
             End If
         Catch ex As Exception
             Return False
@@ -1268,6 +1278,11 @@ Public Class Utam_CurrentModClass
     Public ReadOnly Property MetaFilePath As String
         Get
             Return IO.Path.Combine(IO.Path.Combine(IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Mods")), ModLsx.Folder), "meta.lsx")
+        End Get
+    End Property
+    Public ReadOnly Property ModFixPath As String
+        Get
+            Return IO.Path.Combine(IO.Path.Combine(IO.Path.Combine(GameEngine.Settings.UTAMModFolder, IO.Path.Combine(ModLsx.Folder, "Mods")), ModLsx.Folder), "Story\RawFiles\Goals")
         End Get
     End Property
     Public ReadOnly Property LevelsFolderPath As String
@@ -3900,6 +3915,8 @@ Public Class BG3_Obj_SortedList_Class(Of T As BG3_Obj_Generic_Class)
                     If obj.SourceOfResorce.Pak_Or_Folder.ToUpper > ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return True
                     If obj.SourceOfResorce.Pak_Or_Folder.ToUpper < ov.SourceOfResorce.Pak_Or_Folder.ToUpper Then Return False
                 End If
+                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") Then Return True
+                If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Game") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Gustav") Then Return False
                 If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False Then Return True
                 If obj.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") = False And ov.SourceOfResorce.Pak_Or_Folder.StartsWith("Patch") Then Return False
                 If obj.SourceOfResorce.ModFolder = "SharedDev" And ov.SourceOfResorce.ModFolder = "Shared" Then Return True

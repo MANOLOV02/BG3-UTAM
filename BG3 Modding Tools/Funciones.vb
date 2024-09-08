@@ -294,6 +294,7 @@ Public Class Funciones
                             Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(child, source, BG3_Enum_VisualBank_Type.CharacterVisualBank))
                         Next
                     Next
+
                 Case "VisualBank"
                     For Each Nod In reg.Value.Children
                         For Each child In Nod.Value
@@ -301,11 +302,16 @@ Public Class Funciones
                         Next
                     Next
                 Case "MaterialBank"
-                    For Each Nod In reg.Value.Children
-                        For Each child In Nod.Value
-                            Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(child, source, BG3_Enum_VisualBank_Type.MaterialBank))
+                    Try
+                        For Each Nod In reg.Value.Children
+                            For Each child In Nod.Value
+                                Dim result = GameEngine.ProcessedVisualBanksList.Manage_Overrides(New BG3_Obj_VisualBank_Class(child, source, BG3_Enum_VisualBank_Type.MaterialBank))
+                            Next
                         Next
-                    Next
+                    Catch ex As Exception
+                        Debugger.Break()
+                    End Try
+
                 Case "TextureBank"
                     For Each Nod In reg.Value.Children
                         For Each child In Nod.Value
@@ -630,6 +636,7 @@ Public Class Funciones
                 Case "QuestCategories"
                 Case "Gossips"
                 Case "OriginIntroEntities"
+                Case "LightbarSounds"
                 Case Else
                     Debugger.Break()
             End Select
@@ -925,6 +932,8 @@ Public Class Funciones
         Select Case True
             Case directorio.EndsWith("Stats\Generated\Data", StringComparison.OrdinalIgnoreCase)
                 Read_Txt_Stats(Source)
+            Case directorio.EndsWith("RawFiles\Goals", StringComparison.OrdinalIgnoreCase)
+                ' NUEVOS A IDENTIFICAR
             Case Else
                 Select Case ShortName
                     Case "ItemCombos"

@@ -161,8 +161,22 @@ Public Class UtamMod
     Public Sub Save_Files()
         CurrentMod.Create_folders()
 
+        ' DELETE OLD MODFIX
+        Dim modfixpath2 As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, IO.Path.Combine(CurrentMod.SaveFolder, "Mods\Gustav\Story\RawFiles\Goals"))
+        If IO.File.Exists(IO.Path.Combine(modfixpath2, "ForceRecompile.txt")) Then IO.File.Delete(IO.Path.Combine(modfixpath2, "ForceRecompile.txt"))
+        Try
+            If IO.Directory.Exists(modfixpath2) Then
+                IO.Directory.Delete(modfixpath2)
+                IO.Directory.Delete(modfixpath2.Replace("\Goals", ""))
+                IO.Directory.Delete(modfixpath2.Replace("\RawFiles\Goals", ""))
+                IO.Directory.Delete(modfixpath2.Replace("\Story\RawFiles\Goals", ""))
+            End If
+        Catch ex As Exception
+            Debugger.Break()
+        End Try
+
         ' Is mod Fixer included
-        Dim modfixpath As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, IO.Path.Combine(CurrentMod.SaveFolder, "Mods\Gustav\Story\RawFiles\Goals"))
+        Dim modfixpath As String = IO.Path.Combine(FuncionesHelpers.GameEngine.Settings.UTAMModFolder, CurrentMod.ModFixPath)
         If CheckBoxModFixer.Checked = True Then
             If IO.Directory.Exists(modfixpath) = False Then IO.Directory.CreateDirectory(modfixpath)
             Dim ArchivoMF As New IO.StreamWriter(IO.Path.Combine(modfixpath, "ForceRecompile.txt"), False)
@@ -181,19 +195,21 @@ Public Class UtamMod
             ArchivoMF.Flush()
             ArchivoMF.Close()
         Else
+            ' NUEVA
             If IO.File.Exists(IO.Path.Combine(modfixpath, "ForceRecompile.txt")) Then IO.File.Delete(IO.Path.Combine(modfixpath, "ForceRecompile.txt"))
             Try
                 If IO.Directory.Exists(modfixpath) Then
                     IO.Directory.Delete(modfixpath)
                     IO.Directory.Delete(modfixpath.Replace("\Goals", ""))
                     IO.Directory.Delete(modfixpath.Replace("\RawFiles\Goals", ""))
-                    IO.Directory.Delete(modfixpath.Replace("\Story\RawFiles\Goals", ""))
                 End If
             Catch ex As Exception
                 Debugger.Break()
             End Try
 
         End If
+
+
 
         ' Genera treasure Table
         Dim ArchivoTT As New IO.StreamWriter(CurrentMod.TreasureTableFilePath, False)
